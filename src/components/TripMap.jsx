@@ -1,5 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Polyline,
+  useMap,
+} from "react-leaflet";
 import L from "leaflet";
 
 // Fix default marker icons in Vite/React setups
@@ -14,22 +21,26 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
+function Recenter({ center, zoom }) {
+  const map = useMap();
+  useEffect(() => {
+    map.setView(center, zoom, { animate: true });
+  }, [map, center, zoom]);
+  return null;
+}
+
 async function geocode(place, signal) {
   const q = place?.trim();
   if (!q) return null;
 
   try {
-    // Nominatim (OpenStreetMap) geocoding
     const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(
       q
     )}`;
 
     const res = await fetch(url, {
       signal,
-      headers: {
-        // Helps Nominatim; some browsers ignore this, but it's fine.
-        "Accept-Language": "en",
-      },
+      headers: { "Accept-Language": "en" },
     });
 
     if (!res.ok) return null;
@@ -53,7 +64,6 @@ export default function TripMap({ start, end }) {
   const [endLoc, setEndLoc] = useState(null);
   const [status, setStatus] = useState("");
 
-  // Default center (USA)
   const defaultCenter = useMemo(() => [39.5, -98.35], []);
 
   useEffect(() => {
@@ -89,6 +99,7 @@ export default function TripMap({ start, end }) {
         setStatus("Map lookup failed. Check your connection.");
       });
     }, 400);
+
     return () => {
       cancelled = true;
       controller.abort();
@@ -105,14 +116,16 @@ export default function TripMap({ start, end }) {
     return defaultCenter;
   }, [startLoc, endLoc, defaultCenter]);
 
-  return (
-    <div className="panel" style={{ marginTop: "1rem" }}>
-      
+  const zoom = startLoc && endLoc ? 5 : startLoc || endLoc ? 6 : 4;
 
+  return (
+    <>
       {status ? <p className="empty-state">{status}</p> : null}
 
       <div className="map-wrap">
-        <MapContainer center={center} zoom={startLoc || endLoc ? 6 : 4} scrollWheelZoom={false}>
+        <MapContainer center={center} zoom={zoom} scrollWheelZoom={false}>
+          <Recenter center={center} zoom={zoom} />
+
           <TileLayer
             attribution="&copy; OpenStreetMap contributors"
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -137,8 +150,21 @@ export default function TripMap({ start, end }) {
               </Popup>
             </Marker>
           ) : null}
+          {startLoc && endLoc ? (
+           <Polyline
+              positions={[
+                [startLoc.lat, startLoc.lon],
+                [endLoc.lat, endLoc.lon],
+        ]}
+              pathOptions={{
+                color: "#1e90ff",
+                weight: 5,
+                opacity: 0.8,
+        }}
+      />
+          ) : null}
         </MapContainer>
       </div>
-    </div>
+    </>
   );
 }

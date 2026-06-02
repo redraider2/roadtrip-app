@@ -4,6 +4,24 @@
   box-sizing: border-box;
 }
 
+
+.leaflet-container {
+  height: 500px;
+  width: 100%;
+}
+
+/* Leaflet needs an explicit height */
+.map-wrap {
+  height: 420px;
+  width: 100%;
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  border-radius: 12px;
+}
+
 :root {
   font-family: system-ui, -apple-system, sans-serif;
   line-height: 1.5;
