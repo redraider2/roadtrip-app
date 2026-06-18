@@ -109,21 +109,6 @@ body {
   resize: vertical;
 }
 
-/* Map container must have a height or Leaflet won't render */
-.map-wrap {
-  height: 280px;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-/* Optional: if you want the map panel to look consistent */
-.leaflet-container {
-  height: 100%;
-  width: 100%;
-  border-radius: 12px;
-}
-
-
 .primary-button {
   padding: 0.65rem 1rem;
   border-radius: 12px;
@@ -226,6 +211,8 @@ body {
     width: 100%;
   }
 }
+
+/* Map container must have a height or Leaflet won't render */
 .map-wrap {
   height: 320px;
   border-radius: 16px;
@@ -233,11 +220,6 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-.leaflet-container {
-  height: 100%;
-  width: 100%;
-  border-radius: 16px;
-}
 /* Leaflet map container */
 .leaflet-container {
   width: 100%;

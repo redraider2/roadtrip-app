@@ -324,6 +324,162 @@ app.patch("/trips/:id/favorite", async (req, res) => {
   }
 });
 
+app.get("/trips/:tripId/stops", async (req, res) => {
+  try {
+    const { tripId } = req.params;
+
+    const result = await db.query(
+      `SELECT
+         s.id,
+         s.trip_id,
+         s.location_id,
+         s.order_index,
+         s.notes,
+         l.name,
+         l.latitude,
+         l.longitude,
+         l.locality,
+         l.admin_1,
+         l.country_code
+       FROM stops s
+       JOIN locations l ON s.location_id = l.id
+       WHERE s.trip_id = $1
+       ORDER BY s.order_index ASC`,
+      [tripId]
+    );
+
+    return res.json(result.rows);
+  } catch (err) {
+    console.error("GET /trips/:tripId/stops error:", err);
+    return res.status(500).json({ error: "Failed to load stops" });
+  }
+});
+
+app.post("/trips/:tripId/stops", async (req, res) => {
+  try {
+    const { tripId } = req.params;
+    const { name, latitude, longitude, notes } = req.body;
+
+    if (!name || latitude == null || longitude == null) {
+      return res
+        .status(400)
+        .json({ error: "name, latitude, and longitude are required" });
+    }
+
+    const locationResult = await db.query(
+      `INSERT INTO locations
+       (name, location_type, latitude, longitude, timezone, country_code)
+       VALUES ($1, $2, $3, $4, $5, $6)
+       RETURNING id`,
+      [name, "waypoint", latitude, longitude, "America/Chicago", "US"]
+    );
+
+    const locationId = locationResult.rows[0].id;
+
+    const orderResult = await db.query(
+      `SELECT COALESCE(MAX(order_index), -1) + 1 AS next_order
+       FROM stops
+       WHERE trip_id = $1`,
+      [tripId]
+    );
+
+    const nextOrder = orderResult.rows[0].next_order;
+
+    const stopResult = await db.query(
+      `INSERT INTO stops (trip_id, location_id, order_index, notes)
+       VALUES ($1, $2, $3, $4)
+       RETURNING *`,
+      [tripId, locationId, nextOrder, notes || ""]
+    );
+
+    return res.status(201).json(stopResult.rows[0]);
+  } catch (err) {
+    console.error("POST /trips/:tripId/stops error:", err);
+    return res.status(500).json({ error: "Failed to create stop" });
+  }
+});
+
+app.delete("/stops/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await db.query(
+      `DELETE FROM stops
+       WHERE id = $1
+       RETURNING id`,
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Stop not found" });
+    }
+
+    return res.json({ deleted: result.rows[0].id });
+  } catch (err) {
+    console.error("DELETE /stops/:id error:", err);
+    return res.status(500).json({ error: "Failed to delete stop" });
+  }
+});
+
+app.patch("/stops/:id/order", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { direction } = req.body;
+
+    if (!["up", "down"].includes(direction)) {
+      return res.status(400).json({ error: "direction must be up or down" });
+    }
+
+    const currentResult = await db.query(
+      "SELECT id, trip_id, order_index FROM stops WHERE id = $1",
+      [id]
+    );
+
+    if (currentResult.rows.length === 0) {
+      return res.status(404).json({ error: "Stop not found" });
+    }
+
+    const current = currentResult.rows[0];
+    const operator = direction === "up" ? "<" : ">";
+    const sort = direction === "up" ? "DESC" : "ASC";
+
+    const swapResult = await db.query(
+      `SELECT id, order_index
+       FROM stops
+       WHERE trip_id = $1 AND order_index ${operator} $2
+       ORDER BY order_index ${sort}
+       LIMIT 1`,
+      [current.trip_id, current.order_index]
+    );
+
+    if (swapResult.rows.length === 0) {
+      return res.json({ unchanged: true });
+    }
+
+    const swap = swapResult.rows[0];
+
+    await db.query("BEGIN");
+
+    await db.query("UPDATE stops SET order_index = $1 WHERE id = $2", [
+      swap.order_index,
+      current.id,
+    ]);
+
+    await db.query("UPDATE stops SET order_index = $1 WHERE id = $2", [
+      current.order_index,
+      swap.id,
+    ]);
+
+    await db.query("COMMIT");
+
+    return res.json({ reordered: true });
+  } catch (err) {
+    await db.query("ROLLBACK").catch(() => {});
+    console.error("PATCH /stops/:id/order error:", err);
+    return res.status(500).json({ error: "Failed to reorder stop" });
+  }
+});
+
 app.get("/debug-db", async (req, res) => {
   try {
     const dbName = await db.query("SELECT current_database() AS db;");

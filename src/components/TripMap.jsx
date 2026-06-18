@@ -9,7 +9,6 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 
-// Fix default marker icons in Vite/React setups
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
@@ -21,11 +20,39 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
+function createNumberedIcon(label) {
+  return L.divIcon({
+    className: "numbered-marker",
+    html: `<div>${label}</div>`,
+    iconSize: [30, 30],
+    iconAnchor: [15, 15],
+    popupAnchor: [0, -15],
+  });
+}
+
 function Recenter({ center, zoom }) {
   const map = useMap();
+
   useEffect(() => {
     map.setView(center, zoom, { animate: true });
   }, [map, center, zoom]);
+
+  return null;
+}
+
+function FitBounds({ positions }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (positions.length < 2) return;
+
+    const bounds = L.latLngBounds(positions);
+
+    map.fitBounds(bounds, {
+      padding: [50, 50],
+    });
+  }, [map, positions]);
+
   return null;
 }
 
@@ -59,12 +86,32 @@ async function geocode(place, signal) {
   }
 }
 
-export default function TripMap({ start, end }) {
+function isValidCoordinate(stop) {
+  const lat = Number(stop.latitude);
+  const lon = Number(stop.longitude);
+
+  return (
+    Number.isFinite(lat) &&
+    Number.isFinite(lon) &&
+    lat !== 0 &&
+    lon !== 0
+  );
+}
+
+export default function TripMap({ start, end, stops = [] }) {
   const [startLoc, setStartLoc] = useState(null);
   const [endLoc, setEndLoc] = useState(null);
   const [status, setStatus] = useState("");
 
   const defaultCenter = useMemo(() => [39.5, -98.35], []);
+
+  const validStops = useMemo(
+    () =>
+      stops
+        .filter(isValidCoordinate)
+        .sort((a, b) => a.order_index - b.order_index),
+    [stops]
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -89,8 +136,11 @@ export default function TripMap({ start, end }) {
       setStartLoc(s);
       setEndLoc(e);
 
-      if (!s && !e) setStatus("Couldn’t find locations. Try adding city + state.");
-      else setStatus("");
+      if (!s && !e) {
+        setStatus("Couldn’t find locations. Try adding city + state.");
+      } else {
+        setStatus("");
+      }
     }
 
     const debounceId = setTimeout(() => {
@@ -107,16 +157,37 @@ export default function TripMap({ start, end }) {
     };
   }, [start, end]);
 
-  const center = useMemo(() => {
-    if (startLoc && endLoc) {
-      return [(startLoc.lat + endLoc.lat) / 2, (startLoc.lon + endLoc.lon) / 2];
-    }
-    if (startLoc) return [startLoc.lat, startLoc.lon];
-    if (endLoc) return [endLoc.lat, endLoc.lon];
-    return defaultCenter;
-  }, [startLoc, endLoc, defaultCenter]);
+  const routePositions = useMemo(() => {
+    const positions = [];
 
-  const zoom = startLoc && endLoc ? 5 : startLoc || endLoc ? 6 : 4;
+    if (startLoc) {
+      positions.push([startLoc.lat, startLoc.lon]);
+    }
+
+    validStops.forEach((stop) => {
+      positions.push([Number(stop.latitude), Number(stop.longitude)]);
+    });
+
+    if (endLoc) {
+      positions.push([endLoc.lat, endLoc.lon]);
+    }
+
+    return positions;
+  }, [startLoc, endLoc, validStops]);
+
+  const center = useMemo(() => {
+    if (routePositions.length > 0) {
+      const latTotal = routePositions.reduce((sum, point) => sum + point[0], 0);
+      const lonTotal = routePositions.reduce((sum, point) => sum + point[1], 0);
+
+      return [latTotal / routePositions.length, lonTotal / routePositions.length];
+    }
+
+    return defaultCenter;
+  }, [routePositions, defaultCenter]);
+
+  const zoom =
+    routePositions.length >= 2 ? 5 : routePositions.length === 1 ? 6 : 4;
 
   return (
     <>
@@ -125,6 +196,7 @@ export default function TripMap({ start, end }) {
       <div className="map-wrap">
         <MapContainer center={center} zoom={zoom} scrollWheelZoom={false}>
           <Recenter center={center} zoom={zoom} />
+          <FitBounds positions={routePositions} />
 
           <TileLayer
             attribution="&copy; OpenStreetMap contributors"
@@ -132,7 +204,10 @@ export default function TripMap({ start, end }) {
           />
 
           {startLoc ? (
-            <Marker position={[startLoc.lat, startLoc.lon]}>
+            <Marker
+              position={[startLoc.lat, startLoc.lon]}
+              icon={createNumberedIcon("S")}
+            >
               <Popup>
                 <strong>Start</strong>
                 <br />
@@ -141,8 +216,31 @@ export default function TripMap({ start, end }) {
             </Marker>
           ) : null}
 
+          {validStops.map((stop) => (
+            <Marker
+              key={stop.id}
+              position={[Number(stop.latitude), Number(stop.longitude)]}
+              icon={createNumberedIcon(stop.order_index + 1)}
+            >
+              <Popup>
+                <strong>Stop {stop.order_index + 1}</strong>
+                <br />
+                {stop.name}
+                {stop.notes ? (
+                  <>
+                    <br />
+                    {stop.notes}
+                  </>
+                ) : null}
+              </Popup>
+            </Marker>
+          ))}
+
           {endLoc ? (
-            <Marker position={[endLoc.lat, endLoc.lon]}>
+            <Marker
+              position={[endLoc.lat, endLoc.lon]}
+              icon={createNumberedIcon("E")}
+            >
               <Popup>
                 <strong>End</strong>
                 <br />
@@ -150,18 +248,16 @@ export default function TripMap({ start, end }) {
               </Popup>
             </Marker>
           ) : null}
-          {startLoc && endLoc ? (
-           <Polyline
-              positions={[
-                [startLoc.lat, startLoc.lon],
-                [endLoc.lat, endLoc.lon],
-        ]}
+
+          {routePositions.length >= 2 ? (
+            <Polyline
+              positions={routePositions}
               pathOptions={{
                 color: "#1e90ff",
                 weight: 5,
                 opacity: 0.8,
-        }}
-      />
+              }}
+            />
           ) : null}
         </MapContainer>
       </div>

@@ -58,15 +58,20 @@ CREATE TABLE trips (
   title          TEXT NOT NULL,
   start_location TEXT NOT NULL,
   end_location   TEXT NOT NULL,
+  start_at_utc   TIMESTAMPTZ,
+  end_at_utc     TIMESTAMPTZ,
   notes          TEXT,
+  is_favorite    BOOLEAN NOT NULL DEFAULT FALSE,
   created_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   CONSTRAINT trip_title_not_blank CHECK (BTRIM(title) <> ''),
   CONSTRAINT trip_start_location_not_blank CHECK (BTRIM(start_location) <> ''),
-  CONSTRAINT trip_end_location_not_blank CHECK (BTRIM(end_location) <> '')
+  CONSTRAINT trip_end_location_not_blank CHECK (BTRIM(end_location) <> ''),
+  CONSTRAINT trip_date_order CHECK (start_at_utc IS NULL OR end_at_utc IS NULL OR start_at_utc <= end_at_utc)
 );
 
 CREATE INDEX idx_trips_user ON trips(user_id);
 CREATE INDEX idx_trips_start_location ON trips(start_location);
+CREATE INDEX idx_trips_favorite ON trips(is_favorite);
 
 CREATE TABLE stops (
   id            BIGSERIAL PRIMARY KEY,

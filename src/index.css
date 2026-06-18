@@ -22,6 +22,26 @@
   border-radius: 12px;
 }
 
+
+.numbered-marker {
+  background: transparent;
+  border: none;
+}
+
+.numbered-marker div {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #1e90ff;
+  color: white;
+  border: 2px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
 :root {
   font-family: system-ui, -apple-system, sans-serif;
   line-height: 1.5;
