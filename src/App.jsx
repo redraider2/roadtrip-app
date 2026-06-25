@@ -7,30 +7,33 @@ import TripMap from "./components/TripMap";
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5001";
 
-function estimateTripStats(start, end) {
-  const knownRoutes = {
-    "houston, tx|oklahoma city, ok": {
-      distance: "445 miles",
-      driveTime: "6 hr 45 min",
-    },
-    "houston|oklahoma city, oklahoma": {
-      distance: "445 miles",
-      driveTime: "6 hr 45 min",
-    },
-    "houston, tx|lubbock, tx": {
-      distance: "520 miles",
-      driveTime: "8 hr",
-    },
+function calculateTripStatsFromCoords(startCoords, endCoords) {
+  const toRadians = (degrees) => (degrees * Math.PI) / 180;
+  const earthRadiusMiles = 3958.8;
+
+  const dLat = toRadians(endCoords.latitude - startCoords.latitude);
+  const dLon = toRadians(endCoords.longitude - startCoords.longitude);
+
+  const lat1 = toRadians(startCoords.latitude);
+  const lat2 = toRadians(endCoords.latitude);
+
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
+
+  const straightLineMiles =
+    2 * earthRadiusMiles * Math.asin(Math.sqrt(a));
+
+  const estimatedDrivingMiles = Math.round(straightLineMiles * 1.25);
+  const estimatedDriveHours = estimatedDrivingMiles / 65;
+
+  const hours = Math.floor(estimatedDriveHours);
+  const minutes = Math.round((estimatedDriveHours - hours) * 60);
+
+  return {
+    distance: `${estimatedDrivingMiles.toLocaleString()} miles`,
+    driveTime: `${hours} hr ${minutes} min`,
   };
-
-  const key = `${start?.toLowerCase().trim()}|${end?.toLowerCase().trim()}`;
-
-  return (
-    knownRoutes[key] || {
-      distance: "Estimate not available yet",
-      driveTime: "Estimate not available yet",
-    }
-  );
 }
 
 async function geocodePlace(place) {
@@ -69,7 +72,6 @@ async function geocodePlace(place) {
 
 function App() {
   const [trips, setTrips] = useState([]);
-
   const [activeTripId, setActiveTripId] = useState(null);
 
   const [tripName, setTripName] = useState("");
@@ -80,6 +82,8 @@ function App() {
   const [stops, setStops] = useState([]);
   const [stopName, setStopName] = useState("");
   const [stopNotes, setStopNotes] = useState("");
+
+  const [tripStats, setTripStats] = useState(null);
 
   async function fetchTrips() {
     try {
@@ -130,8 +134,6 @@ function App() {
     fetchTrips();
   }, []);
 
-
-
   const activeTrip = useMemo(
     () => trips.find((t) => t.id === activeTripId) || null,
     [trips, activeTripId]
@@ -145,9 +147,34 @@ function App() {
     }
   }, [activeTrip?.id]);
 
-  const tripStats = activeTrip
-    ? estimateTripStats(activeTrip.start, activeTrip.end)
-    : null;
+  useEffect(() => {
+    async function loadTripStats() {
+      if (!activeTrip?.start || !activeTrip?.end) {
+        setTripStats(null);
+        return;
+      }
+
+      setTripStats({
+        distance: "Calculating...",
+        driveTime: "Calculating...",
+      });
+
+      try {
+        const startCoords = await geocodePlace(activeTrip.start);
+        const endCoords = await geocodePlace(activeTrip.end);
+        const stats = calculateTripStatsFromCoords(startCoords, endCoords);
+        setTripStats(stats);
+      } catch (err) {
+        console.error("Trip stats failed:", err);
+        setTripStats({
+          distance: "Estimate unavailable",
+          driveTime: "Estimate unavailable",
+        });
+      }
+    }
+
+    loadTripStats();
+  }, [activeTrip?.start, activeTrip?.end]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -200,7 +227,6 @@ function App() {
 
     try {
       const coords = await geocodePlace(name);
-      console.log("GEOCODE:", name, coords);
 
       const res = await fetch(`${API_BASE_URL}/trips/${activeTrip.id}/stops`, {
         method: "POST",
@@ -228,27 +254,28 @@ function App() {
       alert("Could not find that location. Try a city and state, like Waco, TX.");
     }
   }
-async function moveStop(id, direction) {
-  if (!activeTrip) return;
 
-  try {
-    const res = await fetch(`${API_BASE_URL}/stops/${id}/order`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ direction }),
-    });
+  async function moveStop(id, direction) {
+    if (!activeTrip) return;
 
-    if (!res.ok) {
-      throw new Error("Failed to reorder stop");
+    try {
+      const res = await fetch(`${API_BASE_URL}/stops/${id}/order`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ direction }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to reorder stop");
+      }
+
+      await fetchStops(activeTrip.id);
+    } catch (err) {
+      console.error("Move stop failed:", err);
     }
-
-    await fetchStops(activeTrip.id);
-  } catch (err) {
-    console.error("Move stop failed:", err);
   }
-}
 
   async function deleteStop(id) {
     try {
@@ -466,30 +493,30 @@ async function moveStop(id, direction) {
                       </div>
 
                       <div className="trip-actions">
-                  <button
-                    className="ghost-button"
-                    type="button"
-                      onClick={() => moveStop(stop.id, "up")}
-                >
-                      ↑
-                 </button>
+                        <button
+                          className="ghost-button"
+                          type="button"
+                          onClick={() => moveStop(stop.id, "up")}
+                        >
+                          ↑
+                        </button>
 
-                <button
-                className="ghost-button"
-                type="button"
-                onClick={() => moveStop(stop.id, "down")}
-                >
-                        ↓
-              </button>
+                        <button
+                          className="ghost-button"
+                          type="button"
+                          onClick={() => moveStop(stop.id, "down")}
+                        >
+                          ↓
+                        </button>
 
-              <button
-                className="ghost-button"
-                type="button"
-                onClick={() => deleteStop(stop.id)}
-              >
-               Delete
-                      </button>
-                        </div>
+                        <button
+                          className="ghost-button"
+                          type="button"
+                          onClick={() => deleteStop(stop.id)}
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -518,9 +545,11 @@ async function moveStop(id, direction) {
                     >
                       <div className="trip-details">
                         <span className="trip-name">{trip.name}</span>
+
                         <span className="trip-route">
                           {trip.start} → {trip.end}
                         </span>
+
                         {trip.notes && (
                           <span className="trip-notes-text">{trip.notes}</span>
                         )}
