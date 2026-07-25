@@ -7,36 +7,7 @@ import TripMap from "./components/TripMap";
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5001";
 
-function calculateTripStatsFromCoords(startCoords, endCoords) {
-  const toRadians = (degrees) => (degrees * Math.PI) / 180;
-  const earthRadiusMiles = 3958.8;
-
-  const dLat = toRadians(endCoords.latitude - startCoords.latitude);
-  const dLon = toRadians(endCoords.longitude - startCoords.longitude);
-
-  const lat1 = toRadians(startCoords.latitude);
-  const lat2 = toRadians(endCoords.latitude);
-
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
-
-  const straightLineMiles =
-    2 * earthRadiusMiles * Math.asin(Math.sqrt(a));
-
-  const estimatedDrivingMiles = Math.round(straightLineMiles * 1.25);
-  const estimatedDriveHours = estimatedDrivingMiles / 65;
-
-  const hours = Math.floor(estimatedDriveHours);
-  const minutes = Math.round((estimatedDriveHours - hours) * 60);
-
-  return {
-    distance: `${estimatedDrivingMiles.toLocaleString()} miles`,
-    driveTime: `${hours} hr ${minutes} min`,
-  };
-}
-
-async function geocodePlace(place) {
+async function geocodePlace(place, signal) {
   const query = place.trim();
 
   const res = await fetch(
@@ -44,6 +15,7 @@ async function geocodePlace(place) {
       query
     )}`,
     {
+      signal,
       headers: {
         "Accept-Language": "en",
       },
@@ -70,9 +42,66 @@ async function geocodePlace(place) {
   return { latitude, longitude };
 }
 
+function isValidCoordinate(stop) {
+  const latitude = Number(stop.latitude);
+  const longitude = Number(stop.longitude);
+
+  return (
+    Number.isFinite(latitude) &&
+    Number.isFinite(longitude) &&
+    latitude !== 0 &&
+    longitude !== 0
+  );
+}
+
+function formatRouteDistance(meters) {
+  const miles = meters / 1609.344;
+  return `${Math.round(miles).toLocaleString()} miles`;
+}
+
+function formatRouteDuration(seconds) {
+  const totalMinutes = Math.round(seconds / 60);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  if (hours === 0) {
+    return `${minutes} min`;
+  }
+
+  return `${hours} hr ${minutes} min`;
+}
+
+async function fetchRoadRoute(points, signal) {
+  const res = await fetch(`${API_BASE_URL}/route`, {
+    method: "POST",
+    signal,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ points }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to calculate road route");
+  }
+
+  return res.json();
+}
+
+function formatTripStats(route) {
+  if (!route) return null;
+
+  return {
+    distance: formatRouteDistance(route.distanceMeters),
+    driveTime: formatRouteDuration(route.durationSeconds),
+    provider: route.provider,
+  };
+}
+
 function App() {
   const [trips, setTrips] = useState([]);
   const [activeTripId, setActiveTripId] = useState(null);
+  const [tripsError, setTripsError] = useState("");
 
   const [tripName, setTripName] = useState("");
   const [start, setStart] = useState("");
@@ -80,13 +109,19 @@ function App() {
   const [notes, setNotes] = useState("");
 
   const [stops, setStops] = useState([]);
+  const [stopsError, setStopsError] = useState("");
   const [stopName, setStopName] = useState("");
+  const [stopType, setStopType] = useState("waypoint");
+  const [stopRating, setStopRating] = useState("");
   const [stopNotes, setStopNotes] = useState("");
+  const [stopTrivia, setStopTrivia] = useState("");
 
   const [tripStats, setTripStats] = useState(null);
+  const [routeGeometry, setRouteGeometry] = useState([]);
 
   async function fetchTrips() {
     try {
+      setTripsError("");
       const res = await fetch(`${API_BASE_URL}/trips`);
       if (!res.ok) throw new Error("Failed to fetch trips");
 
@@ -113,6 +148,9 @@ function App() {
       });
     } catch (err) {
       console.error("Failed to load trips:", err);
+      setTripsError(
+        "Trips could not be loaded. Check that the API and PostgreSQL database are running."
+      );
     }
   }
 
@@ -120,6 +158,7 @@ function App() {
     if (!tripId) return;
 
     try {
+      setStopsError("");
       const res = await fetch(`${API_BASE_URL}/trips/${tripId}/stops`);
       if (!res.ok) throw new Error("Failed to fetch stops");
 
@@ -127,6 +166,9 @@ function App() {
       setStops(data);
     } catch (err) {
       console.error("Fetch stops failed:", err);
+      setStopsError(
+        "Stops could not be loaded for this trip. Check the API/database connection."
+      );
     }
   }
 
@@ -148,9 +190,13 @@ function App() {
   }, [activeTrip?.id]);
 
   useEffect(() => {
+    let cancelled = false;
+    const controller = new AbortController();
+
     async function loadTripStats() {
       if (!activeTrip?.start || !activeTrip?.end) {
         setTripStats(null);
+        setRouteGeometry([]);
         return;
       }
 
@@ -158,23 +204,48 @@ function App() {
         distance: "Calculating...",
         driveTime: "Calculating...",
       });
+      setRouteGeometry([]);
 
       try {
-        const startCoords = await geocodePlace(activeTrip.start);
-        const endCoords = await geocodePlace(activeTrip.end);
-        const stats = calculateTripStatsFromCoords(startCoords, endCoords);
-        setTripStats(stats);
+        const [startCoords, endCoords] = await Promise.all([
+          geocodePlace(activeTrip.start, controller.signal),
+          geocodePlace(activeTrip.end, controller.signal),
+        ]);
+        const orderedStops = stops
+          .filter(isValidCoordinate)
+          .sort((a, b) => a.order_index - b.order_index)
+          .map((stop) => ({
+            latitude: Number(stop.latitude),
+            longitude: Number(stop.longitude),
+          }));
+        const route = await fetchRoadRoute(
+          [startCoords, ...orderedStops, endCoords],
+          controller.signal
+        );
+
+        if (cancelled) return;
+
+        setTripStats(formatTripStats(route));
+        setRouteGeometry(route.geometry || []);
       } catch (err) {
+        if (cancelled || err?.name === "AbortError") return;
+
         console.error("Trip stats failed:", err);
         setTripStats({
-          distance: "Estimate unavailable",
-          driveTime: "Estimate unavailable",
+          distance: "Road route unavailable",
+          driveTime: "Road route unavailable",
         });
+        setRouteGeometry([]);
       }
     }
 
     loadTripStats();
-  }, [activeTrip?.start, activeTrip?.end]);
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [activeTrip?.start, activeTrip?.end, stops]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -235,9 +306,12 @@ function App() {
         },
         body: JSON.stringify({
           name,
+          location_type: stopType,
           latitude: coords.latitude,
           longitude: coords.longitude,
           notes: n,
+          trivia: stopTrivia.trim(),
+          rating: stopRating,
         }),
       });
 
@@ -248,7 +322,10 @@ function App() {
       await fetchStops(activeTrip.id);
 
       setStopName("");
+      setStopType("waypoint");
+      setStopRating("");
       setStopNotes("");
+      setStopTrivia("");
     } catch (err) {
       console.error("Add stop failed:", err);
       alert("Could not find that location. Try a city and state, like Waco, TX.");
@@ -400,7 +477,12 @@ function App() {
 
         <div className="panel">
           <h2 className="panel-title">Map Preview</h2>
-          <TripMap start={mapStart} end={mapEnd} stops={stops} />
+          <TripMap
+            start={mapStart}
+            end={mapEnd}
+            stops={stops}
+            routeGeometry={routeGeometry}
+          />
         </div>
 
         <div className="panel">
@@ -427,12 +509,18 @@ function App() {
               </p>
 
               <p>
-                <strong>Estimated Distance:</strong> {tripStats?.distance}
+                <strong>Road Distance:</strong> {tripStats?.distance}
               </p>
 
               <p>
-                <strong>Estimated Drive Time:</strong> {tripStats?.driveTime}
+                <strong>Road Drive Time:</strong> {tripStats?.driveTime}
               </p>
+
+              {tripStats?.provider ? (
+                <p>
+                  <strong>Routing Provider:</strong> {tripStats.provider}
+                </p>
+              ) : null}
 
               <button
                 className="ghost-button"
@@ -447,7 +535,9 @@ function App() {
         <div className="panel">
           <h2 className="panel-title">Stops / Waypoints</h2>
 
-          {!activeTrip ? (
+          {stopsError ? (
+            <p className="error-state">{stopsError}</p>
+          ) : !activeTrip ? (
             <p className="empty-state">Select a trip to add stops.</p>
           ) : (
             <>
@@ -459,10 +549,46 @@ function App() {
                   className="trip-input"
                 />
 
+                <select
+                  value={stopType}
+                  onChange={(e) => setStopType(e.target.value)}
+                  className="trip-input compact-input"
+                  aria-label="Stop type"
+                >
+                  <option value="waypoint">Waypoint</option>
+                  <option value="historic">Historic</option>
+                  <option value="restaurant">Restaurant</option>
+                  <option value="hotel">Hotel</option>
+                  <option value="scenic">Scenic</option>
+                  <option value="museum">Museum</option>
+                </select>
+
+                <select
+                  value={stopRating}
+                  onChange={(e) => setStopRating(e.target.value)}
+                  className="trip-input compact-input"
+                  aria-label="Rating"
+                >
+                  <option value="">No rating</option>
+                  <option value="5">5 stars</option>
+                  <option value="4">4 stars</option>
+                  <option value="3">3 stars</option>
+                  <option value="2">2 stars</option>
+                  <option value="1">1 star</option>
+                </select>
+
                 <textarea
                   value={stopNotes}
                   onChange={(e) => setStopNotes(e.target.value)}
                   placeholder="Stop notes (optional)"
+                  className="trip-input trip-notes"
+                  rows={2}
+                />
+
+                <textarea
+                  value={stopTrivia}
+                  onChange={(e) => setStopTrivia(e.target.value)}
+                  placeholder="Fun trivia or historic context (optional)"
                   className="trip-input trip-notes"
                   rows={2}
                 />
@@ -483,12 +609,30 @@ function App() {
                           {stop.order_index + 1}. {stop.name}
                         </span>
 
+                        <span className="stop-meta">
+                          <span className="stop-badge">
+                            {stop.location_type || "waypoint"}
+                          </span>
+
+                          {stop.avg_rating ? (
+                            <span className="stop-rating">
+                              Rating: {stop.avg_rating}/5
+                            </span>
+                          ) : null}
+                        </span>
+
                         <span className="trip-route">
                           Lat: {stop.latitude} | Lng: {stop.longitude}
                         </span>
 
                         {stop.notes && (
                           <span className="trip-notes-text">{stop.notes}</span>
+                        )}
+
+                        {stop.description && (
+                          <span className="trip-trivia-text">
+                            Trivia: {stop.description}
+                          </span>
                         )}
                       </div>
 
@@ -528,7 +672,9 @@ function App() {
         <div className="panel">
           <h2 className="panel-title">Trips</h2>
 
-          {trips.length === 0 ? (
+          {tripsError ? (
+            <p className="error-state">{tripsError}</p>
+          ) : trips.length === 0 ? (
             <p className="empty-state">No trips yet. Add your first one above.</p>
           ) : (
             <ul className="trip-list">

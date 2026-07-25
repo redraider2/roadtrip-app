@@ -109,6 +109,15 @@ body {
   resize: vertical;
 }
 
+.compact-input {
+  flex: 0 1 180px;
+  min-width: 160px;
+}
+
+select.trip-input {
+  color-scheme: dark;
+}
+
 .primary-button {
   padding: 0.65rem 1rem;
   border-radius: 12px;
@@ -162,6 +171,40 @@ body {
   opacity: 0.75;
 }
 
+.trip-trivia-text {
+  font-size: 0.95rem;
+  color: rgba(210, 234, 255, 0.92);
+}
+
+.stop-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.stop-badge,
+.stop-rating {
+  width: fit-content;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  line-height: 1.2;
+}
+
+.stop-badge {
+  border: 1px solid rgba(140, 220, 170, 0.55);
+  background: rgba(61, 153, 112, 0.22);
+  color: rgba(216, 255, 230, 0.95);
+  text-transform: capitalize;
+}
+
+.stop-rating {
+  border: 1px solid rgba(255, 215, 100, 0.58);
+  background: rgba(255, 188, 66, 0.16);
+  color: rgba(255, 237, 172, 0.95);
+}
+
 .trip-actions {
   display: flex;
   gap: 8px;
@@ -189,6 +232,15 @@ body {
 .empty-state {
   margin: 0;
   opacity: 0.8;
+}
+
+.error-state {
+  margin: 0;
+  padding: 0.75rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 122, 122, 0.42);
+  background: rgba(150, 35, 35, 0.22);
+  color: rgba(255, 224, 224, 0.96);
 }
 
 /* MOBILE */

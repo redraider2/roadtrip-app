@@ -5,9 +5,216 @@ const cors = require("cors");
 const db = require("./db");
 
 const app = express();
+const routeCache = new Map();
 
-app.use(cors());
+const corsOrigin = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(",").map((origin) => origin.trim())
+  : true;
+
+app.use(cors({ origin: corsOrigin }));
 app.use(express.json());
+
+app.get("/", (req, res) => {
+  return res.json({
+    ok: true,
+    service: "roadtrip-api",
+    health: "/health",
+  });
+});
+
+function isValidRoutePoint(point) {
+  const latitude = Number(point?.latitude);
+  const longitude = Number(point?.longitude);
+
+  return (
+    Number.isFinite(latitude) &&
+    Number.isFinite(longitude) &&
+    latitude >= -90 &&
+    latitude <= 90 &&
+    longitude >= -180 &&
+    longitude <= 180
+  );
+}
+
+function normalizeRoutePoint(point) {
+  return {
+    latitude: Number(point.latitude),
+    longitude: Number(point.longitude),
+  };
+}
+
+function parseGoogleDuration(duration) {
+  return Number(duration?.replace("s", "")) || 0;
+}
+
+function decodeGooglePolyline(encoded) {
+  const points = [];
+  let index = 0;
+  let latitude = 0;
+  let longitude = 0;
+
+  while (index < encoded.length) {
+    let result = 0;
+    let shift = 0;
+    let byte;
+
+    do {
+      byte = encoded.charCodeAt(index) - 63;
+      index += 1;
+      result |= (byte & 0x1f) << shift;
+      shift += 5;
+    } while (byte >= 0x20);
+
+    latitude += result & 1 ? ~(result >> 1) : result >> 1;
+    result = 0;
+    shift = 0;
+
+    do {
+      byte = encoded.charCodeAt(index) - 63;
+      index += 1;
+      result |= (byte & 0x1f) << shift;
+      shift += 5;
+    } while (byte >= 0x20);
+
+    longitude += result & 1 ? ~(result >> 1) : result >> 1;
+    points.push([latitude / 1e5, longitude / 1e5]);
+  }
+
+  return points;
+}
+
+async function fetchOsrmRoute(points) {
+  const coordinates = points
+    .map((point) => `${point.longitude},${point.latitude}`)
+    .join(";");
+  const url = `https://router.project-osrm.org/route/v1/driving/${coordinates}?overview=full&geometries=geojson`;
+
+  const routeResponse = await fetch(url);
+
+  if (!routeResponse.ok) {
+    throw new Error("OSRM route request failed");
+  }
+
+  const data = await routeResponse.json();
+  const route = data.routes?.[0];
+
+  if (!route?.geometry?.coordinates?.length) {
+    throw new Error("OSRM route not found");
+  }
+
+  return {
+    provider: "osrm",
+    distanceMeters: route.distance,
+    durationSeconds: route.duration,
+    geometry: route.geometry.coordinates.map(([longitude, latitude]) => [
+      latitude,
+      longitude,
+    ]),
+  };
+}
+
+async function fetchGoogleRoute(points) {
+  if (!process.env.GOOGLE_MAPS_API_KEY) {
+    throw new Error("GOOGLE_MAPS_API_KEY is not configured");
+  }
+
+  const [origin, ...rest] = points;
+  const destination = rest[rest.length - 1];
+  const intermediates = rest.slice(0, -1).map((point) => ({
+    location: {
+      latLng: {
+        latitude: point.latitude,
+        longitude: point.longitude,
+      },
+    },
+  }));
+
+  const routeResponse = await fetch(
+    "https://routes.googleapis.com/directions/v2:computeRoutes",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": process.env.GOOGLE_MAPS_API_KEY,
+        "X-Goog-FieldMask":
+          "routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline",
+      },
+      body: JSON.stringify({
+        origin: {
+          location: {
+            latLng: {
+              latitude: origin.latitude,
+              longitude: origin.longitude,
+            },
+          },
+        },
+        destination: {
+          location: {
+            latLng: {
+              latitude: destination.latitude,
+              longitude: destination.longitude,
+            },
+          },
+        },
+        intermediates,
+        travelMode: "DRIVE",
+        routingPreference: "TRAFFIC_UNAWARE",
+        computeAlternativeRoutes: false,
+        routeModifiers: {
+          avoidTolls: false,
+          avoidHighways: false,
+          avoidFerries: false,
+        },
+        languageCode: "en-US",
+        units: "IMPERIAL",
+      }),
+    }
+  );
+
+  if (!routeResponse.ok) {
+    throw new Error("Google route request failed");
+  }
+
+  const data = await routeResponse.json();
+  const route = data.routes?.[0];
+  const encodedPolyline = route?.polyline?.encodedPolyline;
+
+  if (!route || !encodedPolyline) {
+    throw new Error("Google route not found");
+  }
+
+  return {
+    provider: "google",
+    distanceMeters: route.distanceMeters,
+    durationSeconds: parseGoogleDuration(route.duration),
+    geometry: decodeGooglePolyline(encodedPolyline),
+  };
+}
+
+async function calculateRoute(points) {
+  const provider = process.env.ROUTING_PROVIDER || "osrm";
+  const cacheKey = `${provider}:${JSON.stringify(points)}`;
+
+  if (routeCache.has(cacheKey)) {
+    return routeCache.get(cacheKey);
+  }
+
+  let route;
+
+  if (provider === "google") {
+    try {
+      route = await fetchGoogleRoute(points);
+    } catch (err) {
+      console.error("Google route failed; falling back to OSRM:", err);
+      route = await fetchOsrmRoute(points);
+    }
+  } else {
+    route = await fetchOsrmRoute(points);
+  }
+
+  routeCache.set(cacheKey, route);
+  return route;
+}
 
 app.get("/health", async (req, res) => {
   try {
@@ -71,6 +278,30 @@ app.get("/locations/:id", async (req, res) => {
   } catch (err) {
     console.error("GET /locations/:id error:", err);
     return res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.post("/route", async (req, res) => {
+  try {
+    const { points } = req.body;
+
+    if (
+      !Array.isArray(points) ||
+      points.length < 2 ||
+      points.length > 25 ||
+      !points.every(isValidRoutePoint)
+    ) {
+      return res.status(400).json({
+        error:
+          "points must include 2 to 25 valid latitude/longitude coordinate pairs",
+      });
+    }
+
+    const route = await calculateRoute(points.map(normalizeRoutePoint));
+    return res.json(route);
+  } catch (err) {
+    console.error("POST /route error:", err);
+    return res.status(502).json({ error: "Failed to calculate route" });
   }
 });
 
@@ -336,14 +567,20 @@ app.get("/trips/:tripId/stops", async (req, res) => {
          s.order_index,
          s.notes,
          l.name,
+         l.location_type,
          l.latitude,
          l.longitude,
          l.locality,
          l.admin_1,
-         l.country_code
+         l.country_code,
+         l.description,
+         ROUND(AVG(r.rating)::numeric, 1) AS avg_rating,
+         MAX(r.rating) FILTER (WHERE r.user_id = 1) AS user_rating
        FROM stops s
        JOIN locations l ON s.location_id = l.id
+       LEFT JOIN reviews r ON r.location_id = l.id
        WHERE s.trip_id = $1
+       GROUP BY s.id, l.id
        ORDER BY s.order_index ASC`,
       [tripId]
     );
@@ -355,28 +592,84 @@ app.get("/trips/:tripId/stops", async (req, res) => {
   }
 });
 
-app.post("/trips/:tripId/stops", async (req, res) => {
+app.delete("/trips/:id", async (req, res) => {
   try {
-    const { tripId } = req.params;
-    const { name, latitude, longitude, notes } = req.body;
+    const { id } = req.params;
 
-    if (!name || latitude == null || longitude == null) {
-      return res
-        .status(400)
-        .json({ error: "name, latitude, and longitude are required" });
+    const result = await db.query(
+      "DELETE FROM trips WHERE id = $1 RETURNING id",
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Trip not found" });
     }
 
-    const locationResult = await db.query(
+    return res.json({ deleted: result.rows[0].id });
+  } catch (err) {
+    console.error("DELETE /trips/:id error:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.post("/trips/:tripId/stops", async (req, res) => {
+  const { tripId } = req.params;
+  const { name, latitude, longitude, notes, location_type, trivia, rating } =
+    req.body;
+
+  if (!name || latitude == null || longitude == null) {
+    return res
+      .status(400)
+      .json({ error: "name, latitude, and longitude are required" });
+  }
+
+  const normalizedRating =
+    rating === "" || rating == null ? null : Number(rating);
+
+  if (
+    normalizedRating !== null &&
+    (!Number.isInteger(normalizedRating) ||
+      normalizedRating < 1 ||
+      normalizedRating > 5)
+  ) {
+    return res.status(400).json({ error: "rating must be between 1 and 5" });
+  }
+
+  const client = await db.getClient();
+
+  try {
+    const stopType = location_type || "waypoint";
+    const tempUserId = 1;
+
+    await client.query("BEGIN");
+
+    const locationResult = await client.query(
       `INSERT INTO locations
-       (name, location_type, latitude, longitude, timezone, country_code)
-       VALUES ($1, $2, $3, $4, $5, $6)
+       (name, location_type, latitude, longitude, timezone, country_code, description)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING id`,
-      [name, "waypoint", latitude, longitude, "America/Chicago", "US"]
+      [
+        name,
+        stopType,
+        latitude,
+        longitude,
+        "America/Chicago",
+        "US",
+        trivia || null,
+      ]
     );
 
     const locationId = locationResult.rows[0].id;
 
-    const orderResult = await db.query(
+    if (normalizedRating !== null) {
+      await client.query(
+        `INSERT INTO reviews (user_id, location_id, rating)
+         VALUES ($1, $2, $3)`,
+        [tempUserId, locationId, normalizedRating]
+      );
+    }
+
+    const orderResult = await client.query(
       `SELECT COALESCE(MAX(order_index), -1) + 1 AS next_order
        FROM stops
        WHERE trip_id = $1`,
@@ -385,17 +678,22 @@ app.post("/trips/:tripId/stops", async (req, res) => {
 
     const nextOrder = orderResult.rows[0].next_order;
 
-    const stopResult = await db.query(
+    const stopResult = await client.query(
       `INSERT INTO stops (trip_id, location_id, order_index, notes)
        VALUES ($1, $2, $3, $4)
        RETURNING *`,
       [tripId, locationId, nextOrder, notes || ""]
     );
 
+    await client.query("COMMIT");
+
     return res.status(201).json(stopResult.rows[0]);
   } catch (err) {
+    await client.query("ROLLBACK").catch(() => {});
     console.error("POST /trips/:tripId/stops error:", err);
     return res.status(500).json({ error: "Failed to create stop" });
+  } finally {
+    client.release();
   }
 });
 
@@ -422,20 +720,25 @@ app.delete("/stops/:id", async (req, res) => {
 });
 
 app.patch("/stops/:id/order", async (req, res) => {
+  const { id } = req.params;
+  const { direction } = req.body;
+
+  if (!["up", "down"].includes(direction)) {
+    return res.status(400).json({ error: "direction must be up or down" });
+  }
+
+  const client = await db.getClient();
+
   try {
-    const { id } = req.params;
-    const { direction } = req.body;
+    await client.query("BEGIN");
 
-    if (!["up", "down"].includes(direction)) {
-      return res.status(400).json({ error: "direction must be up or down" });
-    }
-
-    const currentResult = await db.query(
+    const currentResult = await client.query(
       "SELECT id, trip_id, order_index FROM stops WHERE id = $1",
       [id]
     );
 
     if (currentResult.rows.length === 0) {
+      await client.query("ROLLBACK");
       return res.status(404).json({ error: "Stop not found" });
     }
 
@@ -443,7 +746,7 @@ app.patch("/stops/:id/order", async (req, res) => {
     const operator = direction === "up" ? "<" : ">";
     const sort = direction === "up" ? "DESC" : "ASC";
 
-    const swapResult = await db.query(
+    const swapResult = await client.query(
       `SELECT id, order_index
        FROM stops
        WHERE trip_id = $1 AND order_index ${operator} $2
@@ -453,30 +756,44 @@ app.patch("/stops/:id/order", async (req, res) => {
     );
 
     if (swapResult.rows.length === 0) {
+      await client.query("COMMIT");
       return res.json({ unchanged: true });
     }
 
     const swap = swapResult.rows[0];
 
-    await db.query("BEGIN");
+    const tempOrderResult = await client.query(
+      `SELECT COALESCE(MAX(order_index), 0) + 1 AS temp_order
+       FROM stops
+       WHERE trip_id = $1`,
+      [current.trip_id]
+    );
+    const tempOrder = tempOrderResult.rows[0].temp_order;
 
-    await db.query("UPDATE stops SET order_index = $1 WHERE id = $2", [
-      swap.order_index,
+    await client.query("UPDATE stops SET order_index = $1 WHERE id = $2", [
+      tempOrder,
       current.id,
     ]);
 
-    await db.query("UPDATE stops SET order_index = $1 WHERE id = $2", [
+    await client.query("UPDATE stops SET order_index = $1 WHERE id = $2", [
       current.order_index,
       swap.id,
     ]);
 
-    await db.query("COMMIT");
+    await client.query("UPDATE stops SET order_index = $1 WHERE id = $2", [
+      swap.order_index,
+      current.id,
+    ]);
+
+    await client.query("COMMIT");
 
     return res.json({ reordered: true });
   } catch (err) {
-    await db.query("ROLLBACK").catch(() => {});
+    await client.query("ROLLBACK").catch(() => {});
     console.error("PATCH /stops/:id/order error:", err);
     return res.status(500).json({ error: "Failed to reorder stop" });
+  } finally {
+    client.release();
   }
 });
 
@@ -493,7 +810,6 @@ app.get("/debug-db", async (req, res) => {
     return res.json({
       database: dbName.rows[0].db,
       tripColumns: tripCols.rows.map((r) => r.column_name),
-      databaseUrl: process.env.DATABASE_URL || null,
     });
   } catch (err) {
     console.error("GET /debug-db error:", err);
@@ -501,7 +817,7 @@ app.get("/debug-db", async (req, res) => {
   }
 });
 
-const port = process.env.PORT || 5001;
+const port = Number(process.env.PORT) || 5001;
 
 app.listen(port, () => {
   console.log(`RoadTrip API listening on http://localhost:${port}`);

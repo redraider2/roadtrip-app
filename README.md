@@ -20,8 +20,10 @@ RoadTrip is a full-stack capstone project built for the Springboard curriculum. 
 ## Features
 
 - Create trips with a title, start location, end location, and notes
-- Preview trip endpoints on an interactive map
-- Load saved locations from the API
+- Preview trips and stops on an interactive map
+- Calculate road-route distance and drive time through the backend
+- Add stops with type, notes, trivia, and optional ratings
+- Load saved trips, stops, and locations from the API
 - Delete persisted trips
 - Check backend and database health with `GET /health`
 
@@ -34,7 +36,16 @@ RoadTrip is a full-stack capstone project built for the Springboard curriculum. 
 ```env
 DATABASE_URL=postgresql://USERNAME:PASSWORD@localhost:5432/roadtrip
 PORT=5001
+ROUTING_PROVIDER=osrm
+GOOGLE_MAPS_API_KEY=
+CORS_ORIGIN=http://localhost:5173
+PGSSLMODE=
 ```
+
+`ROUTING_PROVIDER` defaults to `osrm`. To use Google Routes API, set
+`ROUTING_PROVIDER=google` and provide `GOOGLE_MAPS_API_KEY`. Google routing is
+called from the backend so the API key is not exposed in the browser. If Google
+routing fails, the backend falls back to OSRM.
 
 4. Create the database schema:
 
@@ -60,7 +71,45 @@ npm run --prefix backend dev
 npm run dev
 ```
 
-The frontend expects the API at `http://localhost:5001`.
+The frontend expects the API at `http://localhost:5001` unless
+`VITE_API_URL` is set.
+
+## Public Deployment
+
+The GitHub Pages frontend is served from:
+
+```text
+https://redraider2.github.io/roadtrip-app/
+```
+
+GitHub Pages cannot run the Express API or PostgreSQL database. For the public
+app to work for visitors, deploy the backend separately and build the frontend
+with `VITE_API_URL` pointing to that backend.
+
+Recommended setup:
+
+1. Create a hosted PostgreSQL database, such as Neon.
+2. Run `roadtrip_schema.sql` against the hosted database.
+3. Optionally export local data with `pg_dump` and restore it into the hosted
+   database.
+4. Create a Render web service from this repository. `render.yaml` configures
+   the backend service from the `backend/` directory.
+5. Set these Render environment variables:
+
+```env
+DATABASE_URL=postgresql://...
+NODE_ENV=production
+ROUTING_PROVIDER=google
+GOOGLE_MAPS_API_KEY=...
+CORS_ORIGIN=https://redraider2.github.io
+PGSSLMODE=require
+```
+
+6. After Render gives you a public API URL, rebuild and deploy the frontend:
+
+```bash
+VITE_API_URL=https://YOUR-RENDER-SERVICE.onrender.com npm run deploy
+```
 
 ## Notes
 

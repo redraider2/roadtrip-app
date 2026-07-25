@@ -3,6 +3,11 @@ require("dotenv").config();
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl:
+    process.env.PGSSLMODE === "require" ||
+    process.env.DATABASE_URL?.includes("sslmode=require")
+      ? { rejectUnauthorized: false }
+      : undefined,
 });
 
 // If the pool has an unexpected error, log it and crash
@@ -13,4 +18,5 @@ pool.on("error", (err) => {
 
 module.exports = {
   query: (text, params) => pool.query(text, params),
+  getClient: () => pool.connect(),
 };

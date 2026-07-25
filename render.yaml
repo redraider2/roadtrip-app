@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: roadtrip-api
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ROUTING_PROVIDER
+        value: google
+      - key: CORS_ORIGIN
+        value: https://redraider2.github.io
+      - key: DATABASE_URL
+        sync: false
+      - key: GOOGLE_MAPS_API_KEY
+        sync: false
+      - key: PGSSLMODE
+        value: require

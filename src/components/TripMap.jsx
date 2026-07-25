@@ -98,7 +98,7 @@ function isValidCoordinate(stop) {
   );
 }
 
-export default function TripMap({ start, end, stops = [] }) {
+export default function TripMap({ start, end, stops = [], routeGeometry = [] }) {
   const [startLoc, setStartLoc] = useState(null);
   const [endLoc, setEndLoc] = useState(null);
   const [status, setStatus] = useState("");
@@ -175,6 +175,9 @@ export default function TripMap({ start, end, stops = [] }) {
     return positions;
   }, [startLoc, endLoc, validStops]);
 
+  const boundsPositions =
+    routeGeometry.length > 0 ? routeGeometry : routePositions;
+
   const center = useMemo(() => {
     if (routePositions.length > 0) {
       const latTotal = routePositions.reduce((sum, point) => sum + point[0], 0);
@@ -196,7 +199,7 @@ export default function TripMap({ start, end, stops = [] }) {
       <div className="map-wrap">
         <MapContainer center={center} zoom={zoom} scrollWheelZoom={false}>
           <Recenter center={center} zoom={zoom} />
-          <FitBounds positions={routePositions} />
+          <FitBounds positions={boundsPositions} />
 
           <TileLayer
             attribution="&copy; OpenStreetMap contributors"
@@ -226,10 +229,28 @@ export default function TripMap({ start, end, stops = [] }) {
                 <strong>Stop {stop.order_index + 1}</strong>
                 <br />
                 {stop.name}
+                {stop.location_type ? (
+                  <>
+                    <br />
+                    Type: {stop.location_type}
+                  </>
+                ) : null}
+                {stop.avg_rating ? (
+                  <>
+                    <br />
+                    Rating: {stop.avg_rating}/5
+                  </>
+                ) : null}
                 {stop.notes ? (
                   <>
                     <br />
                     {stop.notes}
+                  </>
+                ) : null}
+                {stop.description ? (
+                  <>
+                    <br />
+                    Trivia: {stop.description}
                   </>
                 ) : null}
               </Popup>
@@ -249,9 +270,9 @@ export default function TripMap({ start, end, stops = [] }) {
             </Marker>
           ) : null}
 
-          {routePositions.length >= 2 ? (
+          {routeGeometry.length >= 2 ? (
             <Polyline
-              positions={routePositions}
+              positions={routeGeometry}
               pathOptions={{
                 color: "#1e90ff",
                 weight: 5,
