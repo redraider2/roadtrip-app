@@ -797,6 +797,57 @@ app.patch("/stops/:id/order", async (req, res) => {
   }
 });
 
+app.get("/football/teams", async (req, res) => {
+  try {
+    if (!process.env.CFBD_API_KEY) {
+      return res
+        .status(500)
+        .json({ error: "CFBD_API_KEY is not configured" });
+    }
+
+    const cfbdResponse = await fetch(
+      "https://api.collegefootballdata.com/teams/fbs",
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.CFBD_API_KEY}`,
+        },
+      }
+    );
+
+    if (!cfbdResponse.ok) {
+      const errorText = await cfbdResponse.text();
+      console.error("CFBD teams request failed:", cfbdResponse.status, errorText);
+
+      return res.status(502).json({
+        error: "Failed to load college football teams",
+      });
+    }
+
+    const teams = await cfbdResponse.json();
+
+    const simplifiedTeams = teams
+      .map((team) => ({
+        id: team.id,
+        school: team.school,
+        mascot: team.mascot,
+        abbreviation: team.abbreviation,
+        conference: team.conference,
+        color: team.color,
+        alternateColor: team.alt_color,
+        logos: team.logos || [],
+      }))
+      .sort((a, b) => a.school.localeCompare(b.school));
+
+    return res.json(simplifiedTeams);
+  } catch (err) {
+    console.error("GET /football/teams error:", err);
+
+    return res.status(500).json({
+      error: "Failed to load college football teams",
+    });
+  }
+});
+
 app.get("/football/games", async (req, res) => {
   try {
     const team = req.query.team || "Texas Tech";
