@@ -797,6 +797,210 @@ app.patch("/stops/:id/order", async (req, res) => {
   }
 });
 
+function haversineMeters(a, b) {
+  const earthRadius = 6371000;
+  const toRadians = (degrees) => (degrees * Math.PI) / 180;
+
+  const lat1 = toRadians(a.latitude);
+  const lat2 = toRadians(b.latitude);
+  const deltaLat = toRadians(b.latitude - a.latitude);
+  const deltaLng = toRadians(b.longitude - a.longitude);
+
+  const value =
+    Math.sin(deltaLat / 2) ** 2 +
+    Math.cos(lat1) *
+      Math.cos(lat2) *
+      Math.sin(deltaLng / 2) ** 2;
+
+  return (
+    2 *
+    earthRadius *
+    Math.atan2(Math.sqrt(value), Math.sqrt(1 - value))
+  );
+}
+
+function sampleRouteGeometry(geometry, sampleCount = 5) {
+  const points = geometry
+    .map(([latitude, longitude]) => ({
+      latitude: Number(latitude),
+      longitude: Number(longitude),
+    }))
+    .filter(isValidRoutePoint);
+
+  if (points.length < 2) {
+    return [];
+  }
+
+  const cumulativeDistances = [0];
+
+  for (let i = 1; i < points.length; i += 1) {
+    cumulativeDistances.push(
+      cumulativeDistances[i - 1] +
+        haversineMeters(points[i - 1], points[i])
+    );
+  }
+
+  const totalDistance =
+    cumulativeDistances[cumulativeDistances.length - 1];
+
+  if (!totalDistance) {
+    return [];
+  }
+
+  const samples = [];
+
+  for (let sampleIndex = 1; sampleIndex <= sampleCount; sampleIndex += 1) {
+    const targetDistance =
+      (totalDistance * sampleIndex) / (sampleCount + 1);
+
+    let pointIndex = cumulativeDistances.findIndex(
+      (distance) => distance >= targetDistance
+    );
+
+    if (pointIndex === -1) {
+      pointIndex = points.length - 1;
+    }
+
+    samples.push({
+      ...points[pointIndex],
+      routeProgress: targetDistance / totalDistance,
+    });
+  }
+
+  return samples;
+}
+
+app.post("/football/along-the-way", async (req, res) => {
+  try {
+    const { geometry, category = "restaurant" } = req.body;
+
+    if (!process.env.GOOGLE_MAPS_API_KEY) {
+      return res
+        .status(500)
+        .json({ error: "GOOGLE_MAPS_API_KEY is not configured" });
+    }
+
+    if (!Array.isArray(geometry) || geometry.length < 2) {
+      return res.status(400).json({
+        error: "geometry must contain at least two route points",
+      });
+    }
+
+    const allowedCategories = {
+      restaurant: ["restaurant"],
+      hotel: ["hotel"],
+      attraction: ["tourist_attraction"],
+      historic: ["historical_landmark"],
+      museum: ["museum"],
+    };
+
+    const includedTypes = allowedCategories[category];
+
+    if (!includedTypes) {
+      return res.status(400).json({
+        error:
+          "category must be restaurant, hotel, attraction, historic, or museum",
+      });
+    }
+
+    const routeSamples = sampleRouteGeometry(geometry, 5);
+
+    if (!routeSamples.length) {
+      return res.status(400).json({
+        error: "Could not sample the supplied route",
+      });
+    }
+
+    const searches = routeSamples.map(async (sample) => {
+      const placesResponse = await fetch(
+        "https://places.googleapis.com/v1/places:searchNearby",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Goog-Api-Key": process.env.GOOGLE_MAPS_API_KEY,
+            "X-Goog-FieldMask":
+              "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.websiteUri",
+          },
+          body: JSON.stringify({
+            includedPrimaryTypes: includedTypes,
+            maxResultCount: 5,
+            rankPreference: "POPULARITY",
+            locationRestriction: {
+              circle: {
+                center: {
+                  latitude: sample.latitude,
+                  longitude: sample.longitude,
+                },
+                radius: 15000,
+              },
+            },
+          }),
+        }
+      );
+
+      if (!placesResponse.ok) {
+        const errorText = await placesResponse.text();
+
+        console.error(
+          "Along-the-way Places request failed:",
+          placesResponse.status,
+          errorText
+        );
+
+        return [];
+      }
+
+      const data = await placesResponse.json();
+
+      return (data.places || [])
+  .filter((place) => includedTypes.includes(place.primaryType))
+  .map((place) => ({
+    id: place.id,
+    name: place.displayName?.text || "Unknown",
+    address: place.formattedAddress || "",
+    latitude: place.location?.latitude ?? null,
+    longitude: place.location?.longitude ?? null,
+    rating: place.rating ?? null,
+    ratingCount: place.userRatingCount ?? null,
+    website: place.websiteUri || null,
+    primaryType: place.primaryType || null,
+    routeProgress: sample.routeProgress,
+      }));
+    });
+
+    const results = (await Promise.all(searches)).flat();
+
+    const uniquePlaces = Array.from(
+      new Map(results.map((place) => [place.id, place])).values()
+    );
+
+    const rankedPlaces = uniquePlaces
+      .sort((a, b) => {
+        const ratingDifference = (b.rating || 0) - (a.rating || 0);
+
+        if (ratingDifference !== 0) {
+          return ratingDifference;
+        }
+
+        return (b.ratingCount || 0) - (a.ratingCount || 0);
+      })
+      .slice(0, 15);
+
+    return res.json({
+      category,
+      sampledPoints: routeSamples.length,
+      places: rankedPlaces,
+    });
+  } catch (err) {
+    console.error("POST /football/along-the-way error:", err);
+
+    return res.status(500).json({
+      error: "Failed to load places along the route",
+    });
+  }
+});
+
 app.get("/football/teams", async (req, res) => {
   try {
     if (!process.env.CFBD_API_KEY) {
@@ -1029,7 +1233,7 @@ app.get("/football/venues/:venueId/places", async (req, res) => {
           "Content-Type": "application/json",
           "X-Goog-Api-Key": process.env.GOOGLE_MAPS_API_KEY,
           "X-Goog-FieldMask":
-            "places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.websiteUri",
+          "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.websiteUri,places.primaryType",
         },
         body: JSON.stringify({
           includedTypes,
