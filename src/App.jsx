@@ -7,6 +7,8 @@ import TripMap from "./components/TripMap";
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5001";
 
+const FOOTBALL_SEASON = 2026;
+
 async function geocodePlace(place, signal) {
   const query = place.trim();
 
@@ -71,6 +73,29 @@ function formatRouteDuration(seconds) {
   return `${hours} hr ${minutes} min`;
 }
 
+function formatGameDate(startDate, startTimeTBD) {
+  if (!startDate) return "Date TBD";
+
+  const date = new Date(startDate);
+
+  const dateText = date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+
+  if (startTimeTBD) {
+    return `${dateText} · Kickoff TBD`;
+  }
+
+  const timeText = date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+  return `${dateText} · ${timeText}`;
+}
+
 async function fetchRoadRoute(points, signal) {
   const res = await fetch(`${API_BASE_URL}/route`, {
     method: "POST",
@@ -107,6 +132,14 @@ function App() {
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [notes, setNotes] = useState("");
+
+  const [footballTeams, setFootballTeams] = useState([]);
+  const [selectedFootballTeam, setSelectedFootballTeam] = useState("");
+  const [footballGames, setFootballGames] = useState([]);
+  const [selectedFootballGameId, setSelectedFootballGameId] = useState("");
+  const [footballStart, setFootballStart] = useState("");
+  const [footballLoading, setFootballLoading] = useState(false);
+  const [footballError, setFootballError] = useState("");
 
   const [stops, setStops] = useState([]);
   const [stopsError, setStopsError] = useState("");
@@ -176,10 +209,126 @@ function App() {
     fetchTrips();
   }, []);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadFootballTeams() {
+      try {
+        setFootballError("");
+        const res = await fetch(`${API_BASE_URL}/football/teams`);
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch FBS teams");
+        }
+
+        const data = await res.json();
+
+        if (!cancelled) {
+          setFootballTeams(data);
+        }
+      } catch (err) {
+        if (cancelled) return;
+
+        console.error("Football teams failed:", err);
+        setFootballError(
+          "College football teams could not be loaded. Check the backend API."
+        );
+      }
+    }
+
+    loadFootballTeams();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const controller = new AbortController();
+
+    async function loadFootballGames() {
+      if (!selectedFootballTeam) {
+        setFootballGames([]);
+        setSelectedFootballGameId("");
+        return;
+      }
+
+      try {
+        setFootballLoading(true);
+        setFootballError("");
+        setFootballGames([]);
+        setSelectedFootballGameId("");
+
+        const res = await fetch(
+          `${API_BASE_URL}/football/games?team=${encodeURIComponent(
+            selectedFootballTeam
+          )}&year=${FOOTBALL_SEASON}&awayOnly=true`,
+          { signal: controller.signal }
+        );
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch road games");
+        }
+
+        const data = await res.json();
+
+        if (!cancelled) {
+          setFootballGames(data);
+        }
+      } catch (err) {
+        if (cancelled || err?.name === "AbortError") return;
+
+        console.error("Football games failed:", err);
+        setFootballError(
+          "Away games could not be loaded for that team. Try another team or check the backend API."
+        );
+      } finally {
+        if (!cancelled) {
+          setFootballLoading(false);
+        }
+      }
+    }
+
+    loadFootballGames();
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [selectedFootballTeam]);
+
   const activeTrip = useMemo(
     () => trips.find((t) => t.id === activeTripId) || null,
     [trips, activeTripId]
   );
+
+  const selectedFootballGame = useMemo(
+    () =>
+      footballGames.find(
+        (game) => String(game.id) === String(selectedFootballGameId)
+      ) || null,
+    [footballGames, selectedFootballGameId]
+  );
+
+const backgroundTeam = useMemo(() => {
+  const destinationTeam = selectedFootballGame?.homeTeam;
+
+  if (destinationTeam) {
+    return (
+      footballTeams.find((team) => team.school === destinationTeam) || null
+    );
+  }
+
+  if (selectedFootballTeam) {
+    return (
+      footballTeams.find((team) => team.school === selectedFootballTeam) ||
+      null
+    );
+  }
+
+  return null;
+}, [footballTeams, selectedFootballGame, selectedFootballTeam]);
 
   useEffect(() => {
     if (activeTrip?.id) {
@@ -211,6 +360,7 @@ function App() {
           geocodePlace(activeTrip.start, controller.signal),
           geocodePlace(activeTrip.end, controller.signal),
         ]);
+
         const orderedStops = stops
           .filter(isValidCoordinate)
           .sort((a, b) => a.order_index - b.order_index)
@@ -218,6 +368,7 @@ function App() {
             latitude: Number(stop.latitude),
             longitude: Number(stop.longitude),
           }));
+
         const route = await fetchRoadRoute(
           [startCoords, ...orderedStops, endCoords],
           controller.signal
@@ -275,7 +426,10 @@ function App() {
         throw new Error("Failed to create trip");
       }
 
+      const createdTrip = await res.json();
+
       await fetchTrips();
+      setActiveTripId(Number(createdTrip.id));
 
       setTripName("");
       setStart("");
@@ -283,6 +437,86 @@ function App() {
       setNotes("");
     } catch (err) {
       console.error("Create trip failed:", err);
+    }
+  }
+
+  async function handleFootballTripSubmit(e) {
+    e.preventDefault();
+
+    const s = footballStart.trim();
+
+    if (!selectedFootballTeam || !selectedFootballGame || !s) {
+      setFootballError(
+        "Choose a team, choose an away game, and enter your starting location."
+      );
+      return;
+    }
+
+    try {
+      setFootballLoading(true);
+      setFootballError("");
+
+      const venueRes = await fetch(
+        `${API_BASE_URL}/football/venues/${selectedFootballGame.venueId}`
+      );
+
+      if (!venueRes.ok) {
+        throw new Error("Failed to load stadium details");
+      }
+
+      const venue = await venueRes.json();
+
+      const destinationParts = [
+        venue.name,
+        venue.city,
+        venue.state,
+      ].filter(Boolean);
+
+      const destination = destinationParts.join(", ");
+
+      if (!destination) {
+        throw new Error("Stadium destination is unavailable");
+      }
+
+      const matchup = `${selectedFootballGame.awayTeam} @ ${selectedFootballGame.homeTeam}`;
+      const gameDate = formatGameDate(
+        selectedFootballGame.startDate,
+        selectedFootballGame.startTimeTBD
+      );
+
+      const tripRes = await fetch(`${API_BASE_URL}/trips`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: matchup,
+          start_location: s,
+          end_location: destination,
+          notes: `${gameDate} · ${venue.name}`,
+        }),
+      });
+
+      if (!tripRes.ok) {
+        throw new Error("Failed to create football road trip");
+      }
+
+      const createdTrip = await tripRes.json();
+
+      await fetchTrips();
+      setActiveTripId(Number(createdTrip.id));
+
+      setStart("");
+      setEnd("");
+      setTripName("");
+      setNotes("");
+    } catch (err) {
+      console.error("Football trip creation failed:", err);
+      setFootballError(
+        "The football road trip could not be created. Check the backend and try again."
+      );
+    } finally {
+      setFootballLoading(false);
     }
   }
 
@@ -423,21 +657,140 @@ function App() {
 
   return (
     <div className="page">
-      <Background />
+      <Background team={backgroundTeam} />
+
+<div
+  style={{
+    position: "fixed",
+    top: "10px",
+    right: "10px",
+    zIndex: 99999,
+    background: "red",
+    color: "white",
+    padding: "10px",
+  }}
+>
+  Background team: {backgroundTeam?.school || "NONE"}
+</div>
+
 
       <div className="app">
         <div className="hero">
-          <h1 className="app-title">Roadtrip</h1>
-          <p className="app-subtitle">Your personal road trip planner.</p>
+          <h1 className="app-title">College Football RoadTrip</h1>
+          <p className="app-subtitle">
+            Plan the drive. Pick the game. Make the weekend count.
+          </p>
 
-          <h2 className="hero-title">Plan Your Next Adventure</h2>
-          <p className="hero-text">Build and track your road trips</p>
+          <h2 className="hero-title">Plan Your Next Away Game</h2>
+          <p className="hero-text">
+            Choose your team and turn the next road game into a road trip.
+          </p>
         </div>
 
         <Header />
 
         <div className="panel">
-          <h2 className="panel-title">Create a trip</h2>
+          <h2 className="panel-title">Plan a College Football Road Trip</h2>
+
+          <form onSubmit={handleFootballTripSubmit} className="trip-form">
+            <select
+              value={selectedFootballTeam}
+              onChange={(e) => setSelectedFootballTeam(e.target.value)}
+              className="trip-input"
+              aria-label="College football team"
+            >
+              <option value="">Choose your team</option>
+              {footballTeams.map((team) => (
+                <option key={team.id} value={team.school}>
+                  {team.school}
+                  {team.mascot ? ` ${team.mascot}` : ""}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={selectedFootballGameId}
+              onChange={(e) => setSelectedFootballGameId(e.target.value)}
+              className="trip-input"
+              aria-label="Away game"
+              disabled={!selectedFootballTeam || footballLoading}
+            >
+              <option value="">
+                {!selectedFootballTeam
+                  ? "Choose a team first"
+                  : footballLoading
+                  ? "Loading away games..."
+                  : "Choose an away game"}
+              </option>
+
+              {footballGames.map((game) => (
+                <option key={game.id} value={game.id}>
+                  {game.awayTeam} @ {game.homeTeam} —{" "}
+                  {formatGameDate(game.startDate, game.startTimeTBD)} —{" "}
+                  {game.venue || "Venue TBD"}
+                </option>
+              ))}
+            </select>
+
+            <input
+              value={footballStart}
+              onChange={(e) => setFootballStart(e.target.value)}
+              placeholder="Starting location (e.g., Houston, TX)"
+              className="trip-input"
+            />
+
+            {selectedFootballGame ? (
+              <div className="trip-details-panel">
+                <p>
+                  <strong>Matchup:</strong>{" "}
+                  {selectedFootballGame.awayTeam} @{" "}
+                  {selectedFootballGame.homeTeam}
+                </p>
+                <p>
+                  <strong>Game:</strong>{" "}
+                  {formatGameDate(
+                    selectedFootballGame.startDate,
+                    selectedFootballGame.startTimeTBD
+                  )}
+                </p>
+                <p>
+                  <strong>Stadium:</strong>{" "}
+                  {selectedFootballGame.venue || "Venue TBD"}
+                </p>
+              </div>
+            ) : null}
+
+            {footballError ? (
+              <p className="error-state">{footballError}</p>
+            ) : null}
+
+            {selectedFootballTeam &&
+            !footballLoading &&
+            footballGames.length === 0 &&
+            !footballError ? (
+              <p className="empty-state">
+                No road games were returned for {selectedFootballTeam} in{" "}
+                {FOOTBALL_SEASON}.
+              </p>
+            ) : null}
+
+            <button
+              type="submit"
+              className="primary-button"
+              disabled={
+                footballLoading ||
+                !selectedFootballTeam ||
+                !selectedFootballGame ||
+                !footballStart.trim()
+              }
+            >
+              {footballLoading ? "Loading..." : "Create Game Road Trip"}
+            </button>
+          </form>
+        </div>
+
+        <div className="panel">
+          <h2 className="panel-title">Create a Custom Trip</h2>
 
           <form onSubmit={handleSubmit} className="trip-form">
             <input
