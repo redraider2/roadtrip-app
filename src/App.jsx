@@ -140,6 +140,12 @@ function App() {
   const [footballStart, setFootballStart] = useState("");
   const [footballLoading, setFootballLoading] = useState(false);
   const [footballError, setFootballError] = useState("");
+  const [weekendPlaces, setWeekendPlaces] = useState({
+    restaurant: [],
+    bar: [],
+  });
+  const [weekendPlacesLoading, setWeekendPlacesLoading] = useState(false);
+  const [weekendPlacesError, setWeekendPlacesError] = useState("");
 
   const [stops, setStops] = useState([]);
   const [stopsError, setStopsError] = useState("");
@@ -311,24 +317,93 @@ function App() {
     [footballGames, selectedFootballGameId]
   );
 
-const backgroundTeam = useMemo(() => {
-  const destinationTeam = selectedFootballGame?.homeTeam;
+  const backgroundTeam = useMemo(() => {
+    const destinationTeam = selectedFootballGame?.homeTeam;
 
-  if (destinationTeam) {
-    return (
-      footballTeams.find((team) => team.school === destinationTeam) || null
-    );
-  }
+    if (destinationTeam) {
+      return (
+        footballTeams.find((team) => team.school === destinationTeam) || null
+      );
+    }
 
-  if (selectedFootballTeam) {
-    return (
-      footballTeams.find((team) => team.school === selectedFootballTeam) ||
-      null
-    );
-  }
+    if (selectedFootballTeam) {
+      return (
+        footballTeams.find((team) => team.school === selectedFootballTeam) ||
+        null
+      );
+    }
 
-  return null;
-}, [footballTeams, selectedFootballGame, selectedFootballTeam]);
+    return null;
+  }, [footballTeams, selectedFootballGame, selectedFootballTeam]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const controller = new AbortController();
+
+    async function loadWeekendPlaces() {
+      if (!selectedFootballGame?.venueId) {
+        setWeekendPlaces({ restaurant: [], bar: [] });
+        setWeekendPlacesError("");
+        return;
+      }
+
+      try {
+        setWeekendPlacesLoading(true);
+        setWeekendPlacesError("");
+
+        const venueId = selectedFootballGame.venueId;
+
+        const [restaurantRes, barRes] = await Promise.all([
+          fetch(
+            `${API_BASE_URL}/football/venues/${venueId}/places?category=restaurant`,
+            { signal: controller.signal }
+          ),
+          fetch(
+            `${API_BASE_URL}/football/venues/${venueId}/places?category=bar`,
+            { signal: controller.signal }
+          ),
+        ]);
+
+        if (!restaurantRes.ok || !barRes.ok) {
+          throw new Error("Failed to load game weekend places");
+        }
+
+        const [restaurantData, barData] = await Promise.all([
+          restaurantRes.json(),
+          barRes.json(),
+        ]);
+
+        if (cancelled) return;
+
+        setWeekendPlaces({
+          restaurant: restaurantData.places || [],
+          bar: barData.places || [],
+        });
+      } catch (err) {
+        if (cancelled || err?.name === "AbortError") return;
+
+        console.error("Game weekend places failed:", err);
+        setWeekendPlaces({
+          restaurant: [],
+          bar: [],
+        });
+        setWeekendPlacesError(
+          "Restaurants and bars could not be loaded for this game."
+        );
+      } finally {
+        if (!cancelled) {
+          setWeekendPlacesLoading(false);
+        }
+      }
+    }
+
+    loadWeekendPlaces();
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [selectedFootballGame?.venueId]);
 
   useEffect(() => {
     if (activeTrip?.id) {
@@ -659,21 +734,6 @@ const backgroundTeam = useMemo(() => {
     <div className="page">
       <Background team={backgroundTeam} />
 
-<div
-  style={{
-    position: "fixed",
-    top: "10px",
-    right: "10px",
-    zIndex: 99999,
-    background: "red",
-    color: "white",
-    padding: "10px",
-  }}
->
-  Background team: {backgroundTeam?.school || "NONE"}
-</div>
-
-
       <div className="app">
         <div className="hero">
           <h1 className="app-title">College Football RoadTrip</h1>
@@ -788,6 +848,122 @@ const backgroundTeam = useMemo(() => {
             </button>
           </form>
         </div>
+
+        {selectedFootballGame ? (
+          <div className="panel">
+            <h2 className="panel-title">Game Weekend</h2>
+
+            <div className="trip-details-panel">
+              <p>
+                <strong>Destination:</strong>{" "}
+                {selectedFootballGame.venue || "Venue TBD"}
+              </p>
+              <p>
+                <strong>Host:</strong> {selectedFootballGame.homeTeam}
+              </p>
+            </div>
+
+            {weekendPlacesLoading ? (
+              <p className="empty-state">
+                Finding popular restaurants and bars near the stadium...
+              </p>
+            ) : weekendPlacesError ? (
+              <p className="error-state">{weekendPlacesError}</p>
+            ) : (
+              <div className="game-weekend-grid">
+                <div>
+                  <h3 className="game-weekend-heading">Restaurants</h3>
+
+                  {weekendPlaces.restaurant.length === 0 ? (
+                    <p className="empty-state">
+                      No nearby restaurants returned.
+                    </p>
+                  ) : (
+                    <ul className="trip-list">
+                      {weekendPlaces.restaurant.slice(0, 6).map((place) => (
+                        <li key={place.id} className="trip-row">
+                          <div className="trip-details">
+                            <span className="trip-name">{place.name}</span>
+
+                            <span className="trip-route">
+                              {place.rating
+                                ? `${place.rating} ★`
+                                : "No rating"}
+                              {place.ratingCount
+                                ? ` · ${place.ratingCount.toLocaleString()} reviews`
+                                : ""}
+                            </span>
+
+                            {place.address ? (
+                              <span className="trip-notes-text">
+                                {place.address}
+                              </span>
+                            ) : null}
+
+                            {place.website ? (
+                              <a
+                                className="place-link"
+                                href={place.website}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                Visit website
+                              </a>
+                            ) : null}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                <div>
+                  <h3 className="game-weekend-heading">Bars</h3>
+
+                  {weekendPlaces.bar.length === 0 ? (
+                    <p className="empty-state">No nearby bars returned.</p>
+                  ) : (
+                    <ul className="trip-list">
+                      {weekendPlaces.bar.slice(0, 6).map((place) => (
+                        <li key={place.id} className="trip-row">
+                          <div className="trip-details">
+                            <span className="trip-name">{place.name}</span>
+
+                            <span className="trip-route">
+                              {place.rating
+                                ? `${place.rating} ★`
+                                : "No rating"}
+                              {place.ratingCount
+                                ? ` · ${place.ratingCount.toLocaleString()} reviews`
+                                : ""}
+                            </span>
+
+                            {place.address ? (
+                              <span className="trip-notes-text">
+                                {place.address}
+                              </span>
+                            ) : null}
+
+                            {place.website ? (
+                              <a
+                                className="place-link"
+                                href={place.website}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                Visit website
+                              </a>
+                            ) : null}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        ) : null}
 
         <div className="panel">
           <h2 className="panel-title">Create a Custom Trip</h2>

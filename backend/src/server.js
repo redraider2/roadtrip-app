@@ -967,6 +967,130 @@ app.get("/football/venues/:venueId", async (req, res) => {
   }
 });
 
+app.get("/football/venues/:venueId/places", async (req, res) => {
+  try {
+    const { venueId } = req.params;
+    const category = req.query.category || "restaurant";
+
+    if (!process.env.CFBD_API_KEY) {
+      return res
+        .status(500)
+        .json({ error: "CFBD_API_KEY is not configured" });
+    }
+
+    if (!process.env.GOOGLE_MAPS_API_KEY) {
+      return res
+        .status(500)
+        .json({ error: "GOOGLE_MAPS_API_KEY is not configured" });
+    }
+
+    const venueResponse = await fetch(
+      "https://api.collegefootballdata.com/venues",
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.CFBD_API_KEY}`,
+        },
+      }
+    );
+
+    if (!venueResponse.ok) {
+      return res.status(502).json({
+        error: "Failed to load venue details",
+      });
+    }
+
+    const venues = await venueResponse.json();
+
+    const venue = venues.find(
+      (item) => String(item.id) === String(venueId)
+    );
+
+    if (!venue) {
+      return res.status(404).json({
+        error: "Venue not found",
+      });
+    }
+
+    const allowedCategories = {
+      restaurant: ["restaurant"],
+      bar: ["bar"],
+      cafe: ["cafe"],
+      hotel: ["hotel"],
+    };
+
+    const includedTypes =
+      allowedCategories[category] || allowedCategories.restaurant;
+
+    const placesResponse = await fetch(
+      "https://places.googleapis.com/v1/places:searchNearby",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Goog-Api-Key": process.env.GOOGLE_MAPS_API_KEY,
+          "X-Goog-FieldMask":
+            "places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.websiteUri",
+        },
+        body: JSON.stringify({
+          includedTypes,
+          maxResultCount: 10,
+          rankPreference: "POPULARITY",
+          locationRestriction: {
+            circle: {
+              center: {
+                latitude: venue.latitude,
+                longitude: venue.longitude,
+              },
+              radius: 5000,
+            },
+          },
+        }),
+      }
+    );
+
+    if (!placesResponse.ok) {
+      const errorText = await placesResponse.text();
+      console.error(
+        "Google Places request failed:",
+        placesResponse.status,
+        errorText
+      );
+
+      return res.status(502).json({
+        error: "Failed to load nearby places",
+      });
+    }
+
+    const data = await placesResponse.json();
+
+    const places = (data.places || []).map((place) => ({
+      id: place.id,
+      name: place.displayName?.text || "Unknown",
+      address: place.formattedAddress || "",
+      rating: place.rating ?? null,
+      ratingCount: place.userRatingCount ?? null,
+      website: place.websiteUri || null,
+    }));
+
+    return res.json({
+      venue: {
+        id: venue.id,
+        name: venue.name,
+        city: venue.city,
+        state: venue.state,
+      },
+      category,
+      places,
+    });
+  } catch (err) {
+    console.error("GET /football/venues/:venueId/places error:", err);
+
+    return res.status(500).json({
+      error: "Failed to load nearby places",
+    });
+  }
+});
+
 app.get("/debug-db", async (req, res) => {
   try {
     const dbName = await db.query("SELECT current_database() AS db;");
