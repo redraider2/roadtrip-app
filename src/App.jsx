@@ -143,6 +143,7 @@ function App() {
   const [weekendPlaces, setWeekendPlaces] = useState({
     restaurant: [],
     bar: [],
+    hotel: [],
   });
   const [weekendPlacesLoading, setWeekendPlacesLoading] = useState(false);
   const [weekendPlacesError, setWeekendPlacesError] = useState("");
@@ -342,7 +343,7 @@ function App() {
 
     async function loadWeekendPlaces() {
       if (!selectedFootballGame?.venueId) {
-        setWeekendPlaces({ restaurant: [], bar: [] });
+        setWeekendPlaces({ restaurant: [], bar: [], hotel: [] });
         setWeekendPlacesError("");
         return;
       }
@@ -353,7 +354,7 @@ function App() {
 
         const venueId = selectedFootballGame.venueId;
 
-        const [restaurantRes, barRes] = await Promise.all([
+        const [restaurantRes, barRes, hotelRes] = await Promise.all([
           fetch(
             `${API_BASE_URL}/football/venues/${venueId}/places?category=restaurant`,
             { signal: controller.signal }
@@ -362,15 +363,20 @@ function App() {
             `${API_BASE_URL}/football/venues/${venueId}/places?category=bar`,
             { signal: controller.signal }
           ),
+          fetch(
+            `${API_BASE_URL}/football/venues/${venueId}/places?category=hotel`,
+            { signal: controller.signal }
+          ),
         ]);
 
-        if (!restaurantRes.ok || !barRes.ok) {
+        if (!restaurantRes.ok || !barRes.ok || !hotelRes.ok) {
           throw new Error("Failed to load game weekend places");
         }
 
-        const [restaurantData, barData] = await Promise.all([
+        const [restaurantData, barData, hotelData] = await Promise.all([
           restaurantRes.json(),
           barRes.json(),
+          hotelRes.json(),
         ]);
 
         if (cancelled) return;
@@ -378,6 +384,7 @@ function App() {
         setWeekendPlaces({
           restaurant: restaurantData.places || [],
           bar: barData.places || [],
+          hotel: hotelData.places || [],
         });
       } catch (err) {
         if (cancelled || err?.name === "AbortError") return;
@@ -386,6 +393,7 @@ function App() {
         setWeekendPlaces({
           restaurant: [],
           bar: [],
+          hotel: [],
         });
         setWeekendPlacesError(
           "Restaurants and bars could not be loaded for this game."
@@ -865,7 +873,7 @@ function App() {
 
             {weekendPlacesLoading ? (
               <p className="empty-state">
-                Finding popular restaurants and bars near the stadium...
+                Finding popular restaurants, bars, and hotels near the stadium...
               </p>
             ) : weekendPlacesError ? (
               <p className="error-state">{weekendPlacesError}</p>
@@ -925,6 +933,50 @@ function App() {
                   ) : (
                     <ul className="trip-list">
                       {weekendPlaces.bar.slice(0, 6).map((place) => (
+                        <li key={place.id} className="trip-row">
+                          <div className="trip-details">
+                            <span className="trip-name">{place.name}</span>
+
+                            <span className="trip-route">
+                              {place.rating
+                                ? `${place.rating} ★`
+                                : "No rating"}
+                              {place.ratingCount
+                                ? ` · ${place.ratingCount.toLocaleString()} reviews`
+                                : ""}
+                            </span>
+
+                            {place.address ? (
+                              <span className="trip-notes-text">
+                                {place.address}
+                              </span>
+                            ) : null}
+
+                            {place.website ? (
+                              <a
+                                className="place-link"
+                                href={place.website}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                Visit website
+                              </a>
+                            ) : null}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                <div>
+                  <h3 className="game-weekend-heading">Hotels</h3>
+
+                  {weekendPlaces.hotel.length === 0 ? (
+                    <p className="empty-state">No nearby hotels returned.</p>
+                  ) : (
+                    <ul className="trip-list">
+                      {weekendPlaces.hotel.slice(0, 6).map((place) => (
                         <li key={place.id} className="trip-row">
                           <div className="trip-details">
                             <span className="trip-name">{place.name}</span>
