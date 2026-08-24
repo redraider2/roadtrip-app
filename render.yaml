@@ -18,5 +18,7 @@ services:
         sync: false
       - key: CFBD_API_KEY
         sync: false
+      - key: JWT_SECRET
+        sync: false
       - key: PGSSLMODE
         value: require

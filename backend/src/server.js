@@ -3,6 +3,8 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const rateLimit = require("express-rate-limit");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const db = require("./db");
 
 const app = express();
@@ -55,6 +57,167 @@ app.get("/", (req, res) => {
 });
 
 app.use(apiLimiter);
+
+function createAuthToken(user) {
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET is not configured");
+  }
+
+  return jwt.sign(
+    {
+      sub: String(user.id),
+      username: user.username,
+      email: user.email,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" }
+  );
+}
+
+function requireAuth(req, res, next) {
+  if (!process.env.JWT_SECRET) {
+    return res.status(500).json({
+      error: "Authentication is not configured",
+    });
+  }
+
+  const authorization = req.get("authorization") || "";
+
+  if (!authorization.startsWith("Bearer ")) {
+    return res.status(401).json({
+      error: "Authentication required",
+    });
+  }
+
+  const token = authorization.slice("Bearer ".length).trim();
+
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = Number(payload.sub);
+
+    if (!Number.isInteger(userId) || userId <= 0) {
+      throw new Error("Invalid user id");
+    }
+
+    req.user = {
+      id: userId,
+      username: payload.username,
+      email: payload.email,
+    };
+
+    return next();
+  } catch {
+    return res.status(401).json({
+      error: "Invalid or expired authentication token",
+    });
+  }
+}
+
+app.post("/auth/register", async (req, res) => {
+  try {
+    const username = String(req.body.username || "").trim();
+    const email = String(req.body.email || "").trim().toLowerCase();
+    const password = String(req.body.password || "");
+
+    if (!username || !email || password.length < 8) {
+      return res.status(400).json({
+        error: "Username, email, and a password of at least 8 characters are required",
+      });
+    }
+
+    const existing = await db.query(
+      `SELECT id
+       FROM users
+       WHERE username = $1 OR email = $2
+       LIMIT 1`,
+      [username, email]
+    );
+
+    if (existing.rows.length) {
+      return res.status(409).json({
+        error: "Username or email is already in use",
+      });
+    }
+
+    const passwordHash = await bcrypt.hash(password, 12);
+
+    const result = await db.query(
+      `INSERT INTO users (username, email, password_hash)
+       VALUES ($1, $2, $3)
+       RETURNING id, username, email, created_at AS "createdAt"`,
+      [username, email, passwordHash]
+    );
+
+    const user = result.rows[0];
+    const token = createAuthToken(user);
+
+    return res.status(201).json({
+      token,
+      user,
+    });
+  } catch (err) {
+    console.error("POST /auth/register error:", err);
+    return res.status(500).json({
+      error: "Failed to create account",
+    });
+  }
+});
+
+app.post("/auth/login", async (req, res) => {
+  try {
+    const email = String(req.body.email || "").trim().toLowerCase();
+    const password = String(req.body.password || "");
+
+    if (!email || !password) {
+      return res.status(400).json({
+        error: "Email and password are required",
+      });
+    }
+
+    const result = await db.query(
+      `SELECT id, username, email, password_hash
+       FROM users
+       WHERE email = $1
+       LIMIT 1`,
+      [email]
+    );
+
+    const user = result.rows[0];
+
+    if (!user) {
+      return res.status(401).json({
+        error: "Invalid email or password",
+      });
+    }
+
+    const passwordMatches = await bcrypt.compare(
+      password,
+      user.password_hash
+    );
+
+    if (!passwordMatches) {
+      return res.status(401).json({
+        error: "Invalid email or password",
+      });
+    }
+
+    const token = createAuthToken(user);
+
+    return res.json({
+      token,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      },
+    });
+  } catch (err) {
+    console.error("POST /auth/login error:", err);
+    return res.status(500).json({
+      error: "Failed to sign in",
+    });
+  }
+});
 
 function isValidRoutePoint(point) {
   const latitude = Number(point?.latitude);
@@ -551,7 +714,7 @@ app.delete("/locations/:id", async (req, res) => {
 
     const result = await db.query(
       "DELETE FROM locations WHERE id = $1 RETURNING id",
-      [id]
+      [id, req.user.id]
     );
 
     if (result.rows.length === 0) {
@@ -565,7 +728,7 @@ app.delete("/locations/:id", async (req, res) => {
   }
 });
 
-app.get("/trips", async (req, res) => {
+app.get("/trips", requireAuth, async (req, res) => {
   try {
     const result = await db.query(
       `SELECT
@@ -580,7 +743,9 @@ app.get("/trips", async (req, res) => {
          is_favorite,
          created_at AS "createdAt"
        FROM trips
-       ORDER BY created_at DESC`
+       WHERE user_id = $1
+       ORDER BY created_at DESC`,
+      [req.user.id]
     );
 
     return res.json(result.rows);
@@ -590,7 +755,7 @@ app.get("/trips", async (req, res) => {
   }
 });
 
-app.post("/trips", async (req, res) => {
+app.post("/trips", requireAuth, async (req, res) => {
   try {
     const { title, start_location, end_location, notes } = req.body;
 
@@ -600,7 +765,7 @@ app.post("/trips", async (req, res) => {
         .json({ error: "start_location and end_location are required" });
     }
 
-    const tempUserId = 1;
+    const userId = req.user.id;
 
     const result = await db.query(
       `INSERT INTO trips (user_id, title, start_location, end_location, notes)
@@ -616,7 +781,7 @@ app.post("/trips", async (req, res) => {
          notes,
          created_at AS "createdAt"`,
       [
-        tempUserId,
+        userId,
         title || `${start_location} → ${end_location}`,
         start_location,
         end_location,
@@ -631,14 +796,14 @@ app.post("/trips", async (req, res) => {
   }
 });
 
-app.patch("/trips/:id/favorite", async (req, res) => {
+app.patch("/trips/:id/favorite", requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
 
     const result = await db.query(
       `UPDATE trips
        SET is_favorite = NOT is_favorite
-       WHERE id = $1
+       WHERE id = $1 AND user_id = $2
        RETURNING
          id,
          user_id,
@@ -650,7 +815,7 @@ app.patch("/trips/:id/favorite", async (req, res) => {
          notes,
          is_favorite,
          created_at AS "createdAt"`,
-      [id]
+      [id, req.user.id]
     );
 
     if (result.rows.length === 0) {
@@ -664,9 +829,18 @@ app.patch("/trips/:id/favorite", async (req, res) => {
   }
 });
 
-app.get("/trips/:tripId/stops", async (req, res) => {
+app.get("/trips/:tripId/stops", requireAuth, async (req, res) => {
   try {
     const { tripId } = req.params;
+
+    const tripResult = await db.query(
+      "SELECT id FROM trips WHERE id = $1 AND user_id = $2",
+      [tripId, req.user.id]
+    );
+
+    if (tripResult.rows.length === 0) {
+      return res.status(404).json({ error: "Trip not found" });
+    }
 
     const result = await db.query(
       `SELECT
@@ -684,14 +858,15 @@ app.get("/trips/:tripId/stops", async (req, res) => {
          l.country_code,
          l.description,
          ROUND(AVG(r.rating)::numeric, 1) AS avg_rating,
-         MAX(r.rating) FILTER (WHERE r.user_id = 1) AS user_rating
+         MAX(r.rating) FILTER (WHERE r.user_id = $2) AS user_rating
        FROM stops s
+       JOIN trips t ON s.trip_id = t.id
        JOIN locations l ON s.location_id = l.id
        LEFT JOIN reviews r ON r.location_id = l.id
-       WHERE s.trip_id = $1
+       WHERE s.trip_id = $1 AND t.user_id = $2
        GROUP BY s.id, l.id
        ORDER BY s.order_index ASC`,
-      [tripId]
+      [tripId, req.user.id]
     );
 
     return res.json(result.rows);
@@ -701,13 +876,13 @@ app.get("/trips/:tripId/stops", async (req, res) => {
   }
 });
 
-app.delete("/trips/:id", async (req, res) => {
+app.delete("/trips/:id", requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
 
     const result = await db.query(
-      "DELETE FROM trips WHERE id = $1 RETURNING id",
-      [id]
+      "DELETE FROM trips WHERE id = $1 AND user_id = $2 RETURNING id",
+      [id, req.user.id]
     );
 
     if (result.rows.length === 0) {
@@ -721,7 +896,7 @@ app.delete("/trips/:id", async (req, res) => {
   }
 });
 
-app.post("/trips/:tripId/stops", async (req, res) => {
+app.post("/trips/:tripId/stops", requireAuth, async (req, res) => {
   const { tripId } = req.params;
   const { name, latitude, longitude, notes, location_type, trivia, rating } =
     req.body;
@@ -748,9 +923,19 @@ app.post("/trips/:tripId/stops", async (req, res) => {
 
   try {
     const stopType = location_type || "waypoint";
-    const tempUserId = 1;
+    const userId = req.user.id;
 
     await client.query("BEGIN");
+
+    const tripResult = await client.query(
+      "SELECT id FROM trips WHERE id = $1 AND user_id = $2",
+      [tripId, userId]
+    );
+
+    if (tripResult.rows.length === 0) {
+      await client.query("ROLLBACK");
+      return res.status(404).json({ error: "Trip not found" });
+    }
 
     const locationResult = await client.query(
       `INSERT INTO locations
@@ -774,7 +959,7 @@ app.post("/trips/:tripId/stops", async (req, res) => {
       await client.query(
         `INSERT INTO reviews (user_id, location_id, rating)
          VALUES ($1, $2, $3)`,
-        [tempUserId, locationId, normalizedRating]
+        [userId, locationId, normalizedRating]
       );
     }
 
@@ -806,15 +991,18 @@ app.post("/trips/:tripId/stops", async (req, res) => {
   }
 });
 
-app.delete("/stops/:id", async (req, res) => {
+app.delete("/stops/:id", requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
 
     const result = await db.query(
       `DELETE FROM stops
-       WHERE id = $1
-       RETURNING id`,
-      [id]
+       USING trips
+       WHERE stops.id = $1
+         AND stops.trip_id = trips.id
+         AND trips.user_id = $2
+       RETURNING stops.id`,
+      [id, req.user.id]
     );
 
     if (result.rows.length === 0) {
@@ -828,7 +1016,7 @@ app.delete("/stops/:id", async (req, res) => {
   }
 });
 
-app.patch("/stops/:id/order", async (req, res) => {
+app.patch("/stops/:id/order", requireAuth, async (req, res) => {
   const { id } = req.params;
   const { direction } = req.body;
 
@@ -842,8 +1030,11 @@ app.patch("/stops/:id/order", async (req, res) => {
     await client.query("BEGIN");
 
     const currentResult = await client.query(
-      "SELECT id, trip_id, order_index FROM stops WHERE id = $1",
-      [id]
+      `SELECT s.id, s.trip_id, s.order_index
+       FROM stops s
+       JOIN trips t ON s.trip_id = t.id
+       WHERE s.id = $1 AND t.user_id = $2`,
+      [id, req.user.id]
     );
 
     if (currentResult.rows.length === 0) {

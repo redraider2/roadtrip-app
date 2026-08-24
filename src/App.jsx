@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Header from "./components/Header";
 import Background from "./components/Background";
 import "./App.css";
@@ -8,6 +8,31 @@ const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5001";
 
 const FOOTBALL_SEASON = 2026;
+
+const AUTH_STORAGE_KEY = "roadtrip_auth";
+
+function getStoredAuth() {
+  try {
+    const raw = localStorage.getItem(AUTH_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+async function authFetch(url, options = {}, token) {
+  const headers = new Headers(options.headers || {});
+
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+
+  return fetch(url, {
+    ...options,
+    headers,
+  });
+}
+
 
 async function geocodePlace(place, signal) {
   const query = place.trim();
@@ -150,6 +175,14 @@ function getOvernightTargets(durationSeconds, dailyDriveHours) {
 }
 
 function App() {
+  const [auth, setAuth] = useState(() => getStoredAuth());
+  const [authMode, setAuthMode] = useState("login");
+  const [authUsername, setAuthUsername] = useState("");
+  const [authEmail, setAuthEmail] = useState("");
+  const [authPassword, setAuthPassword] = useState("");
+  const [authError, setAuthError] = useState("");
+  const [authLoading, setAuthLoading] = useState(false);
+
   const [trips, setTrips] = useState([]);
   const [activeTripId, setActiveTripId] = useState(null);
   const [tripsError, setTripsError] = useState("");
@@ -232,10 +265,24 @@ function App() {
     });
   }, [alongTheWay.hotel, overnightTargets]);
 
-  async function fetchTrips() {
+  const fetchTrips = useCallback(async () => {
+    if (!auth?.token) {
+      setTrips([]);
+      setActiveTripId(null);
+      setStops([]);
+      setTripsError("");
+      return;
+    }
+
     try {
       setTripsError("");
-      const res = await fetch(`${API_BASE_URL}/trips`);
+
+      const res = await authFetch(
+        `${API_BASE_URL}/trips`,
+        {},
+        auth.token
+      );
+
       if (!res.ok) throw new Error("Failed to fetch trips");
 
       const data = await res.json();
@@ -257,37 +304,43 @@ function App() {
         if (currentId && normalizedTrips.some((t) => t.id === currentId)) {
           return currentId;
         }
+
         return normalizedTrips[0]?.id ?? null;
       });
     } catch (err) {
       console.error("Failed to load trips:", err);
-      setTripsError(
-        "Trips could not be loaded. Check that the API and PostgreSQL database are running."
-      );
+      setTripsError("Trips could not be loaded.");
     }
-  }
+  }, [auth?.token]);
 
-  async function fetchStops(tripId) {
-    if (!tripId) return;
+  const fetchStops = useCallback(async (tripId) => {
+    if (!tripId || !auth?.token) {
+      setStops([]);
+      return;
+    }
 
     try {
       setStopsError("");
-      const res = await fetch(`${API_BASE_URL}/trips/${tripId}/stops`);
+
+      const res = await authFetch(
+        `${API_BASE_URL}/trips/${tripId}/stops`,
+        {},
+        auth.token
+      );
+
       if (!res.ok) throw new Error("Failed to fetch stops");
 
       const data = await res.json();
       setStops(data);
     } catch (err) {
       console.error("Fetch stops failed:", err);
-      setStopsError(
-        "Stops could not be loaded for this trip. Check the API/database connection."
-      );
+      setStopsError("Stops could not be loaded for this trip.");
     }
-  }
+  }, [auth?.token]);
 
   useEffect(() => {
     fetchTrips();
-  }, []);
+  }, [fetchTrips]);
 
   useEffect(() => {
     let cancelled = false;
@@ -492,7 +545,7 @@ function App() {
     } else {
       setStops([]);
     }
-  }, [activeTrip?.id]);
+  }, [activeTrip?.id, fetchStops]);
 
   useEffect(() => {
     let cancelled = false;
@@ -657,18 +710,22 @@ function App() {
     if (!s || !en) return;
 
     try {
-      const res = await fetch(`${API_BASE_URL}/trips`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      const res = await authFetch(
+        `${API_BASE_URL}/trips`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
           title: name || `${s} → ${en}`,
           start_location: s,
           end_location: en,
           notes: n,
-        }),
-      });
+          }),
+        },
+        auth.token
+      );
 
       if (!res.ok) {
         throw new Error("Failed to create trip");
@@ -732,18 +789,22 @@ function App() {
         selectedFootballGame.startTimeTBD
       );
 
-      const tripRes = await fetch(`${API_BASE_URL}/trips`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      const tripRes = await authFetch(
+        `${API_BASE_URL}/trips`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
           title: matchup,
           start_location: s,
           end_location: destination,
           notes: `${gameDate} · ${venue.name}`,
-        }),
-      });
+          }),
+        },
+        auth.token
+      );
 
       if (!tripRes.ok) {
         throw new Error("Failed to create football road trip");
@@ -781,12 +842,14 @@ function App() {
     try {
       const coords = await geocodePlace(name);
 
-      const res = await fetch(`${API_BASE_URL}/trips/${activeTrip.id}/stops`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      const res = await authFetch(
+        `${API_BASE_URL}/trips/${activeTrip.id}/stops`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
           name,
           location_type: stopType,
           latitude: coords.latitude,
@@ -794,8 +857,10 @@ function App() {
           notes: n,
           trivia: stopTrivia.trim(),
           rating: stopRating,
-        }),
-      });
+          }),
+        },
+        auth.token
+      );
 
       if (!res.ok) {
         throw new Error("Failed to add stop");
@@ -826,12 +891,14 @@ function App() {
     }
 
     try {
-      const res = await fetch(`${API_BASE_URL}/trips/${activeTrip.id}/stops`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      const res = await authFetch(
+        `${API_BASE_URL}/trips/${activeTrip.id}/stops`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
           name: place.name,
           location_type: locationType,
           latitude,
@@ -839,8 +906,10 @@ function App() {
           notes: place.address || "",
           trivia: "",
           rating: place.rating || "",
-        }),
-      });
+          }),
+        },
+        auth.token
+      );
 
       if (!res.ok) {
         throw new Error("Failed to add suggested stop");
@@ -857,13 +926,17 @@ function App() {
     if (!activeTrip) return;
 
     try {
-      const res = await fetch(`${API_BASE_URL}/stops/${id}/order`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
+      const res = await authFetch(
+        `${API_BASE_URL}/stops/${id}/order`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ direction }),
         },
-        body: JSON.stringify({ direction }),
-      });
+        auth.token
+      );
 
       if (!res.ok) {
         throw new Error("Failed to reorder stop");
@@ -877,9 +950,13 @@ function App() {
 
   async function deleteStop(id) {
     try {
-      const res = await fetch(`${API_BASE_URL}/stops/${id}`, {
-        method: "DELETE",
-      });
+      const res = await authFetch(
+        `${API_BASE_URL}/stops/${id}`,
+        {
+          method: "DELETE",
+        },
+        auth.token
+      );
 
       if (!res.ok) {
         throw new Error("Failed to delete stop");
@@ -893,9 +970,13 @@ function App() {
 
   async function toggleFavorite(id) {
     try {
-      const res = await fetch(`${API_BASE_URL}/trips/${id}/favorite`, {
-        method: "PATCH",
-      });
+      const res = await authFetch(
+        `${API_BASE_URL}/trips/${id}/favorite`,
+        {
+          method: "PATCH",
+        },
+        auth.token
+      );
 
       if (!res.ok) {
         throw new Error("Failed to update favorite");
@@ -917,9 +998,13 @@ function App() {
 
   async function deleteTrip(id) {
     try {
-      const res = await fetch(`${API_BASE_URL}/trips/${id}`, {
-        method: "DELETE",
-      });
+      const res = await authFetch(
+        `${API_BASE_URL}/trips/${id}`,
+        {
+          method: "DELETE",
+        },
+        auth.token
+      );
 
       if (!res.ok) {
         throw new Error("Failed to delete trip");
@@ -937,6 +1022,86 @@ function App() {
     } catch (err) {
       console.error("Delete trip failed:", err);
     }
+  }
+
+  async function handleAuthSubmit(e) {
+    e.preventDefault();
+
+    const email = authEmail.trim().toLowerCase();
+    const username = authUsername.trim();
+
+    if (!email || !authPassword) {
+      setAuthError("Email and password are required.");
+      return;
+    }
+
+    if (authMode === "register" && !username) {
+      setAuthError("Username is required.");
+      return;
+    }
+
+    try {
+      setAuthLoading(true);
+      setAuthError("");
+
+      const endpoint =
+        authMode === "register" ? "/auth/register" : "/auth/login";
+
+      const payload =
+        authMode === "register"
+          ? {
+              username,
+              email,
+              password: authPassword,
+            }
+          : {
+              email,
+              password: authPassword,
+            };
+
+      const res = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        throw new Error(data.error || "Authentication failed");
+      }
+
+      const nextAuth = {
+        token: data.token,
+        user: data.user,
+      };
+
+      localStorage.setItem(
+        AUTH_STORAGE_KEY,
+        JSON.stringify(nextAuth)
+      );
+
+      setAuth(nextAuth);
+      setAuthPassword("");
+      setAuthError("");
+    } catch (err) {
+      console.error("Authentication failed:", err);
+      setAuthError(err.message || "Authentication failed.");
+    } finally {
+      setAuthLoading(false);
+    }
+  }
+
+  function handleLogout() {
+    localStorage.removeItem(AUTH_STORAGE_KEY);
+    setAuth(null);
+    setTrips([]);
+    setStops([]);
+    setActiveTripId(null);
+    setAuthPassword("");
+    setAuthError("");
   }
 
   const mapStart = start.trim() || activeTrip?.start || "";
@@ -960,6 +1125,93 @@ function App() {
         </div>
 
         <Header />
+
+        <div className="panel">
+          <h2 className="panel-title">
+            {auth ? "Your RoadTrip Account" : "Sign In to Save Your Trips"}
+          </h2>
+
+          {auth ? (
+            <div className="trip-details-panel">
+              <p>
+                <strong>Signed in as:</strong>{" "}
+                {auth.user?.username || auth.user?.email}
+              </p>
+              <button
+                type="button"
+                className="ghost-button"
+                onClick={handleLogout}
+              >
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleAuthSubmit} className="trip-form">
+              {authMode === "register" ? (
+                <input
+                  value={authUsername}
+                  onChange={(e) => setAuthUsername(e.target.value)}
+                  placeholder="Username"
+                  className="trip-input"
+                  autoComplete="username"
+                />
+              ) : null}
+
+              <input
+                type="email"
+                value={authEmail}
+                onChange={(e) => setAuthEmail(e.target.value)}
+                placeholder="Email"
+                className="trip-input"
+                autoComplete="email"
+              />
+
+              <input
+                type="password"
+                value={authPassword}
+                onChange={(e) => setAuthPassword(e.target.value)}
+                placeholder="Password"
+                className="trip-input"
+                autoComplete={
+                  authMode === "register"
+                    ? "new-password"
+                    : "current-password"
+                }
+              />
+
+              {authError ? (
+                <p className="error-state">{authError}</p>
+              ) : null}
+
+              <button
+                type="submit"
+                className="primary-button"
+                disabled={authLoading}
+              >
+                {authLoading
+                  ? "Please wait..."
+                  : authMode === "register"
+                    ? "Create Account"
+                    : "Sign In"}
+              </button>
+
+              <button
+                type="button"
+                className="ghost-button"
+                onClick={() => {
+                  setAuthMode((current) =>
+                    current === "login" ? "register" : "login"
+                  );
+                  setAuthError("");
+                }}
+              >
+                {authMode === "login"
+                  ? "Need an account? Create one"
+                  : "Already have an account? Sign in"}
+              </button>
+            </form>
+          )}
+        </div>
 
         <div className="panel">
           <h2 className="panel-title">Plan a College Football Road Trip</h2>
@@ -1057,17 +1309,28 @@ function App() {
               </p>
             ) : null}
 
+            {!auth ? (
+              <p className="empty-state">
+                Sign in or create an account to save this road trip.
+              </p>
+            ) : null}
+
             <button
               type="submit"
               className="primary-button"
               disabled={
+                !auth ||
                 footballLoading ||
                 !selectedFootballTeam ||
                 !selectedFootballGame ||
                 !footballStart.trim()
               }
             >
-              {footballLoading ? "Loading..." : "Create Game Road Trip"}
+              {!auth
+                ? "Sign In to Save Trip"
+                : footballLoading
+                  ? "Loading..."
+                  : "Create Game Road Trip"}
             </button>
           </form>
         </div>
