@@ -351,3 +351,40 @@ select.trip-input {
     flex-wrap: wrap;
   }
 }
+/* Along the Way */
+.along-the-way-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.along-progress {
+  width: fit-content;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(150, 200, 255, 0.42);
+  background: rgba(80, 140, 210, 0.16);
+  color: rgba(220, 239, 255, 0.96);
+  font-size: 0.78rem;
+}
+
+.recommendation-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.35rem;
+}
+
+@media (max-width: 1100px) {
+  .along-the-way-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .along-the-way-grid {
+    grid-template-columns: 1fr;
+  }
+}

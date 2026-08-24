@@ -281,6 +281,81 @@ app.get("/locations/:id", async (req, res) => {
   }
 });
 
+app.get("/geocode", async (req, res) => {
+  try {
+    const query = String(req.query.q || "").trim();
+
+    if (!query) {
+      return res.status(400).json({
+        error: "q is required",
+      });
+    }
+
+    if (!process.env.GOOGLE_MAPS_API_KEY) {
+      return res.status(500).json({
+        error: "GOOGLE_MAPS_API_KEY is not configured",
+      });
+    }
+
+    const googleResponse = await fetch(
+      "https://places.googleapis.com/v1/places:searchText",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Goog-Api-Key": process.env.GOOGLE_MAPS_API_KEY,
+          "X-Goog-FieldMask":
+            "places.displayName,places.formattedAddress,places.location",
+        },
+        body: JSON.stringify({
+          textQuery: query,
+          maxResultCount: 1,
+        }),
+      }
+    );
+
+    if (!googleResponse.ok) {
+      const errorText = await googleResponse.text();
+
+      console.error(
+        "Google geocode request failed:",
+        googleResponse.status,
+        errorText
+      );
+
+      return res.status(502).json({
+        error: "Failed to geocode location",
+      });
+    }
+
+    const data = await googleResponse.json();
+    const place = data.places?.[0];
+
+    if (
+      !place?.location ||
+      !Number.isFinite(place.location.latitude) ||
+      !Number.isFinite(place.location.longitude)
+    ) {
+      return res.status(404).json({
+        error: `No location found for ${query}`,
+      });
+    }
+
+    return res.json({
+      name: place.displayName?.text || query,
+      formattedAddress: place.formattedAddress || query,
+      latitude: place.location.latitude,
+      longitude: place.location.longitude,
+    });
+  } catch (err) {
+    console.error("GET /geocode error:", err);
+
+    return res.status(500).json({
+      error: "Failed to geocode location",
+    });
+  }
+});
+
 app.post("/route", async (req, res) => {
   try {
     const { points } = req.body;
@@ -920,7 +995,7 @@ app.post("/football/along-the-way", async (req, res) => {
             "Content-Type": "application/json",
             "X-Goog-Api-Key": process.env.GOOGLE_MAPS_API_KEY,
             "X-Goog-FieldMask":
-              "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.websiteUri",
+              "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.websiteUri,places.primaryType",
           },
           body: JSON.stringify({
             includedPrimaryTypes: includedTypes,
@@ -932,7 +1007,7 @@ app.post("/football/along-the-way", async (req, res) => {
                   latitude: sample.latitude,
                   longitude: sample.longitude,
                 },
-                radius: 15000,
+                radius: 25000,
               },
             },
           }),
@@ -953,19 +1028,17 @@ app.post("/football/along-the-way", async (req, res) => {
 
       const data = await placesResponse.json();
 
-      return (data.places || [])
-  .filter((place) => includedTypes.includes(place.primaryType))
-  .map((place) => ({
-    id: place.id,
-    name: place.displayName?.text || "Unknown",
-    address: place.formattedAddress || "",
-    latitude: place.location?.latitude ?? null,
-    longitude: place.location?.longitude ?? null,
-    rating: place.rating ?? null,
-    ratingCount: place.userRatingCount ?? null,
-    website: place.websiteUri || null,
-    primaryType: place.primaryType || null,
-    routeProgress: sample.routeProgress,
+      return (data.places || []).map((place) => ({
+        id: place.id,
+        name: place.displayName?.text || "Unknown",
+        address: place.formattedAddress || "",
+        latitude: place.location?.latitude ?? null,
+        longitude: place.location?.longitude ?? null,
+        rating: place.rating ?? null,
+        ratingCount: place.userRatingCount ?? null,
+        website: place.websiteUri || null,
+        primaryType: place.primaryType || null,
+        routeProgress: sample.routeProgress,
       }));
     });
 
@@ -1233,7 +1306,7 @@ app.get("/football/venues/:venueId/places", async (req, res) => {
           "Content-Type": "application/json",
           "X-Goog-Api-Key": process.env.GOOGLE_MAPS_API_KEY,
           "X-Goog-FieldMask":
-          "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.websiteUri,places.primaryType",
+            "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.websiteUri,places.primaryType",
         },
         body: JSON.stringify({
           includedTypes,

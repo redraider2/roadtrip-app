@@ -13,29 +13,22 @@ async function geocodePlace(place, signal) {
   const query = place.trim();
 
   const res = await fetch(
-    `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(
-      query
-    )}`,
-    {
-      signal,
-      headers: {
-        "Accept-Language": "en",
-      },
-    }
+    `${API_BASE_URL}/geocode?q=${encodeURIComponent(query)}`,
+    { signal }
   );
 
   if (!res.ok) {
-    throw new Error("Failed to geocode location");
+    const errorData = await res.json().catch(() => ({}));
+
+    throw new Error(
+      errorData.error || `No location found for ${place}`
+    );
   }
 
   const data = await res.json();
 
-  if (!data.length) {
-    throw new Error(`No location found for ${place}`);
-  }
-
-  const latitude = Number(data[0].lat);
-  const longitude = Number(data[0].lon);
+  const latitude = Number(data.latitude);
+  const longitude = Number(data.longitude);
 
   if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
     throw new Error("Invalid coordinates returned");
@@ -119,8 +112,41 @@ function formatTripStats(route) {
   return {
     distance: formatRouteDistance(route.distanceMeters),
     driveTime: formatRouteDuration(route.durationSeconds),
+    durationSeconds: Number(route.durationSeconds) || 0,
     provider: route.provider,
   };
+}
+
+function formatRouteProgress(progress) {
+  const percent = Math.round(Number(progress || 0) * 100);
+
+  if (percent <= 25) return `Early in the drive · ${percent}%`;
+  if (percent <= 60) return `Around the middle · ${percent}%`;
+  if (percent <= 85) return `Later in the drive · ${percent}%`;
+  return `Near your destination · ${percent}%`;
+}
+
+function getOvernightTargets(durationSeconds, dailyDriveHours) {
+  const hours = Number(dailyDriveHours);
+
+  if (
+    dailyDriveHours === "straight" ||
+    !Number.isFinite(hours) ||
+    hours <= 0 ||
+    !Number.isFinite(durationSeconds) ||
+    durationSeconds <= 0
+  ) {
+    return [];
+  }
+
+  const totalHours = durationSeconds / 3600;
+  const targets = [];
+
+  for (let elapsed = hours; elapsed < totalHours; elapsed += hours) {
+    targets.push(elapsed / totalHours);
+  }
+
+  return targets;
 }
 
 function App() {
@@ -137,6 +163,7 @@ function App() {
   const [selectedFootballTeam, setSelectedFootballTeam] = useState("");
   const [footballGames, setFootballGames] = useState([]);
   const [selectedFootballGameId, setSelectedFootballGameId] = useState("");
+  const [dailyDriveHours, setDailyDriveHours] = useState("8");
   const [footballStart, setFootballStart] = useState("");
   const [footballLoading, setFootballLoading] = useState(false);
   const [footballError, setFootballError] = useState("");
@@ -148,6 +175,14 @@ function App() {
   const [weekendPlacesLoading, setWeekendPlacesLoading] = useState(false);
   const [weekendPlacesError, setWeekendPlacesError] = useState("");
 
+  const [alongTheWay, setAlongTheWay] = useState({
+    restaurant: [],
+    hotel: [],
+    historic: [],
+  });
+  const [alongTheWayLoading, setAlongTheWayLoading] = useState(false);
+  const [alongTheWayError, setAlongTheWayError] = useState("");
+
   const [stops, setStops] = useState([]);
   const [stopsError, setStopsError] = useState("");
   const [stopName, setStopName] = useState("");
@@ -158,6 +193,44 @@ function App() {
 
   const [tripStats, setTripStats] = useState(null);
   const [routeGeometry, setRouteGeometry] = useState([]);
+
+  const overnightTargets = useMemo(
+    () =>
+      getOvernightTargets(
+        Number(tripStats?.durationSeconds) || 0,
+        dailyDriveHours
+      ),
+    [tripStats?.durationSeconds, dailyDriveHours]
+  );
+
+  const prioritizedHotels = useMemo(() => {
+    if (!alongTheWay.hotel.length || !overnightTargets.length) {
+      return alongTheWay.hotel;
+    }
+
+    return [...alongTheWay.hotel].sort((a, b) => {
+      const aProgress = Number(a.routeProgress);
+      const bProgress = Number(b.routeProgress);
+
+      const aDistance = Math.min(
+        ...overnightTargets.map((target) =>
+          Math.abs(aProgress - target)
+        )
+      );
+
+      const bDistance = Math.min(
+        ...overnightTargets.map((target) =>
+          Math.abs(bProgress - target)
+        )
+      );
+
+      if (aDistance !== bDistance) {
+        return aDistance - bDistance;
+      }
+
+      return (Number(b.rating) || 0) - (Number(a.rating) || 0);
+    });
+  }, [alongTheWay.hotel, overnightTargets]);
 
   async function fetchTrips() {
     try {
@@ -481,6 +554,98 @@ function App() {
     };
   }, [activeTrip?.start, activeTrip?.end, stops]);
 
+  useEffect(() => {
+    let cancelled = false;
+    const controller = new AbortController();
+
+    async function loadAlongTheWay() {
+      if (!activeTrip?.id || !Array.isArray(routeGeometry) || routeGeometry.length < 2) {
+        setAlongTheWay({
+          restaurant: [],
+          hotel: [],
+          historic: [],
+        });
+        setAlongTheWayError("");
+        return;
+      }
+
+      try {
+        setAlongTheWayLoading(true);
+        setAlongTheWayError("");
+
+        const requestCategory = async (category) => {
+          const maxGeometryPoints = 200;
+
+          const step = Math.max(
+            1,
+            Math.floor(routeGeometry.length / maxGeometryPoints)
+          );
+
+          const sampledGeometry = routeGeometry.filter(
+            (_, index) =>
+              index % step === 0 ||
+              index === routeGeometry.length - 1
+          );
+
+          const res = await fetch(`${API_BASE_URL}/football/along-the-way`, {
+            method: "POST",
+            signal: controller.signal,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              geometry: sampledGeometry,
+              category,
+            }),
+          });
+
+          if (!res.ok) {
+            throw new Error(`Failed to load ${category} recommendations`);
+          }
+
+          return res.json();
+        };
+
+        const [restaurantData, hotelData, historicData] = await Promise.all([
+          requestCategory("restaurant"),
+          requestCategory("hotel"),
+          requestCategory("historic"),
+        ]);
+
+        if (cancelled) return;
+
+        setAlongTheWay({
+          restaurant: restaurantData.places || [],
+          hotel: hotelData.places || [],
+          historic: historicData.places || [],
+        });
+      } catch (err) {
+        if (cancelled || err?.name === "AbortError") return;
+
+        console.error("Along the Way failed:", err);
+        setAlongTheWay({
+          restaurant: [],
+          hotel: [],
+          historic: [],
+        });
+        setAlongTheWayError(
+          "Along-the-way recommendations could not be loaded for this route."
+        );
+      } finally {
+        if (!cancelled) {
+          setAlongTheWayLoading(false);
+        }
+      }
+    }
+
+    loadAlongTheWay();
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [activeTrip?.id, routeGeometry]);
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -649,6 +814,45 @@ function App() {
     }
   }
 
+  async function addSuggestedStop(place, locationType) {
+    if (!activeTrip) return;
+
+    const latitude = Number(place.latitude);
+    const longitude = Number(place.longitude);
+
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+      alert("This recommendation does not have usable coordinates.");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/trips/${activeTrip.id}/stops`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: place.name,
+          location_type: locationType,
+          latitude,
+          longitude,
+          notes: place.address || "",
+          trivia: "",
+          rating: place.rating || "",
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to add suggested stop");
+      }
+
+      await fetchStops(activeTrip.id);
+    } catch (err) {
+      console.error("Add suggested stop failed:", err);
+      alert("Could not add this recommendation to the trip.");
+    }
+  }
+
   async function moveStop(id, direction) {
     if (!activeTrip) return;
 
@@ -806,7 +1010,18 @@ function App() {
               placeholder="Starting location (e.g., Houston, TX)"
               className="trip-input"
             />
-
+          <select
+          value={dailyDriveHours}
+          onChange={(e) => setDailyDriveHours(e.target.value)}
+          className="trip-input"
+          aria-label="Daily driving limit"
+          >
+          <option value="6">Drive up to 6 hours/day</option>
+          <option value="8">Drive up to 8 hours/day</option>
+          <option value="10">Drive up to 10 hours/day</option>
+          <option value="12">Drive up to 12 hours/day</option>
+          <option value="straight">Drive straight through</option>
+</select>
             {selectedFootballGame ? (
               <div className="trip-details-panel">
                 <p>
@@ -856,6 +1071,203 @@ function App() {
             </button>
           </form>
         </div>
+
+        {activeTrip && routeGeometry.length > 1 ? (
+          <div className="panel">
+            <h2 className="panel-title">Along the Way</h2>
+
+            <div className="trip-details-panel">
+              <p>
+                <strong>Journey:</strong> {activeTrip.start} → {activeTrip.end}
+              </p>
+              <p>
+                <strong>Road Distance:</strong>{" "}
+                {tripStats?.distance || "Calculating..."}
+              </p>
+              <p>
+                <strong>Road Drive Time:</strong>{" "}
+                {tripStats?.driveTime || "Calculating..."}
+              </p>
+            </div>
+
+            {alongTheWayLoading ? (
+              <p className="empty-state">
+                Finding food, hotels, and historic stops along your route...
+              </p>
+            ) : alongTheWayError ? (
+              <p className="error-state">{alongTheWayError}</p>
+            ) : (
+              <div className="along-the-way-grid">
+                <div>
+                  <h3 className="game-weekend-heading">
+                    Food Worth Stopping For
+                  </h3>
+
+                  {alongTheWay.restaurant.length === 0 ? (
+                    <p className="empty-state">
+                      No restaurant recommendations returned.
+                    </p>
+                  ) : (
+                    <ul className="trip-list">
+                      {alongTheWay.restaurant.slice(0, 6).map((place) => (
+                        <li key={place.id} className="trip-row">
+                          <div className="trip-details">
+                            <span className="trip-name">{place.name}</span>
+                            <span className="trip-route">
+                              {place.rating ? `${place.rating} ★` : "No rating"}
+                              {place.ratingCount
+                                ? ` · ${place.ratingCount.toLocaleString()} reviews`
+                                : ""}
+                            </span>
+                            <span className="along-progress">
+                              {formatRouteProgress(place.routeProgress)}
+                            </span>
+                            {place.address ? (
+                              <span className="trip-notes-text">
+                                {place.address}
+                              </span>
+                            ) : null}
+                            <div className="recommendation-actions">
+                              <button
+                                type="button"
+                                className="ghost-button"
+                                onClick={() =>
+                                  addSuggestedStop(place, "restaurant")
+                                }
+                              >
+                                Add to Trip
+                              </button>
+                              {place.website ? (
+                                <a
+                                  className="place-link"
+                                  href={place.website}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  Website
+                                </a>
+                              ) : null}
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                <div>
+                  <h3 className="game-weekend-heading">Overnight Options</h3>
+
+                  {alongTheWay.hotel.length === 0 ? (
+                    <p className="empty-state">
+                      No hotel recommendations returned.
+                    </p>
+                  ) : (
+                    <ul className="trip-list">
+                      {prioritizedHotels.slice(0, 6).map((place) => (
+                        <li key={place.id} className="trip-row">
+                          <div className="trip-details">
+                            <span className="trip-name">{place.name}</span>
+                            <span className="trip-route">
+                              {place.rating ? `${place.rating} ★` : "No rating"}
+                              {place.ratingCount
+                                ? ` · ${place.ratingCount.toLocaleString()} reviews`
+                                : ""}
+                            </span>
+                            <span className="along-progress">
+                              {formatRouteProgress(place.routeProgress)}
+                            </span>
+                            {place.address ? (
+                              <span className="trip-notes-text">
+                                {place.address}
+                              </span>
+                            ) : null}
+                            <div className="recommendation-actions">
+                              <button
+                                type="button"
+                                className="ghost-button"
+                                onClick={() => addSuggestedStop(place, "hotel")}
+                              >
+                                Add to Trip
+                              </button>
+                              {place.website ? (
+                                <a
+                                  className="place-link"
+                                  href={place.website}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  Website
+                                </a>
+                              ) : null}
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                <div>
+                  <h3 className="game-weekend-heading">
+                    Historic & Interesting
+                  </h3>
+
+                  {alongTheWay.historic.length === 0 ? (
+                    <p className="empty-state">
+                      No historic recommendations returned.
+                    </p>
+                  ) : (
+                    <ul className="trip-list">
+                      {alongTheWay.historic.slice(0, 6).map((place) => (
+                        <li key={place.id} className="trip-row">
+                          <div className="trip-details">
+                            <span className="trip-name">{place.name}</span>
+                            <span className="trip-route">
+                              {place.rating ? `${place.rating} ★` : "No rating"}
+                              {place.ratingCount
+                                ? ` · ${place.ratingCount.toLocaleString()} reviews`
+                                : ""}
+                            </span>
+                            <span className="along-progress">
+                              {formatRouteProgress(place.routeProgress)}
+                            </span>
+                            {place.address ? (
+                              <span className="trip-notes-text">
+                                {place.address}
+                              </span>
+                            ) : null}
+                            <div className="recommendation-actions">
+                              <button
+                                type="button"
+                                className="ghost-button"
+                                onClick={() =>
+                                  addSuggestedStop(place, "historic")
+                                }
+                              >
+                                Add to Trip
+                              </button>
+                              {place.website ? (
+                                <a
+                                  className="place-link"
+                                  href={place.website}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  Website
+                                </a>
+                              ) : null}
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        ) : null}
 
         {selectedFootballGame ? (
           <div className="panel">
