@@ -16,5 +16,7 @@ services:
         sync: false
       - key: GOOGLE_MAPS_API_KEY
         sync: false
+      - key: CFBD_API_KEY
+        sync: false
       - key: PGSSLMODE
         value: require
