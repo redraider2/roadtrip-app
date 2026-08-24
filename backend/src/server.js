@@ -20,11 +20,30 @@ const apiLimiter = rateLimit({
   },
 });
 
-const corsOrigin = process.env.CORS_ORIGIN
-  ? process.env.CORS_ORIGIN.split(",").map((origin) => origin.trim())
-  : true;
+const isProduction = process.env.NODE_ENV === "production";
 
-app.use(cors({ origin: corsOrigin }));
+if (isProduction && !process.env.CORS_ORIGIN) {
+  throw new Error("CORS_ORIGIN must be configured in production");
+}
+
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(",")
+      .map((origin) => origin.trim())
+      .filter(Boolean)
+  : ["http://localhost:5173"];
+
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Origin not allowed by CORS"));
+    },
+  })
+);
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
