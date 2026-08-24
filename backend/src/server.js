@@ -2,10 +2,23 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const rateLimit = require("express-rate-limit");
 const db = require("./db");
 
 const app = express();
 const routeCache = new Map();
+
+app.set("trust proxy", 1);
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 300,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  message: {
+    error: "Too many requests. Please try again shortly.",
+  },
+});
 
 const corsOrigin = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(",").map((origin) => origin.trim())
@@ -21,6 +34,8 @@ app.get("/", (req, res) => {
     health: "/health",
   });
 });
+
+app.use(apiLimiter);
 
 function isValidRoutePoint(point) {
   const latitude = Number(point?.latitude);
