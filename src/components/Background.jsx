@@ -1,11 +1,11 @@
 import "./Background.css";
-import roadtripVideo from "../../Videos/Roadtrip.mp4.mov";
 
 export default function Background({ team }) {
   const primaryColor = team?.color || "#111827";
   const logo = team?.logos?.[0] || "";
+  const defaultBackground =
+    `${import.meta.env.BASE_URL}college-football-roadtrip-bg.png`;
 
-  // Once a team/game is selected, completely replace the road video.
   if (team) {
     return (
       <div
@@ -39,14 +39,14 @@ export default function Background({ team }) {
     );
   }
 
-  // Default background before a football team/game is selected.
   return (
-    <div className="bg-video">
-      <video autoPlay muted loop playsInline preload="auto">
-        <source src={roadtripVideo} type="video/mp4" />
-      </video>
-
-      <div className="bg-video-overlay" />
+    <div
+      className="default-roadtrip-background"
+      style={{
+        backgroundImage: `url("${defaultBackground}")`,
+      }}
+    >
+      <div className="default-roadtrip-overlay" />
     </div>
   );
 }

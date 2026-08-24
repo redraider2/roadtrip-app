@@ -388,3 +388,306 @@ select.trip-input {
     grid-template-columns: 1fr;
   }
 }
+
+/* =========================================================
+   PRODUCT UI REFRESH
+   ========================================================= */
+
+.app {
+  max-width: 1120px;
+  padding: 2rem 2rem 4rem;
+}
+
+.hero {
+  margin-bottom: 1rem;
+}
+
+.app-title {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.app-subtitle {
+  margin: 0.7rem 0 0;
+  font-size: 1.05rem;
+  opacity: 0.82;
+}
+
+.panel {
+  padding: 1.35rem;
+  border-radius: 20px;
+  background: rgba(16, 18, 17, 0.68);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 20px 55px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.panel-title {
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+}
+
+/* Small uppercase labels */
+.section-kicker {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  opacity: 0.62;
+}
+
+/* ACCOUNT */
+.account-panel {
+  padding: 0.85rem 1.1rem;
+}
+
+.account-panel .panel-title {
+  margin-bottom: 0.45rem;
+  font-size: 0.88rem;
+  opacity: 0.72;
+}
+
+.account-summary {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.account-summary .ghost-button {
+  flex: 0 0 auto;
+  padding-inline: 1rem;
+}
+
+/* PLANNER */
+.planner-panel {
+  margin-top: 1rem;
+  padding: 1.65rem;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(30, 35, 31, 0.82),
+      rgba(12, 14, 13, 0.72)
+    );
+}
+
+.planner-heading {
+  margin-bottom: 1.25rem;
+}
+
+.planner-heading .panel-title {
+  margin-bottom: 0.35rem;
+  font-size: 1.65rem;
+}
+
+.planner-copy {
+  margin: 0;
+  max-width: 680px;
+  opacity: 0.72;
+}
+
+.planner-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+  align-items: stretch;
+}
+
+.planner-form .trip-input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  min-height: 48px;
+  font-size: 0.95rem;
+}
+
+.planner-form .trip-details-panel,
+.planner-form .error-state,
+.planner-form .empty-state,
+.planner-form .primary-button {
+  grid-column: 1 / -1;
+}
+
+.planner-form .trip-details-panel {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.planner-form .primary-button {
+  min-height: 50px;
+  margin-top: 0.15rem;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.planner-form .primary-button:not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.26);
+}
+
+/* ROUTE SUMMARY */
+.along-panel {
+  margin-top: 1.4rem;
+  padding: 1.65rem;
+}
+
+.along-heading {
+  margin-bottom: 1rem;
+}
+
+.along-heading .panel-title {
+  margin-bottom: 0;
+  font-size: 1.7rem;
+}
+
+.route-summary {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  margin-bottom: 1.4rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.route-summary p {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.route-summary strong {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.58;
+}
+
+/* ALONG THE WAY COLUMNS */
+.along-the-way-grid {
+  gap: 1rem;
+}
+
+.recommendation-column {
+  min-width: 0;
+  padding: 1rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.recommendation-column .game-weekend-heading {
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  font-size: 1.05rem;
+}
+
+.along-the-way-grid .trip-list {
+  margin-top: 0.25rem;
+}
+
+.along-the-way-grid .trip-row {
+  padding: 0.9rem 0;
+  border-radius: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.along-the-way-grid .trip-row:last-child {
+  border-bottom: 0;
+}
+
+.along-the-way-grid .trip-row:hover {
+  background: transparent;
+}
+
+.along-the-way-grid .trip-name {
+  font-size: 1rem;
+}
+
+.along-the-way-grid .trip-route {
+  font-size: 0.88rem;
+  opacity: 0.78;
+}
+
+.along-the-way-grid .trip-notes-text {
+  line-height: 1.45;
+}
+
+.recommendation-actions {
+  margin-top: 0.55rem;
+}
+
+.recommendation-actions .ghost-button {
+  padding: 0.42rem 0.72rem;
+  font-size: 0.82rem;
+}
+
+.place-link {
+  font-size: 0.82rem;
+  opacity: 0.85;
+}
+
+/* TABLET */
+@media (max-width: 900px) {
+  .app {
+    max-width: 760px;
+  }
+
+  .planner-form {
+    grid-template-columns: 1fr;
+  }
+
+  .planner-form .trip-details-panel,
+  .planner-form .error-state,
+  .planner-form .empty-state,
+  .planner-form .primary-button {
+    grid-column: auto;
+  }
+
+  .planner-form .trip-details-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .route-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .along-the-way-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 640px) {
+  .app {
+    padding: 1.25rem 0.85rem 3rem;
+  }
+
+  .app-title {
+    font-size: 2.15rem;
+  }
+
+  .account-summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .account-summary .ghost-button {
+    width: 100%;
+  }
+
+  .planner-panel,
+  .along-panel {
+    padding: 1.1rem;
+  }
+}

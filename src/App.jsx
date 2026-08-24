@@ -1118,23 +1118,19 @@ function App() {
             Plan the drive. Pick the game. Make the weekend count.
           </p>
 
-          <h2 className="hero-title">Plan Your Next Away Game</h2>
-          <p className="hero-text">
-            Choose your team and turn the next road game into a road trip.
-          </p>
         </div>
 
         <Header />
 
-        <div className="panel">
+        <div className="panel account-panel">
           <h2 className="panel-title">
-            {auth ? "Your RoadTrip Account" : "Sign In to Save Your Trips"}
+            {auth ? "Your Account" : "Sign In to Save Your Trips"}
           </h2>
 
           {auth ? (
-            <div className="trip-details-panel">
+            <div className="trip-details-panel account-summary">
               <p>
-                <strong>Signed in as:</strong>{" "}
+                <strong>Signed in:</strong>{" "}
                 {auth.user?.username || auth.user?.email}
               </p>
               <button
@@ -1213,10 +1209,16 @@ function App() {
           )}
         </div>
 
-        <div className="panel">
-          <h2 className="panel-title">Plan a College Football Road Trip</h2>
+        <div className="panel planner-panel">
+          <div className="planner-heading">
+            <span className="section-kicker">PLAN YOUR NEXT AWAY GAME</span>
+            <h2 className="panel-title">Build Your College Football Road Trip</h2>
+            <p className="planner-copy">
+              Pick your team, choose the road game, and tell us where you're starting.
+            </p>
+          </div>
 
-          <form onSubmit={handleFootballTripSubmit} className="trip-form">
+          <form onSubmit={handleFootballTripSubmit} className="trip-form planner-form">
             <select
               value={selectedFootballTeam}
               onChange={(e) => setSelectedFootballTeam(e.target.value)}
@@ -1336,10 +1338,13 @@ function App() {
         </div>
 
         {activeTrip && routeGeometry.length > 1 ? (
-          <div className="panel">
-            <h2 className="panel-title">Along the Way</h2>
+          <div className="panel along-panel">
+            <div className="along-heading">
+              <span className="section-kicker">YOUR ROUTE</span>
+              <h2 className="panel-title">Along the Way</h2>
+            </div>
 
-            <div className="trip-details-panel">
+            <div className="trip-details-panel route-summary">
               <p>
                 <strong>Journey:</strong> {activeTrip.start} → {activeTrip.end}
               </p>
@@ -1361,7 +1366,7 @@ function App() {
               <p className="error-state">{alongTheWayError}</p>
             ) : (
               <div className="along-the-way-grid">
-                <div>
+                <div className="recommendation-column">
                   <h3 className="game-weekend-heading">
                     Food Worth Stopping For
                   </h3>
@@ -1418,7 +1423,7 @@ function App() {
                   )}
                 </div>
 
-                <div>
+                <div className="recommendation-column">
                   <h3 className="game-weekend-heading">Overnight Options</h3>
 
                   {alongTheWay.hotel.length === 0 ? (
@@ -1471,7 +1476,7 @@ function App() {
                   )}
                 </div>
 
-                <div>
+                <div className="recommendation-column">
                   <h3 className="game-weekend-heading">
                     Historic & Interesting
                   </h3>
