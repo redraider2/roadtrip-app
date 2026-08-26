@@ -2057,6 +2057,175 @@ function App() {
             </ul>
           )}
         </div>
+                <section className="legal-section">
+          <details className="legal-card">
+            <summary>About Kickoff Miles</summary>
+
+            <div className="legal-content">
+              <h2>About Kickoff Miles</h2>
+              <p>
+                Kickoff Miles is a college football road trip planning platform
+                designed to help fans turn away games into memorable weekends.
+              </p>
+              <p>
+                Choose your team, select a road game, build your route, and
+                discover hotels, restaurants, bars, and places to stop along
+                the way.
+              </p>
+              <p>
+                <strong>Hit the Road. Chase the Game.</strong>
+              </p>
+              <p>
+                Questions, feedback, or business inquiries can be sent to{" "}
+                <a href="mailto:support@kickoffmiles.com">
+                  support@kickoffmiles.com
+                </a>
+                .
+              </p>
+            </div>
+          </details>
+
+          <details className="legal-card">
+            <summary>Privacy Policy</summary>
+
+            <div className="legal-content">
+              <h2>Privacy Policy</h2>
+              <p className="legal-updated">Last updated: August 26, 2026</p>
+
+              <h3>Information We Collect</h3>
+              <p>
+                Kickoff Miles may collect information you provide when creating
+                an account, including your email address and information
+                associated with trips you create or save. Saved trip information
+                may include starting locations, destinations, selected games,
+                route information, notes, stops, and favorites.
+              </p>
+
+              <h3>How We Use Information</h3>
+              <p>
+                We use information to provide and improve Kickoff Miles,
+                maintain user accounts, save trip information, respond to
+                support requests, and operate the website.
+              </p>
+
+              <h3>Third-Party Services</h3>
+              <p>
+                Kickoff Miles relies on third-party services to provide maps,
+                routes, location information, college football schedules,
+                hosting, database services, and related functionality.
+              </p>
+
+              <h3>Advertising and Affiliate Relationships</h3>
+              <p>
+                Kickoff Miles may in the future display advertising, sponsored
+                listings, or affiliate links. This policy may be updated if
+                those services are added.
+              </p>
+
+              <h3>Data Security</h3>
+              <p>
+                Reasonable measures are used to protect account and trip
+                information, although no internet-based service can guarantee
+                absolute security.
+              </p>
+
+              <h3>Contact</h3>
+              <p>
+                Privacy questions or requests may be sent to{" "}
+                <a href="mailto:support@kickoffmiles.com">
+                  support@kickoffmiles.com
+                </a>
+                .
+              </p>
+            </div>
+          </details>
+
+          <details className="legal-card">
+            <summary>Terms of Use</summary>
+
+            <div className="legal-content">
+              <h2>Terms of Use</h2>
+              <p className="legal-updated">Last updated: August 26, 2026</p>
+
+              <h3>Use of Kickoff Miles</h3>
+              <p>
+                Kickoff Miles is a travel-planning and informational service.
+                Users are responsible for their own transportation, lodging,
+                dining, ticketing, and other travel decisions.
+              </p>
+
+              <h3>Information Accuracy</h3>
+              <p>
+                Routes, mileage, travel times, game schedules, venues, hotels,
+                restaurants, ratings, prices, and availability may change.
+                Kickoff Miles does not guarantee that third-party information
+                will always be complete, current, or error-free.
+              </p>
+
+              <h3>College Football Schedules</h3>
+              <p>
+                Game dates, times, venues, opponents, and schedules may change.
+                Verify important game information with the school, conference,
+                venue, or another official source before traveling.
+              </p>
+
+              <h3>User Accounts</h3>
+              <p>
+                Users are responsible for maintaining the security of their
+                account credentials and activity occurring through their
+                accounts.
+              </p>
+
+              <h3>Third-Party Services</h3>
+              <p>
+                Third-party providers operate independently and may have their
+                own terms, privacy policies, and conditions.
+              </p>
+
+              <h3>Service Availability</h3>
+              <p>
+                Kickoff Miles may modify, suspend, discontinue, or update
+                features. Continuous or uninterrupted availability is not
+                guaranteed.
+              </p>
+
+              <h3>Limitation of Liability</h3>
+              <p>
+                To the fullest extent permitted by law, Kickoff Miles is not
+                responsible for losses or damages resulting from reliance on
+                travel information, third-party information, service
+                interruptions, delays, cancellations, accidents, or other
+                circumstances arising from use of the service.
+              </p>
+
+              <h3>Contact</h3>
+              <p>
+                Questions regarding these terms may be sent to{" "}
+                <a href="mailto:support@kickoffmiles.com">
+                  support@kickoffmiles.com
+                </a>
+                .
+              </p>
+            </div>
+          </details>
+        </section>
+
+        <footer className="site-footer">
+          <div className="footer-brand">
+            <strong>KICKOFF MILES</strong>
+            <span>Hit the Road. Chase the Game.</span>
+          </div>
+
+          <div className="footer-links">
+            <a href="mailto:support@kickoffmiles.com">
+              support@kickoffmiles.com
+            </a>
+          </div>
+
+          <p className="footer-copyright">
+            © 2026 Kickoff Miles. All rights reserved.
+          </p>
+        </footer>
       </div>
     </div>
   );
