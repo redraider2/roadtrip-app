@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-export default defineConfig({
-  base: "/roadtrip-app/",
+export default defineConfig(({ mode }) => ({
+  base: mode === "github-pages" ? "/roadtrip-app/" : "/",
   plugins: [react()],
-});
+}));
