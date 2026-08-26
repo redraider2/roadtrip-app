@@ -125,8 +125,9 @@ async function fetchRoadRoute(points, signal) {
   });
 
   if (!res.ok) {
-    throw new Error("Failed to calculate road route");
-  }
+  const errorData = await res.json().catch(() => ({}));
+  throw new Error(errorData.error || "Failed to add suggested stop");
+}
 
   return res.json();
 }
@@ -193,6 +194,7 @@ function App() {
   const [notes, setNotes] = useState("");
 
   const [footballTeams, setFootballTeams] = useState([]);
+  const [footballTeamsLoading, setFootballTeamsLoading] = useState(true);
   const [selectedFootballTeam, setSelectedFootballTeam] = useState("");
   const [footballGames, setFootballGames] = useState([]);
   const [selectedFootballGameId, setSelectedFootballGameId] = useState("");
@@ -366,6 +368,10 @@ function App() {
         setFootballError(
           "College football teams could not be loaded. Check the backend API."
         );
+      } finally {
+        if (!cancelled) {
+          setFootballTeamsLoading(false);
+        }
       }
     }
 
@@ -905,7 +911,7 @@ function App() {
           longitude,
           notes: place.address || "",
           trivia: "",
-          rating: place.rating || "",
+          rating: "",
           }),
         },
         auth.token
@@ -917,10 +923,10 @@ function App() {
 
       await fetchStops(activeTrip.id);
     } catch (err) {
-      console.error("Add suggested stop failed:", err);
-      alert("Could not add this recommendation to the trip.");
-    }
-  }
+  console.error("Add suggested stop failed:", err);
+  alert(err.message || "Could not add this recommendation to the trip.");
+}
+}
 
   async function moveStop(id, direction) {
     if (!activeTrip) return;
@@ -939,8 +945,9 @@ function App() {
       );
 
       if (!res.ok) {
-        throw new Error("Failed to reorder stop");
-      }
+  const errorData = await res.json().catch(() => ({}));
+  throw new Error(errorData.error || "Failed to calculate road route");
+}
 
       await fetchStops(activeTrip.id);
     } catch (err) {
@@ -1110,15 +1117,32 @@ function App() {
   return (
     <div className="page">
       <Background team={backgroundTeam} />
+    <div className="app">
+      <div className="hero kickoff-hero">
+  <div className="kickoff-brand-lockup">
+    <div className="kickoff-logo-wrap">
+  <img
+    src={`${import.meta.env.BASE_URL}kickoff-miles-logo.png`}
+    alt="Kickoff Miles"
+    className="kickoff-logo"
+  />
+</div>
 
-      <div className="app">
-        <div className="hero">
-          <h1 className="app-title">College Football RoadTrip</h1>
-          <p className="app-subtitle">
-            Plan the drive. Pick the game. Make the weekend count.
-          </p>
+    <div>
+      <h1 className="app-title kickoff-title">
+        KICKOFF <span>MILES</span>
+      </h1>
 
-        </div>
+      <p className="app-subtitle kickoff-subtitle">
+        The College Football Roadtrip Planner
+      </p>
+
+      <p className="kickoff-tagline">
+        Hit the Road. Chase the Game.
+      </p>
+    </div>
+  </div>
+</div>
 
         <Header />
 
@@ -1224,8 +1248,11 @@ function App() {
               onChange={(e) => setSelectedFootballTeam(e.target.value)}
               className="trip-input"
               aria-label="College football team"
+              disabled={footballTeamsLoading}
             >
-              <option value="">Choose your team</option>
+              <option value="">
+                {footballTeamsLoading ? "Loading teams..." : "Choose your team"}
+              </option>
               {footballTeams.map((team) => (
                 <option key={team.id} value={team.school}>
                   {team.school}
@@ -1538,8 +1565,13 @@ function App() {
         ) : null}
 
         {selectedFootballGame ? (
-          <div className="panel">
-            <h2 className="panel-title">Game Weekend</h2>
+          <div className="panel destination-panel">
+            <div className="section-heading-row">
+              <div>
+                <span className="section-kicker">DESTINATION</span>
+                <h2 className="panel-title">Game Weekend</h2>
+              </div>
+            </div>
 
             <div className="trip-details-panel">
               <p>
@@ -1559,7 +1591,7 @@ function App() {
               <p className="error-state">{weekendPlacesError}</p>
             ) : (
               <div className="game-weekend-grid">
-                <div>
+                <div className="recommendation-column">
                   <h3 className="game-weekend-heading">Restaurants</h3>
 
                   {weekendPlaces.restaurant.length === 0 ? (
@@ -1605,7 +1637,7 @@ function App() {
                   )}
                 </div>
 
-                <div>
+                <div className="recommendation-column">
                   <h3 className="game-weekend-heading">Bars</h3>
 
                   {weekendPlaces.bar.length === 0 ? (
@@ -1649,7 +1681,7 @@ function App() {
                   )}
                 </div>
 
-                <div>
+                <div className="recommendation-column">
                   <h3 className="game-weekend-heading">Hotels</h3>
 
                   {weekendPlaces.hotel.length === 0 ? (
@@ -1697,8 +1729,16 @@ function App() {
           </div>
         ) : null}
 
-        <div className="panel">
-          <h2 className="panel-title">Create a Custom Trip</h2>
+        <div className="panel custom-trip-panel">
+          <div className="section-heading-row">
+            <div>
+              <span className="section-kicker">OPTIONAL</span>
+              <h2 className="panel-title">Create a Custom Trip</h2>
+              <p className="section-copy">
+                Planning something other than a football weekend? Build it here.
+              </p>
+            </div>
+          </div>
 
           <form onSubmit={handleSubmit} className="trip-form">
             <input
@@ -1736,18 +1776,30 @@ function App() {
           </form>
         </div>
 
-        <div className="panel">
-          <h2 className="panel-title">Map Preview</h2>
-          <TripMap
-            start={mapStart}
-            end={mapEnd}
-            stops={stops}
-            routeGeometry={routeGeometry}
-          />
-        </div>
+        <div className="panel trip-workspace-panel">
+          <div className="section-heading-row">
+            <div>
+              <span className="section-kicker">YOUR TRIP</span>
+              <h2 className="panel-title">Trip Workspace</h2>
+              <p className="section-copy">
+                Review your route, trip details, and stops in one place.
+              </p>
+            </div>
+          </div>
 
-        <div className="panel">
-          <h2 className="panel-title">Selected Trip</h2>
+          <div className="trip-workspace-grid">
+            <div className="trip-map-section">
+              <h3 className="workspace-heading">Route Map</h3>
+              <TripMap
+                start={mapStart}
+                end={mapEnd}
+                stops={stops}
+                routeGeometry={routeGeometry}
+              />
+            </div>
+
+            <div className="trip-summary-section">
+              <h3 className="workspace-heading">Trip Summary</h3>
 
           {!activeTrip ? (
             <p className="empty-state">Select a trip.</p>
@@ -1791,10 +1843,16 @@ function App() {
               </button>
             </div>
           )}
-        </div>
+            </div>
+          </div>
 
-        <div className="panel">
-          <h2 className="panel-title">Stops / Waypoints</h2>
+          <div className="trip-stops-section">
+            <div className="section-heading-row compact-heading-row">
+              <div>
+                <span className="section-kicker">ROUTE DETAILS</span>
+                <h3 className="workspace-heading">Stops & Waypoints</h3>
+              </div>
+            </div>
 
           {stopsError ? (
             <p className="error-state">{stopsError}</p>
@@ -1928,10 +1986,19 @@ function App() {
               )}
             </>
           )}
+          </div>
         </div>
 
-        <div className="panel">
-          <h2 className="panel-title">Trips</h2>
+        <div className="panel saved-trips-panel">
+          <div className="section-heading-row">
+            <div>
+              <span className="section-kicker">YOUR ACCOUNT</span>
+              <h2 className="panel-title">Saved Trips</h2>
+              <p className="section-copy">
+                Reopen a trip, mark a favorite, or remove one you no longer need.
+              </p>
+            </div>
+          </div>
 
           {tripsError ? (
             <p className="error-state">{tripsError}</p>
