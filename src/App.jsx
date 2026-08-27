@@ -209,6 +209,8 @@ function App() {
   });
   const [weekendPlacesLoading, setWeekendPlacesLoading] = useState(false);
   const [weekendPlacesError, setWeekendPlacesError] = useState("");
+  const [showAllAlong, setShowAllAlong] = useState(false);
+  const [showAllWeekend, setShowAllWeekend] = useState(false);
 
   const [alongTheWay, setAlongTheWay] = useState({
     restaurant: [],
@@ -1406,18 +1408,51 @@ function App() {
               <h2 className="panel-title">Along the Way</h2>
             </div>
 
-            <div className="trip-details-panel route-summary">
-              <p>
-                <strong>Journey:</strong> {activeTrip.start} → {activeTrip.end}
-              </p>
-              <p>
-                <strong>Road Distance:</strong>{" "}
-                {tripStats?.distance || "Calculating..."}
-              </p>
-              <p>
-                <strong>Road Drive Time:</strong>{" "}
-                {tripStats?.driveTime || "Calculating..."}
-              </p>
+            <div className="trip-result-card">
+              <div className="trip-result-main">
+                <span className="trip-result-eyebrow">GAME ROAD TRIP</span>
+
+                {selectedFootballGame ? (
+                  <h3 className="trip-result-matchup">
+                    {selectedFootballGame.awayTeam}
+                    <span className="matchup-at"> @ </span>
+                    {selectedFootballGame.homeTeam}
+                  </h3>
+                ) : null}
+
+                <p className="trip-result-journey">
+                  <span>{activeTrip.start}</span>
+                  <span className="journey-arrow">→</span>
+                  <span>{activeTrip.end}</span>
+                </p>
+              </div>
+
+              <div className="trip-stat-grid">
+                <div className="trip-stat">
+                  <span className="trip-stat-label">Road Distance</span>
+                  <strong className="trip-stat-value">
+                    {tripStats?.distance || "Calculating..."}
+                  </strong>
+                </div>
+
+                <div className="trip-stat">
+                  <span className="trip-stat-label">Drive Time</span>
+                  <strong className="trip-stat-value">
+                    {tripStats?.driveTime || "Calculating..."}
+                  </strong>
+                </div>
+
+                <div className="trip-stat">
+                  <span className="trip-stat-label">Travel Plan</span>
+                  <strong className="trip-stat-value">
+                    {dailyDriveHours === "straight"
+                      ? "Straight through"
+                      : overnightTargets.length > 0
+                        ? `${overnightTargets.length + 1} days`
+                        : "1 day"}
+                  </strong>
+                </div>
+              </div>
             </div>
 
             {alongTheWayLoading ? (
@@ -1427,10 +1462,11 @@ function App() {
             ) : alongTheWayError ? (
               <p className="error-state">{alongTheWayError}</p>
             ) : (
+              <>
               <div className="along-the-way-grid">
                 <div className="recommendation-column">
                   <h3 className="game-weekend-heading">
-                    Food Worth Stopping For
+                    🍴 Food Worth Stopping For
                   </h3>
 
                   {alongTheWay.restaurant.length === 0 ? (
@@ -1439,7 +1475,7 @@ function App() {
                     </p>
                   ) : (
                     <ul className="trip-list">
-                      {alongTheWay.restaurant.slice(0, 6).map((place) => (
+                      {alongTheWay.restaurant.slice(0, showAllAlong ? 6 : 3).map((place) => (
                         <li key={place.id} className="trip-row">
                           <div className="trip-details">
                             <span className="trip-name">{place.name}</span>
@@ -1486,7 +1522,7 @@ function App() {
                 </div>
 
                 <div className="recommendation-column">
-                  <h3 className="game-weekend-heading">Overnight Options</h3>
+                  <h3 className="game-weekend-heading">🛏 Overnight Options</h3>
 
                   {alongTheWay.hotel.length === 0 ? (
                     <p className="empty-state">
@@ -1494,7 +1530,7 @@ function App() {
                     </p>
                   ) : (
                     <ul className="trip-list">
-                      {prioritizedHotels.slice(0, 6).map((place) => (
+                      {prioritizedHotels.slice(0, showAllAlong ? 6 : 3).map((place) => (
                         <li key={place.id} className="trip-row">
                           <div className="trip-details">
                             <span className="trip-name">{place.name}</span>
@@ -1540,7 +1576,7 @@ function App() {
 
                 <div className="recommendation-column">
                   <h3 className="game-weekend-heading">
-                    Historic & Interesting
+                    🏛 Historic & Interesting
                   </h3>
 
                   {alongTheWay.historic.length === 0 ? (
@@ -1549,7 +1585,7 @@ function App() {
                     </p>
                   ) : (
                     <ul className="trip-list">
-                      {alongTheWay.historic.slice(0, 6).map((place) => (
+                      {alongTheWay.historic.slice(0, showAllAlong ? 6 : 3).map((place) => (
                         <li key={place.id} className="trip-row">
                           <div className="trip-details">
                             <span className="trip-name">{place.name}</span>
@@ -1595,6 +1631,23 @@ function App() {
                   )}
                 </div>
               </div>
+
+              {(alongTheWay.restaurant.length > 3 ||
+                prioritizedHotels.length > 3 ||
+                alongTheWay.historic.length > 3) ? (
+                <div className="recommendation-expand-row">
+                  <button
+                    type="button"
+                    className="recommendation-expand-button"
+                    onClick={() => setShowAllAlong((current) => !current)}
+                  >
+                    {showAllAlong
+                      ? "Show fewer road trip stops"
+                      : "Show more road trip stops"}
+                  </button>
+                </div>
+              ) : null}
+              </>
             )}
           </div>
         ) : null}
@@ -1625,9 +1678,10 @@ function App() {
             ) : weekendPlacesError ? (
               <p className="error-state">{weekendPlacesError}</p>
             ) : (
+              <>
               <div className="game-weekend-grid">
                 <div className="recommendation-column">
-                  <h3 className="game-weekend-heading">Restaurants</h3>
+                  <h3 className="game-weekend-heading">🍴 Game Day Eats</h3>
 
                   {weekendPlaces.restaurant.length === 0 ? (
                     <p className="empty-state">
@@ -1635,7 +1689,7 @@ function App() {
                     </p>
                   ) : (
                     <ul className="trip-list">
-                      {weekendPlaces.restaurant.slice(0, 6).map((place) => (
+                      {weekendPlaces.restaurant.slice(0, showAllWeekend ? 6 : 3).map((place) => (
                         <li key={place.id} className="trip-row">
                           <div className="trip-details">
                             <span className="trip-name">{place.name}</span>
@@ -1673,13 +1727,13 @@ function App() {
                 </div>
 
                 <div className="recommendation-column">
-                  <h3 className="game-weekend-heading">Bars</h3>
+                  <h3 className="game-weekend-heading">🍺 Fan Bars</h3>
 
                   {weekendPlaces.bar.length === 0 ? (
                     <p className="empty-state">No nearby bars returned.</p>
                   ) : (
                     <ul className="trip-list">
-                      {weekendPlaces.bar.slice(0, 6).map((place) => (
+                      {weekendPlaces.bar.slice(0, showAllWeekend ? 6 : 3).map((place) => (
                         <li key={place.id} className="trip-row">
                           <div className="trip-details">
                             <span className="trip-name">{place.name}</span>
@@ -1717,13 +1771,13 @@ function App() {
                 </div>
 
                 <div className="recommendation-column">
-                  <h3 className="game-weekend-heading">Hotels</h3>
+                  <h3 className="game-weekend-heading">🛏 Stay Near the Stadium</h3>
 
                   {weekendPlaces.hotel.length === 0 ? (
                     <p className="empty-state">No nearby hotels returned.</p>
                   ) : (
                     <ul className="trip-list">
-                      {weekendPlaces.hotel.slice(0, 6).map((place) => (
+                      {weekendPlaces.hotel.slice(0, showAllWeekend ? 6 : 3).map((place) => (
                         <li key={place.id} className="trip-row">
                           <div className="trip-details">
                             <span className="trip-name">{place.name}</span>
@@ -1760,6 +1814,23 @@ function App() {
                   )}
                 </div>
               </div>
+
+              {(weekendPlaces.restaurant.length > 3 ||
+                weekendPlaces.bar.length > 3 ||
+                weekendPlaces.hotel.length > 3) ? (
+                <div className="recommendation-expand-row">
+                  <button
+                    type="button"
+                    className="recommendation-expand-button"
+                    onClick={() => setShowAllWeekend((current) => !current)}
+                  >
+                    {showAllWeekend
+                      ? "Show fewer game weekend options"
+                      : "Show more game weekend options"}
+                  </button>
+                </div>
+              ) : null}
+              </>
             )}
           </div>
         ) : null}
