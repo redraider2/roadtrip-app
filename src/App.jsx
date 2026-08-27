@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import Background from "./components/Background";
 import "./App.css";
 import TripMap from "./components/TripMap";
+import DestinationMap from "./components/DestinationMap";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5001";
@@ -207,6 +208,7 @@ function App() {
     bar: [],
     hotel: [],
   });
+  const [weekendVenue, setWeekendVenue] = useState(null);
   const [weekendPlacesLoading, setWeekendPlacesLoading] = useState(false);
   const [weekendPlacesError, setWeekendPlacesError] = useState("");
   const [showAllAlong, setShowAllAlong] = useState(false);
@@ -478,6 +480,7 @@ function App() {
     async function loadWeekendPlaces() {
       if (!selectedFootballGame?.venueId) {
         setWeekendPlaces({ restaurant: [], bar: [], hotel: [] });
+        setWeekendVenue(null);
         setWeekendPlacesError("");
         return;
       }
@@ -520,6 +523,7 @@ function App() {
           bar: barData.places || [],
           hotel: hotelData.places || [],
         });
+        setWeekendVenue(restaurantData.venue || null);
       } catch (err) {
         if (cancelled || err?.name === "AbortError") return;
 
@@ -529,6 +533,7 @@ function App() {
           bar: [],
           hotel: [],
         });
+        setWeekendVenue(null);
         setWeekendPlacesError(
           "Restaurants and bars could not be loaded for this game."
         );
@@ -906,8 +911,30 @@ function App() {
     }
   }
 
+  function isSuggestedStopAdded(place) {
+    const latitude = Number(place.latitude);
+    const longitude = Number(place.longitude);
+
+    return stops.some((stop) => {
+      const stopLatitude = Number(stop.latitude);
+      const stopLongitude = Number(stop.longitude);
+
+      return (
+        stop.name === place.name &&
+        Number.isFinite(latitude) &&
+        Number.isFinite(longitude) &&
+        Math.abs(stopLatitude - latitude) < 0.00001 &&
+        Math.abs(stopLongitude - longitude) < 0.00001
+      );
+    });
+  }
+
   async function addSuggestedStop(place, locationType) {
     if (!activeTrip) return;
+
+    if (isSuggestedStopAdded(place)) {
+      return;
+    }
 
     const latitude = Number(place.latitude);
     const longitude = Number(place.longitude);
@@ -1496,12 +1523,17 @@ function App() {
                             <div className="recommendation-actions">
                               <button
                                 type="button"
-                                className="ghost-button"
+                                className={`ghost-button${
+                                  isSuggestedStopAdded(place) ? " is-added" : ""
+                                }`}
+                                disabled={isSuggestedStopAdded(place)}
                                 onClick={() =>
                                   addSuggestedStop(place, "restaurant")
                                 }
                               >
-                                Add to Trip
+                                {isSuggestedStopAdded(place)
+                                  ? "✓ Added"
+                                  : "Add to Trip"}
                               </button>
                               {place.website ? (
                                 <a
@@ -1551,10 +1583,15 @@ function App() {
                             <div className="recommendation-actions">
                               <button
                                 type="button"
-                                className="ghost-button"
+                                className={`ghost-button${
+                                  isSuggestedStopAdded(place) ? " is-added" : ""
+                                }`}
+                                disabled={isSuggestedStopAdded(place)}
                                 onClick={() => addSuggestedStop(place, "hotel")}
                               >
-                                Add to Trip
+                                {isSuggestedStopAdded(place)
+                                  ? "✓ Added"
+                                  : "Add to Trip"}
                               </button>
                               {place.website ? (
                                 <a
@@ -1606,12 +1643,17 @@ function App() {
                             <div className="recommendation-actions">
                               <button
                                 type="button"
-                                className="ghost-button"
+                                className={`ghost-button${
+                                  isSuggestedStopAdded(place) ? " is-added" : ""
+                                }`}
+                                disabled={isSuggestedStopAdded(place)}
                                 onClick={() =>
                                   addSuggestedStop(place, "historic")
                                 }
                               >
-                                Add to Trip
+                                {isSuggestedStopAdded(place)
+                                  ? "✓ Added"
+                                  : "Add to Trip"}
                               </button>
                               {place.website ? (
                                 <a
@@ -1650,238 +1692,6 @@ function App() {
               </>
             )}
           </div>
-        ) : null}
-
-        {selectedFootballGame ? (
-          <div className="panel destination-panel">
-            <div className="section-heading-row">
-              <div>
-                <span className="section-kicker">DESTINATION</span>
-                <h2 className="panel-title">Game Weekend</h2>
-              </div>
-            </div>
-
-            <div className="trip-details-panel">
-              <p>
-                <strong>Destination:</strong>{" "}
-                {selectedFootballGame.venue || "Venue TBD"}
-              </p>
-              <p>
-                <strong>Host:</strong> {selectedFootballGame.homeTeam}
-              </p>
-            </div>
-
-            {weekendPlacesLoading ? (
-              <p className="empty-state">
-                Finding popular restaurants, bars, and hotels near the stadium...
-              </p>
-            ) : weekendPlacesError ? (
-              <p className="error-state">{weekendPlacesError}</p>
-            ) : (
-              <>
-              <div className="game-weekend-grid">
-                <div className="recommendation-column">
-                  <h3 className="game-weekend-heading">🍴 Game Day Eats</h3>
-
-                  {weekendPlaces.restaurant.length === 0 ? (
-                    <p className="empty-state">
-                      No nearby restaurants returned.
-                    </p>
-                  ) : (
-                    <ul className="trip-list">
-                      {weekendPlaces.restaurant.slice(0, showAllWeekend ? 6 : 3).map((place) => (
-                        <li key={place.id} className="trip-row">
-                          <div className="trip-details">
-                            <span className="trip-name">{place.name}</span>
-
-                            <span className="trip-route">
-                              {place.rating
-                                ? `${place.rating} ★`
-                                : "No rating"}
-                              {place.ratingCount
-                                ? ` · ${place.ratingCount.toLocaleString()} reviews`
-                                : ""}
-                            </span>
-
-                            {place.address ? (
-                              <span className="trip-notes-text">
-                                {place.address}
-                              </span>
-                            ) : null}
-
-                            {place.website ? (
-                              <a
-                                className="place-link"
-                                href={place.website}
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                Visit website
-                              </a>
-                            ) : null}
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-
-                <div className="recommendation-column">
-                  <h3 className="game-weekend-heading">🍺 Fan Bars</h3>
-
-                  {weekendPlaces.bar.length === 0 ? (
-                    <p className="empty-state">No nearby bars returned.</p>
-                  ) : (
-                    <ul className="trip-list">
-                      {weekendPlaces.bar.slice(0, showAllWeekend ? 6 : 3).map((place) => (
-                        <li key={place.id} className="trip-row">
-                          <div className="trip-details">
-                            <span className="trip-name">{place.name}</span>
-
-                            <span className="trip-route">
-                              {place.rating
-                                ? `${place.rating} ★`
-                                : "No rating"}
-                              {place.ratingCount
-                                ? ` · ${place.ratingCount.toLocaleString()} reviews`
-                                : ""}
-                            </span>
-
-                            {place.address ? (
-                              <span className="trip-notes-text">
-                                {place.address}
-                              </span>
-                            ) : null}
-
-                            {place.website ? (
-                              <a
-                                className="place-link"
-                                href={place.website}
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                Visit website
-                              </a>
-                            ) : null}
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-
-                <div className="recommendation-column">
-                  <h3 className="game-weekend-heading">🛏 Stay Near the Stadium</h3>
-
-                  {weekendPlaces.hotel.length === 0 ? (
-                    <p className="empty-state">No nearby hotels returned.</p>
-                  ) : (
-                    <ul className="trip-list">
-                      {weekendPlaces.hotel.slice(0, showAllWeekend ? 6 : 3).map((place) => (
-                        <li key={place.id} className="trip-row">
-                          <div className="trip-details">
-                            <span className="trip-name">{place.name}</span>
-
-                            <span className="trip-route">
-                              {place.rating
-                                ? `${place.rating} ★`
-                                : "No rating"}
-                              {place.ratingCount
-                                ? ` · ${place.ratingCount.toLocaleString()} reviews`
-                                : ""}
-                            </span>
-
-                            {place.address ? (
-                              <span className="trip-notes-text">
-                                {place.address}
-                              </span>
-                            ) : null}
-
-                            {place.website ? (
-                              <a
-                                className="place-link"
-                                href={place.website}
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                Visit website
-                              </a>
-                            ) : null}
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
-
-              {(weekendPlaces.restaurant.length > 3 ||
-                weekendPlaces.bar.length > 3 ||
-                weekendPlaces.hotel.length > 3) ? (
-                <div className="recommendation-expand-row">
-                  <button
-                    type="button"
-                    className="recommendation-expand-button"
-                    onClick={() => setShowAllWeekend((current) => !current)}
-                  >
-                    {showAllWeekend
-                      ? "Show fewer game weekend options"
-                      : "Show more game weekend options"}
-                  </button>
-                </div>
-              ) : null}
-              </>
-            )}
-          </div>
-        ) : null}
-
-        {auth ? (
-        <div className="panel custom-trip-panel">
-          <div className="section-heading-row">
-            <div>
-              <span className="section-kicker">OPTIONAL</span>
-              <h2 className="panel-title">Create a Custom Trip</h2>
-              <p className="section-copy">
-                Planning something other than a football weekend? Build it here.
-              </p>
-            </div>
-          </div>
-
-          <form onSubmit={handleSubmit} className="trip-form">
-            <input
-              value={tripName}
-              onChange={(e) => setTripName(e.target.value)}
-              placeholder="Trip name (optional)"
-              className="trip-input"
-            />
-
-            <input
-              value={start}
-              onChange={(e) => setStart(e.target.value)}
-              placeholder="Start (e.g., Seattle, WA)"
-              className="trip-input"
-            />
-
-            <input
-              value={end}
-              onChange={(e) => setEnd(e.target.value)}
-              placeholder="End (e.g., Houston, TX)"
-              className="trip-input"
-            />
-
-            <textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder="Notes (optional)"
-              className="trip-input trip-notes"
-              rows={3}
-            />
-
-            <button type="submit" className="primary-button">
-              Add Trip
-            </button>
-          </form>
-        </div>
         ) : null}
 
         {activeTrip ? (
@@ -2102,6 +1912,255 @@ function App() {
           </div>
         </div>
         ) : null}
+
+        {selectedFootballGame ? (
+          <div className="panel destination-panel">
+            <div className="section-heading-row">
+              <div>
+                <span className="section-kicker">DESTINATION</span>
+                <h2 className="panel-title">Game Weekend</h2>
+              </div>
+            </div>
+
+            <div className="trip-details-panel">
+              <p>
+                <strong>Destination:</strong>{" "}
+                {selectedFootballGame.venue || "Venue TBD"}
+              </p>
+              <p>
+                <strong>Host:</strong> {selectedFootballGame.homeTeam}
+              </p>
+            </div>
+
+            {weekendVenue ? (
+              <div className="destination-map-section">
+                <div className="destination-map-heading">
+                  <span className="section-kicker">EXPLORE THE DESTINATION</span>
+                  <h3 className="workspace-heading">Game Weekend Map</h3>
+                </div>
+
+                <DestinationMap
+                  venue={weekendVenue}
+                  restaurants={weekendPlaces.restaurant}
+                  bars={weekendPlaces.bar}
+                  hotels={weekendPlaces.hotel}
+                />
+              </div>
+            ) : null}
+
+            {weekendPlacesLoading ? (
+              <p className="empty-state">
+                Finding popular restaurants, bars, and hotels near the stadium...
+              </p>
+            ) : weekendPlacesError ? (
+              <p className="error-state">{weekendPlacesError}</p>
+            ) : (
+              <>
+              <div className="game-weekend-grid">
+                <div className="recommendation-column">
+                  <h3 className="game-weekend-heading">🍴 Game Day Eats</h3>
+
+                  {weekendPlaces.restaurant.length === 0 ? (
+                    <p className="empty-state">
+                      No nearby restaurants returned.
+                    </p>
+                  ) : (
+                    <ul className="trip-list">
+                      {weekendPlaces.restaurant.slice(0, showAllWeekend ? 6 : 3).map((place) => (
+                        <li key={place.id} className="trip-row">
+                          <div className="trip-details">
+                            <span className="trip-name">{place.name}</span>
+
+                            <span className="trip-route">
+                              {place.rating
+                                ? `${place.rating} ★`
+                                : "No rating"}
+                              {place.ratingCount
+                                ? ` · ${place.ratingCount.toLocaleString()} reviews`
+                                : ""}
+                            </span>
+
+                            {place.address ? (
+                              <span className="trip-notes-text">
+                                {place.address}
+                              </span>
+                            ) : null}
+
+                            {place.website ? (
+                              <a
+                                className="place-link"
+                                href={place.website}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                Visit website
+                              </a>
+                            ) : null}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                <div className="recommendation-column">
+                  <h3 className="game-weekend-heading">🍺 Fan Bars</h3>
+
+                  {weekendPlaces.bar.length === 0 ? (
+                    <p className="empty-state">No nearby bars returned.</p>
+                  ) : (
+                    <ul className="trip-list">
+                      {weekendPlaces.bar.slice(0, showAllWeekend ? 6 : 3).map((place) => (
+                        <li key={place.id} className="trip-row">
+                          <div className="trip-details">
+                            <span className="trip-name">{place.name}</span>
+
+                            <span className="trip-route">
+                              {place.rating
+                                ? `${place.rating} ★`
+                                : "No rating"}
+                              {place.ratingCount
+                                ? ` · ${place.ratingCount.toLocaleString()} reviews`
+                                : ""}
+                            </span>
+
+                            {place.address ? (
+                              <span className="trip-notes-text">
+                                {place.address}
+                              </span>
+                            ) : null}
+
+                            {place.website ? (
+                              <a
+                                className="place-link"
+                                href={place.website}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                Visit website
+                              </a>
+                            ) : null}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                <div className="recommendation-column">
+                  <h3 className="game-weekend-heading">🛏 Stay Near the Stadium</h3>
+
+                  {weekendPlaces.hotel.length === 0 ? (
+                    <p className="empty-state">No nearby hotels returned.</p>
+                  ) : (
+                    <ul className="trip-list">
+                      {weekendPlaces.hotel.slice(0, showAllWeekend ? 6 : 3).map((place) => (
+                        <li key={place.id} className="trip-row">
+                          <div className="trip-details">
+                            <span className="trip-name">{place.name}</span>
+
+                            <span className="trip-route">
+                              {place.rating
+                                ? `${place.rating} ★`
+                                : "No rating"}
+                              {place.ratingCount
+                                ? ` · ${place.ratingCount.toLocaleString()} reviews`
+                                : ""}
+                            </span>
+
+                            {place.address ? (
+                              <span className="trip-notes-text">
+                                {place.address}
+                              </span>
+                            ) : null}
+
+                            {place.website ? (
+                              <a
+                                className="place-link"
+                                href={place.website}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                Visit website
+                              </a>
+                            ) : null}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+
+              {(weekendPlaces.restaurant.length > 3 ||
+                weekendPlaces.bar.length > 3 ||
+                weekendPlaces.hotel.length > 3) ? (
+                <div className="recommendation-expand-row">
+                  <button
+                    type="button"
+                    className="recommendation-expand-button"
+                    onClick={() => setShowAllWeekend((current) => !current)}
+                  >
+                    {showAllWeekend
+                      ? "Show fewer game weekend options"
+                      : "Show more game weekend options"}
+                  </button>
+                </div>
+              ) : null}
+              </>
+            )}
+          </div>
+        ) : null}
+
+        {auth ? (
+        <div className="panel custom-trip-panel">
+          <div className="section-heading-row">
+            <div>
+              <span className="section-kicker">OPTIONAL</span>
+              <h2 className="panel-title">Create a Custom Trip</h2>
+              <p className="section-copy">
+                Planning something other than a football weekend? Build it here.
+              </p>
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmit} className="trip-form">
+            <input
+              value={tripName}
+              onChange={(e) => setTripName(e.target.value)}
+              placeholder="Trip name (optional)"
+              className="trip-input"
+            />
+
+            <input
+              value={start}
+              onChange={(e) => setStart(e.target.value)}
+              placeholder="Start (e.g., Seattle, WA)"
+              className="trip-input"
+            />
+
+            <input
+              value={end}
+              onChange={(e) => setEnd(e.target.value)}
+              placeholder="End (e.g., Houston, TX)"
+              className="trip-input"
+            />
+
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Notes (optional)"
+              className="trip-input trip-notes"
+              rows={3}
+            />
+
+            <button type="submit" className="primary-button">
+              Add Trip
+            </button>
+          </form>
+        </div>
+        ) : null}
+
 
         <div
           className="panel saved-trips-panel"

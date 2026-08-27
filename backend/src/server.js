@@ -1573,6 +1573,8 @@ app.get("/football/venues/:venueId/places", async (req, res) => {
       ratingCount: place.userRatingCount ?? null,
       website: place.websiteUri || null,
       primaryType: place.primaryType || null,
+      latitude: place.location?.latitude ?? null,
+      longitude: place.location?.longitude ?? null,
     }));
 
     return res.json({
@@ -1581,6 +1583,8 @@ app.get("/football/venues/:venueId/places", async (req, res) => {
         name: venue.name,
         city: venue.city,
         state: venue.state,
+        latitude: venue.latitude ?? null,
+        longitude: venue.longitude ?? null,
       },
       category,
       places,
