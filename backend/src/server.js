@@ -1029,6 +1029,41 @@ app.delete("/stops/:id", requireAuth, async (req, res) => {
   }
 });
 
+app.patch("/stops/:id/route", requireAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { is_route_stop } = req.body;
+
+    if (typeof is_route_stop !== "boolean") {
+      return res.status(400).json({
+        error: "is_route_stop must be true or false",
+      });
+    }
+
+    const result = await db.query(
+      `UPDATE stops
+       SET is_route_stop = $1
+       FROM trips
+       WHERE stops.id = $2
+         AND stops.trip_id = trips.id
+         AND trips.user_id = $3
+       RETURNING stops.*`,
+      [is_route_stop, id, req.user.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Stop not found" });
+    }
+
+    return res.json(result.rows[0]);
+  } catch (err) {
+    console.error("PATCH /stops/:id/route error:", err);
+    return res.status(500).json({
+      error: "Failed to update route status",
+    });
+  }
+});
+
 app.patch("/stops/:id/order", requireAuth, async (req, res) => {
   const { id } = req.params;
   const { direction } = req.body;
@@ -1046,7 +1081,9 @@ app.patch("/stops/:id/order", requireAuth, async (req, res) => {
       `SELECT s.id, s.trip_id, s.order_index
        FROM stops s
        JOIN trips t ON s.trip_id = t.id
-       WHERE s.id = $1 AND t.user_id = $2`,
+       WHERE s.id = $1
+         AND t.user_id = $2
+         AND s.is_route_stop = TRUE`,
       [id, req.user.id]
     );
 
@@ -1062,7 +1099,9 @@ app.patch("/stops/:id/order", requireAuth, async (req, res) => {
     const swapResult = await client.query(
       `SELECT id, order_index
        FROM stops
-       WHERE trip_id = $1 AND order_index ${operator} $2
+       WHERE trip_id = $1
+         AND is_route_stop = TRUE
+         AND order_index ${operator} $2
        ORDER BY order_index ${sort}
        LIMIT 1`,
       [current.trip_id, current.order_index]

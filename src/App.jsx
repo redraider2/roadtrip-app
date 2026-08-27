@@ -999,6 +999,35 @@ function App() {
 }
 }
 
+  async function setStopRouteStatus(id, isRouteStop) {
+    if (!activeTrip || !auth?.token) return;
+
+    try {
+      const res = await authFetch(
+        `${API_BASE_URL}/stops/${id}/route`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            is_route_stop: isRouteStop,
+          }),
+        },
+        auth.token
+      );
+
+      if (!res.ok) {
+        throw new Error("Failed to update route status");
+      }
+
+      await fetchStops(activeTrip.id);
+    } catch (err) {
+      console.error("Route status update failed:", err);
+      alert("Could not update this place on the route.");
+    }
+  }
+
   async function moveStop(id, direction) {
     if (!activeTrip) return;
 
@@ -1536,8 +1565,8 @@ function App() {
                                 }
                               >
                                 {isSuggestedStopAdded(place)
-                                  ? "✓ Added"
-                                  : "Add to Trip"}
+                                  ? "✓ Saved"
+                                  : "Save to Trip"}
                               </button>
                               {place.website ? (
                                 <a
@@ -1594,8 +1623,8 @@ function App() {
                                 onClick={() => addSuggestedStop(place, "hotel")}
                               >
                                 {isSuggestedStopAdded(place)
-                                  ? "✓ Added"
-                                  : "Add to Trip"}
+                                  ? "✓ Saved"
+                                  : "Save to Trip"}
                               </button>
                               {place.website ? (
                                 <a
@@ -1656,8 +1685,8 @@ function App() {
                                 }
                               >
                                 {isSuggestedStopAdded(place)
-                                  ? "✓ Added"
-                                  : "Add to Trip"}
+                                  ? "✓ Saved"
+                                  : "Save to Trip"}
                               </button>
                               {place.website ? (
                                 <a
@@ -1847,69 +1876,143 @@ function App() {
               {stops.length === 0 ? (
                 <p className="empty-state">No stops added yet.</p>
               ) : (
-                <ul className="trip-list">
-                  {stops.map((stop) => (
-                    <li key={stop.id} className="trip-row">
-                      <div className="trip-details">
-                        <span className="trip-name">
-                          {stop.order_index + 1}. {stop.name}
-                        </span>
+                <div className="trip-stop-groups">
+                  <div className="trip-stop-group">
+                    <h4 className="trip-stop-group-heading">Route Stops</h4>
 
-                        <span className="stop-meta">
-                          <span className="stop-badge">
-                            {stop.location_type || "waypoint"}
-                          </span>
+                    {stops.filter((stop) => stop.is_route_stop !== false).length === 0 ? (
+                      <p className="empty-state">No route stops added.</p>
+                    ) : (
+                      <ul className="trip-list">
+                        {stops
+                          .filter((stop) => stop.is_route_stop !== false)
+                          .map((stop) => (
+                            <li key={stop.id} className="trip-row">
+                              <div className="trip-details">
+                                <span className="trip-name">
+                                  {stop.order_index + 1}. {stop.name}
+                                </span>
 
-                          {stop.avg_rating ? (
-                            <span className="stop-rating">
-                              Rating: {stop.avg_rating}/5
-                            </span>
-                          ) : null}
-                        </span>
+                                <span className="stop-meta">
+                                  <span className="stop-badge">
+                                    Route · {stop.location_type || "waypoint"}
+                                  </span>
 
-                        <span className="trip-route">
-                          Lat: {stop.latitude} | Lng: {stop.longitude}
-                        </span>
+                                  {stop.avg_rating ? (
+                                    <span className="stop-rating">
+                                      Rating: {stop.avg_rating}/5
+                                    </span>
+                                  ) : null}
+                                </span>
 
-                        {stop.notes && (
-                          <span className="trip-notes-text">{stop.notes}</span>
-                        )}
+                                {stop.notes && (
+                                  <span className="trip-notes-text">{stop.notes}</span>
+                                )}
 
-                        {stop.description && (
-                          <span className="trip-trivia-text">
-                            Trivia: {stop.description}
-                          </span>
-                        )}
-                      </div>
+                                {stop.description && (
+                                  <span className="trip-trivia-text">
+                                    Trivia: {stop.description}
+                                  </span>
+                                )}
+                              </div>
 
-                      <div className="trip-actions">
-                        <button
-                          className="ghost-button"
-                          type="button"
-                          onClick={() => moveStop(stop.id, "up")}
-                        >
-                          ↑
-                        </button>
+                              <div className="trip-actions">
+                                <button
+                                  className="ghost-button"
+                                  type="button"
+                                  onClick={() => moveStop(stop.id, "up")}
+                                >
+                                  ↑
+                                </button>
 
-                        <button
-                          className="ghost-button"
-                          type="button"
-                          onClick={() => moveStop(stop.id, "down")}
-                        >
-                          ↓
-                        </button>
+                                <button
+                                  className="ghost-button"
+                                  type="button"
+                                  onClick={() => moveStop(stop.id, "down")}
+                                >
+                                  ↓
+                                </button>
 
-                        <button
-                          className="ghost-button"
-                          type="button"
-                          onClick={() => deleteStop(stop.id)}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+                                <button
+                                  className="ghost-button"
+                                  type="button"
+                                  onClick={() =>
+                                    setStopRouteStatus(stop.id, false)
+                                  }
+                                >
+                                  Save Only
+                                </button>
+
+                                <button
+                                  className="ghost-button"
+                                  type="button"
+                                  onClick={() => deleteStop(stop.id)}
+                                >
+                                  Delete
+                                </button>
+                              </div>
+                            </li>
+                          ))}
+                      </ul>
+                    )}
+                  </div>
+
+                  <div className="trip-stop-group">
+                    <h4 className="trip-stop-group-heading">Saved Places</h4>
+
+                    {stops.filter((stop) => stop.is_route_stop === false).length === 0 ? (
+                      <p className="empty-state">No saved places yet.</p>
+                    ) : (
+                      <ul className="trip-list">
+                        {stops
+                          .filter((stop) => stop.is_route_stop === false)
+                          .map((stop) => (
+                            <li key={stop.id} className="trip-row">
+                              <div className="trip-details">
+                                <span className="trip-name">{stop.name}</span>
+
+                                <span className="stop-meta">
+                                  <span className="stop-badge">
+                                    Saved · {stop.location_type || "place"}
+                                  </span>
+
+                                  {stop.avg_rating ? (
+                                    <span className="stop-rating">
+                                      Rating: {stop.avg_rating}/5
+                                    </span>
+                                  ) : null}
+                                </span>
+
+                                {stop.notes && (
+                                  <span className="trip-notes-text">{stop.notes}</span>
+                                )}
+                              </div>
+
+                              <div className="trip-actions">
+                                <button
+                                  className="ghost-button"
+                                  type="button"
+                                  onClick={() =>
+                                    setStopRouteStatus(stop.id, true)
+                                  }
+                                >
+                                  Add to Route
+                                </button>
+
+                                <button
+                                  className="ghost-button"
+                                  type="button"
+                                  onClick={() => deleteStop(stop.id)}
+                                >
+                                  Delete
+                                </button>
+                              </div>
+                            </li>
+                          ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
               )}
             </>
           )}
@@ -2002,8 +2105,8 @@ function App() {
                                 }
                               >
                                 {isSuggestedStopAdded(place)
-                                  ? "✓ Added"
-                                  : "Add to Trip"}
+                                  ? "✓ Saved"
+                                  : "Save to Trip"}
                               </button>
 
                               {place.website ? (
@@ -2063,8 +2166,8 @@ function App() {
                                 }
                               >
                                 {isSuggestedStopAdded(place)
-                                  ? "✓ Added"
-                                  : "Add to Trip"}
+                                  ? "✓ Saved"
+                                  : "Save to Trip"}
                               </button>
 
                               {place.website ? (
@@ -2124,8 +2227,8 @@ function App() {
                                 }
                               >
                                 {isSuggestedStopAdded(place)
-                                  ? "✓ Added"
-                                  : "Add to Trip"}
+                                  ? "✓ Saved"
+                                  : "Save to Trip"}
                               </button>
 
                               {place.website ? (

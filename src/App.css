@@ -1285,3 +1285,26 @@ select.trip-input {
   letter-spacing: 0.08em;
   color: white;
 }
+
+/* TRIP WORKSPACE STOP GROUPS */
+
+.trip-stop-groups {
+  display: grid;
+  gap: 1.35rem;
+  margin-top: 1.25rem;
+}
+
+.trip-stop-group {
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.trip-stop-group-heading {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
