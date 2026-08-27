@@ -1534,7 +1534,7 @@ app.get("/football/venues/:venueId/places", async (req, res) => {
             "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.websiteUri,places.primaryType",
         },
         body: JSON.stringify({
-          includedTypes,
+          includedPrimaryTypes: includedTypes,
           maxResultCount: 10,
           rankPreference: "POPULARITY",
           locationRestriction: {
@@ -1572,6 +1572,7 @@ app.get("/football/venues/:venueId/places", async (req, res) => {
       rating: place.rating ?? null,
       ratingCount: place.userRatingCount ?? null,
       website: place.websiteUri || null,
+      primaryType: place.primaryType || null,
     }));
 
     return res.json({
