@@ -805,6 +805,7 @@ function App() {
           isPreview: true,
         };
 
+        setStops([]);
         setTrips((currentTrips) => [
           ...currentTrips.filter((trip) => trip.id !== null),
           previewTrip,
@@ -911,6 +912,25 @@ function App() {
 
     if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
       alert("This recommendation does not have usable coordinates.");
+      return;
+    }
+
+    if (!auth) {
+      setStops((currentStops) => [
+        ...currentStops,
+        {
+          id: `guest-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+          name: place.name,
+          location_type: locationType,
+          latitude,
+          longitude,
+          notes: place.address || "",
+          description: "",
+          avg_rating: place.rating || null,
+          order_index: currentStops.length,
+          isGuestStop: true,
+        },
+      ]);
       return;
     }
 
@@ -1441,7 +1461,6 @@ function App() {
                               <button
                                 type="button"
                                 className="ghost-button"
-                                style={{ display: auth ? undefined : "none" }}
                                 onClick={() =>
                                   addSuggestedStop(place, "restaurant")
                                 }
@@ -1497,7 +1516,6 @@ function App() {
                               <button
                                 type="button"
                                 className="ghost-button"
-                                style={{ display: auth ? undefined : "none" }}
                                 onClick={() => addSuggestedStop(place, "hotel")}
                               >
                                 Add to Trip
@@ -1553,7 +1571,6 @@ function App() {
                               <button
                                 type="button"
                                 className="ghost-button"
-                                style={{ display: auth ? undefined : "none" }}
                                 onClick={() =>
                                   addSuggestedStop(place, "historic")
                                 }
