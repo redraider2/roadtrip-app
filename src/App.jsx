@@ -1986,16 +1986,33 @@ function App() {
                               </span>
                             ) : null}
 
-                            {place.website ? (
-                              <a
-                                className="place-link"
-                                href={place.website}
-                                target="_blank"
-                                rel="noreferrer"
+                            <div className="recommendation-actions">
+                              <button
+                                type="button"
+                                className={`ghost-button${
+                                  isSuggestedStopAdded(place) ? " is-added" : ""
+                                }`}
+                                disabled={isSuggestedStopAdded(place)}
+                                onClick={() =>
+                                  addSuggestedStop(place, "restaurant")
+                                }
                               >
-                                Visit website
-                              </a>
-                            ) : null}
+                                {isSuggestedStopAdded(place)
+                                  ? "✓ Added"
+                                  : "Add to Trip"}
+                              </button>
+
+                              {place.website ? (
+                                <a
+                                  className="place-link"
+                                  href={place.website}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  Visit website
+                                </a>
+                              ) : null}
+                            </div>
                           </div>
                         </li>
                       ))}
@@ -2030,16 +2047,33 @@ function App() {
                               </span>
                             ) : null}
 
-                            {place.website ? (
-                              <a
-                                className="place-link"
-                                href={place.website}
-                                target="_blank"
-                                rel="noreferrer"
+                            <div className="recommendation-actions">
+                              <button
+                                type="button"
+                                className={`ghost-button${
+                                  isSuggestedStopAdded(place) ? " is-added" : ""
+                                }`}
+                                disabled={isSuggestedStopAdded(place)}
+                                onClick={() =>
+                                  addSuggestedStop(place, "bar")
+                                }
                               >
-                                Visit website
-                              </a>
-                            ) : null}
+                                {isSuggestedStopAdded(place)
+                                  ? "✓ Added"
+                                  : "Add to Trip"}
+                              </button>
+
+                              {place.website ? (
+                                <a
+                                  className="place-link"
+                                  href={place.website}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  Visit website
+                                </a>
+                              ) : null}
+                            </div>
                           </div>
                         </li>
                       ))}
@@ -2074,16 +2108,33 @@ function App() {
                               </span>
                             ) : null}
 
-                            {place.website ? (
-                              <a
-                                className="place-link"
-                                href={place.website}
-                                target="_blank"
-                                rel="noreferrer"
+                            <div className="recommendation-actions">
+                              <button
+                                type="button"
+                                className={`ghost-button${
+                                  isSuggestedStopAdded(place) ? " is-added" : ""
+                                }`}
+                                disabled={isSuggestedStopAdded(place)}
+                                onClick={() =>
+                                  addSuggestedStop(place, "hotel")
+                                }
                               >
-                                Visit website
-                              </a>
-                            ) : null}
+                                {isSuggestedStopAdded(place)
+                                  ? "✓ Added"
+                                  : "Add to Trip"}
+                              </button>
+
+                              {place.website ? (
+                                <a
+                                  className="place-link"
+                                  href={place.website}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  Visit website
+                                </a>
+                              ) : null}
+                            </div>
                           </div>
                         </li>
                       ))}
