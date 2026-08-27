@@ -849,6 +849,7 @@ app.get("/trips/:tripId/stops", requireAuth, async (req, res) => {
          s.location_id,
          s.order_index,
          s.notes,
+         s.is_route_stop,
          l.name,
          l.location_type,
          l.latitude,
@@ -898,8 +899,16 @@ app.delete("/trips/:id", requireAuth, async (req, res) => {
 
 app.post("/trips/:tripId/stops", requireAuth, async (req, res) => {
   const { tripId } = req.params;
-  const { name, latitude, longitude, notes, location_type, trivia, rating } =
-    req.body;
+  const {
+    name,
+    latitude,
+    longitude,
+    notes,
+    location_type,
+    trivia,
+    rating,
+    is_route_stop,
+  } = req.body;
 
   if (!name || latitude == null || longitude == null) {
     return res
@@ -972,11 +981,15 @@ app.post("/trips/:tripId/stops", requireAuth, async (req, res) => {
 
     const nextOrder = orderResult.rows[0].next_order;
 
+    const routeStop =
+      is_route_stop === false || is_route_stop === "false" ? false : true;
+
     const stopResult = await client.query(
-      `INSERT INTO stops (trip_id, location_id, order_index, notes)
-       VALUES ($1, $2, $3, $4)
+      `INSERT INTO stops
+       (trip_id, location_id, order_index, notes, is_route_stop)
+       VALUES ($1, $2, $3, $4, $5)
        RETURNING *`,
-      [tripId, locationId, nextOrder, notes || ""]
+      [tripId, locationId, nextOrder, notes || "", routeStop]
     );
 
     await client.query("COMMIT");

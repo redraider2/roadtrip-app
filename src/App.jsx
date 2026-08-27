@@ -584,6 +584,7 @@ function App() {
         ]);
 
         const orderedStops = stops
+          .filter((stop) => stop.is_route_stop !== false)
           .filter(isValidCoordinate)
           .sort((a, b) => a.order_index - b.order_index)
           .map((stop) => ({
@@ -889,6 +890,7 @@ function App() {
           notes: n,
           trivia: stopTrivia.trim(),
           rating: stopRating,
+          is_route_stop: true,
           }),
         },
         auth.token
@@ -957,6 +959,7 @@ function App() {
           description: "",
           avg_rating: place.rating || null,
           order_index: currentStops.length,
+          is_route_stop: false,
           isGuestStop: true,
         },
       ]);
@@ -979,6 +982,7 @@ function App() {
           notes: place.address || "",
           trivia: "",
           rating: "",
+          is_route_stop: false,
           }),
         },
         auth.token
