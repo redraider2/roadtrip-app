@@ -618,7 +618,7 @@ function App() {
     const controller = new AbortController();
 
     async function loadAlongTheWay() {
-      if (!activeTrip?.id || !Array.isArray(routeGeometry) || routeGeometry.length < 2) {
+      if (!activeTrip || !Array.isArray(routeGeometry) || routeGeometry.length < 2) {
         setAlongTheWay({
           restaurant: [],
           hotel: [],
@@ -794,6 +794,24 @@ function App() {
         selectedFootballGame.startDate,
         selectedFootballGame.startTimeTBD
       );
+
+      if (!auth) {
+        const previewTrip = {
+          id: null,
+          title: matchup,
+          start: s,
+          end: destination,
+          notes: `${gameDate} · ${venue.name}`,
+          isPreview: true,
+        };
+
+        setTrips((currentTrips) => [
+          ...currentTrips.filter((trip) => trip.id !== null),
+          previewTrip,
+        ]);
+        setActiveTripId(null);
+        return;
+      }
 
       const tripRes = await authFetch(
         `${API_BASE_URL}/trips`,
@@ -1340,7 +1358,7 @@ function App() {
 
             {!auth ? (
               <p className="empty-state">
-                Sign in or create an account to save this road trip.
+                No account needed to plan. Sign in when you want to save your trip.
               </p>
             ) : null}
 
@@ -1348,18 +1366,15 @@ function App() {
               type="submit"
               className="primary-button"
               disabled={
-                !auth ||
                 footballLoading ||
                 !selectedFootballTeam ||
                 !selectedFootballGame ||
                 !footballStart.trim()
               }
             >
-              {!auth
-                ? "Sign In to Save Trip"
-                : footballLoading
-                  ? "Loading..."
-                  : "Create Game Road Trip"}
+              {footballLoading
+                ? "Loading..."
+                : "Plan My Road Trip"}
             </button>
           </form>
         </div>
@@ -1426,6 +1441,7 @@ function App() {
                               <button
                                 type="button"
                                 className="ghost-button"
+                                style={{ display: auth ? undefined : "none" }}
                                 onClick={() =>
                                   addSuggestedStop(place, "restaurant")
                                 }
@@ -1481,6 +1497,7 @@ function App() {
                               <button
                                 type="button"
                                 className="ghost-button"
+                                style={{ display: auth ? undefined : "none" }}
                                 onClick={() => addSuggestedStop(place, "hotel")}
                               >
                                 Add to Trip
@@ -1536,6 +1553,7 @@ function App() {
                               <button
                                 type="button"
                                 className="ghost-button"
+                                style={{ display: auth ? undefined : "none" }}
                                 onClick={() =>
                                   addSuggestedStop(place, "historic")
                                 }
@@ -1729,6 +1747,7 @@ function App() {
           </div>
         ) : null}
 
+        {auth ? (
         <div className="panel custom-trip-panel">
           <div className="section-heading-row">
             <div>
@@ -1775,7 +1794,9 @@ function App() {
             </button>
           </form>
         </div>
+        ) : null}
 
+        {activeTrip ? (
         <div className="panel trip-workspace-panel">
           <div className="section-heading-row">
             <div>
@@ -1837,6 +1858,7 @@ function App() {
 
               <button
                 className="ghost-button"
+                style={{ display: auth ? undefined : "none" }}
                 onClick={() => deleteTrip(activeTrip.id)}
               >
                 Delete Trip
@@ -1846,7 +1868,10 @@ function App() {
             </div>
           </div>
 
-          <div className="trip-stops-section">
+          <div
+            className="trip-stops-section"
+            style={{ display: auth ? undefined : "none" }}
+          >
             <div className="section-heading-row compact-heading-row">
               <div>
                 <span className="section-kicker">ROUTE DETAILS</span>
@@ -1988,8 +2013,12 @@ function App() {
           )}
           </div>
         </div>
+        ) : null}
 
-        <div className="panel saved-trips-panel">
+        <div
+          className="panel saved-trips-panel"
+          style={{ display: auth ? undefined : "none" }}
+        >
           <div className="section-heading-row">
             <div>
               <span className="section-kicker">YOUR ACCOUNT</span>
