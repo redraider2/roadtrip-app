@@ -144,13 +144,197 @@ function formatTripStats(route) {
   };
 }
 
-function formatRouteProgress(progress) {
-  const percent = Math.round(Number(progress || 0) * 100);
+function getTravelDayNumber(progress, dayCount) {
+  const days = Math.max(1, Number(dayCount) || 1);
+  const normalizedProgress = Math.min(
+    0.999999,
+    Math.max(0, Number(progress) || 0)
+  );
 
-  if (percent <= 25) return `Early in the drive · ${percent}%`;
-  if (percent <= 60) return `Around the middle · ${percent}%`;
-  if (percent <= 85) return `Later in the drive · ${percent}%`;
-  return `Near your destination · ${percent}%`;
+  return Math.min(
+    days,
+    Math.floor(normalizedProgress * days) + 1
+  );
+}
+
+function comparePlaceQuality(a, b) {
+  const ratingDifference =
+    (Number(b.rating) || 0) - (Number(a.rating) || 0);
+
+  if (ratingDifference !== 0) {
+    return ratingDifference;
+  }
+
+  return (
+    (Number(b.ratingCount) || 0) -
+    (Number(a.ratingCount) || 0)
+  );
+}
+
+function orderPlacesByTravelDay(places, dayCount) {
+  if (!Array.isArray(places) || places.length === 0) {
+    return [];
+  }
+
+  const days = Math.max(1, Number(dayCount) || 1);
+  const ordered = [];
+  const usedIds = new Set();
+
+  /*
+   * Pick the best available recommendation from each
+   * sequential travel-day stretch.
+   *
+   * Example for 4 days:
+   * Day 1 = 0–25%
+   * Day 2 = 25–50%
+   * Day 3 = 50–75%
+   * Day 4 = 75–100%
+   */
+  for (let dayIndex = 0; dayIndex < days; dayIndex += 1) {
+    const start = dayIndex / days;
+    const end = (dayIndex + 1) / days;
+    const target = (start + end) / 2;
+
+    const candidates = places
+      .filter((place) => {
+        const progress = Number(place.routeProgress);
+
+        if (!Number.isFinite(progress)) {
+          return false;
+        }
+
+        const inStretch =
+          dayIndex === days - 1
+            ? progress >= start && progress <= end
+            : progress >= start && progress < end;
+
+        return inStretch && !usedIds.has(place.id);
+      })
+      .sort((a, b) => {
+        const aDistance =
+          Math.abs(Number(a.routeProgress) - target);
+        const bDistance =
+          Math.abs(Number(b.routeProgress) - target);
+
+        if (aDistance !== bDistance) {
+          return aDistance - bDistance;
+        }
+
+        return comparePlaceQuality(a, b);
+      });
+
+    if (candidates.length > 0) {
+      const selected = candidates[0];
+      ordered.push(selected);
+      usedIds.add(selected.id);
+    }
+  }
+
+  /*
+   * Additional choices appear afterward, but always
+   * remain in geographic journey order.
+   */
+  const remaining = places
+    .filter((place) => !usedIds.has(place.id))
+    .sort((a, b) => {
+      const progressDifference =
+        (Number(a.routeProgress) || 0) -
+        (Number(b.routeProgress) || 0);
+
+      if (progressDifference !== 0) {
+        return progressDifference;
+      }
+
+      return comparePlaceQuality(a, b);
+    });
+
+  return [...ordered, ...remaining];
+}
+
+function orderHotelsByTravelNight(places, dayCount) {
+  if (!Array.isArray(places) || places.length === 0) {
+    return [];
+  }
+
+  const days = Math.max(1, Number(dayCount) || 1);
+
+  if (days <= 1) {
+    return [...places].sort(comparePlaceQuality);
+  }
+
+  const ordered = [];
+  const usedIds = new Set();
+
+  /*
+   * A 4-day trip has 3 road-trip overnights.
+   * Target the end of Days 1, 2 and 3:
+   * 25%, 50%, 75%.
+   */
+  for (let nightIndex = 1; nightIndex < days; nightIndex += 1) {
+    const target = nightIndex / days;
+
+    const candidates = places
+      .filter((place) => !usedIds.has(place.id))
+      .sort((a, b) => {
+        const aDistance =
+          Math.abs((Number(a.routeProgress) || 0) - target);
+        const bDistance =
+          Math.abs((Number(b.routeProgress) || 0) - target);
+
+        if (aDistance !== bDistance) {
+          return aDistance - bDistance;
+        }
+
+        return comparePlaceQuality(a, b);
+      });
+
+    if (candidates.length > 0) {
+      const selected = candidates[0];
+      ordered.push(selected);
+      usedIds.add(selected.id);
+    }
+  }
+
+  const remaining = places
+    .filter((place) => !usedIds.has(place.id))
+    .sort((a, b) => {
+      const progressDifference =
+        (Number(a.routeProgress) || 0) -
+        (Number(b.routeProgress) || 0);
+
+      if (progressDifference !== 0) {
+        return progressDifference;
+      }
+
+      return comparePlaceQuality(a, b);
+    });
+
+  return [...ordered, ...remaining];
+}
+
+function formatRouteProgress(progress, dayCount, type = "day") {
+  const percent = Math.round(Number(progress || 0) * 100);
+  const days = Math.max(1, Number(dayCount) || 1);
+
+  if (days <= 1) {
+    return `Same-day drive · ${percent}%`;
+  }
+
+  if (type === "hotel") {
+    const night = Math.min(
+      days - 1,
+      Math.max(
+        1,
+        Math.round((Number(progress) || 0) * days)
+      )
+    );
+
+    return `Night ${night} of ${days - 1} · ${percent}% into trip`;
+  }
+
+  const day = getTravelDayNumber(progress, days);
+
+  return `Day ${day} of ${days} · ${percent}% into trip`;
 }
 
 function getOvernightTargets(durationSeconds, dailyDriveHours) {
@@ -242,34 +426,37 @@ function App() {
     [tripStats?.durationSeconds, dailyDriveHours]
   );
 
-  const prioritizedHotels = useMemo(() => {
-    if (!alongTheWay.hotel.length || !overnightTargets.length) {
-      return alongTheWay.hotel;
-    }
+  const travelDayCount =
+    dailyDriveHours === "straight"
+      ? 1
+      : overnightTargets.length + 1;
 
-    return [...alongTheWay.hotel].sort((a, b) => {
-      const aProgress = Number(a.routeProgress);
-      const bProgress = Number(b.routeProgress);
+  const orderedRestaurants = useMemo(
+    () =>
+      orderPlacesByTravelDay(
+        alongTheWay.restaurant,
+        travelDayCount
+      ),
+    [alongTheWay.restaurant, travelDayCount]
+  );
 
-      const aDistance = Math.min(
-        ...overnightTargets.map((target) =>
-          Math.abs(aProgress - target)
-        )
-      );
+  const prioritizedHotels = useMemo(
+    () =>
+      orderHotelsByTravelNight(
+        alongTheWay.hotel,
+        travelDayCount
+      ),
+    [alongTheWay.hotel, travelDayCount]
+  );
 
-      const bDistance = Math.min(
-        ...overnightTargets.map((target) =>
-          Math.abs(bProgress - target)
-        )
-      );
-
-      if (aDistance !== bDistance) {
-        return aDistance - bDistance;
-      }
-
-      return (Number(b.rating) || 0) - (Number(a.rating) || 0);
-    });
-  }, [alongTheWay.hotel, overnightTargets]);
+  const orderedHistoric = useMemo(
+    () =>
+      orderPlacesByTravelDay(
+        alongTheWay.historic,
+        travelDayCount
+      ),
+    [alongTheWay.historic, travelDayCount]
+  );
 
   const fetchTrips = useCallback(async () => {
     if (!auth?.token) {
@@ -1535,7 +1722,7 @@ function App() {
                     </p>
                   ) : (
                     <ul className="trip-list">
-                      {alongTheWay.restaurant.slice(0, showAllAlong ? 6 : 3).map((place) => (
+                      {orderedRestaurants.slice(0, showAllAlong ? 6 : 3).map((place) => (
                         <li key={place.id} className="trip-row">
                           <div className="trip-details">
                             <span className="trip-name">{place.name}</span>
@@ -1546,7 +1733,7 @@ function App() {
                                 : ""}
                             </span>
                             <span className="along-progress">
-                              {formatRouteProgress(place.routeProgress)}
+                              {formatRouteProgress(place.routeProgress, travelDayCount)}
                             </span>
                             {place.address ? (
                               <span className="trip-notes-text">
@@ -1606,7 +1793,11 @@ function App() {
                                 : ""}
                             </span>
                             <span className="along-progress">
-                              {formatRouteProgress(place.routeProgress)}
+                              {formatRouteProgress(
+                                place.routeProgress,
+                                travelDayCount,
+                                "hotel"
+                              )}
                             </span>
                             {place.address ? (
                               <span className="trip-notes-text">
@@ -1655,7 +1846,7 @@ function App() {
                     </p>
                   ) : (
                     <ul className="trip-list">
-                      {alongTheWay.historic.slice(0, showAllAlong ? 6 : 3).map((place) => (
+                      {orderedHistoric.slice(0, showAllAlong ? 6 : 3).map((place) => (
                         <li key={place.id} className="trip-row">
                           <div className="trip-details">
                             <span className="trip-name">{place.name}</span>
@@ -1666,7 +1857,7 @@ function App() {
                                 : ""}
                             </span>
                             <span className="along-progress">
-                              {formatRouteProgress(place.routeProgress)}
+                              {formatRouteProgress(place.routeProgress, travelDayCount)}
                             </span>
                             {place.address ? (
                               <span className="trip-notes-text">
