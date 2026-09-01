@@ -127,7 +127,7 @@ async function fetchRoadRoute(points, signal) {
 
   if (!res.ok) {
   const errorData = await res.json().catch(() => ({}));
-  throw new Error(errorData.error || "Failed to add suggested stop");
+  throw new Error(errorData.error || "Failed to calculate road route");
 }
 
   return res.json();
@@ -459,6 +459,15 @@ function App() {
     dailyDriveHours === "straight"
       ? 1
       : overnightTargets.length + 1;
+
+  const travelPlanDescription =
+    dailyDriveHours === "straight"
+      ? "Straight through"
+      : overnightTargets.length === 0
+        ? "1 day · no overnight stop needed"
+        : `${travelDayCount} days · ${overnightTargets.length} ${
+            overnightTargets.length === 1 ? "overnight" : "overnights"
+          }`;
 
   const orderedRestaurants = useMemo(
     () =>
@@ -1262,7 +1271,7 @@ function App() {
 
       if (!res.ok) {
   const errorData = await res.json().catch(() => ({}));
-  throw new Error(errorData.error || "Failed to calculate road route");
+  throw new Error(errorData.error || "Failed to move stop");
 }
 
       await fetchStops(activeTrip.id);
@@ -2004,11 +2013,10 @@ function App() {
                 <strong>Road Drive Time:</strong> {tripStats?.driveTime}
               </p>
 
-              {tripStats?.provider ? (
-                <p>
-                  <strong>Routing Provider:</strong> {tripStats.provider}
-                </p>
-              ) : null}
+              <p>
+                <strong>Travel Plan:</strong>{" "}
+                {travelPlanDescription}
+              </p>
 
               <button
                 className="ghost-button"
