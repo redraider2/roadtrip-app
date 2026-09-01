@@ -312,8 +312,14 @@ function orderHotelsByTravelNight(places, dayCount) {
   return [...ordered, ...remaining];
 }
 
-function formatRouteProgress(progress, dayCount, type = "day") {
-  const percent = Math.round(Number(progress || 0) * 100);
+function formatRouteProgress(
+  progress,
+  dayCount,
+  type = "day",
+  durationSeconds = 0
+) {
+  const normalizedProgress = Number(progress) || 0;
+  const percent = Math.round(normalizedProgress * 100);
   const days = Math.max(1, Number(dayCount) || 1);
 
   if (days <= 1) {
@@ -325,14 +331,24 @@ function formatRouteProgress(progress, dayCount, type = "day") {
       days - 1,
       Math.max(
         1,
-        Math.round((Number(progress) || 0) * days)
+        Math.round(normalizedProgress * days)
       )
     );
 
-    return `Night ${night} of ${days - 1} · ${percent}% into trip`;
+    const elapsedHours =
+      Number(durationSeconds) > 0
+        ? (Number(durationSeconds) * normalizedProgress) / 3600
+        : 0;
+
+    const driveLabel =
+      elapsedHours > 0
+        ? ` · about ${Math.round(elapsedHours)} hrs driving`
+        : "";
+
+    return `Night ${night} of ${days - 1}${driveLabel} · ${percent}% into trip`;
   }
 
-  const day = getTravelDayNumber(progress, days);
+  const day = getTravelDayNumber(normalizedProgress, days);
 
   return `Day ${day} of ${days} · ${percent}% into trip`;
 }
@@ -1809,10 +1825,11 @@ function App() {
                             </span>
                             <span className="along-progress">
                               {formatRouteProgress(
-                                place.routeProgress,
-                                travelDayCount,
-                                "hotel"
-                              )}
+                              place.routeProgress,
+                              travelDayCount,
+                                "hotel",
+                              tripStats?.durationSeconds
+)}
                             </span>
                             {place.address ? (
                               <span className="trip-notes-text">
