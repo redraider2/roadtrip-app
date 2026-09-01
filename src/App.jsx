@@ -508,6 +508,41 @@ function App() {
     [alongTheWay.historic, travelDayCount]
   );
 
+  const dayByDayPlan = useMemo(() => {
+  return Array.from({ length: travelDayCount }, (_, index) => {
+    const dayNumber = index + 1;
+
+    const restaurant =
+      orderedRestaurants.find(
+        (place) =>
+          getTravelDayNumber(place.routeProgress, travelDayCount) === dayNumber
+      ) || null;
+
+    const historic =
+      orderedHistoric.find(
+        (place) =>
+          getTravelDayNumber(place.routeProgress, travelDayCount) === dayNumber
+      ) || null;
+
+    const hotel =
+      dayNumber < travelDayCount
+        ? prioritizedHotels[dayNumber - 1] || null
+        : null;
+
+    return {
+      dayNumber,
+      restaurant,
+      historic,
+      hotel,
+    };
+  });
+}, [
+  travelDayCount,
+  orderedRestaurants,
+  orderedHistoric,
+  prioritizedHotels,
+]);
+
   const fetchTrips = useCallback(async () => {
     if (!auth?.token) {
       setTrips([]);
@@ -1970,6 +2005,96 @@ function App() {
             )}
           </div>
         ) : null}
+
+        {activeTrip && routeGeometry.length > 1 ? (
+  <div className="panel">
+    <div className="section-heading-row">
+      <div>
+        <span className="section-kicker">YOUR TRAVEL PLAN</span>
+        <h2 className="panel-title">Day-by-Day Itinerary</h2>
+        <p className="section-copy">
+          A suggested road trip plan based on your route and daily driving preference.
+        </p>
+      </div>
+    </div>
+
+    <div className="trip-stop-groups">
+      {dayByDayPlan.map((day) => (
+        <div key={day.dayNumber} className="trip-stop-group">
+          <h3 className="workspace-heading">
+            Day {day.dayNumber} of {travelDayCount}
+          </h3>
+
+          <ul className="trip-list">
+            {day.restaurant ? (
+              <li className="trip-row">
+                <div className="trip-details">
+                  <span className="stop-badge">FOOD</span>
+                  <span className="trip-name">
+                    {day.restaurant.name}
+                  </span>
+                  {day.restaurant.address ? (
+                    <span className="trip-notes-text">
+                      {day.restaurant.address}
+                    </span>
+                  ) : null}
+                </div>
+              </li>
+            ) : null}
+
+            {day.historic ? (
+              <li className="trip-row">
+                <div className="trip-details">
+                  <span className="stop-badge">STOP</span>
+                  <span className="trip-name">
+                    {day.historic.name}
+                  </span>
+                  {day.historic.address ? (
+                    <span className="trip-notes-text">
+                      {day.historic.address}
+                    </span>
+                  ) : null}
+                </div>
+              </li>
+            ) : null}
+
+            {day.hotel ? (
+              <li className="trip-row">
+                <div className="trip-details">
+                  <span className="stop-badge">OVERNIGHT</span>
+                  <span className="trip-name">
+                    {day.hotel.name}
+                  </span>
+                  {day.hotel.address ? (
+                    <span className="trip-notes-text">
+                      {day.hotel.address}
+                    </span>
+                  ) : null}
+                </div>
+              </li>
+            ) : (
+              <li className="trip-row">
+                <div className="trip-details">
+                  <span className="stop-badge">
+                    {day.dayNumber === travelDayCount
+                      ? "DESTINATION"
+                      : "DAY COMPLETE"}
+                  </span>
+                  <span className="trip-name">
+                    {day.dayNumber === travelDayCount
+                      ? activeTrip.end
+                      : "Continue your road trip"}
+                  </span>
+                </div>
+              </li>
+            )}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+) : null}
+
 
         {activeTrip ? (
         <div className="panel trip-workspace-panel">
