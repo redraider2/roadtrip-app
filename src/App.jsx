@@ -144,7 +144,19 @@ function formatTripStats(route) {
   };
 }
 
+
+
+function normalizePlaceName(name = "") {
+  return String(name)
+    .toLowerCase()
+    .replace(/['’]/g, "")
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function getTravelDayNumber(progress, dayCount) {
+
   const days = Math.max(1, Number(dayCount) || 1);
   const normalizedProgress = Math.min(
     0.999999,
@@ -1147,12 +1159,12 @@ function App() {
       const stopLongitude = Number(stop.longitude);
 
       return (
-        stop.name === place.name &&
-        Number.isFinite(latitude) &&
-        Number.isFinite(longitude) &&
-        Math.abs(stopLatitude - latitude) < 0.00001 &&
-        Math.abs(stopLongitude - longitude) < 0.00001
-      );
+  normalizePlaceName(stop.name) === normalizePlaceName(place.name) &&
+  Number.isFinite(latitude) &&
+  Number.isFinite(longitude) &&
+  Math.abs(stopLatitude - latitude) < 0.00001 &&
+  Math.abs(stopLongitude - longitude) < 0.00001
+);
     });
   }
 
@@ -1975,11 +1987,11 @@ function App() {
             <div className="trip-map-section">
               <h3 className="workspace-heading">Route Map</h3>
               <TripMap
-                start={mapStart}
-                end={mapEnd}
-                stops={stops}
-                routeGeometry={routeGeometry}
-              />
+  start={mapStart}
+  end={mapEnd}
+  stops={stops.filter((stop) => stop.is_route_stop !== false)}
+  routeGeometry={routeGeometry}
+/>
             </div>
 
             <div className="trip-summary-section">
@@ -2036,8 +2048,8 @@ function App() {
           >
             <div className="section-heading-row compact-heading-row">
               <div>
-                <span className="section-kicker">ROUTE DETAILS</span>
-                <h3 className="workspace-heading">Stops & Waypoints</h3>
+                <span className="section-kicker">YOUR ITINERARY</span>
+                <h3 className="workspace-heading">Build Your Itinerary</h3>
               </div>
             </div>
 
@@ -2109,83 +2121,95 @@ function App() {
               ) : (
                 <div className="trip-stop-groups">
                   <div className="trip-stop-group">
-                    <h4 className="trip-stop-group-heading">Route Stops</h4>
+                    <h4 className="trip-stop-group-heading">Your Route</h4>
+                    <ul className="trip-list">
+  <li className="trip-row itinerary-endpoint">
+    <div className="trip-details">
+      <span className="stop-badge">START</span>
+      <span className="trip-name">{activeTrip.start}</span>
+    </div>
+  </li>
 
-                    {stops.filter((stop) => stop.is_route_stop !== false).length === 0 ? (
-                      <p className="empty-state">No route stops added.</p>
-                    ) : (
-                      <ul className="trip-list">
-                        {stops
-                          .filter((stop) => stop.is_route_stop !== false)
-                          .map((stop) => (
-                            <li key={stop.id} className="trip-row">
-                              <div className="trip-details">
-                                <span className="trip-name">
-                                  {stop.order_index + 1}. {stop.name}
-                                </span>
+  {stops
+    .filter((stop) => stop.is_route_stop !== false)
+    .map((stop, index) => (
+      <li key={stop.id} className="trip-row">
+        <div className="trip-details">
+          <span className="trip-name">
+            Stop {index + 1} · {stop.name}
+          </span>
 
-                                <span className="stop-meta">
-                                  <span className="stop-badge">
-                                    Route · {stop.location_type || "waypoint"}
-                                  </span>
+          <span className="stop-meta">
+            <span className="stop-badge">
+              {stop.location_type || "waypoint"}
+            </span>
 
-                                  {stop.avg_rating ? (
-                                    <span className="stop-rating">
-                                      Rating: {stop.avg_rating}/5
-                                    </span>
-                                  ) : null}
-                                </span>
+            {stop.avg_rating ? (
+              <span className="stop-rating">
+                Rating: {stop.avg_rating}/5
+              </span>
+            ) : null}
+          </span>
 
-                                {stop.notes && (
-                                  <span className="trip-notes-text">{stop.notes}</span>
-                                )}
+          {stop.notes && (
+            <span className="trip-notes-text">
+              {stop.notes}
+            </span>
+          )}
 
-                                {stop.description && (
-                                  <span className="trip-trivia-text">
-                                    Trivia: {stop.description}
-                                  </span>
-                                )}
-                              </div>
+          {stop.description && (
+            <span className="trip-trivia-text">
+              Trivia: {stop.description}
+            </span>
+          )}
+        </div>
 
-                              <div className="trip-actions">
-                                <button
-                                  className="ghost-button"
-                                  type="button"
-                                  onClick={() => moveStop(stop.id, "up")}
-                                >
-                                  ↑
-                                </button>
+        <div className="trip-actions">
+          <button
+            className="ghost-button"
+            type="button"
+            onClick={() => moveStop(stop.id, "up")}
+          >
+            ↑
+          </button>
 
-                                <button
-                                  className="ghost-button"
-                                  type="button"
-                                  onClick={() => moveStop(stop.id, "down")}
-                                >
-                                  ↓
-                                </button>
+          <button
+            className="ghost-button"
+            type="button"
+            onClick={() => moveStop(stop.id, "down")}
+          >
+            ↓
+          </button>
 
-                                <button
-                                  className="ghost-button"
-                                  type="button"
-                                  onClick={() =>
-                                    setStopRouteStatus(stop.id, false)
-                                  }
-                                >
-                                  Save Only
-                                </button>
+          <button
+            className="ghost-button"
+            type="button"
+            onClick={() =>
+              setStopRouteStatus(stop.id, false)
+            }
+          >
+            Save Only
+          </button>
 
-                                <button
-                                  className="ghost-button"
-                                  type="button"
-                                  onClick={() => deleteStop(stop.id)}
-                                >
-                                  Delete
-                                </button>
-                              </div>
-                            </li>
-                          ))}
-                      </ul>
-                    )}
+          <button
+            className="ghost-button"
+            type="button"
+            onClick={() => deleteStop(stop.id)}
+          >
+            Delete
+          </button>
+        </div>
+      </li>
+    ))}
+
+  <li className="trip-row itinerary-endpoint">
+    <div className="trip-details">
+      <span className="stop-badge">DESTINATION</span>
+      <span className="trip-name">{activeTrip.end}</span>
+    </div>
+  </li>
+</ul>
+                    
                   </div>
 
                   <div className="trip-stop-group">
