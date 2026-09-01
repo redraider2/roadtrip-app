@@ -1255,7 +1255,7 @@ app.post("/football/along-the-way", async (req, res) => {
       });
     }
 
-    const routeSamples = sampleRouteGeometry(geometry, 5);
+    const routeSamples = sampleRouteGeometry(geometry, 7);
 
     if (!routeSamples.length) {
       return res.status(400).json({

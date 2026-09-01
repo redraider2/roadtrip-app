@@ -351,13 +351,26 @@ function getOvernightTargets(durationSeconds, dailyDriveHours) {
   }
 
   const totalHours = durationSeconds / 3600;
-  const targets = [];
 
-  for (let elapsed = hours; elapsed < totalHours; elapsed += hours) {
-    targets.push(elapsed / totalHours);
+  // Treat the selected drive time as a planning preference,
+  // not a hard cutoff.
+  const dailyTolerance = 1.15;
+  const effectiveDailyHours = hours * dailyTolerance;
+
+  const dayCount = Math.max(
+    1,
+    Math.ceil(totalHours / effectiveDailyHours)
+  );
+
+  if (dayCount <= 1) {
+    return [];
   }
 
-  return targets;
+  // Spread overnight targets evenly across the trip.
+  return Array.from(
+    { length: dayCount - 1 },
+    (_, index) => (index + 1) / dayCount
+  );
 }
 
 function App() {
@@ -1774,7 +1787,9 @@ function App() {
                 </div>
 
                 <div className="recommendation-column">
-                  <h3 className="game-weekend-heading">🛏 Overnight Options</h3>
+                  <h3 className="game-weekend-heading">
+  🛏 {travelDayCount > 1 ? "Overnight Options" : "Hotels Along the Route"}
+</h3>
 
                   {alongTheWay.hotel.length === 0 ? (
                     <p className="empty-state">
