@@ -2181,60 +2181,155 @@ function App() {
                   </div>
 
                   <div className="trip-stop-group">
-                    <h4 className="trip-stop-group-heading">Saved Places</h4>
+  <h4 className="trip-stop-group-heading">Saved Places</h4>
 
-                    {stops.filter((stop) => stop.is_route_stop === false).length === 0 ? (
-                      <p className="empty-state">No saved places yet.</p>
-                    ) : (
-                      <ul className="trip-list">
-                        {stops
-                          .filter((stop) => stop.is_route_stop === false)
-                          .map((stop) => (
-                            <li key={stop.id} className="trip-row">
-                              <div className="trip-details">
-                                <span className="trip-name">{stop.name}</span>
+  {stops.filter((stop) => stop.is_route_stop === false).length === 0 ? (
+    <p className="empty-state">No saved places yet.</p>
+  ) : (
+    <>
+      {[
+        {
+          type: "restaurant",
+          label: "🍴 Food",
+        },
+        {
+          type: "bar",
+          label: "🍺 Fan Bars",
+        },
+        {
+          type: "hotel",
+          label: "🛏 Hotels",
+        },
+        {
+          type: "historic",
+          label: "🏛 Historic Stops",
+        },
+      ].map((group) => {
+        const groupStops = stops.filter(
+          (stop) =>
+            stop.is_route_stop === false &&
+            stop.location_type === group.type
+        );
 
-                                <span className="stop-meta">
-                                  <span className="stop-badge">
-                                    Saved · {stop.location_type || "place"}
-                                  </span>
+        if (groupStops.length === 0) {
+          return null;
+        }
 
-                                  {stop.avg_rating ? (
-                                    <span className="stop-rating">
-                                      Rating: {stop.avg_rating}/5
-                                    </span>
-                                  ) : null}
-                                </span>
+        return (
+          <div key={group.type} className="saved-place-category">
+            <h5 className="saved-place-category-heading">
+              {group.label}
+            </h5>
 
-                                {stop.notes && (
-                                  <span className="trip-notes-text">{stop.notes}</span>
-                                )}
-                              </div>
+            <ul className="trip-list">
+              {groupStops.map((stop) => (
+                <li key={stop.id} className="trip-row">
+                  <div className="trip-details">
+                    <span className="trip-name">{stop.name}</span>
 
-                              <div className="trip-actions">
-                                <button
-                                  className="ghost-button"
-                                  type="button"
-                                  onClick={() =>
-                                    setStopRouteStatus(stop.id, true)
-                                  }
-                                >
-                                  Add to Route
-                                </button>
+                    <span className="stop-meta">
+                      <span className="stop-badge">
+                        Saved · {stop.location_type || "place"}
+                      </span>
 
-                                <button
-                                  className="ghost-button"
-                                  type="button"
-                                  onClick={() => deleteStop(stop.id)}
-                                >
-                                  Delete
-                                </button>
-                              </div>
-                            </li>
-                          ))}
-                      </ul>
+                      {stop.avg_rating ? (
+                        <span className="stop-rating">
+                          Rating: {stop.avg_rating}/5
+                        </span>
+                      ) : null}
+                    </span>
+
+                    {stop.notes && (
+                      <span className="trip-notes-text">
+                        {stop.notes}
+                      </span>
                     )}
                   </div>
+
+                  <div className="trip-actions">
+                    <button
+                      className="ghost-button"
+                      type="button"
+                      onClick={() =>
+                        setStopRouteStatus(stop.id, true)
+                      }
+                    >
+                      Add to Route
+                    </button>
+
+                    <button
+                      className="ghost-button"
+                      type="button"
+                      onClick={() => deleteStop(stop.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
+
+      {stops
+        .filter(
+          (stop) =>
+            stop.is_route_stop === false &&
+            !["restaurant", "bar", "hotel", "historic"].includes(
+              stop.location_type
+            )
+        )
+        .map((stop) => (
+          <ul key={stop.id} className="trip-list">
+            <li className="trip-row">
+              <div className="trip-details">
+                <span className="trip-name">{stop.name}</span>
+
+                <span className="stop-meta">
+                  <span className="stop-badge">
+                    Saved · {stop.location_type || "place"}
+                  </span>
+
+                  {stop.avg_rating ? (
+                    <span className="stop-rating">
+                      Rating: {stop.avg_rating}/5
+                    </span>
+                  ) : null}
+                </span>
+
+                {stop.notes && (
+                  <span className="trip-notes-text">
+                    {stop.notes}
+                  </span>
+                )}
+              </div>
+
+              <div className="trip-actions">
+                <button
+                  className="ghost-button"
+                  type="button"
+                  onClick={() =>
+                    setStopRouteStatus(stop.id, true)
+                  }
+                >
+                  Add to Route
+                </button>
+
+                <button
+                  className="ghost-button"
+                  type="button"
+                  onClick={() => deleteStop(stop.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </li>
+          </ul>
+                        ))}
+                      </>
+                          )}
+                    </div>
                 </div>
               )}
             </>
