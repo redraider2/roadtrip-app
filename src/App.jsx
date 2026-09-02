@@ -2840,7 +2840,7 @@ function App() {
                         rel="noreferrer"
                         className="place-link"
                       >
-                        Official Vanderbilt Game Day Information →
+                        Official {tailgatingGuide.school} Game Day Information →
                       </a>
                     </div>
                   ) : null}
