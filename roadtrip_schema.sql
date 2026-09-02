@@ -122,3 +122,18 @@ CREATE TABLE location_tags (
 CREATE INDEX idx_location_tags_tag ON location_tags(tag_id);
 
 COMMIT;
+
+CREATE TABLE IF NOT EXISTS tailgating_guides (
+  id BIGSERIAL PRIMARY KEY,
+  school TEXT NOT NULL,
+  venue_id BIGINT UNIQUE,
+  venue_name TEXT,
+  where_to_tailgate JSONB NOT NULL DEFAULT '[]'::jsonb,
+  when_to_arrive JSONB NOT NULL DEFAULT '[]'::jsonb,
+  rules JSONB NOT NULL DEFAULT '[]'::jsonb,
+  visiting_fans JSONB NOT NULL DEFAULT '[]'::jsonb,
+  official_url TEXT,
+  last_verified DATE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
