@@ -1510,6 +1510,55 @@ app.get("/football/games", async (req, res) => {
   }
 });
 
+app.get("/football/venues/:venueId/tailgating", async (req, res) => {
+  try {
+    const { venueId } = req.params;
+
+    const result = await db.query(
+      `SELECT
+         school,
+         venue_id,
+         venue_name,
+         where_to_tailgate,
+         when_to_arrive,
+         rules,
+         visiting_fans,
+         official_url,
+         last_verified
+       FROM tailgating_guides
+       WHERE venue_id = $1
+       LIMIT 1`,
+      [venueId]
+    );
+
+    if (!result.rows.length) {
+      return res.status(404).json({
+        error: "Tailgating guide not found",
+      });
+    }
+
+    const guide = result.rows[0];
+
+    return res.json({
+      school: guide.school,
+      venueId: guide.venue_id,
+      venueName: guide.venue_name,
+      where: guide.where_to_tailgate,
+      arrival: guide.when_to_arrive,
+      rules: guide.rules,
+      visitors: guide.visiting_fans,
+      sourceUrl: guide.official_url,
+      lastVerified: guide.last_verified,
+    });
+  } catch (err) {
+    console.error("GET /football/venues/:venueId/tailgating error:", err);
+
+    return res.status(500).json({
+      error: "Failed to load tailgating guide",
+    });
+  }
+});
+
 app.get("/football/venues/:venueId", async (req, res) => {
   try {
     const { venueId } = req.params;

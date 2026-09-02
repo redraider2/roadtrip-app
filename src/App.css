@@ -1477,3 +1477,17 @@ select.trip-input {
     grid-template-columns: 1fr;
   }
 }
+.tailgating-guide-item ul {
+  margin: 0.65rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.tailgating-guide-item li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+  opacity: 0.82;
+}
+
+.tailgating-guide-source {
+  margin-top: 1rem;
+}

@@ -401,6 +401,36 @@ function getOvernightTargets(durationSeconds, dailyDriveHours) {
   );
 }
 
+const TAILGATING_GUIDES = {
+  Vanderbilt: {
+    venue: "FirstBank Stadium",
+    where: [
+      "Vandyville is Vanderbilt’s primary pregame tailgating area.",
+      "Tailgating activity is centered around Natchez Trace, Jess Neely Drive, and Vanderbilt Place.",
+      "Vandyville typically includes reserved tailgate spaces, food trucks, family activities, and live entertainment.",
+    ],
+    arrival: [
+      "Vandyville opens about 4 hours before kickoff.",
+      "For 11:00 AM kickoffs, reserved parking lots generally open around 7:00 AM.",
+      "For later kickoffs, reserved lots generally open around 8:00 AM.",
+    ],
+    rules: [
+      "Tailgating is not permitted inside parking garages.",
+      "Tailgates must remain within designated parking or tailgating spaces.",
+      "Tents are limited to approximately 10 × 10 feet.",
+      "Tent stakes are prohibited.",
+      "Drive lanes must remain open.",
+      "Each occupied parking space requires the appropriate parking pass.",
+    ],
+    visitors: [
+      "Vandyville is the best starting point for visiting fans who want a public pregame atmosphere.",
+      "Visitors should arrive early because parking and tailgate areas near FirstBank Stadium fill quickly.",
+      "Full-service tailgate packages may also be available near the stadium.",
+    ],
+    sourceUrl: "https://vucommodores.com/football-gameday/",
+  },
+};
+
 function App() {
   const [auth, setAuth] = useState(() => getStoredAuth());
   const [authMode, setAuthMode] = useState("login");
@@ -436,9 +466,13 @@ function App() {
   const [weekendVenue, setWeekendVenue] = useState(null);
   const [weekendPlacesLoading, setWeekendPlacesLoading] = useState(false);
   const [weekendPlacesError, setWeekendPlacesError] = useState("");
+  const [tailgatingGuide, setTailgatingGuide] = useState(null);
+  const [tailgatingLoading, setTailgatingLoading] = useState(false);
+  const [tailgatingError, setTailgatingError] = useState("");
   const [showAllAlong, setShowAllAlong] = useState(false);
   const [showAllWeekend, setShowAllWeekend] = useState(false);
   const [showTailgating, setShowTailgating] = useState(false);
+  
 
   const [alongTheWay, setAlongTheWay] = useState({
     restaurant: [],
@@ -727,6 +761,7 @@ function App() {
       ) || null,
     [footballGames, selectedFootballGameId]
   );
+  
 
   const backgroundTeam = useMemo(() => {
     const destinationTeam = selectedFootballGame?.homeTeam;
@@ -822,6 +857,8 @@ function App() {
 
     loadWeekendPlaces();
 
+    
+
     return () => {
       cancelled = true;
       controller.abort();
@@ -889,6 +926,9 @@ function App() {
       }
     }
 
+        
+
+
     loadTripStats();
 
     return () => {
@@ -896,6 +936,68 @@ function App() {
       controller.abort();
     };
   }, [activeTrip?.start, activeTrip?.end, stops]);
+
+  useEffect(() => {
+  let cancelled = false;
+  const controller = new AbortController();
+
+  async function loadTailgatingGuide() {
+    const venueId =
+      selectedFootballGame?.venueId || activeTrip?.venueId;
+
+    if (!venueId) {
+      setTailgatingGuide(null);
+      setTailgatingError("");
+      return;
+    }
+
+    try {
+      setTailgatingLoading(true);
+      setTailgatingError("");
+
+      const res = await fetch(
+        `${API_BASE_URL}/football/venues/${venueId}/tailgating`,
+        { signal: controller.signal }
+      );
+
+      if (res.status === 404) {
+        if (!cancelled) {
+          setTailgatingGuide(null);
+        }
+        return;
+      }
+
+      if (!res.ok) {
+        throw new Error("Failed to load tailgating guide");
+      }
+
+      const data = await res.json();
+
+      if (!cancelled) {
+        setTailgatingGuide(data);
+      }
+    } catch (err) {
+      if (cancelled || err?.name === "AbortError") return;
+
+      console.error("Tailgating guide failed:", err);
+      setTailgatingGuide(null);
+      setTailgatingError(
+        "Tailgating information could not be loaded."
+      );
+    } finally {
+      if (!cancelled) {
+        setTailgatingLoading(false);
+      }
+    }
+  }
+
+  loadTailgatingGuide();
+
+  return () => {
+    cancelled = true;
+    controller.abort();
+  };
+}, [selectedFootballGame?.venueId, activeTrip?.venueId]);
 
   useEffect(() => {
     let cancelled = false;
@@ -2663,36 +2765,85 @@ function App() {
                   <div className="tailgating-guide-grid">
                     <div className="tailgating-guide-item">
                       <strong>📍 Where to Tailgate</strong>
-                      <span>
-                        Official lots, popular tailgating areas, and fan
-                        gathering locations.
-                      </span>
+
+                      {tailgatingGuide ? (
+                        <ul>
+                          {tailgatingGuide.where.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <span>
+                          School-specific tailgating locations are being added
+                          for this destination.
+                        </span>
+                      )}
                     </div>
 
                     <div className="tailgating-guide-item">
                       <strong>⏰ When to Arrive</strong>
-                      <span>
-                        Lot opening times and recommended arrival guidance
-                        before kickoff.
-                      </span>
+
+                      {tailgatingGuide ? (
+                        <ul>
+                          {tailgatingGuide.arrival.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <span>
+                          Lot opening times and recommended arrival guidance
+                          will appear here.
+                        </span>
+                      )}
                     </div>
 
                     <div className="tailgating-guide-item">
                       <strong>📋 Tailgating Rules</strong>
-                      <span>
-                        School and stadium policies for grills, tents, alcohol,
-                        parking, generators, and cleanup.
-                      </span>
+
+                      {tailgatingGuide ? (
+                        <ul>
+                          {tailgatingGuide.rules.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <span>
+                          School and stadium tailgating policies will appear
+                          here.
+                        </span>
+                      )}
                     </div>
 
                     <div className="tailgating-guide-item">
                       <strong>🏈 Visiting Fans</strong>
-                      <span>
-                        Pregame gatherings, traditions, and useful information
-                        for away fans.
-                      </span>
+
+                      {tailgatingGuide ? (
+                        <ul>
+                          {tailgatingGuide.visitors.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <span>
+                          Pregame gathering and visiting-fan information will
+                          appear here.
+                        </span>
+                      )}
                     </div>
                   </div>
+
+                  {tailgatingGuide?.sourceUrl ? (
+                    <div className="tailgating-guide-source">
+                      <a
+                        href={tailgatingGuide.sourceUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="place-link"
+                      >
+                        Official Vanderbilt Game Day Information →
+                      </a>
+                    </div>
+                  ) : null}
                 </div>
               ) : null}
             </div>
@@ -2993,7 +3144,12 @@ function App() {
                     <li
                       key={trip.id}
                       className={`trip-row${isActive ? " is-active" : ""}`}
-                      onClick={() => setActiveTripId(trip.id)}
+                      onClick={() => {
+                      setSelectedFootballGameId("");
+                      setSelectedFootballTeam("");
+                      setFootballGames([]);
+                      setActiveTripId(trip.id);
+}}
                     >
                       <div className="trip-details">
                         <span className="trip-name">{trip.name}</span>
