@@ -438,6 +438,7 @@ function App() {
   const [weekendPlacesError, setWeekendPlacesError] = useState("");
   const [showAllAlong, setShowAllAlong] = useState(false);
   const [showAllWeekend, setShowAllWeekend] = useState(false);
+  const [showTailgating, setShowTailgating] = useState(false);
 
   const [alongTheWay, setAlongTheWay] = useState({
     restaurant: [],
@@ -2587,14 +2588,26 @@ function App() {
               </p>
 
               <div className="game-day-guide-grid">
-                <div className="game-day-guide-card">
+                <button
+                  type="button"
+                  className="game-day-guide-card game-day-guide-card-button"
+                  onClick={() =>
+                    setShowTailgating((current) => !current)
+                  }
+                  aria-expanded={showTailgating}
+                >
                   <span className="game-day-guide-icon">🏈</span>
                   <h3>Tailgating</h3>
                   <p>
                     Find the best areas for pregame tailgating, fan gatherings,
                     parking-lot traditions, and visiting-fan activities.
                   </p>
-                </div>
+                  <span className="game-day-guide-action">
+                    {showTailgating
+                      ? "Hide tailgating guide ↑"
+                      : "Explore tailgating →"}
+                  </span>
+                </button>
 
                 <div className="game-day-guide-card">
                   <span className="game-day-guide-icon">🚗</span>
@@ -2627,6 +2640,61 @@ function App() {
                   </p>
                 </div>
               </div>
+
+              {showTailgating ? (
+                <div className="tailgating-guide-panel">
+                  <div className="tailgating-guide-heading">
+                    <span className="section-kicker">TAILGATING</span>
+
+                    <h3 className="workspace-heading">
+                      Tailgating at{" "}
+                      {selectedFootballGame?.venue ||
+                        weekendVenue?.name ||
+                        activeTrip?.end ||
+                        "the stadium"}
+                    </h3>
+
+                    <p className="section-copy">
+                      Your pregame guide for tailgating areas, arrival timing,
+                      rules, traditions, and visiting-fan information.
+                    </p>
+                  </div>
+
+                  <div className="tailgating-guide-grid">
+                    <div className="tailgating-guide-item">
+                      <strong>📍 Where to Tailgate</strong>
+                      <span>
+                        Official lots, popular tailgating areas, and fan
+                        gathering locations.
+                      </span>
+                    </div>
+
+                    <div className="tailgating-guide-item">
+                      <strong>⏰ When to Arrive</strong>
+                      <span>
+                        Lot opening times and recommended arrival guidance
+                        before kickoff.
+                      </span>
+                    </div>
+
+                    <div className="tailgating-guide-item">
+                      <strong>📋 Tailgating Rules</strong>
+                      <span>
+                        School and stadium policies for grills, tents, alcohol,
+                        parking, generators, and cleanup.
+                      </span>
+                    </div>
+
+                    <div className="tailgating-guide-item">
+                      <strong>🏈 Visiting Fans</strong>
+                      <span>
+                        Pregame gatherings, traditions, and useful information
+                        for away fans.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
             </div>
 
             {weekendPlacesLoading ? (

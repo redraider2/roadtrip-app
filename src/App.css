@@ -1421,3 +1421,59 @@ select.trip-input {
   width: 100%;
   min-height: 320px;
 }
+/* INTERACTIVE GAME DAY GUIDE */
+
+.game-day-guide-card-button {
+  width: 100%;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.game-day-guide-action {
+  display: block;
+  margin-top: 1rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  opacity: 0.9;
+}
+
+.tailgating-guide-panel {
+  margin-top: 1.25rem;
+  padding: 1.4rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.tailgating-guide-heading {
+  margin-bottom: 1.25rem;
+}
+
+.tailgating-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.tailgating-guide-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 1rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.tailgating-guide-item span {
+  line-height: 1.5;
+  opacity: 0.78;
+}
+
+@media (max-width: 760px) {
+  .tailgating-guide-grid {
+    grid-template-columns: 1fr;
+  }
+}
