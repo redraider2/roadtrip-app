@@ -570,6 +570,7 @@ function App() {
         name: trip.title,
         start: trip.start_location || "",
         end: trip.end_location || "",
+        venueId: trip.venue_id || null,
         notes: trip.notes || "",
         isFavorite: Boolean(trip.is_favorite),
         createdAt: trip.createdAt,
@@ -750,20 +751,22 @@ function App() {
     const controller = new AbortController();
 
     async function loadWeekendPlaces() {
-      if (!selectedFootballGame?.venueId) {
-        setWeekendPlaces({ restaurant: [], bar: [], hotel: [] });
-        setWeekendVenue(null);
-        setWeekendPlacesError("");
-        return;
-      }
+  const venueId =
+    selectedFootballGame?.venueId || activeTrip?.venueId;
 
-      try {
-        setWeekendPlacesLoading(true);
-        setWeekendPlacesError("");
+  if (!venueId) {
+    setWeekendPlaces({ restaurant: [], bar: [], hotel: [] });
+    setWeekendVenue(null);
+    setWeekendPlacesError("");
+    return;
+  }
 
-        const venueId = selectedFootballGame.venueId;
+  try {
+    setWeekendPlacesLoading(true);
+    setWeekendPlacesError("");
 
-        const [restaurantRes, barRes, hotelRes] = await Promise.all([
+    const [restaurantRes, barRes, hotelRes] = await Promise.all([
+
           fetch(
             `${API_BASE_URL}/football/venues/${venueId}/places?category=restaurant`,
             { signal: controller.signal }
@@ -822,7 +825,7 @@ function App() {
       cancelled = true;
       controller.abort();
     };
-  }, [selectedFootballGame?.venueId]);
+   }, [selectedFootballGame?.venueId, activeTrip?.venueId]);
 
   useEffect(() => {
     if (activeTrip?.id) {
@@ -1106,6 +1109,7 @@ function App() {
           start_location: s,
           end_location: destination,
           notes: `${gameDate} · ${venue.name}`,
+          venue_id: selectedFootballGame.venueId,
           }),
         },
         auth.token
@@ -2028,18 +2032,37 @@ function App() {
           <ul className="trip-list">
             {day.restaurant ? (
               <li className="trip-row">
-                <div className="trip-details">
-                  <span className="stop-badge">FOOD</span>
-                  <span className="trip-name">
-                    {day.restaurant.name}
-                  </span>
-                  {day.restaurant.address ? (
-                    <span className="trip-notes-text">
-                      {day.restaurant.address}
-                    </span>
-                  ) : null}
-                </div>
-              </li>
+  <div className="trip-details">
+    <span className="stop-badge">FOOD</span>
+
+    <span className="trip-name">
+      {day.restaurant.name}
+    </span>
+
+    {day.restaurant.address ? (
+      <span className="trip-notes-text">
+        {day.restaurant.address}
+      </span>
+    ) : null}
+  </div>
+
+  <div className="trip-actions">
+    <button
+      type="button"
+      className={`ghost-button${
+        isSuggestedStopAdded(day.restaurant) ? " is-added" : ""
+      }`}
+      disabled={isSuggestedStopAdded(day.restaurant)}
+      onClick={() =>
+        addSuggestedStop(day.restaurant, "restaurant")
+      }
+    >
+      {isSuggestedStopAdded(day.restaurant)
+        ? "✓ Saved"
+        : "Save to Trip"}
+    </button>
+  </div>
+</li>
             ) : null}
 
             {day.historic ? (
@@ -2095,6 +2118,320 @@ function App() {
   </div>
 ) : null}
 
+{(selectedFootballGame || activeTrip?.venueId) ? (
+          <div className="panel destination-panel">
+            <div className="section-heading-row">
+              <div>
+                <span className="section-kicker">DESTINATION</span>
+                <h2 className="panel-title">Game Weekend</h2>
+              </div>
+            </div>
+
+            <div className="trip-details-panel">
+              <p>
+                <strong>Destination:</strong>{" "}
+                {selectedFootballGame?.venue || weekendVenue?.name || activeTrip?.end || "Venue TBD"}
+              </p>
+              <p>
+                <strong>Host:</strong>{" "}
+                {selectedFootballGame?.homeTeam || "College Football Destination"}
+              </p>
+            </div>
+
+            {weekendVenue ? (
+              <div className="destination-map-section">
+                <div className="destination-map-heading">
+                  <span className="section-kicker">EXPLORE THE DESTINATION</span>
+                  <h3 className="workspace-heading">Game Weekend Map</h3>
+                </div>
+
+                <DestinationMap
+                  venue={weekendVenue}
+                  restaurants={weekendPlaces.restaurant}
+                  bars={weekendPlaces.bar}
+                  hotels={weekendPlaces.hotel}
+                />
+              </div>
+            ) : null}
+
+                        <div className="game-day-guide-panel">
+              <div className="section-heading-row">
+                <div>
+                  <span className="section-kicker">GAME DAY</span>
+                  <h2 className="panel-title">Your Game Day Guide</h2>
+                </div>
+              </div>
+
+              <p className="game-day-guide-intro">
+                Make the most of game day at{" "}
+                <strong>
+                  {selectedFootballGame?.venue ||
+                  weekendVenue?.name ||
+                  activeTrip?.end ||
+                  "the stadium"}
+                </strong>
+                . Here’s what to know before kickoff.
+              </p>
+
+              <div className="game-day-guide-grid">
+                <div className="game-day-guide-card">
+                  <span className="game-day-guide-icon">🏈</span>
+                  <h3>Tailgating</h3>
+                  <p>
+                    Find the best areas for pregame tailgating, fan gatherings,
+                    parking-lot traditions, and visiting-fan activities.
+                  </p>
+                </div>
+
+                <div className="game-day-guide-card">
+                  <span className="game-day-guide-icon">🚗</span>
+                  <h3>Parking & Arrival</h3>
+                  <p>
+                    Know where to park, when to arrive, and how to make the final
+                    approach to the stadium easier on game day.
+                  </p>
+                </div>
+
+                <div className="game-day-guide-card">
+                  <span className="game-day-guide-icon">🎒</span>
+                  <h3>Know Before You Go</h3>
+                  <p>
+                    Check stadium policies, bag rules, entry information, gates,
+                    and other important details before heading inside.
+                  </p>
+                </div>
+
+                <div className="game-day-guide-card">
+                  <span className="game-day-guide-icon">🔥</span>
+                  <h3>
+                    {selectedFootballGame?.homeTeam
+                      ? `${selectedFootballGame.homeTeam} Traditions`
+                      : "Game Day Traditions"}
+                  </h3>
+                  <p>
+                    Discover the traditions, rituals, landmarks, and experiences
+                    that make this college football destination unique.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {weekendPlacesLoading ? (
+              <p className="empty-state">
+                Finding popular restaurants, bars, and hotels near the stadium...
+              </p>
+            ) : weekendPlacesError ? (
+              <p className="error-state">{weekendPlacesError}</p>
+            ) : (
+              <>
+              <div className="game-weekend-grid">
+                <div className="recommendation-column">
+                  <h3 className="game-weekend-heading">🍴 Game Day Eats</h3>
+
+                  {weekendPlaces.restaurant.length === 0 ? (
+                    <p className="empty-state">
+                      No nearby restaurants returned.
+                    </p>
+                  ) : (
+                    <ul className="trip-list">
+                      {weekendPlaces.restaurant.slice(0, showAllWeekend ? 6 : 3).map((place) => (
+                        <li key={place.id} className="trip-row">
+                          <div className="trip-details">
+                            <span className="trip-name">{place.name}</span>
+
+                            <span className="trip-route">
+                              {place.rating
+                                ? `${place.rating} ★`
+                                : "No rating"}
+                              {place.ratingCount
+                                ? ` · ${place.ratingCount.toLocaleString()} reviews`
+                                : ""}
+                            </span>
+
+                            {place.address ? (
+                              <span className="trip-notes-text">
+                                {place.address}
+                              </span>
+                            ) : null}
+
+                            <div className="recommendation-actions">
+                              <button
+                                type="button"
+                                className={`ghost-button${
+                                  isSuggestedStopAdded(place) ? " is-added" : ""
+                                }`}
+                                disabled={isSuggestedStopAdded(place)}
+                                onClick={() =>
+                                  addSuggestedStop(place, "restaurant")
+                                }
+                              >
+                                {isSuggestedStopAdded(place)
+                                  ? "✓ Saved"
+                                  : "Save to Trip"}
+                              </button>
+
+                              {place.website ? (
+                                <a
+                                  className="place-link"
+                                  href={place.website}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  Visit website
+                                </a>
+                              ) : null}
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                <div className="recommendation-column">
+                  <h3 className="game-weekend-heading">🍺 Fan Bars</h3>
+
+                  {weekendPlaces.bar.length === 0 ? (
+                    <p className="empty-state">No nearby bars returned.</p>
+                  ) : (
+                    <ul className="trip-list">
+                      {weekendPlaces.bar.slice(0, showAllWeekend ? 6 : 3).map((place) => (
+                        <li key={place.id} className="trip-row">
+                          <div className="trip-details">
+                            <span className="trip-name">{place.name}</span>
+
+                            <span className="trip-route">
+                              {place.rating
+                                ? `${place.rating} ★`
+                                : "No rating"}
+                              {place.ratingCount
+                                ? ` · ${place.ratingCount.toLocaleString()} reviews`
+                                : ""}
+                            </span>
+
+                            {place.address ? (
+                              <span className="trip-notes-text">
+                                {place.address}
+                              </span>
+                            ) : null}
+
+                            <div className="recommendation-actions">
+                              <button
+                                type="button"
+                                className={`ghost-button${
+                                  isSuggestedStopAdded(place) ? " is-added" : ""
+                                }`}
+                                disabled={isSuggestedStopAdded(place)}
+                                onClick={() =>
+                                  addSuggestedStop(place, "bar")
+                                }
+                              >
+                                {isSuggestedStopAdded(place)
+                                  ? "✓ Saved"
+                                  : "Save to Trip"}
+                              </button>
+
+                              {place.website ? (
+                                <a
+                                  className="place-link"
+                                  href={place.website}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  Visit website
+                                </a>
+                              ) : null}
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                <div className="recommendation-column">
+                  <h3 className="game-weekend-heading">🛏 Stay Near the Stadium</h3>
+
+                  {weekendPlaces.hotel.length === 0 ? (
+                    <p className="empty-state">No nearby hotels returned.</p>
+                  ) : (
+                    <ul className="trip-list">
+                      {weekendPlaces.hotel.slice(0, showAllWeekend ? 6 : 3).map((place) => (
+                        <li key={place.id} className="trip-row">
+                          <div className="trip-details">
+                            <span className="trip-name">{place.name}</span>
+
+                            <span className="trip-route">
+                              {place.rating
+                                ? `${place.rating} ★`
+                                : "No rating"}
+                              {place.ratingCount
+                                ? ` · ${place.ratingCount.toLocaleString()} reviews`
+                                : ""}
+                            </span>
+
+                            {place.address ? (
+                              <span className="trip-notes-text">
+                                {place.address}
+                              </span>
+                            ) : null}
+
+                            <div className="recommendation-actions">
+                              <button
+                                type="button"
+                                className={`ghost-button${
+                                  isSuggestedStopAdded(place) ? " is-added" : ""
+                                }`}
+                                disabled={isSuggestedStopAdded(place)}
+                                onClick={() =>
+                                  addSuggestedStop(place, "hotel")
+                                }
+                              >
+                                {isSuggestedStopAdded(place)
+                                  ? "✓ Saved"
+                                  : "Save to Trip"}
+                              </button>
+
+                              {place.website ? (
+                                <a
+                                  className="place-link"
+                                  href={place.website}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  Visit website
+                                </a>
+                              ) : null}
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+
+              {(weekendPlaces.restaurant.length > 3 ||
+                weekendPlaces.bar.length > 3 ||
+                weekendPlaces.hotel.length > 3) ? (
+                <div className="recommendation-expand-row">
+                  <button
+                    type="button"
+                    className="recommendation-expand-button"
+                    onClick={() => setShowAllWeekend((current) => !current)}
+                  >
+                    {showAllWeekend
+                      ? "Show fewer game weekend options"
+                      : "Show more game weekend options"}
+                  </button>
+                </div>
+              ) : null}
+              </>
+            )}
+          </div>
+        ) : null}
+
+                
 
         {activeTrip ? (
         <div className="panel trip-workspace-panel">
@@ -2495,255 +2832,9 @@ function App() {
         </div>
         ) : null}
 
-        {selectedFootballGame ? (
-          <div className="panel destination-panel">
-            <div className="section-heading-row">
-              <div>
-                <span className="section-kicker">DESTINATION</span>
-                <h2 className="panel-title">Game Weekend</h2>
-              </div>
-            </div>
+        
 
-            <div className="trip-details-panel">
-              <p>
-                <strong>Destination:</strong>{" "}
-                {selectedFootballGame.venue || "Venue TBD"}
-              </p>
-              <p>
-                <strong>Host:</strong> {selectedFootballGame.homeTeam}
-              </p>
-            </div>
-
-            {weekendVenue ? (
-              <div className="destination-map-section">
-                <div className="destination-map-heading">
-                  <span className="section-kicker">EXPLORE THE DESTINATION</span>
-                  <h3 className="workspace-heading">Game Weekend Map</h3>
-                </div>
-
-                <DestinationMap
-                  venue={weekendVenue}
-                  restaurants={weekendPlaces.restaurant}
-                  bars={weekendPlaces.bar}
-                  hotels={weekendPlaces.hotel}
-                />
-              </div>
-            ) : null}
-
-            {weekendPlacesLoading ? (
-              <p className="empty-state">
-                Finding popular restaurants, bars, and hotels near the stadium...
-              </p>
-            ) : weekendPlacesError ? (
-              <p className="error-state">{weekendPlacesError}</p>
-            ) : (
-              <>
-              <div className="game-weekend-grid">
-                <div className="recommendation-column">
-                  <h3 className="game-weekend-heading">🍴 Game Day Eats</h3>
-
-                  {weekendPlaces.restaurant.length === 0 ? (
-                    <p className="empty-state">
-                      No nearby restaurants returned.
-                    </p>
-                  ) : (
-                    <ul className="trip-list">
-                      {weekendPlaces.restaurant.slice(0, showAllWeekend ? 6 : 3).map((place) => (
-                        <li key={place.id} className="trip-row">
-                          <div className="trip-details">
-                            <span className="trip-name">{place.name}</span>
-
-                            <span className="trip-route">
-                              {place.rating
-                                ? `${place.rating} ★`
-                                : "No rating"}
-                              {place.ratingCount
-                                ? ` · ${place.ratingCount.toLocaleString()} reviews`
-                                : ""}
-                            </span>
-
-                            {place.address ? (
-                              <span className="trip-notes-text">
-                                {place.address}
-                              </span>
-                            ) : null}
-
-                            <div className="recommendation-actions">
-                              <button
-                                type="button"
-                                className={`ghost-button${
-                                  isSuggestedStopAdded(place) ? " is-added" : ""
-                                }`}
-                                disabled={isSuggestedStopAdded(place)}
-                                onClick={() =>
-                                  addSuggestedStop(place, "restaurant")
-                                }
-                              >
-                                {isSuggestedStopAdded(place)
-                                  ? "✓ Saved"
-                                  : "Save to Trip"}
-                              </button>
-
-                              {place.website ? (
-                                <a
-                                  className="place-link"
-                                  href={place.website}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                >
-                                  Visit website
-                                </a>
-                              ) : null}
-                            </div>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-
-                <div className="recommendation-column">
-                  <h3 className="game-weekend-heading">🍺 Fan Bars</h3>
-
-                  {weekendPlaces.bar.length === 0 ? (
-                    <p className="empty-state">No nearby bars returned.</p>
-                  ) : (
-                    <ul className="trip-list">
-                      {weekendPlaces.bar.slice(0, showAllWeekend ? 6 : 3).map((place) => (
-                        <li key={place.id} className="trip-row">
-                          <div className="trip-details">
-                            <span className="trip-name">{place.name}</span>
-
-                            <span className="trip-route">
-                              {place.rating
-                                ? `${place.rating} ★`
-                                : "No rating"}
-                              {place.ratingCount
-                                ? ` · ${place.ratingCount.toLocaleString()} reviews`
-                                : ""}
-                            </span>
-
-                            {place.address ? (
-                              <span className="trip-notes-text">
-                                {place.address}
-                              </span>
-                            ) : null}
-
-                            <div className="recommendation-actions">
-                              <button
-                                type="button"
-                                className={`ghost-button${
-                                  isSuggestedStopAdded(place) ? " is-added" : ""
-                                }`}
-                                disabled={isSuggestedStopAdded(place)}
-                                onClick={() =>
-                                  addSuggestedStop(place, "bar")
-                                }
-                              >
-                                {isSuggestedStopAdded(place)
-                                  ? "✓ Saved"
-                                  : "Save to Trip"}
-                              </button>
-
-                              {place.website ? (
-                                <a
-                                  className="place-link"
-                                  href={place.website}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                >
-                                  Visit website
-                                </a>
-                              ) : null}
-                            </div>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-
-                <div className="recommendation-column">
-                  <h3 className="game-weekend-heading">🛏 Stay Near the Stadium</h3>
-
-                  {weekendPlaces.hotel.length === 0 ? (
-                    <p className="empty-state">No nearby hotels returned.</p>
-                  ) : (
-                    <ul className="trip-list">
-                      {weekendPlaces.hotel.slice(0, showAllWeekend ? 6 : 3).map((place) => (
-                        <li key={place.id} className="trip-row">
-                          <div className="trip-details">
-                            <span className="trip-name">{place.name}</span>
-
-                            <span className="trip-route">
-                              {place.rating
-                                ? `${place.rating} ★`
-                                : "No rating"}
-                              {place.ratingCount
-                                ? ` · ${place.ratingCount.toLocaleString()} reviews`
-                                : ""}
-                            </span>
-
-                            {place.address ? (
-                              <span className="trip-notes-text">
-                                {place.address}
-                              </span>
-                            ) : null}
-
-                            <div className="recommendation-actions">
-                              <button
-                                type="button"
-                                className={`ghost-button${
-                                  isSuggestedStopAdded(place) ? " is-added" : ""
-                                }`}
-                                disabled={isSuggestedStopAdded(place)}
-                                onClick={() =>
-                                  addSuggestedStop(place, "hotel")
-                                }
-                              >
-                                {isSuggestedStopAdded(place)
-                                  ? "✓ Saved"
-                                  : "Save to Trip"}
-                              </button>
-
-                              {place.website ? (
-                                <a
-                                  className="place-link"
-                                  href={place.website}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                >
-                                  Visit website
-                                </a>
-                              ) : null}
-                            </div>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
-
-              {(weekendPlaces.restaurant.length > 3 ||
-                weekendPlaces.bar.length > 3 ||
-                weekendPlaces.hotel.length > 3) ? (
-                <div className="recommendation-expand-row">
-                  <button
-                    type="button"
-                    className="recommendation-expand-button"
-                    onClick={() => setShowAllWeekend((current) => !current)}
-                  >
-                    {showAllWeekend
-                      ? "Show fewer game weekend options"
-                      : "Show more game weekend options"}
-                  </button>
-                </div>
-              ) : null}
-              </>
-            )}
-          </div>
-        ) : null}
+            
 
         {auth ? (
         <div className="panel custom-trip-panel">

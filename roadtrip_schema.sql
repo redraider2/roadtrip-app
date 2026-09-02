@@ -58,6 +58,7 @@ CREATE TABLE trips (
   title          TEXT NOT NULL,
   start_location TEXT NOT NULL,
   end_location   TEXT NOT NULL,
+  venue_id       BIGINT,
   start_at_utc   TIMESTAMPTZ,
   end_at_utc     TIMESTAMPTZ,
   notes          TEXT,

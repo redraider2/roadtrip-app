@@ -41,6 +41,7 @@ app.use(
         return callback(null, true);
       }
 
+      console.error("CORS rejected origin:", origin);
       return callback(new Error("Origin not allowed by CORS"));
     },
   })
@@ -737,6 +738,7 @@ app.get("/trips", requireAuth, async (req, res) => {
          title,
          start_location,
          end_location,
+         venue_id,
          start_at_utc,
          end_at_utc,
          notes,
@@ -757,7 +759,7 @@ app.get("/trips", requireAuth, async (req, res) => {
 
 app.post("/trips", requireAuth, async (req, res) => {
   try {
-    const { title, start_location, end_location, notes } = req.body;
+    const { title, start_location, end_location, notes, venue_id } = req.body;
 
     if (!start_location || !end_location) {
       return res
@@ -768,8 +770,8 @@ app.post("/trips", requireAuth, async (req, res) => {
     const userId = req.user.id;
 
     const result = await db.query(
-      `INSERT INTO trips (user_id, title, start_location, end_location, notes)
-       VALUES ($1, $2, $3, $4, $5)
+      `INSERT INTO trips (user_id, title, start_location, end_location, notes, venue_id)
+ VALUES ($1, $2, $3, $4, $5, $6)
        RETURNING
          id,
          user_id,
@@ -786,6 +788,7 @@ app.post("/trips", requireAuth, async (req, res) => {
         start_location,
         end_location,
         notes || "",
+        venue_id || null,
       ]
     );
 
@@ -1351,6 +1354,50 @@ app.post("/football/along-the-way", async (req, res) => {
   }
 });
 
+async function fetchWithRetry(url, options = {}, retries = 1) {
+  let lastResponse;
+
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeout);
+
+      if (response.ok) {
+        return response;
+      }
+
+      lastResponse = response;
+
+      if (![502, 503, 504].includes(response.status)) {
+        return response;
+      }
+
+      if (attempt < retries) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, 1000 * (attempt + 1))
+        );
+      }
+    } catch (err) {
+      if (attempt === retries) {
+        throw err;
+      }
+
+      await new Promise((resolve) =>
+        setTimeout(resolve, 1000 * (attempt + 1))
+      );
+    }
+  }
+
+  return lastResponse;
+}
+
 app.get("/football/teams", async (req, res) => {
   try {
     if (!process.env.CFBD_API_KEY) {
@@ -1359,7 +1406,7 @@ app.get("/football/teams", async (req, res) => {
         .json({ error: "CFBD_API_KEY is not configured" });
     }
 
-    const cfbdResponse = await fetch(
+    const cfbdResponse = await fetchWithRetry(
       "https://api.collegefootballdata.com/teams/fbs",
       {
         headers: {
@@ -1417,7 +1464,7 @@ app.get("/football/games", async (req, res) => {
     url.searchParams.set("year", year);
     url.searchParams.set("team", team);
 
-    const cfbdResponse = await fetch(url, {
+    const cfbdResponse = await fetchWithRetry(url,{
       headers: {
         Authorization: `Bearer ${process.env.CFBD_API_KEY}`,
       },
