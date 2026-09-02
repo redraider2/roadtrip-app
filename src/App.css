@@ -1385,3 +1385,39 @@ select.trip-input {
     grid-template-columns: 1fr;
   }
 }
+
+/* TRIP PLANNING WORKSPACE */
+
+.trip-planning-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.trip-planning-layout > .panel {
+  margin-top: 0;
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .trip-planning-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Trip Workspace inside side-by-side planning layout */
+.trip-planning-layout .trip-workspace-grid {
+  grid-template-columns: 1fr;
+}
+
+.trip-planning-layout .trip-map-section,
+.trip-planning-layout .trip-summary-section {
+  width: 100%;
+  min-width: 0;
+}
+
+.trip-planning-layout .trip-map-section .leaflet-container {
+  width: 100%;
+  min-height: 320px;
+}
