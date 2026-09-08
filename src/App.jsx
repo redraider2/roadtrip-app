@@ -466,12 +466,12 @@ function App() {
   const [weekendVenue, setWeekendVenue] = useState(null);
   const [weekendPlacesLoading, setWeekendPlacesLoading] = useState(false);
   const [weekendPlacesError, setWeekendPlacesError] = useState("");
-  const [tailgatingGuide, setTailgatingGuide] = useState(null);
-  const [tailgatingLoading, setTailgatingLoading] = useState(false);
-  const [tailgatingError, setTailgatingError] = useState("");
+  const [gameDayGuide, setGameDayGuide] = useState(null);
+  const [gameDayGuideLoading, setGameDayGuideLoading] = useState(false);
+  const [gameDayGuideError, setGameDayGuideError] = useState("");
   const [showAllAlong, setShowAllAlong] = useState(false);
   const [showAllWeekend, setShowAllWeekend] = useState(false);
-  const [showTailgating, setShowTailgating] = useState(false);
+  const [openGameDaySection, setOpenGameDaySection] = useState(null);
   
 
   const [alongTheWay, setAlongTheWay] = useState({
@@ -941,57 +941,57 @@ function App() {
   let cancelled = false;
   const controller = new AbortController();
 
-  async function loadTailgatingGuide() {
+  async function loadGameDayGuide() {
     const venueId =
       selectedFootballGame?.venueId || activeTrip?.venueId;
 
     if (!venueId) {
-      setTailgatingGuide(null);
-      setTailgatingError("");
+      setGameDayGuide(null);
+      setGameDayGuideError("");
       return;
     }
 
     try {
-      setTailgatingLoading(true);
-      setTailgatingError("");
+      setGameDayGuideLoading(true);
+      setGameDayGuideError("");
 
       const res = await fetch(
-        `${API_BASE_URL}/football/venues/${venueId}/tailgating`,
+        `${API_BASE_URL}/football/venues/${venueId}/game-day-guide`,
         { signal: controller.signal }
       );
 
       if (res.status === 404) {
         if (!cancelled) {
-          setTailgatingGuide(null);
+          setGameDayGuide(null);
         }
         return;
       }
 
       if (!res.ok) {
-        throw new Error("Failed to load tailgating guide");
+        throw new Error("Failed to load game day guide");
       }
 
       const data = await res.json();
 
       if (!cancelled) {
-        setTailgatingGuide(data);
+        setGameDayGuide(data);
       }
     } catch (err) {
       if (cancelled || err?.name === "AbortError") return;
 
-      console.error("Tailgating guide failed:", err);
-      setTailgatingGuide(null);
-      setTailgatingError(
-        "Tailgating information could not be loaded."
+      console.error("Game day guide failed:", err);
+      setGameDayGuide(null);
+      setGameDayGuideError(
+        "Game day information could not be loaded."
       );
     } finally {
       if (!cancelled) {
-        setTailgatingLoading(false);
+        setGameDayGuideLoading(false);
       }
     }
   }
 
-  loadTailgatingGuide();
+  loadGameDayGuide();
 
   return () => {
     cancelled = true;
@@ -1004,7 +1004,11 @@ function App() {
     const controller = new AbortController();
 
     async function loadAlongTheWay() {
-      if (!activeTrip || !Array.isArray(routeGeometry) || routeGeometry.length < 2) {
+      if (
+        !activeTrip?.id ||
+        !Array.isArray(routeGeometry) ||
+        routeGeometry.length < 2
+      ) {
         setAlongTheWay({
           restaurant: [],
           hotel: [],
@@ -2670,7 +2674,7 @@ function App() {
               </div>
             ) : null}
 
-                        <div className="game-day-guide-panel">
+            <div className="game-day-guide-panel">
               <div className="section-heading-row">
                 <div>
                   <span className="section-kicker">GAME DAY</span>
@@ -2694,9 +2698,11 @@ function App() {
                   type="button"
                   className="game-day-guide-card game-day-guide-card-button"
                   onClick={() =>
-                    setShowTailgating((current) => !current)
+                    setOpenGameDaySection((current) =>
+                      current === "tailgating" ? null : "tailgating"
+                    )
                   }
-                  aria-expanded={showTailgating}
+                  aria-expanded={openGameDaySection === "tailgating"}
                 >
                   <span className="game-day-guide-icon">🏈</span>
                   <h3>Tailgating</h3>
@@ -2705,31 +2711,70 @@ function App() {
                     parking-lot traditions, and visiting-fan activities.
                   </p>
                   <span className="game-day-guide-action">
-                    {showTailgating
+                    {openGameDaySection === "tailgating"
                       ? "Hide tailgating guide ↑"
                       : "Explore tailgating →"}
                   </span>
                 </button>
 
-                <div className="game-day-guide-card">
+                <button
+                  type="button"
+                  className="game-day-guide-card game-day-guide-card-button"
+                  onClick={() =>
+                    setOpenGameDaySection((current) =>
+                      current === "parkingArrival" ? null : "parkingArrival"
+                    )
+                  }
+                  aria-expanded={openGameDaySection === "parkingArrival"}
+                >
                   <span className="game-day-guide-icon">🚗</span>
                   <h3>Parking & Arrival</h3>
                   <p>
                     Know where to park, when to arrive, and how to make the final
                     approach to the stadium easier on game day.
                   </p>
-                </div>
+                  <span className="game-day-guide-action">
+                    {openGameDaySection === "parkingArrival"
+                      ? "Hide parking guide ↑"
+                      : "Explore parking & arrival →"}
+                  </span>
+                </button>
 
-                <div className="game-day-guide-card">
+                <button
+                  type="button"
+                  className="game-day-guide-card game-day-guide-card-button"
+                  onClick={() =>
+                    setOpenGameDaySection((current) =>
+                      current === "knowBeforeYouGo"
+                        ? null
+                        : "knowBeforeYouGo"
+                    )
+                  }
+                  aria-expanded={openGameDaySection === "knowBeforeYouGo"}
+                >
                   <span className="game-day-guide-icon">🎒</span>
                   <h3>Know Before You Go</h3>
                   <p>
                     Check stadium policies, bag rules, entry information, gates,
                     and other important details before heading inside.
                   </p>
-                </div>
+                  <span className="game-day-guide-action">
+                    {openGameDaySection === "knowBeforeYouGo"
+                      ? "Hide stadium guide ↑"
+                      : "Explore stadium information →"}
+                  </span>
+                </button>
 
-                <div className="game-day-guide-card">
+                <button
+                  type="button"
+                  className="game-day-guide-card game-day-guide-card-button"
+                  onClick={() =>
+                    setOpenGameDaySection((current) =>
+                      current === "traditions" ? null : "traditions"
+                    )
+                  }
+                  aria-expanded={openGameDaySection === "traditions"}
+                >
                   <span className="game-day-guide-icon">🔥</span>
                   <h3>
                     {selectedFootballGame?.homeTeam
@@ -2740,110 +2785,121 @@ function App() {
                     Discover the traditions, rituals, landmarks, and experiences
                     that make this college football destination unique.
                   </p>
-                </div>
+                  <span className="game-day-guide-action">
+                    {openGameDaySection === "traditions"
+                      ? "Hide traditions ↑"
+                      : "Explore traditions →"}
+                  </span>
+                </button>
               </div>
 
-              {showTailgating ? (
+              {openGameDaySection ? (
                 <div className="tailgating-guide-panel">
-                  <div className="tailgating-guide-heading">
-                    <span className="section-kicker">TAILGATING</span>
-
-                    <h3 className="workspace-heading">
-                      Tailgating at{" "}
-                      {selectedFootballGame?.venue ||
-                        weekendVenue?.name ||
-                        activeTrip?.end ||
-                        "the stadium"}
-                    </h3>
-
-                    <p className="section-copy">
-                      Your pregame guide for tailgating areas, arrival timing,
-                      rules, traditions, and visiting-fan information.
+                  {gameDayGuideLoading ? (
+                    <p className="empty-state">Loading game day guide...</p>
+                  ) : gameDayGuideError ? (
+                    <p className="error-state">{gameDayGuideError}</p>
+                  ) : !gameDayGuide ? (
+                    <p className="empty-state">
+                      Game day information is being added for this destination.
                     </p>
-                  </div>
+                  ) : openGameDaySection === "tailgating" ? (
+                    <>
+                      <div className="tailgating-guide-heading">
+                        <span className="section-kicker">TAILGATING</span>
+                        <h3 className="workspace-heading">
+                          Tailgating at {gameDayGuide.venueName || "the stadium"}
+                        </h3>
+                      </div>
 
-                  <div className="tailgating-guide-grid">
-                    <div className="tailgating-guide-item">
-                      <strong>📍 Where to Tailgate</strong>
+                      <div className="tailgating-guide-grid">
+                        {[
+                          ["📍 Where to Tailgate", gameDayGuide.tailgating?.where],
+                          ["⏰ When to Arrive", gameDayGuide.tailgating?.arrival],
+                          ["📋 Tailgating Rules", gameDayGuide.tailgating?.rules],
+                          ["🏈 Visiting Fans", gameDayGuide.tailgating?.visitors],
+                        ].map(([heading, items]) => (
+                          <div className="tailgating-guide-item" key={heading}>
+                            <strong>{heading}</strong>
+                            {Array.isArray(items) && items.length > 0 ? (
+                              <ul>
+                                {items.map((item) => (
+                                  <li key={item}>{item}</li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <span>Information is being added.</span>
+                            )}
+                          </div>
+                        ))}
+                      </div>
 
-                      {tailgatingGuide ? (
-                        <ul>
-                          {tailgatingGuide.where.map((item) => (
-                            <li key={item}>{item}</li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <span>
-                          School-specific tailgating locations are being added
-                          for this destination.
+                      {gameDayGuide.tailgating?.sourceUrl ? (
+                        <div className="tailgating-guide-source">
+                          <a
+                            href={gameDayGuide.tailgating.sourceUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="place-link"
+                          >
+                            Official {gameDayGuide.school} Game Day Information →
+                          </a>
+                        </div>
+                      ) : null}
+                    </>
+                  ) : (
+                    <>
+                      <div className="tailgating-guide-heading">
+                        <span className="section-kicker">
+                          {openGameDaySection === "parkingArrival"
+                            ? "PARKING & ARRIVAL"
+                            : openGameDaySection === "knowBeforeYouGo"
+                              ? "KNOW BEFORE YOU GO"
+                              : "TRADITIONS"}
                         </span>
-                      )}
-                    </div>
+                        <h3 className="workspace-heading">
+                          {openGameDaySection === "parkingArrival"
+                            ? `Parking & Arrival at ${gameDayGuide.venueName || "the stadium"}`
+                            : openGameDaySection === "knowBeforeYouGo"
+                              ? `Know Before You Go: ${gameDayGuide.venueName || "the stadium"}`
+                              : `${gameDayGuide.school || "Game Day"} Traditions`}
+                        </h3>
+                      </div>
 
-                    <div className="tailgating-guide-item">
-                      <strong>⏰ When to Arrive</strong>
-
-                      {tailgatingGuide ? (
-                        <ul>
-                          {tailgatingGuide.arrival.map((item) => (
-                            <li key={item}>{item}</li>
-                          ))}
-                        </ul>
+                      {Array.isArray(
+                        gameDayGuide[openGameDaySection]?.details
+                      ) &&
+                      gameDayGuide[openGameDaySection].details.length > 0 ? (
+                        <div className="tailgating-guide-item">
+                          <ul>
+                            {gameDayGuide[openGameDaySection].details.map(
+                              (item) => (
+                                <li key={item}>{item}</li>
+                              )
+                            )}
+                          </ul>
+                        </div>
                       ) : (
-                        <span>
-                          Lot opening times and recommended arrival guidance
-                          will appear here.
-                        </span>
+                        <p className="section-copy">
+                          {gameDayGuide[openGameDaySection]?.details ||
+                            "Information is being added for this destination."}
+                        </p>
                       )}
-                    </div>
 
-                    <div className="tailgating-guide-item">
-                      <strong>📋 Tailgating Rules</strong>
-
-                      {tailgatingGuide ? (
-                        <ul>
-                          {tailgatingGuide.rules.map((item) => (
-                            <li key={item}>{item}</li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <span>
-                          School and stadium tailgating policies will appear
-                          here.
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="tailgating-guide-item">
-                      <strong>🏈 Visiting Fans</strong>
-
-                      {tailgatingGuide ? (
-                        <ul>
-                          {tailgatingGuide.visitors.map((item) => (
-                            <li key={item}>{item}</li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <span>
-                          Pregame gathering and visiting-fan information will
-                          appear here.
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {tailgatingGuide?.sourceUrl ? (
-                    <div className="tailgating-guide-source">
-                      <a
-                        href={tailgatingGuide.sourceUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="place-link"
-                      >
-                        Official {tailgatingGuide.school} Game Day Information →
-                      </a>
-                    </div>
-                  ) : null}
+                      {gameDayGuide[openGameDaySection]?.sourceUrl ? (
+                        <div className="tailgating-guide-source">
+                          <a
+                            href={gameDayGuide[openGameDaySection].sourceUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="place-link"
+                          >
+                            Official {gameDayGuide.school} Information →
+                          </a>
+                        </div>
+                      ) : null}
+                    </>
+                  )}
                 </div>
               ) : null}
             </div>

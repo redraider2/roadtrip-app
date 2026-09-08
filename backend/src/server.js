@@ -1559,6 +1559,75 @@ app.get("/football/venues/:venueId/tailgating", async (req, res) => {
   }
 });
 
+app.get("/football/venues/:venueId/game-day-guide", async (req, res) => {
+  try {
+    const { venueId } = req.params;
+
+    const result = await db.query(
+      `SELECT
+         school,
+         venue_id,
+         venue_name,
+         where_to_tailgate,
+         when_to_arrive,
+         rules,
+         visiting_fans,
+         official_url,
+         parking_arrival,
+         parking_url,
+         know_before_you_go,
+         policies_url,
+         traditions,
+         traditions_url,
+         last_verified
+       FROM tailgating_guides
+       WHERE venue_id = $1
+       LIMIT 1`,
+      [venueId]
+    );
+
+    if (!result.rows.length) {
+      return res.status(404).json({
+        error: "Game day guide not found",
+      });
+    }
+
+    const guide = result.rows[0];
+
+    return res.json({
+      school: guide.school,
+      venueId: guide.venue_id,
+      venueName: guide.venue_name,
+      tailgating: {
+        where: guide.where_to_tailgate,
+        arrival: guide.when_to_arrive,
+        rules: guide.rules,
+        visitors: guide.visiting_fans,
+        sourceUrl: guide.official_url,
+      },
+      parkingArrival: {
+        details: guide.parking_arrival,
+        sourceUrl: guide.parking_url,
+      },
+      knowBeforeYouGo: {
+        details: guide.know_before_you_go,
+        sourceUrl: guide.policies_url,
+      },
+      traditions: {
+        details: guide.traditions,
+        sourceUrl: guide.traditions_url,
+      },
+      lastVerified: guide.last_verified,
+    });
+  } catch (err) {
+    console.error("GET /football/venues/:venueId/game-day-guide error:", err);
+
+    return res.status(500).json({
+      error: "Failed to load game day guide",
+    });
+  }
+});
+
 app.get("/football/venues/:venueId", async (req, res) => {
   try {
     const { venueId } = req.params;
