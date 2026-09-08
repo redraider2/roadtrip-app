@@ -2650,11 +2650,17 @@ function App() {
             <div className="trip-details-panel">
               <p>
                 <strong>Destination:</strong>{" "}
-                {selectedFootballGame?.venue || weekendVenue?.name || activeTrip?.end || "Venue TBD"}
+                {gameDayGuide?.venueName ||
+                weekendVenue?.name ||
+                selectedFootballGame?.venue ||
+                activeTrip?.end ||
+              "Venue TBD"}
               </p>
               <p>
                 <strong>Host:</strong>{" "}
-                {selectedFootballGame?.homeTeam || "College Football Destination"}
+                {gameDayGuide?.homeTeam ||
+                selectedFootballGame?.homeTeam ||
+            "College Football Destination"}
               </p>
             </div>
 
@@ -2685,10 +2691,11 @@ function App() {
               <p className="game-day-guide-intro">
                 Make the most of game day at{" "}
                 <strong>
-                  {selectedFootballGame?.venue ||
-                  weekendVenue?.name ||
-                  activeTrip?.end ||
-                  "the stadium"}
+                  {gameDayGuide?.venueName ||
+weekendVenue?.name ||
+selectedFootballGame?.venue ||
+activeTrip?.end ||
+"the stadium"}
                 </strong>
                 . Here’s what to know before kickoff.
               </p>
