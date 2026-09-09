@@ -464,6 +464,7 @@ function App() {
     hotel: [],
   });
   const [weekendVenue, setWeekendVenue] = useState(null);
+  const [featuredPartner, setFeaturedPartner] = useState(null);
   const [weekendPlacesLoading, setWeekendPlacesLoading] = useState(false);
   const [weekendPlacesError, setWeekendPlacesError] = useState("");
   const [gameDayGuide, setGameDayGuide] = useState(null);
@@ -793,6 +794,7 @@ function App() {
   if (!venueId) {
     setWeekendPlaces({ restaurant: [], bar: [], hotel: [] });
     setWeekendVenue(null);
+    setFeaturedPartner(null);
     setWeekendPlacesError("");
     return;
   }
@@ -801,31 +803,37 @@ function App() {
     setWeekendPlacesLoading(true);
     setWeekendPlacesError("");
 
-    const [restaurantRes, barRes, hotelRes] = await Promise.all([
-
-          fetch(
-            `${API_BASE_URL}/football/venues/${venueId}/places?category=restaurant`,
-            { signal: controller.signal }
-          ),
-          fetch(
-            `${API_BASE_URL}/football/venues/${venueId}/places?category=bar`,
-            { signal: controller.signal }
-          ),
-          fetch(
-            `${API_BASE_URL}/football/venues/${venueId}/places?category=hotel`,
-            { signal: controller.signal }
-          ),
-        ]);
+    const [restaurantRes, barRes, hotelRes, featuredPartnerRes] =
+      await Promise.all([
+        fetch(
+          `${API_BASE_URL}/football/venues/${venueId}/places?category=restaurant`,
+          { signal: controller.signal }
+        ),
+        fetch(
+          `${API_BASE_URL}/football/venues/${venueId}/places?category=bar`,
+          { signal: controller.signal }
+        ),
+        fetch(
+          `${API_BASE_URL}/football/venues/${venueId}/places?category=hotel`,
+          { signal: controller.signal }
+        ),
+        fetch(
+          `${API_BASE_URL}/football/venues/${venueId}/featured-partner`,
+          { signal: controller.signal }
+        ),
+      ]);
 
         if (!restaurantRes.ok || !barRes.ok || !hotelRes.ok) {
           throw new Error("Failed to load game weekend places");
         }
 
-        const [restaurantData, barData, hotelData] = await Promise.all([
-          restaurantRes.json(),
-          barRes.json(),
-          hotelRes.json(),
-        ]);
+        const [restaurantData, barData, hotelData, featuredPartnerData] =
+          await Promise.all([
+            restaurantRes.json(),
+            barRes.json(),
+            hotelRes.json(),
+            featuredPartnerRes.ok ? featuredPartnerRes.json() : null,
+          ]);
 
         if (cancelled) return;
 
@@ -835,6 +843,7 @@ function App() {
           hotel: hotelData.places || [],
         });
         setWeekendVenue(restaurantData.venue || null);
+        setFeaturedPartner(featuredPartnerData || null);
       } catch (err) {
         if (cancelled || err?.name === "AbortError") return;
 
@@ -845,6 +854,7 @@ function App() {
           hotel: [],
         });
         setWeekendVenue(null);
+        setFeaturedPartner(null);
         setWeekendPlacesError(
           "Restaurants and bars could not be loaded for this game."
         );
@@ -2919,6 +2929,7 @@ activeTrip?.end ||
               <p className="error-state">{weekendPlacesError}</p>
             ) : (
               <>
+  {featuredPartner && (
   <div className="featured-partner-card">
     <div className="featured-partner-badge">
       ★ FEATURED PARTNER
@@ -2927,42 +2938,51 @@ activeTrip?.end ||
     <div className="featured-partner-content">
       <div>
         <h3 className="featured-partner-name">
-          Spanky&apos;s
+          {featuredPartner.businessName}
         </h3>
 
-        <p className="featured-partner-location">
-          Across from Texas Tech
-        </p>
+        {featuredPartner.locationText && (
+          <p className="featured-partner-location">
+            {featuredPartner.locationText}
+          </p>
+        )}
 
-        <p className="featured-partner-description">
-          A Lubbock game-day favorite for burgers, fried cheese,
-          cold drinks, and Red Raider weekends.
-        </p>
+        {featuredPartner.description && (
+          <p className="featured-partner-description">
+            {featuredPartner.description}
+          </p>
+        )}
 
-        <div className="featured-partner-offer">
-          🏈 Kickoff Miles Offer
-          <span> Show this screen for a game-weekend special.</span>
-        </div>
+        {featuredPartner.offerText && (
+          <div className="featured-partner-offer">
+            🏈 Kickoff Miles Offer
+            <span> {featuredPartner.offerText}</span>
+          </div>
+        )}
       </div>
 
       <div className="featured-partner-actions">
-        <a
-          href="https://www.google.com/maps/search/?api=1&query=Spankys+Lubbock+Texas"
-          target="_blank"
-          rel="noreferrer"
-          className="primary-button"
-        >
-          Directions
-        </a>
+        {featuredPartner.directionsUrl && (
+          <a
+            href={featuredPartner.directionsUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="primary-button"
+          >
+            Directions
+          </a>
+        )}
 
-        <a
-          href="https://spankys.com"
-          target="_blank"
-          rel="noreferrer"
-          className="ghost-button"
-        >
-          Visit Website
-        </a>
+        {featuredPartner.websiteUrl && (
+          <a
+            href={featuredPartner.websiteUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="ghost-button"
+          >
+            Visit Website
+          </a>
+        )}
       </div>
     </div>
 
@@ -2970,6 +2990,7 @@ activeTrip?.end ||
       Sponsored
     </span>
   </div>
+)}
 
   <div className="game-weekend-grid">
                 <div className="recommendation-column">
