@@ -2940,7 +2940,9 @@ activeTrip?.end ||
   {featuredPartner && (
   <div className="featured-partner-card">
     <div className="featured-partner-badge">
-      ★ FEATURED PARTNER
+      ★ {featuredPartner.id === 1
+        ? "DEMO FEATURED PARTNER"
+        : "FEATURED PARTNER"}
     </div>
 
     <div className="featured-partner-content">
