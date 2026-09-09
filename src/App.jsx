@@ -2919,7 +2919,59 @@ activeTrip?.end ||
               <p className="error-state">{weekendPlacesError}</p>
             ) : (
               <>
-              <div className="game-weekend-grid">
+  <div className="featured-partner-card">
+    <div className="featured-partner-badge">
+      ★ FEATURED PARTNER
+    </div>
+
+    <div className="featured-partner-content">
+      <div>
+        <h3 className="featured-partner-name">
+          Spanky&apos;s
+        </h3>
+
+        <p className="featured-partner-location">
+          Across from Texas Tech
+        </p>
+
+        <p className="featured-partner-description">
+          A Lubbock game-day favorite for burgers, fried cheese,
+          cold drinks, and Red Raider weekends.
+        </p>
+
+        <div className="featured-partner-offer">
+          🏈 Kickoff Miles Offer
+          <span> Show this screen for a game-weekend special.</span>
+        </div>
+      </div>
+
+      <div className="featured-partner-actions">
+        <a
+          href="https://www.google.com/maps/search/?api=1&query=Spankys+Lubbock+Texas"
+          target="_blank"
+          rel="noreferrer"
+          className="primary-button"
+        >
+          Directions
+        </a>
+
+        <a
+          href="https://spankys.com"
+          target="_blank"
+          rel="noreferrer"
+          className="ghost-button"
+        >
+          Visit Website
+        </a>
+      </div>
+    </div>
+
+    <span className="featured-partner-sponsored">
+      Sponsored
+    </span>
+  </div>
+
+  <div className="game-weekend-grid">
                 <div className="recommendation-column">
                   <h3 className="game-weekend-heading">🍴 Game Day Eats</h3>
 
