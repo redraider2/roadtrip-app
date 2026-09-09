@@ -1,9 +1,42 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Header from "./components/Header";
 import Background from "./components/Background";
 import "./App.css";
 import TripMap from "./components/TripMap";
 import DestinationMap from "./components/DestinationMap";
+import JourneyNavigation from "./components/JourneyNavigation.jsx";
+import HomeExperience from "./components/HomeExperience.jsx";
+import ChooseTeamExperience from "./components/ChooseTeamExperience.jsx";
+import ChooseGameExperience from "./components/ChooseGameExperience.jsx";
+import DriveExperience from "./components/DriveExperience.jsx";
+import TripHqExperience from "./components/TripHqExperience.jsx";
+import PartnerPlacement from "./components/PartnerPlacement.jsx";
+import PlanWorkspace from "./components/PlanWorkspace.jsx";
+import {
+  formatGameDate,
+  formatRouteProgress,
+  formatTripStats,
+} from "./lib/formatters.js";
+import {
+  getOvernightTargets,
+  getTravelDayNumber,
+  isValidCoordinate,
+  normalizePlaceName,
+  orderHotelsByTravelNight,
+  orderPlacesByTravelDay,
+} from "./lib/tripPlanning.js";
+import {
+  ChooseGameScreen,
+  ChooseTeamScreen,
+  DriveScreen,
+  GameDayScreen,
+  GameWeekendScreen,
+  HomeScreen,
+  PlanAlongTheWayScreen,
+  PlanRouteScheduleScreen,
+  PlanStayItineraryScreen,
+  TripHqScreen,
+} from "./screens/JourneyScreens.jsx";
+import { useJourneyNavigation } from "./screens/useJourneyNavigation.js";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5001";
@@ -11,6 +44,22 @@ const API_BASE_URL =
 const FOOTBALL_SEASON = 2026;
 
 const AUTH_STORAGE_KEY = "roadtrip_auth";
+
+const PLAN_SCREEN_IDS = [
+  "plan-route-schedule",
+  "plan-along-the-way",
+  "plan-stay-itinerary",
+];
+
+const DEVELOPMENT_PARTNER_PREVIEW = {
+  businessName: "Sample Road Trip Partner",
+  locationText: "Development-only placement preview",
+  description:
+    "A clearly labeled sample showing how a destination partner fits beside the trip without competing with maps, recommendations, or itinerary details.",
+  offerText: "Sample traveler offer for visual review",
+  websiteUrl: "https://example.com",
+  directionsUrl: "https://www.google.com/maps",
+};
 
 function getStoredAuth() {
   try {
@@ -63,58 +112,6 @@ async function geocodePlace(place, signal) {
   return { latitude, longitude };
 }
 
-function isValidCoordinate(stop) {
-  const latitude = Number(stop.latitude);
-  const longitude = Number(stop.longitude);
-
-  return (
-    Number.isFinite(latitude) &&
-    Number.isFinite(longitude) &&
-    latitude !== 0 &&
-    longitude !== 0
-  );
-}
-
-function formatRouteDistance(meters) {
-  const miles = meters / 1609.344;
-  return `${Math.round(miles).toLocaleString()} miles`;
-}
-
-function formatRouteDuration(seconds) {
-  const totalMinutes = Math.round(seconds / 60);
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-
-  if (hours === 0) {
-    return `${minutes} min`;
-  }
-
-  return `${hours} hr ${minutes} min`;
-}
-
-function formatGameDate(startDate, startTimeTBD) {
-  if (!startDate) return "Date TBD";
-
-  const date = new Date(startDate);
-
-  const dateText = date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-
-  if (startTimeTBD) {
-    return `${dateText} · Kickoff TBD`;
-  }
-
-  const timeText = date.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-  });
-
-  return `${dateText} · ${timeText}`;
-}
-
 async function fetchRoadRoute(points, signal) {
   const res = await fetch(`${API_BASE_URL}/route`, {
     method: "POST",
@@ -131,274 +128,6 @@ async function fetchRoadRoute(points, signal) {
 }
 
   return res.json();
-}
-
-function formatTripStats(route) {
-  if (!route) return null;
-
-  return {
-    distance: formatRouteDistance(route.distanceMeters),
-    driveTime: formatRouteDuration(route.durationSeconds),
-    durationSeconds: Number(route.durationSeconds) || 0,
-    provider: route.provider,
-  };
-}
-
-
-
-function normalizePlaceName(name = "") {
-  return String(name)
-    .toLowerCase()
-    .replace(/['’]/g, "")
-    .replace(/[^a-z0-9\s]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function getTravelDayNumber(progress, dayCount) {
-
-  const days = Math.max(1, Number(dayCount) || 1);
-  const normalizedProgress = Math.min(
-    0.999999,
-    Math.max(0, Number(progress) || 0)
-  );
-
-  return Math.min(
-    days,
-    Math.floor(normalizedProgress * days) + 1
-  );
-}
-
-function comparePlaceQuality(a, b) {
-  const ratingDifference =
-    (Number(b.rating) || 0) - (Number(a.rating) || 0);
-
-  if (ratingDifference !== 0) {
-    return ratingDifference;
-  }
-
-  return (
-    (Number(b.ratingCount) || 0) -
-    (Number(a.ratingCount) || 0)
-  );
-}
-
-function orderPlacesByTravelDay(places, dayCount) {
-  if (!Array.isArray(places) || places.length === 0) {
-    return [];
-  }
-
-  const days = Math.max(1, Number(dayCount) || 1);
-  const ordered = [];
-  const usedIds = new Set();
-
-  /*
-   * Pick the best available recommendation from each
-   * sequential travel-day stretch.
-   *
-   * Example for 4 days:
-   * Day 1 = 0–25%
-   * Day 2 = 25–50%
-   * Day 3 = 50–75%
-   * Day 4 = 75–100%
-   */
-  for (let dayIndex = 0; dayIndex < days; dayIndex += 1) {
-    const start = dayIndex / days;
-    const end = (dayIndex + 1) / days;
-    const target = (start + end) / 2;
-
-    const candidates = places
-      .filter((place) => {
-        const progress = Number(place.routeProgress);
-
-        if (!Number.isFinite(progress)) {
-          return false;
-        }
-
-        const inStretch =
-          dayIndex === days - 1
-            ? progress >= start && progress <= end
-            : progress >= start && progress < end;
-
-        return inStretch && !usedIds.has(place.id);
-      })
-      .sort((a, b) => {
-        const aDistance =
-          Math.abs(Number(a.routeProgress) - target);
-        const bDistance =
-          Math.abs(Number(b.routeProgress) - target);
-
-        if (aDistance !== bDistance) {
-          return aDistance - bDistance;
-        }
-
-        return comparePlaceQuality(a, b);
-      });
-
-    if (candidates.length > 0) {
-      const selected = candidates[0];
-      ordered.push(selected);
-      usedIds.add(selected.id);
-    }
-  }
-
-  /*
-   * Additional choices appear afterward, but always
-   * remain in geographic journey order.
-   */
-  const remaining = places
-    .filter((place) => !usedIds.has(place.id))
-    .sort((a, b) => {
-      const progressDifference =
-        (Number(a.routeProgress) || 0) -
-        (Number(b.routeProgress) || 0);
-
-      if (progressDifference !== 0) {
-        return progressDifference;
-      }
-
-      return comparePlaceQuality(a, b);
-    });
-
-  return [...ordered, ...remaining];
-}
-
-function orderHotelsByTravelNight(places, dayCount) {
-  if (!Array.isArray(places) || places.length === 0) {
-    return [];
-  }
-
-  const days = Math.max(1, Number(dayCount) || 1);
-
-  if (days <= 1) {
-    return [...places].sort(comparePlaceQuality);
-  }
-
-  const ordered = [];
-  const usedIds = new Set();
-
-  /*
-   * A 4-day trip has 3 road-trip overnights.
-   * Target the end of Days 1, 2 and 3:
-   * 25%, 50%, 75%.
-   */
-  for (let nightIndex = 1; nightIndex < days; nightIndex += 1) {
-    const target = nightIndex / days;
-
-    const candidates = places
-      .filter((place) => !usedIds.has(place.id))
-      .sort((a, b) => {
-        const aDistance =
-          Math.abs((Number(a.routeProgress) || 0) - target);
-        const bDistance =
-          Math.abs((Number(b.routeProgress) || 0) - target);
-
-        if (aDistance !== bDistance) {
-          return aDistance - bDistance;
-        }
-
-        return comparePlaceQuality(a, b);
-      });
-
-    if (candidates.length > 0) {
-      const selected = candidates[0];
-      ordered.push(selected);
-      usedIds.add(selected.id);
-    }
-  }
-
-  const remaining = places
-    .filter((place) => !usedIds.has(place.id))
-    .sort((a, b) => {
-      const progressDifference =
-        (Number(a.routeProgress) || 0) -
-        (Number(b.routeProgress) || 0);
-
-      if (progressDifference !== 0) {
-        return progressDifference;
-      }
-
-      return comparePlaceQuality(a, b);
-    });
-
-  return [...ordered, ...remaining];
-}
-
-function formatRouteProgress(
-  progress,
-  dayCount,
-  type = "day",
-  durationSeconds = 0
-) {
-  const normalizedProgress = Number(progress) || 0;
-  const percent = Math.round(normalizedProgress * 100);
-  const days = Math.max(1, Number(dayCount) || 1);
-
-  if (days <= 1) {
-    return `Same-day drive · ${percent}%`;
-  }
-
-  if (type === "hotel") {
-    const night = Math.min(
-      days - 1,
-      Math.max(
-        1,
-        Math.round(normalizedProgress * days)
-      )
-    );
-
-    const elapsedHours =
-      Number(durationSeconds) > 0
-        ? (Number(durationSeconds) * normalizedProgress) / 3600
-        : 0;
-
-    const driveLabel =
-      elapsedHours > 0
-        ? ` · about ${Math.round(elapsedHours)} hrs driving`
-        : "";
-
-    return `Night ${night} of ${days - 1}${driveLabel} · ${percent}% into trip`;
-  }
-
-  const day = getTravelDayNumber(normalizedProgress, days);
-
-  return `Day ${day} of ${days} · ${percent}% into trip`;
-}
-
-function getOvernightTargets(durationSeconds, dailyDriveHours) {
-  const hours = Number(dailyDriveHours);
-
-  if (
-    dailyDriveHours === "straight" ||
-    !Number.isFinite(hours) ||
-    hours <= 0 ||
-    !Number.isFinite(durationSeconds) ||
-    durationSeconds <= 0
-  ) {
-    return [];
-  }
-
-  const totalHours = durationSeconds / 3600;
-
-  // Treat the selected drive time as a planning preference,
-  // not a hard cutoff.
-  const dailyTolerance = 1.15;
-  const effectiveDailyHours = hours * dailyTolerance;
-
-  const dayCount = Math.max(
-    1,
-    Math.ceil(totalHours / effectiveDailyHours)
-  );
-
-  if (dayCount <= 1) {
-    return [];
-  }
-
-  // Spread overnight targets evenly across the trip.
-  return Array.from(
-    { length: dayCount - 1 },
-    (_, index) => (index + 1) / dayCount
-  );
 }
 
 const TAILGATING_GUIDES = {
@@ -432,6 +161,7 @@ const TAILGATING_GUIDES = {
 };
 
 function App() {
+  const { activeScreen, navigateTo } = useJourneyNavigation();
   const [auth, setAuth] = useState(() => getStoredAuth());
   const [authMode, setAuthMode] = useState("login");
   const [authUsername, setAuthUsername] = useState("");
@@ -1149,6 +879,7 @@ function App() {
 
       await fetchTrips();
       setActiveTripId(Number(createdTrip.id));
+      navigateTo("trip-hq");
 
       setTripName("");
       setStart("");
@@ -1219,6 +950,7 @@ function App() {
           previewTrip,
         ]);
         setActiveTripId(null);
+        navigateTo("trip-hq");
         return;
       }
 
@@ -1248,6 +980,7 @@ function App() {
 
       await fetchTrips();
       setActiveTripId(Number(createdTrip.id));
+      navigateTo("trip-hq");
 
       setStart("");
       setEnd("");
@@ -1614,39 +1347,60 @@ function App() {
 
   const mapStart = start.trim() || activeTrip?.start || "";
   const mapEnd = end.trim() || activeTrip?.end || "";
+  const hasTrip = Boolean(activeTrip);
+  const hasRoute = hasTrip && routeGeometry.length > 1;
+  const hasGameWeekend = Boolean(selectedFootballGame || activeTrip?.venueId);
+  const isPlanScreen = PLAN_SCREEN_IDS.includes(activeScreen);
+  const workspacePartner =
+    featuredPartner || (import.meta.env.DEV ? DEVELOPMENT_PARTNER_PREVIEW : null);
+
+  function canAccessScreen(screenId) {
+    if (screenId === "drive") return hasRoute;
+    if (screenId === "choose-game") return Boolean(selectedFootballTeam);
+    if (screenId === "trip-hq") {
+      return hasTrip;
+    }
+    if (["plan-route-schedule", "plan-along-the-way", "plan-stay-itinerary"].includes(screenId)) {
+      return hasRoute;
+    }
+    if (["game-weekend", "game-day"].includes(screenId)) {
+      return hasGameWeekend;
+    }
+    return true;
+  }
 
   return (
-    <div className="page">
+    <div className={`page${activeScreen === "home" ? " is-home" : ""}`}>
       <Background team={backgroundTeam} />
-    <div className="app">
-      <div className="hero kickoff-hero">
-  <div className="kickoff-brand-lockup">
-    <div className="kickoff-logo-wrap">
-  <img
-    src={`${import.meta.env.BASE_URL}kickoff-miles-logo.png`}
-    alt="Kickoff Miles"
-    className="kickoff-logo"
-  />
-</div>
+    <div className={`app${activeScreen === "home" ? " is-home" : ""}${
+      activeScreen === "choose-team" ? " is-choose-team" : ""
+    }${
+      activeScreen === "choose-game" ? " is-choose-game" : ""
+    }${
+      activeScreen === "trip-hq" ? " is-trip-hq" : ""
+    }${
+      isPlanScreen ? " is-plan" : ""
+    }${
+      activeScreen === "drive" ? " is-drive" : ""
+    }`}>
+      {!["home", "choose-team", "choose-game", "trip-hq"].includes(activeScreen) &&
+      !isPlanScreen ? (
+        <JourneyNavigation
+        activeScreen={activeScreen}
+        canAccess={canAccessScreen}
+        onNavigate={navigateTo}
+      />
+      ) : null}
 
-    <div>
-      <h1 className="app-title kickoff-title">
-        KICKOFF <span>MILES</span>
-      </h1>
-
-      <p className="app-subtitle kickoff-subtitle">
-        The College Football Roadtrip Planner
-      </p>
-
-      <p className="kickoff-tagline">
-        Hit the Road. Chase the Game.
-      </p>
-    </div>
-  </div>
-</div>
-
-        <Header />
-
+      <HomeScreen active={activeScreen === "home"}>
+      <HomeExperience
+        accountLabel={
+          auth
+            ? `Account: ${auth.user?.username || auth.user?.email}`
+            : "Sign in to save your trips"
+        }
+        onChooseTeam={() => navigateTo("choose-team")}
+      >
         <div className="panel account-panel">
           <h2 className="panel-title">
             {auth ? "Your Account" : "Sign In to Save Your Trips"}
@@ -1733,142 +1487,80 @@ function App() {
             </form>
           )}
         </div>
+      </HomeExperience>
+      </HomeScreen>
 
-        <div className="panel planner-panel">
-          <div className="planner-heading">
-            <span className="section-kicker">PLAN YOUR NEXT AWAY GAME</span>
-            <h2 className="panel-title">Build Your College Football Road Trip</h2>
-            <p className="planner-copy">
-              Pick your team, choose the road game, and tell us where you're starting.
-            </p>
-          </div>
-
+        {(["choose-team", "choose-game"].includes(activeScreen)) ? (
+        <div className={`panel planner-panel${
+          activeScreen === "choose-team"
+            ? " choose-team-panel"
+            : " choose-game-panel"
+        }`}>
           <form onSubmit={handleFootballTripSubmit} className="trip-form planner-form">
-            <select
-              value={selectedFootballTeam}
-              onChange={(e) => setSelectedFootballTeam(e.target.value)}
-              className="trip-input"
-              aria-label="College football team"
-              disabled={footballTeamsLoading}
-            >
-              <option value="">
-                {footballTeamsLoading ? "Loading teams..." : "Choose your team"}
-              </option>
-              {footballTeams.map((team) => (
-                <option key={team.id} value={team.school}>
-                  {team.school}
-                  {team.mascot ? ` ${team.mascot}` : ""}
-                </option>
-              ))}
-            </select>
-
-            <select
-              value={selectedFootballGameId}
-              onChange={(e) => setSelectedFootballGameId(e.target.value)}
-              className="trip-input"
-              aria-label="Away game"
-              disabled={!selectedFootballTeam || footballLoading}
-            >
-              <option value="">
-                {!selectedFootballTeam
-                  ? "Choose a team first"
-                  : footballLoading
-                  ? "Loading away games..."
-                  : "Choose an away game"}
-              </option>
-
-              {footballGames.map((game) => (
-                <option key={game.id} value={game.id}>
-                  {game.awayTeam} @ {game.homeTeam} —{" "}
-                  {formatGameDate(game.startDate, game.startTimeTBD)} —{" "}
-                  {game.venue || "Venue TBD"}
-                </option>
-              ))}
-            </select>
-
-            <input
-              value={footballStart}
-              onChange={(e) => setFootballStart(e.target.value)}
-              placeholder="Starting location (e.g., Houston, TX)"
-              className="trip-input"
+            <ChooseTeamScreen active={activeScreen === "choose-team"}>
+            <ChooseTeamExperience
+              error={footballTeams.length === 0 ? footballError : ""}
+              loading={footballTeamsLoading}
+              onBack={() => navigateTo("home")}
+              onSelectTeam={(school) => {
+                setSelectedFootballTeam(school);
+                navigateTo("choose-game");
+              }}
+              selectedTeam={selectedFootballTeam}
+              teams={footballTeams}
             />
-          <select
-          value={dailyDriveHours}
-          onChange={(e) => setDailyDriveHours(e.target.value)}
-          className="trip-input"
-          aria-label="Daily driving limit"
-          >
-          <option value="6">Drive up to 6 hours/day</option>
-          <option value="8">Drive up to 8 hours/day</option>
-          <option value="10">Drive up to 10 hours/day</option>
-          <option value="12">Drive up to 12 hours/day</option>
-          <option value="straight">Drive straight through</option>
-</select>
-            {selectedFootballGame ? (
-              <div className="trip-details-panel">
-                <p>
-                  <strong>Matchup:</strong>{" "}
-                  {selectedFootballGame.awayTeam} @{" "}
-                  {selectedFootballGame.homeTeam}
-                </p>
-                <p>
-                  <strong>Game:</strong>{" "}
-                  {formatGameDate(
-                    selectedFootballGame.startDate,
-                    selectedFootballGame.startTimeTBD
-                  )}
-                </p>
-                <p>
-                  <strong>Stadium:</strong>{" "}
-                  {selectedFootballGame.venue || "Venue TBD"}
-                </p>
-              </div>
-            ) : null}
+            </ChooseTeamScreen>
 
-            {footballError ? (
-              <p className="error-state">{footballError}</p>
-            ) : null}
-
-            {selectedFootballTeam &&
-            !footballLoading &&
-            footballGames.length === 0 &&
-            !footballError ? (
-              <p className="empty-state">
-                No road games were returned for {selectedFootballTeam} in{" "}
-                {FOOTBALL_SEASON}.
-              </p>
-            ) : null}
-
-            {!auth ? (
-              <p className="empty-state">
-                No account needed to plan. Sign in when you want to save your trip.
-              </p>
-            ) : null}
-
-            <button
-              type="submit"
-              className="primary-button"
-              disabled={
-                footballLoading ||
-                !selectedFootballTeam ||
-                !selectedFootballGame ||
-                !footballStart.trim()
-              }
-            >
-              {footballLoading
-                ? "Loading..."
-                : "Plan My Road Trip"}
-            </button>
+            <ChooseGameScreen active={activeScreen === "choose-game"}>
+            <ChooseGameExperience
+              authenticated={Boolean(auth)}
+              dailyDriveHours={dailyDriveHours}
+              error={footballError}
+              games={footballGames}
+              loading={footballLoading}
+              onBack={() => navigateTo("choose-team")}
+              onDailyDriveHoursChange={setDailyDriveHours}
+              onSelectGame={setSelectedFootballGameId}
+              onStartChange={setFootballStart}
+              season={FOOTBALL_SEASON}
+              selectedGame={selectedFootballGame}
+              selectedGameId={selectedFootballGameId}
+              selectedTeam={selectedFootballTeam}
+              start={footballStart}
+              teams={footballTeams}
+            />
+            </ChooseGameScreen>
           </form>
         </div>
+        ) : null}
 
-        {activeTrip && routeGeometry.length > 1 ? (
-          <div className="panel along-panel">
-            <div className="along-heading">
-              <span className="section-kicker">YOUR ROUTE</span>
-              <h2 className="panel-title">Along the Way</h2>
+        {activeTrip && routeGeometry.length > 1 &&
+        ["plan-route-schedule", "plan-along-the-way"].includes(activeScreen) ? (
+          <PlanWorkspace
+            activeSection={activeScreen}
+            game={selectedFootballGame}
+            onNavigate={navigateTo}
+            trip={activeTrip}
+          >
+          <div className={`panel along-panel${
+            activeScreen === "plan-route-schedule" ? " is-route-plan" : " is-along-plan"
+          }`}>
+
+            <PlanRouteScheduleScreen active={activeScreen === "plan-route-schedule"}>
+            <div className="plan-section-heading">
+              <span className="section-kicker">HERE’S YOUR ROAD TRIP</span>
+              <h2>{activeTrip.start} → {activeTrip.end}</h2>
             </div>
-
+            <div className="plan-route-layout">
+              <div className="plan-route-map" aria-label="Road trip route map">
+                <TripMap
+                  start={mapStart}
+                  end={mapEnd}
+                  stops={stops.filter((stop) => stop.is_route_stop !== false)}
+                  routeGeometry={routeGeometry}
+                />
+              </div>
+              <div className="plan-route-summary">
             <div className="trip-result-card">
               <div className="trip-result-main">
                 <span className="trip-result-eyebrow">GAME ROAD TRIP</span>
@@ -1915,7 +1607,24 @@ function App() {
                 </div>
               </div>
             </div>
+            <PartnerPlacement
+              contextLabel="Road Trip Partner"
+              partner={workspacePartner}
+            />
+              </div>
+            </div>
+            </PlanRouteScheduleScreen>
 
+            <PlanAlongTheWayScreen active={activeScreen === "plan-along-the-way"}>
+            <div className="plan-section-heading">
+              <span className="section-kicker">DISCOVER THE ROAD</span>
+              <h2>Along the Way</h2>
+              <p>Food, stays, and memorable stops matched to your route.</p>
+            </div>
+            <PartnerPlacement
+              contextLabel="Along the Way"
+              partner={workspacePartner}
+            />
             {alongTheWayLoading ? (
               <p className="empty-state">
                 Finding food, hotels, and historic stops along your route...
@@ -2132,31 +1841,47 @@ function App() {
               ) : null}
               </>
             )}
+            </PlanAlongTheWayScreen>
           </div>
+          </PlanWorkspace>
         ) : null}
 
         <div className="trip-planning-layout">
 
 
-        {activeTrip && routeGeometry.length > 1 ? (
+        {activeTrip && routeGeometry.length > 1 &&
+        activeScreen === "plan-stay-itinerary" ? (
 
-  <div className="panel">
-    <div className="section-heading-row">
+  <PlanStayItineraryScreen active>
+  <PlanWorkspace
+    activeSection={activeScreen}
+    game={selectedFootballGame}
+    onNavigate={navigateTo}
+    trip={activeTrip}
+  >
+  <div className="panel plan-itinerary-panel">
+    <div className="plan-section-heading">
       <div>
         <span className="section-kicker">YOUR TRAVEL PLAN</span>
-        <h2 className="panel-title">Day-by-Day Itinerary</h2>
-        <p className="section-copy">
+        <h2>Day-by-Day Itinerary</h2>
+        <p>
           A suggested road trip plan based on your route and daily driving preference.
         </p>
       </div>
     </div>
 
-    <div className="trip-stop-groups">
+    <PartnerPlacement
+      contextLabel="Stay & Itinerary"
+      partner={workspacePartner}
+    />
+
+    <div className="trip-stop-groups plan-itinerary-timeline">
       {dayByDayPlan.map((day) => (
-        <div key={day.dayNumber} className="trip-stop-group">
-          <h3 className="workspace-heading">
-            Day {day.dayNumber} of {travelDayCount}
-          </h3>
+        <div key={day.dayNumber} className="trip-stop-group plan-itinerary-day">
+          <div className="plan-day-marker" aria-hidden="true">{day.dayNumber}</div>
+          <div className="plan-day-content">
+          <span className="section-kicker">DAY {day.dayNumber}</span>
+          <h3 className="workspace-heading">Day {day.dayNumber} of {travelDayCount}</h3>
 
           <ul className="trip-list">
             {day.restaurant ? (
@@ -2241,22 +1966,43 @@ function App() {
               </li>
             )}
           </ul>
+          </div>
         </div>
       ))}
         </div>
   </div>
+  </PlanWorkspace>
+  </PlanStayItineraryScreen>
 ) : null}
 
 
 
-        {activeTrip ? (
+        {activeTrip && activeScreen === "trip-hq" ? (
+        <TripHqScreen active>
+        <TripHqExperience
+          game={selectedFootballGame}
+          hasDrive={hasRoute}
+          hasGameWeekend={hasGameWeekend}
+          hasRoute={hasRoute}
+          onBack={() =>
+            navigateTo(selectedFootballTeam ? "choose-game" : "home")
+          }
+          onNavigate={navigateTo}
+          travelPlan={travelPlanDescription}
+          trip={activeTrip}
+          tripStats={tripStats}
+        >
+        <PartnerPlacement
+          contextLabel="Featured Road Trip Partner"
+          partner={workspacePartner}
+        />
         <div className="panel trip-workspace-panel">
           <div className="section-heading-row">
             <div>
-              <span className="section-kicker">YOUR TRIP</span>
-              <h2 className="panel-title">Trip Workspace</h2>
+              <span className="section-kicker">ROUTE & PLACES</span>
+              <h2 className="panel-title">Your Trip Workspace</h2>
               <p className="section-copy">
-                Review your route, trip details, and stops in one place.
+                Review the route and manage the places connected to this trip.
               </p>
             </div>
           </div>
@@ -2646,6 +2392,8 @@ function App() {
           )}
           </div>
         </div>
+        </TripHqExperience>
+        </TripHqScreen>
         ) : null}
 
         
@@ -2656,7 +2404,9 @@ function App() {
 
                 </div>
 
-{(selectedFootballGame || activeTrip?.venueId) ? (
+{hasGameWeekend && ["game-weekend", "game-day"].includes(activeScreen) ? (
+          <>
+          <GameWeekendScreen active={activeScreen === "game-weekend"}>
           <div className="panel destination-panel">
             <div className="section-heading-row">
               <div>
@@ -2697,7 +2447,11 @@ function App() {
                 />
               </div>
             ) : null}
+          </div>
+          </GameWeekendScreen>
 
+          <GameDayScreen active={activeScreen === "game-day"}>
+          <div className="panel destination-panel">
             <div className="game-day-guide-panel">
               <div className="section-heading-row">
                 <div>
@@ -2928,7 +2682,11 @@ activeTrip?.end ||
                 </div>
               ) : null}
             </div>
+          </div>
+            </GameDayScreen>
 
+          <GameWeekendScreen active={activeScreen === "game-weekend"}>
+          <div className="panel destination-panel">
             {weekendPlacesLoading ? (
               <p className="empty-state">
                 Finding popular restaurants, bars, and hotels near the stadium...
@@ -3207,10 +2965,31 @@ activeTrip?.end ||
               </>
             )}
           </div>
+          </GameWeekendScreen>
+          </>
+        ) : null}
+
+        {activeTrip && hasRoute && activeScreen === "drive" ? (
+          <DriveScreen active>
+            <DriveExperience
+              currentDay={dayByDayPlan[0] || null}
+              game={selectedFootballGame}
+              onArrive={() => navigateTo("game-weekend")}
+              onBack={() => navigateTo("trip-hq")}
+              partner={featuredPartner}
+              routeGeometry={routeGeometry}
+              stops={stops}
+              travelDayCount={travelDayCount}
+              trip={activeTrip}
+              tripStats={tripStats}
+            />
+          </DriveScreen>
         ) : null}
 
                 
 
+        {/* Preserved for later placement in the authenticated Trip HQ experience. */}
+        <TripHqScreen active={false}>
         {auth ? (
         <div className="panel custom-trip-panel">
           <div className="section-heading-row">
@@ -3262,6 +3041,7 @@ activeTrip?.end ||
 
 
         <div
+          id="saved-trips"
           className="panel saved-trips-panel"
           style={{ display: auth ? undefined : "none" }}
         >
@@ -3295,6 +3075,7 @@ activeTrip?.end ||
                       setSelectedFootballTeam("");
                       setFootballGames([]);
                       setActiveTripId(trip.id);
+                      navigateTo("trip-hq");
 }}
                     >
                       <div className="trip-details">
@@ -3337,7 +3118,9 @@ activeTrip?.end ||
             </ul>
           )}
         </div>
-                <section className="legal-section">
+        </TripHqScreen>
+        <footer className="site-footer">
+        <section className="legal-section" aria-label="Kickoff Miles information">
           <details className="legal-card">
             <summary>About Kickoff Miles</summary>
 
@@ -3490,7 +3273,6 @@ activeTrip?.end ||
           </details>
         </section>
 
-        <footer className="site-footer">
           <div className="footer-brand">
             <strong>KICKOFF MILES</strong>
             <span>Hit the Road. Chase the Game.</span>
