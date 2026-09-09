@@ -818,7 +818,11 @@ function App() {
           { signal: controller.signal }
         ),
         fetch(
-          `${API_BASE_URL}/football/venues/${venueId}/featured-partner`,
+          `${API_BASE_URL}/football/venues/${venueId}/featured-partner${
+            selectedFootballGame?.id
+              ? `?gameId=${encodeURIComponent(selectedFootballGame.id)}`
+              : ""
+          }`,
           { signal: controller.signal }
         ),
       ]);
@@ -873,7 +877,11 @@ function App() {
       cancelled = true;
       controller.abort();
     };
-   }, [selectedFootballGame?.venueId, activeTrip?.venueId]);
+   }, [
+    selectedFootballGame?.venueId,
+    selectedFootballGame?.id,
+    activeTrip?.venueId,
+  ]);
 
   useEffect(() => {
     if (activeTrip?.id) {

@@ -1513,6 +1513,7 @@ app.get("/football/games", async (req, res) => {
 app.get("/football/venues/:venueId/featured-partner", async (req, res) => {
   try {
     const { venueId } = req.params;
+    const gameId = req.query.gameId ? Number(req.query.gameId) : null;
 
     const result = await db.query(
       `SELECT
@@ -1525,9 +1526,19 @@ app.get("/football/venues/:venueId/featured-partner", async (req, res) => {
          AND is_active = TRUE
          AND (start_date IS NULL OR start_date <= CURRENT_DATE)
          AND (end_date IS NULL OR end_date >= CURRENT_DATE)
-       ORDER BY display_order ASC, id ASC
+         AND (
+           ($2::integer IS NOT NULL AND game_id = $2)
+           OR game_id IS NULL
+         )
+       ORDER BY
+         CASE
+           WHEN $2::integer IS NOT NULL AND game_id = $2 THEN 0
+           ELSE 1
+         END,
+         display_order ASC,
+         id ASC
        LIMIT 1`,
-      [venueId]
+      [venueId, gameId]
     );
 
     if (!result.rows.length) {
