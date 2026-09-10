@@ -291,15 +291,31 @@ test("Trip HQ workspace retains its map, summary, and itinerary controls in a wi
   assert.ok(appSource.includes('className="trip-stops-section"'));
   assert.ok(appSource.includes("handleAddStop"));
   assert.ok(appSource.includes("deleteTrip(activeTrip.id)"));
+  assert.equal(
+    (tripHqSource.match(/onClick=\{\(\) => onNavigate\(/g) || []).length,
+    6
+  );
+  assert.ok(appSource.includes('contextLabel="Featured Road Trip Partner"'));
+  assert.ok(appCssSource.includes(".app.is-trip-hq {\n  max-width: 1200px"));
+  assert.ok(!appCssSource.includes(".app.is-trip-hq {\n  max-width: 860px"));
   assert.ok(appCssSource.includes(".app.is-trip-hq .trip-workspace-panel"));
   assert.ok(
     appCssSource.includes(
-      "grid-template-columns: minmax(0, 1.5fr) minmax(340px, 0.9fr)"
+      "grid-template-columns: minmax(0, 1.9fr) minmax(300px, 0.9fr)"
     )
   );
-  assert.ok(appCssSource.includes("height: 720px"));
+  assert.ok(appCssSource.includes("height: 570px"));
+  assert.ok(appCssSource.includes("grid-column: 1 / -1;\n    grid-row: 3"));
+  assert.ok(!appCssSource.includes("max-height: 720px"));
   assert.ok(appCssSource.includes("@media (max-width: 900px)"));
+  assert.ok(
+    appCssSource.includes(
+      ".app.is-trip-hq .trip-workspace-grid {\n    grid-template-columns: 1fr"
+    )
+  );
+  assert.ok(appCssSource.includes("height: 460px"));
   assert.ok(appCssSource.includes("@media (max-width: 600px)"));
+  assert.ok(appCssSource.includes("height: 320px"));
 });
 
 test("Game Weekend independently mounts its existing map and venue-place content", () => {
