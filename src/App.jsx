@@ -1487,6 +1487,85 @@ function App() {
             </form>
           )}
         </div>
+        <div
+          id="saved-trips"
+          className="panel saved-trips-panel"
+          style={{ display: auth ? undefined : "none" }}
+        >
+          <div className="section-heading-row">
+            <div>
+              <span className="section-kicker">YOUR ACCOUNT</span>
+              <h2 className="panel-title">Saved Trips</h2>
+              <p className="section-copy">
+                Reopen a trip, mark a favorite, or remove one you no longer need.
+              </p>
+            </div>
+          </div>
+
+          {tripsError ? (
+            <p className="error-state">{tripsError}</p>
+          ) : trips.length === 0 ? (
+            <p className="empty-state">No trips yet. Add your first one above.</p>
+          ) : (
+            <ul className="trip-list">
+              {[...trips]
+                .sort((a, b) => Number(b.isFavorite) - Number(a.isFavorite))
+                .map((trip) => {
+                  const isActive = trip.id === activeTripId;
+
+                  return (
+                    <li
+                      key={trip.id}
+                      className={`trip-row${isActive ? " is-active" : ""}`}
+                      onClick={() => {
+                      setSelectedFootballGameId("");
+                      setSelectedFootballTeam("");
+                      setFootballGames([]);
+                      setActiveTripId(trip.id);
+                      navigateTo("trip-hq");
+}}
+                    >
+                      <div className="trip-details">
+                        <span className="trip-name">{trip.name}</span>
+
+                        <span className="trip-route">
+                          {trip.start} → {trip.end}
+                        </span>
+
+                        {trip.notes && (
+                          <span className="trip-notes-text">{trip.notes}</span>
+                        )}
+                      </div>
+
+                      <div className="trip-actions">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleFavorite(trip.id);
+                          }}
+                        >
+                          {trip.isFavorite ? "★" : "☆"}
+                        </button>
+
+                        <button
+                          className="ghost-button"
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            deleteTrip(trip.id);
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })}
+            </ul>
+          )}
+        </div>
+
       </HomeExperience>
       </HomeScreen>
 
@@ -3040,84 +3119,6 @@ activeTrip?.end ||
         ) : null}
 
 
-        <div
-          id="saved-trips"
-          className="panel saved-trips-panel"
-          style={{ display: auth ? undefined : "none" }}
-        >
-          <div className="section-heading-row">
-            <div>
-              <span className="section-kicker">YOUR ACCOUNT</span>
-              <h2 className="panel-title">Saved Trips</h2>
-              <p className="section-copy">
-                Reopen a trip, mark a favorite, or remove one you no longer need.
-              </p>
-            </div>
-          </div>
-
-          {tripsError ? (
-            <p className="error-state">{tripsError}</p>
-          ) : trips.length === 0 ? (
-            <p className="empty-state">No trips yet. Add your first one above.</p>
-          ) : (
-            <ul className="trip-list">
-              {[...trips]
-                .sort((a, b) => Number(b.isFavorite) - Number(a.isFavorite))
-                .map((trip) => {
-                  const isActive = trip.id === activeTripId;
-
-                  return (
-                    <li
-                      key={trip.id}
-                      className={`trip-row${isActive ? " is-active" : ""}`}
-                      onClick={() => {
-                      setSelectedFootballGameId("");
-                      setSelectedFootballTeam("");
-                      setFootballGames([]);
-                      setActiveTripId(trip.id);
-                      navigateTo("trip-hq");
-}}
-                    >
-                      <div className="trip-details">
-                        <span className="trip-name">{trip.name}</span>
-
-                        <span className="trip-route">
-                          {trip.start} → {trip.end}
-                        </span>
-
-                        {trip.notes && (
-                          <span className="trip-notes-text">{trip.notes}</span>
-                        )}
-                      </div>
-
-                      <div className="trip-actions">
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleFavorite(trip.id);
-                          }}
-                        >
-                          {trip.isFavorite ? "★" : "☆"}
-                        </button>
-
-                        <button
-                          className="ghost-button"
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            deleteTrip(trip.id);
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </li>
-                  );
-                })}
-            </ul>
-          )}
-        </div>
         </TripHqScreen>
         <footer className="site-footer">
         <section className="legal-section" aria-label="Kickoff Miles information">
