@@ -133,7 +133,19 @@ CREATE TABLE IF NOT EXISTS tailgating_guides (
   rules JSONB NOT NULL DEFAULT '[]'::jsonb,
   visiting_fans JSONB NOT NULL DEFAULT '[]'::jsonb,
   official_url TEXT,
+  parking_arrival JSONB NOT NULL DEFAULT '[]'::jsonb,
+  parking_url TEXT,
+  know_before_you_go JSONB NOT NULL DEFAULT '[]'::jsonb,
+  policies_url TEXT,
+  traditions JSONB NOT NULL DEFAULT '[]'::jsonb,
+  traditions_url TEXT,
   last_verified DATE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  CONSTRAINT tailgating_guides_parking_arrival_array_chk
+    CHECK (jsonb_typeof(parking_arrival) = 'array'),
+  CONSTRAINT tailgating_guides_know_before_you_go_array_chk
+    CHECK (jsonb_typeof(know_before_you_go) = 'array'),
+  CONSTRAINT tailgating_guides_traditions_array_chk
+    CHECK (jsonb_typeof(traditions) = 'array')
 );
