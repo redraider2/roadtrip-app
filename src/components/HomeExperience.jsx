@@ -13,8 +13,11 @@ export default function HomeExperience({
         <div className="home-hero-copy">
           <span className="home-eyebrow">College football road trips start here</span>
           <h1 id="home-headline">
-            <span>Let&rsquo;s Hit</span>
-            <span>The Road!</span>
+            <span className="home-headline-line home-headline-line-one">
+              <span>Let&rsquo;s</span>
+              <span>Hit</span>
+            </span>
+            <span className="home-headline-line">The Road!</span>
           </h1>
           <p>Pick your team. Choose a game. Build the road trip.</p>
 

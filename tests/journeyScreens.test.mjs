@@ -120,8 +120,11 @@ test("journey hashes support deep links and reject unknown screens", () => {
 });
 
 test("Home presents one primary journey action", () => {
-  assert.ok(homeSource.includes("Let&rsquo;s Hit"));
-  assert.ok(homeSource.includes("The Road!"));
+  assert.ok(homeSource.includes('<span className="home-headline-line home-headline-line-one">'));
+  assert.ok(homeSource.includes("<span>Let&rsquo;s</span>"));
+  assert.ok(homeSource.includes("<span>Hit</span>"));
+  assert.ok(homeSource.includes('<span className="home-headline-line">The Road!</span>'));
+  assert.ok(appCssSource.includes("gap: clamp(0.28em, 1.6vw, 0.42em)"));
   assert.ok(homeSource.includes("Pick your team. Choose a game. Build the road trip."));
   assert.ok(homeSource.includes("Choose Your Team"));
   assert.ok(homeSource.includes("onClick={onChooseTeam}"));
