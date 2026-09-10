@@ -296,8 +296,20 @@ test("Trip HQ workspace retains its map, summary, and itinerary controls in a wi
     6
   );
   assert.ok(appSource.includes('contextLabel="Featured Road Trip Partner"'));
-  assert.ok(appCssSource.includes(".app.is-trip-hq {\n  max-width: 1200px"));
+  assert.ok(
+    appCssSource.includes(
+      ".app.is-trip-hq,\n.app.is-plan {\n  max-width: 1200px"
+    )
+  );
   assert.ok(!appCssSource.includes(".app.is-trip-hq {\n  max-width: 860px"));
+  assert.ok(
+    appCssSource.includes(
+      "grid-template-columns: minmax(0, 1.15fr) minmax(480px, 0.85fr)"
+    )
+  );
+  assert.ok(
+    appCssSource.includes("grid-template-columns: repeat(6, minmax(0, 1fr))")
+  );
   assert.ok(appCssSource.includes(".app.is-trip-hq .trip-workspace-panel"));
   assert.ok(
     appCssSource.includes(
@@ -305,7 +317,12 @@ test("Trip HQ workspace retains its map, summary, and itinerary controls in a wi
     )
   );
   assert.ok(appCssSource.includes("height: 570px"));
-  assert.ok(appCssSource.includes("grid-column: 1 / -1;\n    grid-row: 3"));
+  assert.ok(
+    appCssSource.includes(
+      ".app.is-trip-hq .trip-stops-section {\n    margin-top: 1.2rem"
+    )
+  );
+  assert.ok(!appCssSource.includes(".app.is-trip-hq .trip-workspace-grid {\n    display: contents"));
   assert.ok(!appCssSource.includes("max-height: 720px"));
   assert.ok(appCssSource.includes("@media (max-width: 900px)"));
   assert.ok(
@@ -316,6 +333,13 @@ test("Trip HQ workspace retains its map, summary, and itinerary controls in a wi
   assert.ok(appCssSource.includes("height: 460px"));
   assert.ok(appCssSource.includes("@media (max-width: 600px)"));
   assert.ok(appCssSource.includes("height: 320px"));
+});
+
+test("Trip HQ remains outside the Plan Stay two-column wrapper", () => {
+  assert.match(
+    appSource,
+    /<div className="trip-planning-layout">[\s\S]*?<PlanStayItineraryScreen active>[\s\S]*?<\/PlanStayItineraryScreen>\s*\) : null}\s*<\/div>\s*\{activeTrip && activeScreen === "trip-hq"/
+  );
 });
 
 test("Game Weekend independently mounts its existing map and venue-place content", () => {

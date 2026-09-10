@@ -1975,6 +1975,8 @@ function App() {
   </PlanStayItineraryScreen>
 ) : null}
 
+        </div>
+
 
 
         {activeTrip && activeScreen === "trip-hq" ? (
@@ -2401,8 +2403,6 @@ function App() {
             
 
         
-
-                </div>
 
 {hasGameWeekend && ["game-weekend", "game-day"].includes(activeScreen) ? (
           <>
