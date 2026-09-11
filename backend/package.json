@@ -4,8 +4,8 @@
   "description": "RoadTrip Express API",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "start": "node -r ./src/cfbdFallback.js src/server.js",
+    "dev": "nodemon --require ./src/cfbdFallback.js src/server.js"
   },
   "keywords": [
     "roadtrip",
