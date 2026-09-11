@@ -24,8 +24,11 @@ function savedGameDate(notes) {
   const value = String(notes || "").trim();
   if (!value) return "";
 
-  const [date] = value.split(" · ");
-  return date && date !== "Game date unavailable" ? date : "";
+  const parts = value.split(" · ").map((part) => part.trim()).filter(Boolean);
+  if (parts.length === 0) return "";
+
+  const savedDate = parts.length > 1 ? parts.slice(0, -1).join(" · ") : parts[0];
+  return savedDate && savedDate !== "Game date unavailable" ? savedDate : "";
 }
 
 function directionsUrl(place) {
