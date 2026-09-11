@@ -1,3 +1,6 @@
+import { useEffect, useRef } from "react";
+import { recordPartnerEvent } from "../lib/partnerMetrics.js";
+
 const PARTNER_LABELS = {
   featured: "Featured Partner",
   sponsored: "Sponsored",
@@ -10,7 +13,33 @@ export default function PartnerPlacement({
   partner,
   type = "featured",
 }) {
+  const impressionKeyRef = useRef("");
+
+  useEffect(() => {
+    if (!partner?.id) return;
+
+    const impressionKey = `${partner.id}:${type}:${contextLabel || ""}`;
+    if (impressionKeyRef.current === impressionKey) return;
+    impressionKeyRef.current = impressionKey;
+
+    recordPartnerEvent({
+      partner,
+      eventType: "impression",
+      contextLabel,
+      placementType: type,
+    });
+  }, [contextLabel, partner, type]);
+
   if (!partner) return null;
+
+  const recordAction = (eventType) => {
+    recordPartnerEvent({
+      partner,
+      eventType,
+      contextLabel,
+      placementType: type,
+    });
+  };
 
   return (
     <aside
@@ -36,12 +65,22 @@ export default function PartnerPlacement({
 
         <div className="partner-placement-actions">
           {partner.directionsUrl ? (
-            <a href={partner.directionsUrl} target="_blank" rel="noreferrer">
+            <a
+              href={partner.directionsUrl}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => recordAction("directions_click")}
+            >
               Directions
             </a>
           ) : null}
           {partner.websiteUrl ? (
-            <a href={partner.websiteUrl} target="_blank" rel="noreferrer">
+            <a
+              href={partner.websiteUrl}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => recordAction("website_click")}
+            >
               Visit website
             </a>
           ) : null}
