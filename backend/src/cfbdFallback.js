@@ -5,8 +5,82 @@ if (typeof originalFetch !== "function") {
 }
 
 const CFBD_FBS_TEAMS_URL = "https://api.collegefootballdata.com/teams/fbs";
+const CFBD_GAMES_URL = "https://api.collegefootballdata.com/games";
 const ESPN_TEAMS_URL =
   "https://site.api.espn.com/apis/site/v2/sports/football/college-football/teams?limit=500";
+
+const GAME_SNAPSHOTS = new Map([
+  [
+    "2026:Houston",
+    [
+      {
+        id: 401856811,
+        season: 2026,
+        week: 3,
+        startDate: "2026-09-19T00:00:00.000Z",
+        startTimeTBD: false,
+        conferenceGame: true,
+        neutralSite: false,
+        homeTeam: "Texas Tech",
+        awayTeam: "Houston",
+        venue: "Jones AT&T Stadium",
+        venueId: 3784,
+      },
+      {
+        id: 401856806,
+        season: 2026,
+        week: 4,
+        startDate: "2026-09-26T04:00:00.000Z",
+        startTimeTBD: true,
+        conferenceGame: false,
+        neutralSite: false,
+        homeTeam: "Georgia Southern",
+        awayTeam: "Houston",
+        venue: "Allen E. Paulson Stadium",
+        venueId: 3608,
+      },
+      {
+        id: 401856837,
+        season: 2026,
+        week: 6,
+        startDate: "2026-10-10T04:00:00.000Z",
+        startTimeTBD: true,
+        conferenceGame: true,
+        neutralSite: false,
+        homeTeam: "Kansas State",
+        awayTeam: "Houston",
+        venue: "Bill Snyder Family Stadium",
+        venueId: 3636,
+      },
+      {
+        id: 401856860,
+        season: 2026,
+        week: 11,
+        startDate: "2026-11-14T05:00:00.000Z",
+        startTimeTBD: true,
+        conferenceGame: true,
+        neutralSite: false,
+        homeTeam: "Utah",
+        awayTeam: "Houston",
+        venue: "Rice-Eccles Stadium",
+        venueId: 587,
+      },
+      {
+        id: 401856868,
+        season: 2026,
+        week: 12,
+        startDate: "2026-11-21T05:00:00.000Z",
+        startTimeTBD: true,
+        conferenceGame: true,
+        neutralSite: false,
+        homeTeam: "Colorado",
+        awayTeam: "Houston",
+        venue: "Folsom Field",
+        venueId: 3726,
+      },
+    ],
+  ],
+]);
 
 function fallbackLogo(team) {
   if (!Array.isArray(team?.logos)) return [];
@@ -92,10 +166,31 @@ async function buildLocalTeamsResponse() {
   });
 }
 
+function buildGameSnapshotResponse(url) {
+  const parsed = new URL(url);
+  const team = parsed.searchParams.get("team") || "";
+  const year = parsed.searchParams.get("year") || "";
+  const snapshot = GAME_SNAPSHOTS.get(`${year}:${team}`);
+
+  if (!snapshot) return null;
+
+  return new Response(JSON.stringify(snapshot), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+      "X-Kickoff-Miles-Fallback": "local-game-snapshot",
+    },
+  });
+}
+
 global.fetch = async function kickoffMilesFetch(input, init) {
   const url = typeof input === "string" ? input : input?.url;
 
-  if (url !== CFBD_FBS_TEAMS_URL) {
+  const isTeamsRequest = url === CFBD_FBS_TEAMS_URL;
+  const isGamesRequest =
+    typeof url === "string" && url.startsWith(`${CFBD_GAMES_URL}?`);
+
+  if (!isTeamsRequest && !isGamesRequest) {
     return originalFetch(input, init);
   }
 
@@ -107,18 +202,43 @@ global.fetch = async function kickoffMilesFetch(input, init) {
     }
 
     const body = await response.clone().text().catch(() => "");
-    console.warn(
-      `CFBD FBS teams unavailable (${response.status}); using enriched fallback.`,
-      body
-    );
 
-    return buildLocalTeamsResponse();
+    if (isTeamsRequest) {
+      console.warn(
+        `CFBD FBS teams unavailable (${response.status}); using enriched fallback.`,
+        body
+      );
+      return buildLocalTeamsResponse();
+    }
+
+    const snapshotResponse = buildGameSnapshotResponse(url);
+    if (snapshotResponse) {
+      console.warn(
+        `CFBD games unavailable (${response.status}); using local schedule snapshot.`,
+        body
+      );
+      return snapshotResponse;
+    }
+
+    return response;
   } catch (err) {
-    console.warn(
-      "CFBD FBS teams request failed; using enriched fallback.",
-      err
-    );
+    if (isTeamsRequest) {
+      console.warn(
+        "CFBD FBS teams request failed; using enriched fallback.",
+        err
+      );
+      return buildLocalTeamsResponse();
+    }
 
-    return buildLocalTeamsResponse();
+    const snapshotResponse = buildGameSnapshotResponse(url);
+    if (snapshotResponse) {
+      console.warn(
+        "CFBD games request failed; using local schedule snapshot.",
+        err
+      );
+      return snapshotResponse;
+    }
+
+    throw err;
   }
 };
