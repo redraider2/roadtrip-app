@@ -6,8 +6,21 @@ if (typeof originalFetch !== "function") {
 
 const CFBD_FBS_TEAMS_URL = "https://api.collegefootballdata.com/teams/fbs";
 const CFBD_GAMES_URL = "https://api.collegefootballdata.com/games";
+const CFBD_VENUES_URL = "https://api.collegefootballdata.com/venues";
 const ESPN_TEAMS_URL =
   "https://site.api.espn.com/apis/site/v2/sports/football/college-football/teams?limit=500";
+
+const VENUE_SNAPSHOTS = [
+  {
+    id: 3784,
+    name: "Galaxy Stadium",
+    city: "Lubbock",
+    state: "TX",
+    capacity: 60229,
+    latitude: 33.5911861,
+    longitude: -101.8722462,
+  },
+];
 
 const GAME_SNAPSHOTS = new Map([
   [
@@ -23,7 +36,7 @@ const GAME_SNAPSHOTS = new Map([
         neutralSite: false,
         homeTeam: "Texas Tech",
         awayTeam: "Houston",
-        venue: "Jones AT&T Stadium",
+        venue: "Galaxy Stadium",
         venueId: 3784,
       },
       {
@@ -190,13 +203,24 @@ function buildGameSnapshotResponse(url) {
   });
 }
 
+function buildVenueSnapshotResponse() {
+  return new Response(JSON.stringify(VENUE_SNAPSHOTS), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+      "X-Kickoff-Miles-Fallback": "local-venue-snapshot",
+    },
+  });
+}
+
 global.fetch = async function kickoffMilesFetch(input, init) {
   const url = requestUrl(input);
 
   const isTeamsRequest = url === CFBD_FBS_TEAMS_URL;
   const isGamesRequest = url.startsWith(`${CFBD_GAMES_URL}?`);
+  const isVenuesRequest = url === CFBD_VENUES_URL;
 
-  if (!isTeamsRequest && !isGamesRequest) {
+  if (!isTeamsRequest && !isGamesRequest && !isVenuesRequest) {
     return originalFetch(input, init);
   }
 
@@ -217,16 +241,23 @@ global.fetch = async function kickoffMilesFetch(input, init) {
       return buildLocalTeamsResponse();
     }
 
-    const snapshotResponse = buildGameSnapshotResponse(url);
-    if (snapshotResponse) {
-      console.warn(
-        `CFBD games unavailable (${response.status}); using local schedule snapshot.`,
-        body
-      );
-      return snapshotResponse;
+    if (isGamesRequest) {
+      const snapshotResponse = buildGameSnapshotResponse(url);
+      if (snapshotResponse) {
+        console.warn(
+          `CFBD games unavailable (${response.status}); using local schedule snapshot.`,
+          body
+        );
+        return snapshotResponse;
+      }
+      return response;
     }
 
-    return response;
+    console.warn(
+      `CFBD venues unavailable (${response.status}); using local venue snapshot.`,
+      body
+    );
+    return buildVenueSnapshotResponse();
   } catch (err) {
     if (isTeamsRequest) {
       console.warn(
@@ -236,15 +267,22 @@ global.fetch = async function kickoffMilesFetch(input, init) {
       return buildLocalTeamsResponse();
     }
 
-    const snapshotResponse = buildGameSnapshotResponse(url);
-    if (snapshotResponse) {
-      console.warn(
-        "CFBD games request failed; using local schedule snapshot.",
-        err
-      );
-      return snapshotResponse;
+    if (isGamesRequest) {
+      const snapshotResponse = buildGameSnapshotResponse(url);
+      if (snapshotResponse) {
+        console.warn(
+          "CFBD games request failed; using local schedule snapshot.",
+          err
+        );
+        return snapshotResponse;
+      }
+      throw err;
     }
 
-    throw err;
+    console.warn(
+      "CFBD venues request failed; using local venue snapshot.",
+      err
+    );
+    return buildVenueSnapshotResponse();
   }
 };
