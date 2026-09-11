@@ -3,6 +3,31 @@ import TripMap from "./TripMap.jsx";
 import LiveJourneyPanel from "./LiveJourneyPanel.jsx";
 import { formatGameDate } from "../lib/formatters.js";
 
+const VENUE_NAME_OVERRIDES = new Map([
+  ["3784", "Galaxy Stadium"],
+]);
+
+function normalizeVenueName(value, venueId) {
+  const override = VENUE_NAME_OVERRIDES.get(String(venueId || ""));
+  if (override) return override;
+  return value || "";
+}
+
+function normalizeDestination(value, venueId) {
+  const override = VENUE_NAME_OVERRIDES.get(String(venueId || ""));
+  if (!override || !value) return value;
+
+  return value.replace(/^Jones AT&T Stadium/i, override);
+}
+
+function savedGameDate(notes) {
+  const value = String(notes || "").trim();
+  if (!value) return "";
+
+  const [date] = value.split(" · ");
+  return date && date !== "Game date unavailable" ? date : "";
+}
+
 function directionsUrl(place) {
   const latitude = Number(place?.latitude);
   const longitude = Number(place?.longitude);
@@ -58,7 +83,13 @@ export default function DriveExperience({
   alongTheWay,
   apiBaseUrl,
 }) {
-  const plannedDestination = currentDay?.hotel?.name || trip.end;
+  const venueId = game?.venueId || trip?.venueId;
+  const displayDestination = normalizeDestination(trip.end, venueId);
+  const displayVenue = normalizeVenueName(game?.venue, venueId);
+  const displayGameDate = game
+    ? formatGameDate(game.startDate, game.startTimeTBD)
+    : savedGameDate(trip.notes) || "Game date unavailable";
+  const plannedDestination = currentDay?.hotel?.name || displayDestination;
   const savedStops = stops.filter((stop) => stop.is_route_stop === false);
   const mapStops = [
     ...stops,
@@ -91,10 +122,10 @@ export default function DriveExperience({
           <strong>
             {game ? `${game.awayTeam} @ ${game.homeTeam}` : trip.name || trip.title}
           </strong>
-          <span>{trip.start} → {trip.end}</span>
+          <span>{trip.start} → {displayDestination}</span>
           <span>
-            {game ? formatGameDate(game.startDate, game.startTimeTBD) : "Game date unavailable"}
-            {game?.venue ? ` · ${game.venue}` : ""}
+            {displayGameDate}
+            {displayVenue ? ` · ${displayVenue}` : ""}
           </span>
         </div>
       </div>
@@ -112,7 +143,7 @@ export default function DriveExperience({
         <div className="drive-map-hero">
           <div className="drive-map-heading">
             <span className="drive-kicker">Your route</span>
-            <h2>{trip.start} → {trip.end}</h2>
+            <h2>{trip.start} → {displayDestination}</h2>
           </div>
           <TripMap
             start={trip.start}
@@ -169,7 +200,7 @@ export default function DriveExperience({
 
         <section className="drive-arrival">
           <span className="drive-kicker">Next destination</span>
-          <h2>Arrive at {game?.venue || trip.end}</h2>
+          <h2>Arrive at {displayVenue || displayDestination}</h2>
           <p>When the drive is complete, shift from the road to the destination.</p>
           <button type="button" onClick={onArrive}>
             Explore Game Weekend <span aria-hidden="true">→</span>
