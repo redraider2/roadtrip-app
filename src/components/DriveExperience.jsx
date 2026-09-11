@@ -1,4 +1,5 @@
 import PartnerPlacement from "./PartnerPlacement.jsx";
+import PartnerFieldTestReport from "./PartnerFieldTestReport.jsx";
 import TripMap from "./TripMap.jsx";
 import LiveJourneyPanel from "./LiveJourneyPanel.jsx";
 import { formatGameDate } from "../lib/formatters.js";
@@ -104,6 +105,9 @@ export default function DriveExperience({
       place &&
       places.findIndex((candidate) => String(candidate?.id) === String(place.id)) === index
   );
+  const showFieldTestReport =
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("fieldTest") === "1";
 
   return (
     <section className="drive-experience" aria-labelledby="drive-title">
@@ -189,6 +193,10 @@ export default function DriveExperience({
         contextLabel="On the Road"
         partner={partner}
       />
+
+      {showFieldTestReport ? (
+        <PartnerFieldTestReport partner={partner} venueId={venueId} />
+      ) : null}
 
       <div className="drive-lower-grid">
         <section className="drive-saved-stops" aria-labelledby="drive-stops-title">
