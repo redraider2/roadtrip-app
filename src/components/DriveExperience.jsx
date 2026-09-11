@@ -133,8 +133,16 @@ export default function DriveExperience({
         </div>
       </div>
 
-      <LiveJourneyPanel key={trip.id} routeGeometry={routeGeometry} tripStats={tripStats}
-        alongTheWay={alongTheWay} apiBaseUrl={apiBaseUrl} onArrive={onArrive} />
+      <LiveJourneyPanel
+        key={trip.id}
+        routeGeometry={routeGeometry}
+        tripStats={tripStats}
+        alongTheWay={alongTheWay}
+        apiBaseUrl={apiBaseUrl}
+        onArrive={onArrive}
+        partner={partner}
+        destination={displayDestination}
+      />
 
       <div className="drive-overview" aria-label="Planned drive overview">
         <div><span>Total distance</span><strong>{tripStats?.distance || "Calculating…"}</strong></div>
