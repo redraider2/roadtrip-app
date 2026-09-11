@@ -1,10 +1,20 @@
 import { useEffect, useMemo, useState } from "react";
+import PartnerPlacement from "./PartnerPlacement.jsx";
 import { buildLiveJourney, MILE_METERS, prepareRoute, recommendAhead, upcomingGeometry, watchJourneyLocation } from "../lib/liveJourney.js";
 import { formatRouteDuration } from "../lib/formatters.js";
 
 const PHASES = { departing: "Getting underway", en_route: "On the road", approaching_destination: "Approaching your destination", arrived: "You’re near your destination", off_route: "Away from the planned route" };
 
-export default function LiveJourneyPanel({ routeGeometry, tripStats, alongTheWay, apiBaseUrl, onArrive }) {
+function destinationCity(destination) {
+  const value = String(destination || "").trim();
+  if (!value) return "YOUR DESTINATION";
+
+  const parts = value.split(",").map((part) => part.trim()).filter(Boolean);
+  if (parts.length >= 2) return parts[parts.length - 2].toUpperCase();
+  return parts[0].toUpperCase();
+}
+
+export default function LiveJourneyPanel({ routeGeometry, tripStats, alongTheWay, apiBaseUrl, onArrive, partner, destination }) {
   const [enabled, setEnabled] = useState(false);
   const [fix, setFix] = useState(null);
   const [error, setError] = useState("");
@@ -73,6 +83,15 @@ export default function LiveJourneyPanel({ routeGeometry, tripStats, alongTheWay
   const start = () => { setFix(null); setError(""); setNow(Date.now()); setEnabled(true); };
   const stop = () => { setEnabled(false); setFix(null); };
   const reliable = journey && journey.phase !== "off_route";
+  const showArrivalPartner = reliable && partner && ["approaching_destination", "arrived"].includes(journey.phase);
+  const minutesRemaining = journey?.remainingSeconds === null || journey?.remainingSeconds === undefined
+    ? null
+    : Math.max(0, Math.round(journey.remainingSeconds / 60));
+  const arrivalContext = journey?.phase === "arrived"
+    ? `WELCOME TO ${destinationCity(destination)}`
+    : minutesRemaining === null
+      ? `APPROACHING ${destinationCity(destination)}`
+      : `${minutesRemaining} MINUTES TO ${destinationCity(destination)}`;
 
   return (
     <section className="live-journey" aria-labelledby="live-journey-title">
@@ -97,6 +116,13 @@ export default function LiveJourneyPanel({ routeGeometry, tripStats, alongTheWay
           <div><span>Estimated arrival</span><strong>{journey.eta === null ? "Unavailable" : new Date(journey.eta).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}</strong></div>
         </div>
         <p className="live-journey-note">Updated {new Date(fix.timestamp).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}. Estimates use your planned route’s average pace and exclude stops and live traffic. Times use your device’s time zone.</p>
+        {showArrivalPartner ? (
+          <PartnerPlacement
+            contextLabel={arrivalContext}
+            partner={partner}
+            type="destination"
+          />
+        ) : null}
         {journey.phase === "arrived" ? <button type="button" onClick={onArrive}>Explore Game Weekend</button> : <>
           <h3>Coming up on your route</h3>
           {!loaded ? <p>Checking places ahead…</p> : results.failed ? <p>Some searches couldn’t load. Showing available suggestions.</p> : null}
