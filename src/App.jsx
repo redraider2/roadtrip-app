@@ -3051,6 +3051,8 @@ activeTrip?.end ||
         {activeTrip && hasRoute && activeScreen === "drive" ? (
           <DriveScreen active>
             <DriveExperience
+              alongTheWay={alongTheWay}
+              apiBaseUrl={API_BASE_URL}
               currentDay={dayByDayPlan[0] || null}
               game={selectedFootballGame}
               onArrive={() => navigateTo("game-weekend")}

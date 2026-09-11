@@ -3888,3 +3888,36 @@ select.trip-input {
     height: 320px;
   }
 }
+
+.live-journey {
+  margin: 1.5rem 0;
+  padding: clamp(1.2rem, 3vw, 2rem);
+  border: 1px solid #cad8dc;
+  border-radius: 20px;
+  background: #f4f9f8;
+  color: #163239;
+}
+.live-journey-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.live-journey h2 { margin: .4rem 0; }
+.live-journey .drive-kicker { color: #286b5b; }
+.live-journey p { line-height: 1.6; }
+.live-journey button, .live-suggestions a {
+  padding: .8rem 1rem; border-radius: 10px; border: 0;
+  background: #174b45; color: white; font-weight: 700; cursor: pointer;
+}
+.live-journey button:disabled { opacity: .5; cursor: default; }
+.live-journey progress { width: 100%; height: 14px; accent-color: #217d69; }
+.live-journey-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin: 1rem 0; }
+.live-journey-stats span, .live-journey-stats strong { display: block; }
+.live-journey-stats strong { font-size: 1.6rem; margin-top: .4rem; }
+.live-journey-note { font-size: .85rem; color: #48616a; }
+.live-suggestions { padding: 0; list-style: none; display: grid; gap: .8rem; }
+.live-suggestions li { display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: white; border: 1px solid #dce7e5; padding: 1rem; border-radius: 12px; }
+.live-suggestions h4 { font-size: 1.15rem; margin: .3rem 0; }
+.live-suggestions p { margin: .25rem 0; font-size: .9rem; }
+.live-suggestions a { flex-shrink: 0; text-decoration: none; }
+@media (max-width: 650px) {
+  .live-journey-heading, .live-suggestions li { align-items: stretch; flex-direction: column; }
+  .live-journey-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .live-suggestions a { text-align: center; }
+}

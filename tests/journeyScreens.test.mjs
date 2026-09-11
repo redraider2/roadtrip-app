@@ -274,7 +274,7 @@ test("Trip HQ opens Drive when route data is ready and preserves the workspace",
 });
 
 test("Drive presents the planned route, day-one stops, and destination handoff", () => {
-  assert.ok(driveSource.includes("This is your planned route—not live vehicle navigation."));
+  assert.ok(driveSource.includes("<LiveJourneyPanel"));
   assert.ok(driveSource.includes("routeGeometry={routeGeometry}"));
   assert.ok(driveSource.includes("currentDay?.restaurant"));
   assert.ok(driveSource.includes("currentDay?.historic"));

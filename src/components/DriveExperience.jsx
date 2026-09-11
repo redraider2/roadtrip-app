@@ -1,5 +1,6 @@
 import PartnerPlacement from "./PartnerPlacement.jsx";
 import TripMap from "./TripMap.jsx";
+import LiveJourneyPanel from "./LiveJourneyPanel.jsx";
 import { formatGameDate } from "../lib/formatters.js";
 
 function directionsUrl(place) {
@@ -54,6 +55,8 @@ export default function DriveExperience({
   travelDayCount,
   trip,
   tripStats,
+  alongTheWay,
+  apiBaseUrl,
 }) {
   const plannedDestination = currentDay?.hotel?.name || trip.end;
   const savedStops = stops.filter((stop) => stop.is_route_stop === false);
@@ -81,7 +84,7 @@ export default function DriveExperience({
         <div>
           <span className="drive-kicker">The trip is underway</span>
           <h1 id="drive-title">You’re on the road</h1>
-          <p>This is your planned route—not live vehicle navigation.</p>
+          <p>Follow your trip and discover useful stops along the way.</p>
         </div>
 
         <div className="drive-trip-identity">
@@ -96,7 +99,10 @@ export default function DriveExperience({
         </div>
       </div>
 
-      <div className="drive-overview" aria-label="Drive overview">
+      <LiveJourneyPanel key={trip.id} routeGeometry={routeGeometry} tripStats={tripStats}
+        alongTheWay={alongTheWay} apiBaseUrl={apiBaseUrl} onArrive={onArrive} />
+
+      <div className="drive-overview" aria-label="Planned drive overview">
         <div><span>Total distance</span><strong>{tripStats?.distance || "Calculating…"}</strong></div>
         <div><span>Total drive time</span><strong>{tripStats?.driveTime || "Calculating…"}</strong></div>
         <div><span>Planned travel day</span><strong>Day 1 of {travelDayCount}</strong></div>
