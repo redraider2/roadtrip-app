@@ -82,6 +82,13 @@ const GAME_SNAPSHOTS = new Map([
   ],
 ]);
 
+function requestUrl(input) {
+  if (typeof input === "string") return input;
+  if (input instanceof URL) return input.toString();
+  if (input && typeof input.url === "string") return input.url;
+  return "";
+}
+
 function fallbackLogo(team) {
   if (!Array.isArray(team?.logos)) return [];
 
@@ -184,11 +191,10 @@ function buildGameSnapshotResponse(url) {
 }
 
 global.fetch = async function kickoffMilesFetch(input, init) {
-  const url = typeof input === "string" ? input : input?.url;
+  const url = requestUrl(input);
 
   const isTeamsRequest = url === CFBD_FBS_TEAMS_URL;
-  const isGamesRequest =
-    typeof url === "string" && url.startsWith(`${CFBD_GAMES_URL}?`);
+  const isGamesRequest = url.startsWith(`${CFBD_GAMES_URL}?`);
 
   if (!isTeamsRequest && !isGamesRequest) {
     return originalFetch(input, init);
