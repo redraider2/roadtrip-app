@@ -61,6 +61,22 @@ const DEVELOPMENT_PARTNER_PREVIEW = {
   directionsUrl: "https://www.google.com/maps",
 };
 
+const KICKOFF_MILES_HOUSE_AD = {
+  id: "kickoff-miles-house-ad",
+  businessName: "This Could Be Your Space",
+  locationText: "Put your business in front of travelers when they’re nearby.",
+  description:
+    "Reach college football fans while they plan, drive, and explore game-day destinations.",
+  websiteUrl:
+    "mailto:support@kickoffmiles.com?subject=Advertise%20on%20Kickoff%20Miles",
+  websiteLabel: "Advertise on Kickoff Miles",
+  isHouseAd: true,
+};
+
+function isRetiredPartner(partner) {
+  return /spanky(?:['’]?s)?/i.test(String(partner?.businessName || ""));
+}
+
 function getStoredAuth() {
   try {
     const raw = localStorage.getItem(AUTH_STORAGE_KEY);
@@ -1352,7 +1368,11 @@ function App() {
   const hasGameWeekend = Boolean(selectedFootballGame || activeTrip?.venueId);
   const isPlanScreen = PLAN_SCREEN_IDS.includes(activeScreen);
   const workspacePartner =
-    featuredPartner || (import.meta.env.DEV ? DEVELOPMENT_PARTNER_PREVIEW : null);
+    featuredPartner && !isRetiredPartner(featuredPartner)
+      ? featuredPartner
+      : import.meta.env.DEV
+        ? DEVELOPMENT_PARTNER_PREVIEW
+        : KICKOFF_MILES_HOUSE_AD;
 
   function canAccessScreen(screenId) {
     if (screenId === "drive") return hasRoute;
@@ -2774,70 +2794,10 @@ activeTrip?.end ||
               <p className="error-state">{weekendPlacesError}</p>
             ) : (
               <>
-  {featuredPartner && (
-  <div className="featured-partner-card">
-    <div className="featured-partner-badge">
-      ★ {featuredPartner.id === 1
-        ? "DEMO FEATURED PARTNER"
-        : "FEATURED PARTNER"}
-    </div>
-
-    <div className="featured-partner-content">
-      <div>
-        <h3 className="featured-partner-name">
-          {featuredPartner.businessName}
-        </h3>
-
-        {featuredPartner.locationText && (
-          <p className="featured-partner-location">
-            {featuredPartner.locationText}
-          </p>
-        )}
-
-        {featuredPartner.description && (
-          <p className="featured-partner-description">
-            {featuredPartner.description}
-          </p>
-        )}
-
-        {featuredPartner.offerText && (
-          <div className="featured-partner-offer">
-            🏈 Kickoff Miles Offer
-            <span> {featuredPartner.offerText}</span>
-          </div>
-        )}
-      </div>
-
-      <div className="featured-partner-actions">
-        {featuredPartner.directionsUrl && (
-          <a
-            href={featuredPartner.directionsUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="primary-button"
-          >
-            Directions
-          </a>
-        )}
-
-        {featuredPartner.websiteUrl && (
-          <a
-            href={featuredPartner.websiteUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="ghost-button"
-          >
-            Visit Website
-          </a>
-        )}
-      </div>
-    </div>
-
-    <span className="featured-partner-sponsored">
-      Sponsored
-    </span>
-  </div>
-)}
+  <PartnerPlacement
+    contextLabel="Game Weekend"
+    partner={workspacePartner}
+  />
 
   <div className="game-weekend-grid">
                 <div className="recommendation-column">
@@ -3057,7 +3017,7 @@ activeTrip?.end ||
               game={selectedFootballGame}
               onArrive={() => navigateTo("game-weekend")}
               onBack={() => navigateTo("trip-hq")}
-              partner={featuredPartner}
+              partner={workspacePartner}
               routeGeometry={routeGeometry}
               stops={stops}
               travelDayCount={travelDayCount}

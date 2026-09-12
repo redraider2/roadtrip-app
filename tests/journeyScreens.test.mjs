@@ -184,7 +184,7 @@ test("PLAN recommendations and itinerary retain Save to Trip behavior", () => {
   assert.ok(appSource.includes('addSuggestedStop(day.restaurant, "restaurant")'));
 });
 
-test("commercial placements are labeled, data-driven, and absent without partner data", () => {
+test("commercial placements support paid partners and the Kickoff Miles house ad", () => {
   assert.ok(partnerPlacementSource.includes("if (!partner) return null"));
   assert.ok(partnerPlacementSource.includes('featured: "Featured Partner"'));
   assert.ok(partnerPlacementSource.includes('sponsored: "Sponsored"'));
@@ -192,14 +192,22 @@ test("commercial placements are labeled, data-driven, and absent without partner
   assert.ok(partnerPlacementSource.includes('destination: "Destination Partner"'));
   assert.ok(partnerPlacementSource.includes("partner.businessName"));
   assert.ok(!partnerPlacementSource.includes("Spanky"));
-  assert.ok(appSource.includes("featuredPartner ||"));
+  assert.ok(partnerPlacementSource.includes("Advertising Opportunity"));
+  assert.ok(partnerPlacementSource.includes('partner.websiteLabel || "Visit website"'));
+  assert.ok(appSource.includes("KICKOFF_MILES_HOUSE_AD"));
+  assert.ok(appSource.includes("This Could Be Your Space"));
+  assert.ok(appSource.includes("Advertise on Kickoff Miles"));
+  assert.ok(appSource.includes("isRetiredPartner(featuredPartner)"));
+  assert.ok(!appSource.includes("partner={featuredPartner}"));
+  assert.ok(appSource.includes('contextLabel="Game Weekend"'));
 });
 
 test("partner visual-QA sample is limited to development workspace placements", () => {
   assert.ok(appSource.includes("DEVELOPMENT_PARTNER_PREVIEW"));
-  assert.ok(appSource.includes("import.meta.env.DEV ? DEVELOPMENT_PARTNER_PREVIEW : null"));
+  assert.ok(appSource.includes("? DEVELOPMENT_PARTNER_PREVIEW"));
+  assert.ok(appSource.includes(": KICKOFF_MILES_HOUSE_AD"));
   assert.ok(appSource.includes("partner={workspacePartner}"));
-  assert.ok(appSource.includes("featuredPartner ||"));
+  assert.ok(appSource.includes("featuredPartner && !isRetiredPartner(featuredPartner)"));
   assert.ok(appSource.includes("Development-only placement preview"));
 });
 

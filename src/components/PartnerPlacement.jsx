@@ -32,6 +32,10 @@ export default function PartnerPlacement({
 
   if (!partner) return null;
 
+  const placementLabel = partner.isHouseAd
+    ? "Advertising Opportunity"
+    : PARTNER_LABELS[type] || PARTNER_LABELS.featured;
+
   const recordAction = (eventType) => {
     recordPartnerEvent({
       partner,
@@ -44,10 +48,10 @@ export default function PartnerPlacement({
   return (
     <aside
       className={`partner-placement is-${type}`}
-      aria-label={`${PARTNER_LABELS[type] || PARTNER_LABELS.featured}: ${partner.businessName}`}
+      aria-label={`${placementLabel}: ${partner.businessName}`}
     >
       <div className="partner-placement-label-row">
-        <span>{PARTNER_LABELS[type] || PARTNER_LABELS.featured}</span>
+        <span>{placementLabel}</span>
         {contextLabel ? <small>{contextLabel}</small> : null}
       </div>
 
@@ -81,7 +85,7 @@ export default function PartnerPlacement({
               rel="noreferrer"
               onClick={() => recordAction("website_click")}
             >
-              Visit website
+              {partner.websiteLabel || "Visit website"}
             </a>
           ) : null}
         </div>
