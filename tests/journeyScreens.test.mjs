@@ -225,6 +225,17 @@ test("Game Day includes a destination partner placement for advertiser demos", (
   assert.ok(appSource.includes("partner={workspacePartner}"));
 });
 
+test("advertiser demo creative supports context-specific messaging and sales-ready presentation", () => {
+  assert.ok(partnerPlacementSource.includes("contextualCopy"));
+  assert.ok(partnerPlacementSource.includes("Founding Partner Preview"));
+  assert.ok(partnerPlacementSource.includes("partner-placement-monogram"));
+  assert.ok(partnerPlacementSource.includes("partner-placement-tagline"));
+  assert.ok(appSource.includes("contextCopy"));
+  assert.ok(appSource.includes('"Game Weekend"'));
+  assert.ok(appSource.includes('"Game Day"'));
+  assert.ok(appCssSource.includes(".partner-placement.is-demo"));
+});
+
 test("Home excludes custom-trip and saved-trip management", () => {
   assert.ok(!homeSource.includes("Return to saved trips"));
   assert.ok(!homeSource.includes("Saved Trips"));
