@@ -158,15 +158,24 @@ const ADVERTISER_DEMO_PARTNERS = {
   },
 }
 
-function getAdvertiserDemoPartner(venueId) {
-  if (typeof window === "undefined") return null;
-  const demoKey = new URLSearchParams(window.location.search).get("demo");
+function getAdvertiserDemoConfig(venueId) {
+  if (typeof window === "undefined") {
+    return { partner: null, packageType: "founding" };
+  }
 
-  return selectDestinationDemoPartner({
-    demoKey,
-    partners: ADVERTISER_DEMO_PARTNERS,
-    venueId,
-  });
+  const params = new URLSearchParams(window.location.search);
+  const demoKey = params.get("demo");
+  const requestedPackage = params.get("package");
+  const packageType = requestedPackage === "featured" ? "featured" : "founding";
+
+  return {
+    partner: selectDestinationDemoPartner({
+      demoKey,
+      partners: ADVERTISER_DEMO_PARTNERS,
+      venueId,
+    }),
+    packageType,
+  };
 }
 
 function isRetiredPartner(partner) {
@@ -1483,16 +1492,23 @@ function App() {
   const isPlanScreen = PLAN_SCREEN_IDS.includes(activeScreen);
   const destinationVenueId =
     selectedFootballGame?.venueId || activeTrip?.venueId || null;
-  const advertiserDemoPartner = getAdvertiserDemoPartner(destinationVenueId);
+  const advertiserDemoConfig = getAdvertiserDemoConfig(destinationVenueId);
+  const advertiserDemoPartner = advertiserDemoConfig.partner;
+  const advertiserDemoPackage = advertiserDemoConfig.packageType;
   const isAdvertiserSalesPreview = Boolean(advertiserDemoPartner);
+  const isFeaturedAdvertiserDemo =
+    isAdvertiserSalesPreview && advertiserDemoPackage === "featured";
   const routePartner = KICKOFF_MILES_HOUSE_AD;
   const workspacePartner =
-    advertiserDemoPartner ||
-    (featuredPartner && !isRetiredPartner(featuredPartner)
-      ? featuredPartner
-      : import.meta.env.DEV
-        ? DEVELOPMENT_PARTNER_PREVIEW
-        : KICKOFF_MILES_HOUSE_AD);
+    isFeaturedAdvertiserDemo
+      ? advertiserDemoPartner
+      : isAdvertiserSalesPreview
+        ? KICKOFF_MILES_HOUSE_AD
+        : featuredPartner && !isRetiredPartner(featuredPartner)
+          ? featuredPartner
+          : import.meta.env.DEV
+            ? DEVELOPMENT_PARTNER_PREVIEW
+            : KICKOFF_MILES_HOUSE_AD;
   const destinationPartnerInventory = advertiserDemoPartner
     ? [advertiserDemoPartner]
     : destinationPartners.filter((partner) => !isRetiredPartner(partner));
