@@ -11,7 +11,7 @@ services:
       - key: ROUTING_PROVIDER
         value: google
       - key: CORS_ORIGIN
-        value: https://redraider2.github.io
+        value: https://redraider2.github.io,https://roadtrip-app-git-advertiser-demo-mode-redraider2s-projects.vercel.app
       - key: DATABASE_URL
         sync: false
       - key: GOOGLE_MAPS_API_KEY
