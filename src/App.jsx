@@ -63,7 +63,21 @@ const DEVELOPMENT_PARTNER_PREVIEW = {
   directionsUrl: "https://www.google.com/maps",
 };
 
-const VENUE_NAME_OVERRIDES = new Map([\n  ["3784", "Galaxy Stadium"],\n]);\n\nfunction normalizeVenueName(value, venueId) {\n  return VENUE_NAME_OVERRIDES.get(String(venueId || "")) || value || "";\n}\n\nfunction normalizeVenueDestination(value, venueId) {\n  const override = VENUE_NAME_OVERRIDES.get(String(venueId || ""));\n  if (!override || !value) return value || "";\n  return String(value).replace(/^Jones AT&T Stadium/i, override);\n}\n\nconst KICKOFF_MILES_HOUSE_AD = {
+const VENUE_NAME_OVERRIDES = new Map([
+  ["3784", "Galaxy Stadium"],
+]);
+
+function normalizeVenueName(value, venueId) {
+  return VENUE_NAME_OVERRIDES.get(String(venueId || "")) || value || "";
+}
+
+function normalizeVenueDestination(value, venueId) {
+  const override = VENUE_NAME_OVERRIDES.get(String(venueId || ""));
+  if (!override || !value) return value || "";
+  return String(value).replace(/^Jones AT&T Stadium/i, override);
+}
+
+const KICKOFF_MILES_HOUSE_AD = {
   id: "kickoff-miles-house-ad",
   businessName: "This Could Be Your Space",
   locationText: "Put your business in front of travelers when they’re nearby.",
@@ -864,7 +878,7 @@ function App() {
 
     async function loadAlongTheWay() {
       if (
-        !activeTrip?.id ||
+        !activeTrip ||
         !Array.isArray(routeGeometry) ||
         routeGeometry.length < 2
       ) {
