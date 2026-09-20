@@ -1510,6 +1510,64 @@ app.get("/football/games", async (req, res) => {
   }
 });
 
+app.get("/football/venues/:venueId/featured-partners", async (req, res) => {
+  try {
+    const { venueId } = req.params;
+    const gameId = req.query.gameId ? Number(req.query.gameId) : null;
+
+    const result = await db.query(
+      `SELECT
+         id, venue_id, school, business_name, category,
+         location_text, description, offer_text,
+         website_url, directions_url, image_url,
+         game_id, start_date, end_date, display_order
+       FROM featured_partners
+       WHERE venue_id = $1
+         AND is_active = TRUE
+         AND (start_date IS NULL OR start_date <= CURRENT_DATE)
+         AND (end_date IS NULL OR end_date >= CURRENT_DATE)
+         AND (
+           ($2::integer IS NOT NULL AND game_id = $2)
+           OR game_id IS NULL
+         )
+       ORDER BY
+         CASE
+           WHEN $2::integer IS NOT NULL AND game_id = $2 THEN 0
+           ELSE 1
+         END,
+         display_order ASC,
+         id ASC
+       LIMIT 20`,
+      [venueId, gameId]
+    );
+
+    return res.json(
+      result.rows.map((partner) => ({
+        id: partner.id,
+        venueId: partner.venue_id,
+        school: partner.school,
+        businessName: partner.business_name,
+        category: partner.category,
+        locationText: partner.location_text,
+        description: partner.description,
+        offerText: partner.offer_text,
+        websiteUrl: partner.website_url,
+        directionsUrl: partner.directions_url,
+        imageUrl: partner.image_url,
+        gameId: partner.game_id,
+        startDate: partner.start_date,
+        endDate: partner.end_date,
+        displayOrder: partner.display_order,
+      }))
+    );
+  } catch (err) {
+    console.error("GET featured-partners error:", err);
+    return res.status(500).json({
+      error: "Failed to load featured partners",
+    });
+  }
+});
+
 app.get("/football/venues/:venueId/featured-partner", async (req, res) => {
   try {
     const { venueId } = req.params;
