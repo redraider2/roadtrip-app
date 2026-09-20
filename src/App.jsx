@@ -1041,8 +1041,12 @@ function App() {
 
       const venue = await venueRes.json();
 
-      const destinationParts = [
+      const normalizedVenueName = normalizeVenueName(
         venue.name,
+        selectedFootballGame.venueId
+      );
+      const destinationParts = [
+        normalizedVenueName,
         venue.city,
         venue.state,
       ].filter(Boolean);
@@ -1481,6 +1485,7 @@ function App() {
     selectedFootballGame?.venueId || activeTrip?.venueId || null;
   const advertiserDemoPartner = getAdvertiserDemoPartner(destinationVenueId);
   const isAdvertiserSalesPreview = Boolean(advertiserDemoPartner);
+  const routePartner = KICKOFF_MILES_HOUSE_AD;
   const workspacePartner =
     advertiserDemoPartner ||
     (featuredPartner && !isRetiredPartner(featuredPartner)
@@ -1491,6 +1496,14 @@ function App() {
   const destinationPartnerInventory = advertiserDemoPartner
     ? [advertiserDemoPartner]
     : destinationPartners.filter((partner) => !isRetiredPartner(partner));
+  const displayDestination = normalizeVenueDestination(
+    activeTrip?.end,
+    destinationVenueId
+  );
+  const displayGameVenue = normalizeVenueName(
+    selectedFootballGame?.venue,
+    destinationVenueId
+  );
 
   function canAccessScreen(screenId) {
     if (screenId === "drive") return hasRoute;
@@ -1845,7 +1858,7 @@ function App() {
             </div>
             <PartnerPlacement
               contextLabel="Along the Way"
-              partner={workspacePartner}
+              partner={routePartner}
             />
             {alongTheWayLoading ? (
               <p className="empty-state">
@@ -2652,8 +2665,8 @@ function App() {
                 <strong>Destination:</strong>{" "}
                 {gameDayGuide?.venueName ||
                 weekendVenue?.name ||
-                selectedFootballGame?.venue ||
-                activeTrip?.end ||
+                displayGameVenue ||
+                displayDestination ||
               "Venue TBD"}
               </p>
               <p>
@@ -2697,8 +2710,8 @@ function App() {
                 <strong>
                   {gameDayGuide?.venueName ||
 weekendVenue?.name ||
-selectedFootballGame?.venue ||
-activeTrip?.end ||
+displayGameVenue ||
+displayDestination ||
 "the stadium"}
                 </strong>
                 . Here’s what to know before kickoff.
