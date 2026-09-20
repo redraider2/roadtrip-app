@@ -63,7 +63,7 @@ const DEVELOPMENT_PARTNER_PREVIEW = {
   directionsUrl: "https://www.google.com/maps",
 };
 
-const KICKOFF_MILES_HOUSE_AD = {
+const VENUE_NAME_OVERRIDES = new Map([\n  ["3784", "Galaxy Stadium"],\n]);\n\nfunction normalizeVenueName(value, venueId) {\n  return VENUE_NAME_OVERRIDES.get(String(venueId || "")) || value || "";\n}\n\nfunction normalizeVenueDestination(value, venueId) {\n  const override = VENUE_NAME_OVERRIDES.get(String(venueId || ""));\n  if (!override || !value) return value || "";\n  return String(value).replace(/^Jones AT&T Stadium/i, override);\n}\n\nconst KICKOFF_MILES_HOUSE_AD = {
   id: "kickoff-miles-house-ad",
   businessName: "This Could Be Your Space",
   locationText: "Put your business in front of travelers when they’re nearby.",
@@ -1052,7 +1052,7 @@ function App() {
           start: s,
           end: destination,
           venueId: selectedFootballGame.venueId,
-          notes: `${gameDate} · ${venue.name}`,
+          notes: `${gameDate} · ${normalizedVenueName}`,
           isPreview: true,
         };
 
@@ -1077,7 +1077,7 @@ function App() {
           title: matchup,
           start_location: s,
           end_location: destination,
-          notes: `${gameDate} · ${venue.name}`,
+          notes: `${gameDate} · ${normalizedVenueName}`,
           venue_id: selectedFootballGame.venueId,
           }),
         },
