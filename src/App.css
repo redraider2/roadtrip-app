@@ -4020,3 +4020,97 @@ select.trip-input {
   .live-journey-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .live-suggestions a { text-align: center; }
 }
+
+
+/* Destination partner marketplace */
+.destination-partner-marketplace {
+  margin: 1rem 0 1.35rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  background: rgba(5, 10, 18, 0.68);
+}
+
+.destination-partner-marketplace-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.destination-partner-marketplace-heading h3 {
+  margin: 0.15rem 0 0;
+}
+
+.destination-partner-count {
+  font-size: 0.76rem;
+  opacity: 0.72;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.destination-partner-rail {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.partner-placement.is-compact {
+  min-width: 0;
+  margin: 0;
+  padding: 0.8rem;
+}
+
+.partner-placement.is-compact .partner-placement-label-row small,
+.partner-placement.is-compact .partner-placement-tagline,
+.partner-placement.is-compact .partner-placement-identity > div > p:last-child {
+  display: none;
+}
+
+.partner-placement.is-compact .partner-placement-content {
+  display: block;
+}
+
+.partner-placement.is-compact .partner-placement-identity {
+  align-items: center;
+}
+
+.partner-placement.is-compact .partner-placement-monogram,
+.partner-placement.is-compact .partner-placement-logo {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+}
+
+.partner-placement.is-compact h3 {
+  font-size: 0.9rem;
+  line-height: 1.15;
+}
+
+.partner-placement.is-compact .partner-placement-actions {
+  margin-top: 0.65rem;
+}
+
+.partner-placement.is-compact .partner-placement-actions a {
+  width: 100%;
+  text-align: center;
+  font-size: 0.72rem;
+}
+
+@media (max-width: 1000px) {
+  .destination-partner-rail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .destination-partner-marketplace-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .destination-partner-rail {
+    grid-template-columns: 1fr;
+  }
+}
