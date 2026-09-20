@@ -223,6 +223,14 @@ test("advertiser demo mode can override the workspace partner only for its desti
   assert.ok(appSource.includes("advertiserDemoPartner ||"));
 });
 
+test("destination advertising supports at least five local partner positions", () => {
+  assert.ok(appSource.includes("DestinationPartnerRail"));
+  assert.ok(appSource.includes("destinationPartners"));
+  assert.ok(appSource.includes("/featured-partners"));
+  assert.ok(appSource.includes("destinationPartnerInventory"));
+  assert.ok(appCssSource.includes("grid-template-columns: repeat(5, minmax(0, 1fr))"));
+});
+
 test("Game Day includes a destination partner placement for advertiser demos", () => {
   assert.ok(appSource.includes('contextLabel="Game Day"'));
   assert.ok(appSource.includes('type="destination"'));
