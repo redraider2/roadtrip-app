@@ -10,6 +10,7 @@ import ChooseGameExperience from "./components/ChooseGameExperience.jsx";
 import DriveExperience from "./components/DriveExperience.jsx";
 import TripHqExperience from "./components/TripHqExperience.jsx";
 import PartnerPlacement from "./components/PartnerPlacement.jsx";
+import DestinationPartnerRail from "./components/DestinationPartnerRail.jsx";
 import PlanWorkspace from "./components/PlanWorkspace.jsx";
 import {
   formatGameDate,
@@ -37,6 +38,7 @@ import {
   TripHqScreen,
 } from "./screens/JourneyScreens.jsx";
 import { useJourneyNavigation } from "./screens/useJourneyNavigation.js";
+import { selectDestinationDemoPartner } from "./lib/destinationAdvertising.js";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5001";
@@ -61,6 +63,20 @@ const DEVELOPMENT_PARTNER_PREVIEW = {
   directionsUrl: "https://www.google.com/maps",
 };
 
+const VENUE_NAME_OVERRIDES = new Map([
+  ["3784", "Galaxy Stadium"],
+]);
+
+function normalizeVenueName(value, venueId) {
+  return VENUE_NAME_OVERRIDES.get(String(venueId || "")) || value || "";
+}
+
+function normalizeVenueDestination(value, venueId) {
+  const override = VENUE_NAME_OVERRIDES.get(String(venueId || ""));
+  if (!override || !value) return value || "";
+  return String(value).replace(/^Jones AT&T Stadium/i, override);
+}
+
 const KICKOFF_MILES_HOUSE_AD = {
   id: "kickoff-miles-house-ad",
   businessName: "This Could Be Your Space",
@@ -72,6 +88,95 @@ const KICKOFF_MILES_HOUSE_AD = {
   websiteLabel: "Advertise on Kickoff Miles",
   isHouseAd: true,
 };
+
+const ADVERTISER_DEMO_PARTNERS = {
+  spankys: {
+    id: "demo-spankys",
+    destinationVenueIds: ["3784"],
+    businessName: "Spanky's",
+    category: "restaurant",
+    tagline: "A Lubbock game-weekend stop across from Texas Tech",
+    locationText: "811 University Ave · Lubbock, TX",
+    description:
+      "Old-style burgers, chicken sandwiches, and appetizers in the heart of the Texas Tech game-weekend corridor.",
+    contextCopy: {
+      "Featured Road Trip Partner":
+        "Build Spanky's into the trip before the fan ever reaches Lubbock.",
+      "Road Trip Partner":
+        "A destination restaurant can stay visible while fans plan the route to Lubbock.",
+      "Along the Way":
+        "Keep the destination sponsor present while travelers discover stops on the road.",
+      "Stay & Itinerary":
+        "Give fans a local food stop they can work into the weekend itinerary.",
+      "On the Road":
+        "The destination is getting closer. Spanky's is positioned as a local stop waiting in Lubbock.",
+      "Game Weekend":
+        "You're in Lubbock. Put Spanky's in front of fans while they're choosing where to eat and spend time.",
+      "Game Day":
+        "Game day in Lubbock: keep a nearby local restaurant visible alongside the stadium guide.",
+      default:
+        "A Lubbock favorite serving old-style burgers, chicken sandwiches, and appetizers across from Texas Tech.",
+    },
+    websiteUrl: "https://www.spankys.com/",
+    websiteLabel: "Explore Spanky's",
+    directionsUrl:
+      "https://www.google.com/maps/dir/?api=1&destination=811%20University%20Ave%2C%20Lubbock%2C%20TX%2079401",
+    isDemo: true,
+  },
+  "triple-j": {
+    id: "demo-triple-j",
+    destinationVenueIds: ["3784"],
+    businessName: "Triple J Chophouse & Brew Co.",
+    category: "restaurant",
+    tagline: "Steaks, scratch cooking, and local beer in the Depot District",
+    locationText: "1807 Buddy Holly Ave · Lubbock, TX",
+    description:
+      "A local chophouse and brewery in Lubbock's Historic Depot District with hand-cut steaks and made-from-scratch food.",
+    contextCopy: {
+      "Featured Road Trip Partner":
+        "Introduce Triple J while the fan is still building the Lubbock road trip.",
+      "Road Trip Partner":
+        "Destination dining can become part of the plan before the drive begins.",
+      "Along the Way":
+        "Keep the Lubbock sponsor visible while travelers discover the road ahead.",
+      "Stay & Itinerary":
+        "Give fans a local dinner option they can intentionally add to game weekend.",
+      "On the Road":
+        "As Lubbock gets closer, Triple J becomes a timely destination dining recommendation.",
+      "Game Weekend":
+        "You're in Lubbock. Put Triple J in front of fans when they're deciding where to eat and gather.",
+      "Game Day":
+        "Game day in Lubbock: keep a local steakhouse and brewery visible alongside the stadium guide.",
+      default:
+        "A local chophouse and brewery in Lubbock's Historic Depot District with hand-cut steaks and made-from-scratch food.",
+    },
+    websiteUrl: "https://www.triplejchophouseandbrewco.com/",
+    websiteLabel: "Explore Triple J",
+    directionsUrl:
+      "https://www.google.com/maps/dir/?api=1&destination=1807%20Buddy%20Holly%20Ave%2C%20Lubbock%2C%20TX%2079401",
+    isDemo: true,
+  },
+}
+
+function getAdvertiserDemoConfig(venueId) {
+  if (typeof window === "undefined") {
+    return { partner: null, packageType: "founding" };
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const demoKey = params.get("demo");
+  const requestedPackage = params.get("package");
+  const packageType = requestedPackage === "featured" ? "featured" : "founding";
+
+  return {
+    partner: selectDestinationDemoPartner({
+      demoKey,
+      partners: ADVERTISER_DEMO_PARTNERS,
+      venueId,
+    }),
+    packageType,
+  };
+}
 
 function isRetiredPartner(partner) {
   return /spanky(?:['’]?s)?/i.test(String(partner?.businessName || ""));
@@ -211,6 +316,7 @@ function App() {
   });
   const [weekendVenue, setWeekendVenue] = useState(null);
   const [featuredPartner, setFeaturedPartner] = useState(null);
+  const [destinationPartners, setDestinationPartners] = useState([]);
   const [weekendPlacesLoading, setWeekendPlacesLoading] = useState(false);
   const [weekendPlacesError, setWeekendPlacesError] = useState("");
   const [gameDayGuide, setGameDayGuide] = useState(null);
@@ -541,6 +647,7 @@ function App() {
     setWeekendPlaces({ restaurant: [], bar: [], hotel: [] });
     setWeekendVenue(null);
     setFeaturedPartner(null);
+    setDestinationPartners([]);
     setWeekendPlacesError("");
     return;
   }
@@ -549,7 +656,7 @@ function App() {
     setWeekendPlacesLoading(true);
     setWeekendPlacesError("");
 
-    const [restaurantRes, barRes, hotelRes, featuredPartnerRes] =
+    const [restaurantRes, barRes, hotelRes, featuredPartnerRes, destinationPartnersRes] =
       await Promise.all([
         fetch(
           `${API_BASE_URL}/football/venues/${venueId}/places?category=restaurant`,
@@ -571,18 +678,27 @@ function App() {
           }`,
           { signal: controller.signal }
         ),
+        fetch(
+          `${API_BASE_URL}/football/venues/${venueId}/featured-partners${
+            selectedFootballGame?.id
+              ? `?gameId=${encodeURIComponent(selectedFootballGame.id)}`
+              : ""
+          }`,
+          { signal: controller.signal }
+        ),
       ]);
 
         if (!restaurantRes.ok || !barRes.ok || !hotelRes.ok) {
           throw new Error("Failed to load game weekend places");
         }
 
-        const [restaurantData, barData, hotelData, featuredPartnerData] =
+        const [restaurantData, barData, hotelData, featuredPartnerData, destinationPartnerData] =
           await Promise.all([
             restaurantRes.json(),
             barRes.json(),
             hotelRes.json(),
             featuredPartnerRes.ok ? featuredPartnerRes.json() : null,
+            destinationPartnersRes.ok ? destinationPartnersRes.json() : [],
           ]);
 
         if (cancelled) return;
@@ -594,6 +710,7 @@ function App() {
         });
         setWeekendVenue(restaurantData.venue || null);
         setFeaturedPartner(featuredPartnerData || null);
+        setDestinationPartners(Array.isArray(destinationPartnerData) ? destinationPartnerData : []);
       } catch (err) {
         if (cancelled || err?.name === "AbortError") return;
 
@@ -605,6 +722,7 @@ function App() {
         });
         setWeekendVenue(null);
         setFeaturedPartner(null);
+        setDestinationPartners([]);
         setWeekendPlacesError(
           "Restaurants and bars could not be loaded for this game."
         );
@@ -769,7 +887,7 @@ function App() {
 
     async function loadAlongTheWay() {
       if (
-        !activeTrip?.id ||
+        !activeTrip ||
         !Array.isArray(routeGeometry) ||
         routeGeometry.length < 2
       ) {
@@ -932,8 +1050,12 @@ function App() {
 
       const venue = await venueRes.json();
 
-      const destinationParts = [
+      const normalizedVenueName = normalizeVenueName(
         venue.name,
+        selectedFootballGame.venueId
+      );
+      const destinationParts = [
+        normalizedVenueName,
         venue.city,
         venue.state,
       ].filter(Boolean);
@@ -956,7 +1078,8 @@ function App() {
           title: matchup,
           start: s,
           end: destination,
-          notes: `${gameDate} · ${venue.name}`,
+          venueId: selectedFootballGame.venueId,
+          notes: `${gameDate} · ${normalizedVenueName}`,
           isPreview: true,
         };
 
@@ -981,7 +1104,7 @@ function App() {
           title: matchup,
           start_location: s,
           end_location: destination,
-          notes: `${gameDate} · ${venue.name}`,
+          notes: `${gameDate} · ${normalizedVenueName}`,
           venue_id: selectedFootballGame.venueId,
           }),
         },
@@ -1367,12 +1490,41 @@ function App() {
   const hasRoute = hasTrip && routeGeometry.length > 1;
   const hasGameWeekend = Boolean(selectedFootballGame || activeTrip?.venueId);
   const isPlanScreen = PLAN_SCREEN_IDS.includes(activeScreen);
+  const destinationVenueId =
+    selectedFootballGame?.venueId || activeTrip?.venueId || null;
+  const advertiserDemoConfig = getAdvertiserDemoConfig(destinationVenueId);
+  const advertiserDemoPartner = advertiserDemoConfig.partner;
+  const advertiserDemoPackage = advertiserDemoConfig.packageType;
+  const isAdvertiserSalesPreview = Boolean(advertiserDemoPartner);
+  const isFeaturedAdvertiserDemo =
+    isAdvertiserSalesPreview && advertiserDemoPackage === "featured";
+  const routePartner = KICKOFF_MILES_HOUSE_AD;
   const workspacePartner =
-    featuredPartner && !isRetiredPartner(featuredPartner)
-      ? featuredPartner
-      : import.meta.env.DEV
-        ? DEVELOPMENT_PARTNER_PREVIEW
-        : KICKOFF_MILES_HOUSE_AD;
+    isFeaturedAdvertiserDemo
+      ? advertiserDemoPartner
+      : isAdvertiserSalesPreview
+        ? KICKOFF_MILES_HOUSE_AD
+        : featuredPartner && !isRetiredPartner(featuredPartner)
+          ? featuredPartner
+          : import.meta.env.DEV
+            ? DEVELOPMENT_PARTNER_PREVIEW
+            : KICKOFF_MILES_HOUSE_AD;
+  const destinationPartnerInventory = advertiserDemoPartner
+    ? [advertiserDemoPartner]
+    : destinationPartners.filter((partner) => !isRetiredPartner(partner));
+  const isLubbockDestination = String(destinationVenueId || "") === "3784";
+  const destinationMarketComingSoon =
+    Boolean(destinationVenueId) &&
+    !isLubbockDestination &&
+    destinationPartnerInventory.length === 0;
+  const displayDestination = normalizeVenueDestination(
+    activeTrip?.end,
+    destinationVenueId
+  );
+  const displayGameVenue = normalizeVenueName(
+    selectedFootballGame?.venue,
+    destinationVenueId
+  );
 
   function canAccessScreen(screenId) {
     if (screenId === "drive") return hasRoute;
@@ -1708,7 +1860,13 @@ function App() {
             </div>
             <PartnerPlacement
               contextLabel="Road Trip Partner"
-              partner={workspacePartner}
+              partner={routePartner}
+            />
+            <DestinationPartnerRail
+              contextLabel="Route & Schedule"
+              partners={destinationPartnerInventory}
+              salesPreview={isAdvertiserSalesPreview}
+              comingSoon={destinationMarketComingSoon}
             />
               </div>
             </div>
@@ -1722,7 +1880,7 @@ function App() {
             </div>
             <PartnerPlacement
               contextLabel="Along the Way"
-              partner={workspacePartner}
+              partner={routePartner}
             />
             {alongTheWayLoading ? (
               <p className="empty-state">
@@ -1973,6 +2131,12 @@ function App() {
       contextLabel="Stay & Itinerary"
       partner={workspacePartner}
     />
+    <DestinationPartnerRail
+      contextLabel="Stay & Itinerary"
+      partners={destinationPartnerInventory}
+      salesPreview={isAdvertiserSalesPreview}
+              comingSoon={destinationMarketComingSoon}
+    />
 
     <div className="trip-stop-groups plan-itinerary-timeline">
       {dayByDayPlan.map((day) => (
@@ -2097,6 +2261,12 @@ function App() {
           contextLabel="Featured Road Trip Partner"
           partner={workspacePartner}
         />
+        <DestinationPartnerRail
+          contextLabel="Trip HQ"
+          partners={destinationPartnerInventory}
+          salesPreview={isAdvertiserSalesPreview}
+              comingSoon={destinationMarketComingSoon}
+/>
         <div className="panel trip-workspace-panel">
           <div className="section-heading-row">
             <div>
@@ -2519,8 +2689,8 @@ function App() {
                 <strong>Destination:</strong>{" "}
                 {gameDayGuide?.venueName ||
                 weekendVenue?.name ||
-                selectedFootballGame?.venue ||
-                activeTrip?.end ||
+                displayGameVenue ||
+                displayDestination ||
               "Venue TBD"}
               </p>
               <p>
@@ -2564,12 +2734,24 @@ function App() {
                 <strong>
                   {gameDayGuide?.venueName ||
 weekendVenue?.name ||
-selectedFootballGame?.venue ||
-activeTrip?.end ||
+displayGameVenue ||
+displayDestination ||
 "the stadium"}
                 </strong>
                 . Here’s what to know before kickoff.
               </p>
+
+              <PartnerPlacement
+                contextLabel="Game Day"
+                partner={workspacePartner}
+                type="destination"
+              />
+              <DestinationPartnerRail
+                contextLabel="Game Day"
+                partners={destinationPartnerInventory}
+                salesPreview={isAdvertiserSalesPreview}
+              comingSoon={destinationMarketComingSoon}
+/>
 
               <div className="game-day-guide-grid">
                 <button
@@ -2798,6 +2980,12 @@ activeTrip?.end ||
     contextLabel="Game Weekend"
     partner={workspacePartner}
   />
+  <DestinationPartnerRail
+    contextLabel="Game Weekend"
+    partners={destinationPartnerInventory}
+    salesPreview={isAdvertiserSalesPreview}
+              comingSoon={destinationMarketComingSoon}
+/>
 
   <div className="game-weekend-grid">
                 <div className="recommendation-column">
@@ -3018,6 +3206,9 @@ activeTrip?.end ||
               onArrive={() => navigateTo("game-weekend")}
               onBack={() => navigateTo("trip-hq")}
               partner={workspacePartner}
+              destinationPartners={destinationPartnerInventory}
+              salesPreview={isAdvertiserSalesPreview}
+              comingSoon={destinationMarketComingSoon}
               routeGeometry={routeGeometry}
               stops={stops}
               travelDayCount={travelDayCount}

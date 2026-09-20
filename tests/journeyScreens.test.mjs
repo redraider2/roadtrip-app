@@ -211,6 +211,58 @@ test("partner visual-QA sample is limited to development workspace placements", 
   assert.ok(appSource.includes("Development-only placement preview"));
 });
 
+test("advertiser demo mode can override the workspace partner only for its destination", () => {
+  assert.ok(appSource.includes("ADVERTISER_DEMO_PARTNERS"));
+  assert.ok(appSource.includes('new URLSearchParams(window.location.search).get("demo")'));
+  assert.ok(appSource.includes('"demo-spankys"'));
+  assert.ok(appSource.includes('"demo-triple-j"'));
+  assert.ok(appSource.includes('destinationVenueIds: ["3784"]'));
+  assert.ok(appSource.includes("getAdvertiserDemoPartner(destinationVenueId)"));
+  assert.ok(appSource.includes("selectedFootballGame?.venueId || activeTrip?.venueId || null"));
+  assert.ok(appSource.includes("venueId: selectedFootballGame.venueId"));
+  assert.ok(appSource.includes("advertiserDemoPartner ||"));
+});
+
+test("Lubbock venue naming and route advertising stay correctly scoped", () => {
+  assert.ok(appSource.includes('["3784", "Galaxy Stadium"]'));
+  assert.ok(appSource.includes('partner={routePartner}'));
+  assert.ok(appSource.includes("normalizeVenueDestination"));
+  assert.ok(!appSource.includes('contextLabel="Along the Way"\n              partner={workspacePartner}'));
+});
+
+test("destination partner network spans destination journey stages but not Along the Way", () => {
+  assert.ok(appSource.includes('contextLabel="Route & Schedule"'));
+  assert.ok(appSource.includes('contextLabel="Stay & Itinerary"'));
+  assert.ok(appSource.includes("destinationPartners={destinationPartnerInventory}"));
+  assert.ok(appSource.includes("salesPreview={isAdvertiserSalesPreview}"));
+  assert.ok(!appSource.includes('<DestinationPartnerRail\n              contextLabel="Along the Way"'));
+});
+
+test("destination advertising supports at least five local partner positions", () => {
+  assert.ok(appSource.includes("DestinationPartnerRail"));
+  assert.ok(appSource.includes("destinationPartners"));
+  assert.ok(appSource.includes("/featured-partners"));
+  assert.ok(appSource.includes("destinationPartnerInventory"));
+  assert.ok(appCssSource.includes("grid-template-columns: repeat(5, minmax(0, 1fr))"));
+});
+
+test("Game Day includes a destination partner placement for advertiser demos", () => {
+  assert.ok(appSource.includes('contextLabel="Game Day"'));
+  assert.ok(appSource.includes('type="destination"'));
+  assert.ok(appSource.includes("partner={workspacePartner}"));
+});
+
+test("advertiser demo creative supports context-specific messaging and sales-ready presentation", () => {
+  assert.ok(partnerPlacementSource.includes("contextualCopy"));
+  assert.ok(partnerPlacementSource.includes("Founding Partner Preview"));
+  assert.ok(partnerPlacementSource.includes("partner-placement-monogram"));
+  assert.ok(partnerPlacementSource.includes("partner-placement-tagline"));
+  assert.ok(appSource.includes("contextCopy"));
+  assert.ok(appSource.includes('"Game Weekend"'));
+  assert.ok(appSource.includes('"Game Day"'));
+  assert.ok(appCssSource.includes(".partner-placement.is-demo"));
+});
+
 test("Home excludes custom-trip and saved-trip management", () => {
   assert.ok(!homeSource.includes("Return to saved trips"));
   assert.ok(!homeSource.includes("Saved Trips"));

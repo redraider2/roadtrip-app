@@ -8,7 +8,14 @@ const PARTNER_LABELS = {
   destination: "Destination Partner",
 };
 
+function contextualCopy(partner, contextLabel) {
+  const copy = partner?.contextCopy;
+  if (!copy || typeof copy !== "object") return partner?.description || "";
+  return copy[contextLabel] || copy.default || partner?.description || "";
+}
+
 export default function PartnerPlacement({
+  compact = false,
   contextLabel,
   partner,
   type = "featured",
@@ -34,7 +41,17 @@ export default function PartnerPlacement({
 
   const placementLabel = partner.isHouseAd
     ? "Advertising Opportunity"
-    : PARTNER_LABELS[type] || PARTNER_LABELS.featured;
+    : partner.isDemo
+      ? "Founding Partner Preview"
+      : PARTNER_LABELS[type] || PARTNER_LABELS.featured;
+  const description = contextualCopy(partner, contextLabel);
+  const monogram = String(partner.businessName || "")
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
 
   const recordAction = (eventType) => {
     recordPartnerEvent({
@@ -47,7 +64,7 @@ export default function PartnerPlacement({
 
   return (
     <aside
-      className={`partner-placement is-${type}`}
+      className={`partner-placement is-${type}${partner.isDemo ? " is-demo" : ""}${compact ? " is-compact" : ""}`}
       aria-label={`${placementLabel}: ${partner.businessName}`}
     >
       <div className="partner-placement-label-row">
@@ -56,10 +73,26 @@ export default function PartnerPlacement({
       </div>
 
       <div className="partner-placement-content">
-        <div>
-          <h3>{partner.businessName}</h3>
-          {partner.locationText ? <p>{partner.locationText}</p> : null}
-          {partner.description ? <p>{partner.description}</p> : null}
+        <div className="partner-placement-identity">
+          {partner.imageUrl ? (
+            <img
+              className="partner-placement-logo"
+              src={partner.imageUrl}
+              alt=""
+            />
+          ) : (
+            <span className="partner-placement-monogram" aria-hidden="true">
+              {monogram || "KM"}
+            </span>
+          )}
+          <div>
+            <h3>{partner.businessName}</h3>
+            {partner.tagline ? (
+              <p className="partner-placement-tagline">{partner.tagline}</p>
+            ) : null}
+            {partner.locationText ? <p>{partner.locationText}</p> : null}
+            {description ? <p>{description}</p> : null}
+          </div>
           {partner.offerText ? (
             <strong className="partner-placement-offer">
               Kickoff Miles Offer · {partner.offerText}
@@ -85,7 +118,7 @@ export default function PartnerPlacement({
               rel="noreferrer"
               onClick={() => recordAction("website_click")}
             >
-              {partner.websiteLabel || "Visit website"}
+              {partner.websiteLabel || partner.ctaLabel || "Visit website"}
             </a>
           ) : null}
         </div>
