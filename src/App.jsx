@@ -37,6 +37,7 @@ import {
   TripHqScreen,
 } from "./screens/JourneyScreens.jsx";
 import { useJourneyNavigation } from "./screens/useJourneyNavigation.js";
+import { selectDestinationDemoPartner } from "./lib/destinationAdvertising.js";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5001";
@@ -76,6 +77,7 @@ const KICKOFF_MILES_HOUSE_AD = {
 const ADVERTISER_DEMO_PARTNERS = {
   spankys: {
     id: "demo-spankys",
+    destinationVenueIds: ["3784"],
     businessName: "Spanky's",
     category: "restaurant",
     tagline: "A Lubbock game-weekend stop across from Texas Tech",
@@ -108,6 +110,7 @@ const ADVERTISER_DEMO_PARTNERS = {
   },
   "triple-j": {
     id: "demo-triple-j",
+    destinationVenueIds: ["3784"],
     businessName: "Triple J Chophouse & Brew Co.",
     category: "restaurant",
     tagline: "Steaks, scratch cooking, and local beer in the Depot District",
@@ -140,10 +143,15 @@ const ADVERTISER_DEMO_PARTNERS = {
   },
 }
 
-function getAdvertiserDemoPartner() {
+function getAdvertiserDemoPartner(venueId) {
   if (typeof window === "undefined") return null;
   const demoKey = new URLSearchParams(window.location.search).get("demo");
-  return demoKey ? ADVERTISER_DEMO_PARTNERS[demoKey] || null : null;
+
+  return selectDestinationDemoPartner({
+    demoKey,
+    partners: ADVERTISER_DEMO_PARTNERS,
+    venueId,
+  });
 }
 
 function isRetiredPartner(partner) {
@@ -1029,6 +1037,7 @@ function App() {
           title: matchup,
           start: s,
           end: destination,
+          venueId: selectedFootballGame.venueId,
           notes: `${gameDate} · ${venue.name}`,
           isPreview: true,
         };
@@ -1440,7 +1449,9 @@ function App() {
   const hasRoute = hasTrip && routeGeometry.length > 1;
   const hasGameWeekend = Boolean(selectedFootballGame || activeTrip?.venueId);
   const isPlanScreen = PLAN_SCREEN_IDS.includes(activeScreen);
-  const advertiserDemoPartner = getAdvertiserDemoPartner();
+  const destinationVenueId =
+    selectedFootballGame?.venueId || activeTrip?.venueId || null;
+  const advertiserDemoPartner = getAdvertiserDemoPartner(destinationVenueId);
   const workspacePartner =
     advertiserDemoPartner ||
     (featuredPartner && !isRetiredPartner(featuredPartner)
