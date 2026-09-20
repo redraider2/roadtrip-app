@@ -10,6 +10,7 @@ import ChooseGameExperience from "./components/ChooseGameExperience.jsx";
 import DriveExperience from "./components/DriveExperience.jsx";
 import TripHqExperience from "./components/TripHqExperience.jsx";
 import PartnerPlacement from "./components/PartnerPlacement.jsx";
+import DestinationPartnerRail from "./components/DestinationPartnerRail.jsx";
 import PlanWorkspace from "./components/PlanWorkspace.jsx";
 import {
   formatGameDate,
@@ -292,6 +293,7 @@ function App() {
   });
   const [weekendVenue, setWeekendVenue] = useState(null);
   const [featuredPartner, setFeaturedPartner] = useState(null);
+  const [destinationPartners, setDestinationPartners] = useState([]);
   const [weekendPlacesLoading, setWeekendPlacesLoading] = useState(false);
   const [weekendPlacesError, setWeekendPlacesError] = useState("");
   const [gameDayGuide, setGameDayGuide] = useState(null);
@@ -622,6 +624,7 @@ function App() {
     setWeekendPlaces({ restaurant: [], bar: [], hotel: [] });
     setWeekendVenue(null);
     setFeaturedPartner(null);
+    setDestinationPartners([]);
     setWeekendPlacesError("");
     return;
   }
@@ -630,7 +633,7 @@ function App() {
     setWeekendPlacesLoading(true);
     setWeekendPlacesError("");
 
-    const [restaurantRes, barRes, hotelRes, featuredPartnerRes] =
+    const [restaurantRes, barRes, hotelRes, featuredPartnerRes, destinationPartnersRes] =
       await Promise.all([
         fetch(
           `${API_BASE_URL}/football/venues/${venueId}/places?category=restaurant`,
@@ -652,18 +655,27 @@ function App() {
           }`,
           { signal: controller.signal }
         ),
+        fetch(
+          `${API_BASE_URL}/football/venues/${venueId}/featured-partners${
+            selectedFootballGame?.id
+              ? `?gameId=${encodeURIComponent(selectedFootballGame.id)}`
+              : ""
+          }`,
+          { signal: controller.signal }
+        ),
       ]);
 
         if (!restaurantRes.ok || !barRes.ok || !hotelRes.ok) {
           throw new Error("Failed to load game weekend places");
         }
 
-        const [restaurantData, barData, hotelData, featuredPartnerData] =
+        const [restaurantData, barData, hotelData, featuredPartnerData, destinationPartnerData] =
           await Promise.all([
             restaurantRes.json(),
             barRes.json(),
             hotelRes.json(),
             featuredPartnerRes.ok ? featuredPartnerRes.json() : null,
+            destinationPartnersRes.ok ? destinationPartnersRes.json() : [],
           ]);
 
         if (cancelled) return;
@@ -675,6 +687,7 @@ function App() {
         });
         setWeekendVenue(restaurantData.venue || null);
         setFeaturedPartner(featuredPartnerData || null);
+        setDestinationPartners(Array.isArray(destinationPartnerData) ? destinationPartnerData : []);
       } catch (err) {
         if (cancelled || err?.name === "AbortError") return;
 
@@ -686,6 +699,7 @@ function App() {
         });
         setWeekendVenue(null);
         setFeaturedPartner(null);
+        setDestinationPartners([]);
         setWeekendPlacesError(
           "Restaurants and bars could not be loaded for this game."
         );
@@ -1459,6 +1473,9 @@ function App() {
       : import.meta.env.DEV
         ? DEVELOPMENT_PARTNER_PREVIEW
         : KICKOFF_MILES_HOUSE_AD);
+  const destinationPartnerInventory = advertiserDemoPartner
+    ? [advertiserDemoPartner]
+    : destinationPartners.filter((partner) => !isRetiredPartner(partner));
 
   function canAccessScreen(screenId) {
     if (screenId === "drive") return hasRoute;
@@ -2183,6 +2200,10 @@ function App() {
           contextLabel="Featured Road Trip Partner"
           partner={workspacePartner}
         />
+        <DestinationPartnerRail
+          contextLabel="Trip HQ"
+          partners={destinationPartnerInventory}
+        />
         <div className="panel trip-workspace-panel">
           <div className="section-heading-row">
             <div>
@@ -2662,6 +2683,10 @@ activeTrip?.end ||
                 partner={workspacePartner}
                 type="destination"
               />
+              <DestinationPartnerRail
+                contextLabel="Game Day"
+                partners={destinationPartnerInventory}
+              />
 
               <div className="game-day-guide-grid">
                 <button
@@ -2889,6 +2914,10 @@ activeTrip?.end ||
   <PartnerPlacement
     contextLabel="Game Weekend"
     partner={workspacePartner}
+  />
+  <DestinationPartnerRail
+    contextLabel="Game Weekend"
+    partners={destinationPartnerInventory}
   />
 
   <div className="game-weekend-grid">
