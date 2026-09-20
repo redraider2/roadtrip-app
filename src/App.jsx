@@ -1512,6 +1512,11 @@ function App() {
   const destinationPartnerInventory = advertiserDemoPartner
     ? [advertiserDemoPartner]
     : destinationPartners.filter((partner) => !isRetiredPartner(partner));
+  const isLubbockDestination = String(destinationVenueId || "") === "3784";
+  const destinationMarketComingSoon =
+    Boolean(destinationVenueId) &&
+    !isLubbockDestination &&
+    destinationPartnerInventory.length === 0;
   const displayDestination = normalizeVenueDestination(
     activeTrip?.end,
     destinationVenueId
@@ -1861,6 +1866,7 @@ function App() {
               contextLabel="Route & Schedule"
               partners={destinationPartnerInventory}
               salesPreview={isAdvertiserSalesPreview}
+              comingSoon={destinationMarketComingSoon}
             />
               </div>
             </div>
@@ -2129,6 +2135,7 @@ function App() {
       contextLabel="Stay & Itinerary"
       partners={destinationPartnerInventory}
       salesPreview={isAdvertiserSalesPreview}
+              comingSoon={destinationMarketComingSoon}
     />
 
     <div className="trip-stop-groups plan-itinerary-timeline">
@@ -2258,6 +2265,7 @@ function App() {
           contextLabel="Trip HQ"
           partners={destinationPartnerInventory}
           salesPreview={isAdvertiserSalesPreview}
+              comingSoon={destinationMarketComingSoon}
 />
         <div className="panel trip-workspace-panel">
           <div className="section-heading-row">
@@ -2742,6 +2750,7 @@ displayDestination ||
                 contextLabel="Game Day"
                 partners={destinationPartnerInventory}
                 salesPreview={isAdvertiserSalesPreview}
+              comingSoon={destinationMarketComingSoon}
 />
 
               <div className="game-day-guide-grid">
@@ -2975,6 +2984,7 @@ displayDestination ||
     contextLabel="Game Weekend"
     partners={destinationPartnerInventory}
     salesPreview={isAdvertiserSalesPreview}
+              comingSoon={destinationMarketComingSoon}
 />
 
   <div className="game-weekend-grid">
@@ -3198,6 +3208,7 @@ displayDestination ||
               partner={workspacePartner}
               destinationPartners={destinationPartnerInventory}
               salesPreview={isAdvertiserSalesPreview}
+              comingSoon={destinationMarketComingSoon}
               routeGeometry={routeGeometry}
               stops={stops}
               travelDayCount={travelDayCount}
