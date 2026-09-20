@@ -78,11 +78,30 @@ const ADVERTISER_DEMO_PARTNERS = {
     id: "demo-spankys",
     businessName: "Spanky's",
     category: "restaurant",
+    tagline: "A Lubbock game-weekend stop across from Texas Tech",
     locationText: "811 University Ave · Lubbock, TX",
     description:
-      "A Lubbock favorite serving old-style burgers, chicken sandwiches, and appetizers across from Texas Tech.",
+      "Old-style burgers, chicken sandwiches, and appetizers in the heart of the Texas Tech game-weekend corridor.",
+    contextCopy: {
+      "Featured Road Trip Partner":
+        "Build Spanky's into the trip before the fan ever reaches Lubbock.",
+      "Road Trip Partner":
+        "A destination restaurant can stay visible while fans plan the route to Lubbock.",
+      "Along the Way":
+        "Keep the destination sponsor present while travelers discover stops on the road.",
+      "Stay & Itinerary":
+        "Give fans a local food stop they can work into the weekend itinerary.",
+      "On the Road":
+        "The destination is getting closer. Spanky's is positioned as a local stop waiting in Lubbock.",
+      "Game Weekend":
+        "You're in Lubbock. Put Spanky's in front of fans while they're choosing where to eat and spend time.",
+      "Game Day":
+        "Game day in Lubbock: keep a nearby local restaurant visible alongside the stadium guide.",
+      default:
+        "A Lubbock favorite serving old-style burgers, chicken sandwiches, and appetizers across from Texas Tech.",
+    },
     websiteUrl: "https://www.spankys.com/",
-    websiteLabel: "View Spanky's",
+    websiteLabel: "Explore Spanky's",
     directionsUrl:
       "https://www.google.com/maps/dir/?api=1&destination=811%20University%20Ave%2C%20Lubbock%2C%20TX%2079401",
     isDemo: true,
@@ -91,16 +110,35 @@ const ADVERTISER_DEMO_PARTNERS = {
     id: "demo-triple-j",
     businessName: "Triple J Chophouse & Brew Co.",
     category: "restaurant",
+    tagline: "Steaks, scratch cooking, and local beer in the Depot District",
     locationText: "1807 Buddy Holly Ave · Lubbock, TX",
     description:
       "A local chophouse and brewery in Lubbock's Historic Depot District with hand-cut steaks and made-from-scratch food.",
+    contextCopy: {
+      "Featured Road Trip Partner":
+        "Introduce Triple J while the fan is still building the Lubbock road trip.",
+      "Road Trip Partner":
+        "Destination dining can become part of the plan before the drive begins.",
+      "Along the Way":
+        "Keep the Lubbock sponsor visible while travelers discover the road ahead.",
+      "Stay & Itinerary":
+        "Give fans a local dinner option they can intentionally add to game weekend.",
+      "On the Road":
+        "As Lubbock gets closer, Triple J becomes a timely destination dining recommendation.",
+      "Game Weekend":
+        "You're in Lubbock. Put Triple J in front of fans when they're deciding where to eat and gather.",
+      "Game Day":
+        "Game day in Lubbock: keep a local steakhouse and brewery visible alongside the stadium guide.",
+      default:
+        "A local chophouse and brewery in Lubbock's Historic Depot District with hand-cut steaks and made-from-scratch food.",
+    },
     websiteUrl: "https://www.triplejchophouseandbrewco.com/",
-    websiteLabel: "View Triple J",
+    websiteLabel: "Explore Triple J",
     directionsUrl:
       "https://www.google.com/maps/dir/?api=1&destination=1807%20Buddy%20Holly%20Ave%2C%20Lubbock%2C%20TX%2079401",
     isDemo: true,
   },
-};
+}
 
 function getAdvertiserDemoPartner() {
   if (typeof window === "undefined") return null;
