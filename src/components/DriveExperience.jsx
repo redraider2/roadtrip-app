@@ -1,4 +1,5 @@
 import PartnerPlacement from "./PartnerPlacement.jsx";
+import DestinationPartnerRail from "./DestinationPartnerRail.jsx";
 import PartnerFieldTestReport from "./PartnerFieldTestReport.jsx";
 import TripMap from "./TripMap.jsx";
 import LiveJourneyPanel from "./LiveJourneyPanel.jsx";
@@ -79,6 +80,8 @@ export default function DriveExperience({
   onArrive,
   onBack,
   partner,
+  destinationPartners = [],
+  salesPreview = false,
   routeGeometry,
   stops,
   travelDayCount,
@@ -192,6 +195,11 @@ export default function DriveExperience({
       <PartnerPlacement
         contextLabel="On the Road"
         partner={partner}
+      />
+      <DestinationPartnerRail
+        contextLabel="Drive"
+        partners={destinationPartners}
+        salesPreview={salesPreview}
       />
 
       {showFieldTestReport ? (
