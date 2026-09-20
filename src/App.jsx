@@ -1466,6 +1466,7 @@ function App() {
   const destinationVenueId =
     selectedFootballGame?.venueId || activeTrip?.venueId || null;
   const advertiserDemoPartner = getAdvertiserDemoPartner(destinationVenueId);
+  const isAdvertiserSalesPreview = Boolean(advertiserDemoPartner);
   const workspacePartner =
     advertiserDemoPartner ||
     (featuredPartner && !isRetiredPartner(featuredPartner)
@@ -1813,6 +1814,11 @@ function App() {
               contextLabel="Road Trip Partner"
               partner={workspacePartner}
             />
+            <DestinationPartnerRail
+              contextLabel="Route & Schedule"
+              partners={destinationPartnerInventory}
+              salesPreview={isAdvertiserSalesPreview}
+            />
               </div>
             </div>
             </PlanRouteScheduleScreen>
@@ -2076,6 +2082,11 @@ function App() {
       contextLabel="Stay & Itinerary"
       partner={workspacePartner}
     />
+    <DestinationPartnerRail
+      contextLabel="Stay & Itinerary"
+      partners={destinationPartnerInventory}
+      salesPreview={isAdvertiserSalesPreview}
+    />
 
     <div className="trip-stop-groups plan-itinerary-timeline">
       {dayByDayPlan.map((day) => (
@@ -2203,7 +2214,8 @@ function App() {
         <DestinationPartnerRail
           contextLabel="Trip HQ"
           partners={destinationPartnerInventory}
-        />
+          salesPreview={isAdvertiserSalesPreview}
+/>
         <div className="panel trip-workspace-panel">
           <div className="section-heading-row">
             <div>
@@ -2686,7 +2698,8 @@ activeTrip?.end ||
               <DestinationPartnerRail
                 contextLabel="Game Day"
                 partners={destinationPartnerInventory}
-              />
+                salesPreview={isAdvertiserSalesPreview}
+/>
 
               <div className="game-day-guide-grid">
                 <button
@@ -2918,7 +2931,8 @@ activeTrip?.end ||
   <DestinationPartnerRail
     contextLabel="Game Weekend"
     partners={destinationPartnerInventory}
-  />
+    salesPreview={isAdvertiserSalesPreview}
+/>
 
   <div className="game-weekend-grid">
                 <div className="recommendation-column">
@@ -3139,6 +3153,8 @@ activeTrip?.end ||
               onArrive={() => navigateTo("game-weekend")}
               onBack={() => navigateTo("trip-hq")}
               partner={workspacePartner}
+              destinationPartners={destinationPartnerInventory}
+              salesPreview={isAdvertiserSalesPreview}
               routeGeometry={routeGeometry}
               stops={stops}
               travelDayCount={travelDayCount}
