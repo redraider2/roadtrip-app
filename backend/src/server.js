@@ -564,9 +564,7 @@ app.get("/geocode", googleEndpointLimiter, async (req, res) => {
     const query = String(req.query.q || "").trim();
 
     if (!query) {
-      return res.status(400).json({
-        error: "q is required",
-      });
+      return res.status(400).json({ error: "q is required" });
     }
 
     if (!process.env.GOOGLE_MAPS_API_KEY) {
@@ -598,18 +596,10 @@ app.get("/geocode", googleEndpointLimiter, async (req, res) => {
 
         if (!googleResponse.ok) {
           const errorText = await googleResponse.text();
-
-          console.error(
-            "Google geocode request failed:",
-            googleResponse.status,
-            errorText
+          throw new Error(
+            `Google geocode request failed: ${googleResponse.status} ${errorText}`
           );
-
-          return res.status(502).json({
-            error: "Failed to geocode location",
-          });
         }
-
 
         return googleResponse.json();
       }
@@ -642,7 +632,7 @@ app.get("/geocode", googleEndpointLimiter, async (req, res) => {
       });
     }
 
-    return res.status(500).json({
+    return res.status(502).json({
       error: "Failed to geocode location",
     });
   }
@@ -1371,77 +1361,68 @@ app.post("/football/along-the-way", googleEndpointLimiter, async (req, res) => {
         const searches = routeSamples.map(async (sample) => {
           const placesResponse = await googleProtection.fetchGoogle(
             "https://places.googleapis.com/v1/places:searchNearby",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Goog-Api-Key": process.env.GOOGLE_MAPS_API_KEY,
-            "X-Goog-FieldMask":
-              "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.websiteUri,places.primaryType",
-          },
-          body: JSON.stringify({
-            includedPrimaryTypes: includedTypes,
-            maxResultCount: 5,
-            rankPreference: "POPULARITY",
-            locationRestriction: {
-              circle: {
-                center: {
-                  latitude: sample.latitude,
-                  longitude: sample.longitude,
-                },
-                radius: 25000,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-Goog-Api-Key": process.env.GOOGLE_MAPS_API_KEY,
+                "X-Goog-FieldMask":
+                  "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.websiteUri,places.primaryType",
               },
-            },
-          }),
-        }
-      );
+              body: JSON.stringify({
+                includedPrimaryTypes: includedTypes,
+                maxResultCount: 5,
+                rankPreference: "POPULARITY",
+                locationRestriction: {
+                  circle: {
+                    center: {
+                      latitude: sample.latitude,
+                      longitude: sample.longitude,
+                    },
+                    radius: 25000,
+                  },
+                },
+              }),
+            }
+          );
 
-      if (!placesResponse.ok) {
-        const errorText = await placesResponse.text();
+          if (!placesResponse.ok) {
+            const errorText = await placesResponse.text();
+            console.error(
+              "Along-the-way Places request failed:",
+              placesResponse.status,
+              errorText
+            );
+            return [];
+          }
 
-        console.error(
-          "Along-the-way Places request failed:",
-          placesResponse.status,
-          errorText
-        );
+          const data = await placesResponse.json();
 
-        return [];
-      }
-
-      const data = await placesResponse.json();
-
-      return (data.places || []).map((place) => ({
-        id: place.id,
-        name: place.displayName?.text || "Unknown",
-        address: place.formattedAddress || "",
-        latitude: place.location?.latitude ?? null,
-        longitude: place.location?.longitude ?? null,
-        rating: place.rating ?? null,
-        ratingCount: place.userRatingCount ?? null,
-        website: place.websiteUri || null,
-        primaryType: place.primaryType || null,
-        routeProgress: sample.routeProgress,
-      }));
-    });
-
+          return (data.places || []).map((place) => ({
+            id: place.id,
+            name: place.displayName?.text || "Unknown",
+            address: place.formattedAddress || "",
+            latitude: place.location?.latitude ?? null,
+            longitude: place.location?.longitude ?? null,
+            rating: place.rating ?? null,
+            ratingCount: place.userRatingCount ?? null,
+            website: place.websiteUri || null,
+            primaryType: place.primaryType || null,
+            routeProgress: sample.routeProgress,
+          }));
         });
 
         const results = (await Promise.all(searches)).flat();
-
         const uniquePlaces = Array.from(
-      new Map(results.map((place) => [place.id, place])).values()
-    );
+          new Map(results.map((place) => [place.id, place])).values()
+        );
 
         const rankedPlaces = uniquePlaces
           .sort((a, b) => {
-        const ratingDifference = (b.rating || 0) - (a.rating || 0);
-
-        if (ratingDifference !== 0) {
-          return ratingDifference;
-        }
-
-        return (b.ratingCount || 0) - (a.ratingCount || 0);
-      })
+            const ratingDifference = (b.rating || 0) - (a.rating || 0);
+            if (ratingDifference !== 0) return ratingDifference;
+            return (b.ratingCount || 0) - (a.ratingCount || 0);
+          })
           .slice(0, 15);
 
         return {
@@ -1938,15 +1919,13 @@ app.get("/football/venues/:venueId/places", googleEndpointLimiter, async (req, r
     const category = req.query.category || "restaurant";
 
     if (!process.env.CFBD_API_KEY) {
-      return res
-        .status(500)
-        .json({ error: "CFBD_API_KEY is not configured" });
+      return res.status(500).json({ error: "CFBD_API_KEY is not configured" });
     }
 
     if (!process.env.GOOGLE_MAPS_API_KEY) {
-      return res
-        .status(500)
-        .json({ error: "GOOGLE_MAPS_API_KEY is not configured" });
+      return res.status(500).json({
+        error: "GOOGLE_MAPS_API_KEY is not configured",
+      });
     }
 
     const venues = await loadCachedFootballData(
@@ -1978,9 +1957,7 @@ app.get("/football/venues/:venueId/places", googleEndpointLimiter, async (req, r
     );
 
     if (!venue) {
-      return res.status(404).json({
-        error: "Venue not found",
-      });
+      return res.status(404).json({ error: "Venue not found" });
     }
 
     const allowedCategories = {
@@ -1990,11 +1967,13 @@ app.get("/football/venues/:venueId/places", googleEndpointLimiter, async (req, r
       hotel: ["hotel"],
     };
 
-    const includedTypes =
-      allowedCategories[category] || allowedCategories.restaurant;
+    const normalizedCategory = allowedCategories[category]
+      ? category
+      : "restaurant";
+    const includedTypes = allowedCategories[normalizedCategory];
 
     const data = await googleProtection.loadCached(
-      `venue-places:${venueId}:${category}`,
+      `venue-places:${venueId}:${normalizedCategory}`,
       GOOGLE_CACHE_TTL_MS.nearbyPlaces,
       async () => {
         const placesResponse = await googleProtection.fetchGoogle(
@@ -2026,22 +2005,14 @@ app.get("/football/venues/:venueId/places", googleEndpointLimiter, async (req, r
 
         if (!placesResponse.ok) {
           const errorText = await placesResponse.text();
-          console.error(
-            "Google Places request failed:",
-            placesResponse.status,
-            errorText
+          throw new Error(
+            `Google Places request failed: ${placesResponse.status} ${errorText}`
           );
-
-          return res.status(502).json({
-            error: "Failed to load nearby places",
-          });
         }
-
 
         return placesResponse.json();
       }
     );
-
 
     const places = (data.places || []).map((place) => ({
       id: place.id,
@@ -2058,13 +2029,13 @@ app.get("/football/venues/:venueId/places", googleEndpointLimiter, async (req, r
     return res.json({
       venue: {
         id: venue.id,
-        name: venue.name,
+        name: publicVenueName(venue.id, venue.name),
         city: venue.city,
         state: venue.state,
         latitude: venue.latitude ?? null,
         longitude: venue.longitude ?? null,
       },
-      category,
+      category: normalizedCategory,
       places,
     });
   } catch (err) {
@@ -2076,7 +2047,7 @@ app.get("/football/venues/:venueId/places", googleEndpointLimiter, async (req, r
       });
     }
 
-    return res.status(500).json({
+    return res.status(502).json({
       error: "Failed to load nearby places",
     });
   }
