@@ -211,11 +211,15 @@ test("partner visual-QA sample is limited to development workspace placements", 
   assert.ok(appSource.includes("Development-only placement preview"));
 });
 
-test("advertiser demo mode can override the workspace partner without changing production campaign data", () => {
+test("advertiser demo mode can override the workspace partner only for its destination", () => {
   assert.ok(appSource.includes("ADVERTISER_DEMO_PARTNERS"));
   assert.ok(appSource.includes('new URLSearchParams(window.location.search).get("demo")'));
   assert.ok(appSource.includes('"demo-spankys"'));
   assert.ok(appSource.includes('"demo-triple-j"'));
+  assert.ok(appSource.includes('destinationVenueIds: ["3784"]'));
+  assert.ok(appSource.includes("getAdvertiserDemoPartner(destinationVenueId)"));
+  assert.ok(appSource.includes("selectedFootballGame?.venueId || activeTrip?.venueId || null"));
+  assert.ok(appSource.includes("venueId: selectedFootballGame.venueId"));
   assert.ok(appSource.includes("advertiserDemoPartner ||"));
 });
 
