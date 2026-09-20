@@ -73,6 +73,41 @@ const KICKOFF_MILES_HOUSE_AD = {
   isHouseAd: true,
 };
 
+const ADVERTISER_DEMO_PARTNERS = {
+  spankys: {
+    id: "demo-spankys",
+    businessName: "Spanky's",
+    category: "restaurant",
+    locationText: "811 University Ave · Lubbock, TX",
+    description:
+      "A Lubbock favorite serving old-style burgers, chicken sandwiches, and appetizers across from Texas Tech.",
+    websiteUrl: "https://www.spankys.com/",
+    websiteLabel: "View Spanky's",
+    directionsUrl:
+      "https://www.google.com/maps/dir/?api=1&destination=811%20University%20Ave%2C%20Lubbock%2C%20TX%2079401",
+    isDemo: true,
+  },
+  "triple-j": {
+    id: "demo-triple-j",
+    businessName: "Triple J Chophouse & Brew Co.",
+    category: "restaurant",
+    locationText: "1807 Buddy Holly Ave · Lubbock, TX",
+    description:
+      "A local chophouse and brewery in Lubbock's Historic Depot District with hand-cut steaks and made-from-scratch food.",
+    websiteUrl: "https://www.triplejchophouseandbrewco.com/",
+    websiteLabel: "View Triple J",
+    directionsUrl:
+      "https://www.google.com/maps/dir/?api=1&destination=1807%20Buddy%20Holly%20Ave%2C%20Lubbock%2C%20TX%2079401",
+    isDemo: true,
+  },
+};
+
+function getAdvertiserDemoPartner() {
+  if (typeof window === "undefined") return null;
+  const demoKey = new URLSearchParams(window.location.search).get("demo");
+  return demoKey ? ADVERTISER_DEMO_PARTNERS[demoKey] || null : null;
+}
+
 function isRetiredPartner(partner) {
   return /spanky(?:['’]?s)?/i.test(String(partner?.businessName || ""));
 }
@@ -1367,12 +1402,14 @@ function App() {
   const hasRoute = hasTrip && routeGeometry.length > 1;
   const hasGameWeekend = Boolean(selectedFootballGame || activeTrip?.venueId);
   const isPlanScreen = PLAN_SCREEN_IDS.includes(activeScreen);
+  const advertiserDemoPartner = getAdvertiserDemoPartner();
   const workspacePartner =
-    featuredPartner && !isRetiredPartner(featuredPartner)
+    advertiserDemoPartner ||
+    (featuredPartner && !isRetiredPartner(featuredPartner)
       ? featuredPartner
       : import.meta.env.DEV
         ? DEVELOPMENT_PARTNER_PREVIEW
-        : KICKOFF_MILES_HOUSE_AD;
+        : KICKOFF_MILES_HOUSE_AD);
 
   function canAccessScreen(screenId) {
     if (screenId === "drive") return hasRoute;
@@ -2570,6 +2607,12 @@ activeTrip?.end ||
                 </strong>
                 . Here’s what to know before kickoff.
               </p>
+
+              <PartnerPlacement
+                contextLabel="Game Day"
+                partner={workspacePartner}
+                type="destination"
+              />
 
               <div className="game-day-guide-grid">
                 <button
