@@ -19,6 +19,7 @@ export default function DestinationPartnerRail({
   contextLabel,
   partners = [],
   minimumPositions = 5,
+  salesPreview = false,
 }) {
   const realPartners = partners.filter(Boolean);
   const positions = Array.from(
@@ -30,12 +31,14 @@ export default function DestinationPartnerRail({
     <section className="destination-partner-marketplace" aria-label="Local partners">
       <div className="destination-partner-marketplace-heading">
         <div>
-          <span className="section-kicker">LOCAL PARTNERS</span>
-          <h3>Destination Partner Network</h3>
+          <span className="section-kicker">{salesPreview ? "FOUNDING LOCAL PARTNERS" : "LOCAL PARTNERS"}</span>
+          <h3>{salesPreview ? "Limited Destination Partner Network" : "Destination Partner Network"}</h3>
         </div>
-        <span className="destination-partner-count">
-          {realPartners.length} of {positions.length} positions filled
-        </span>
+        {salesPreview ? (
+          <span className="destination-partner-count">
+            {realPartners.length} of {positions.length} founding partner positions filled
+          </span>
+        ) : null}
       </div>
 
       <div className="destination-partner-rail">
