@@ -1855,7 +1855,7 @@ function App() {
             </div>
             <PartnerPlacement
               contextLabel="Road Trip Partner"
-              partner={workspacePartner}
+              partner={routePartner}
             />
             <DestinationPartnerRail
               contextLabel="Route & Schedule"
