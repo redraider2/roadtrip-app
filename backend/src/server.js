@@ -17,6 +17,44 @@ function publicVenueName(venueId, fallback) {
 
 const app = express();
 const routeCache = new Map();
+const footballDataCache = new Map();
+const footballDataInflight = new Map();
+
+const FOOTBALL_CACHE_TTL_MS = {
+  teams: 6 * 60 * 60 * 1000,
+  games: 10 * 60 * 1000,
+  venues: 24 * 60 * 60 * 1000,
+};
+
+async function loadCachedFootballData(key, ttlMs, loader) {
+  const now = Date.now();
+  const cached = footballDataCache.get(key);
+
+  if (cached && cached.expiresAt > now) {
+    return cached.value;
+  }
+
+  if (footballDataInflight.has(key)) {
+    return footballDataInflight.get(key);
+  }
+
+  const pending = Promise.resolve()
+    .then(loader)
+    .then((value) => {
+      footballDataCache.set(key, {
+        value,
+        expiresAt: Date.now() + ttlMs,
+      });
+      return value;
+    })
+    .finally(() => {
+      footballDataInflight.delete(key);
+    });
+
+  footballDataInflight.set(key, pending);
+  return pending;
+}
+
 
 app.set("trust proxy", 1);
 
@@ -1414,44 +1452,48 @@ app.get("/football/teams", async (req, res) => {
         .json({ error: "CFBD_API_KEY is not configured" });
     }
 
-    const cfbdResponse = await fetchWithRetry(
-      "https://api.collegefootballdata.com/teams/fbs",
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.CFBD_API_KEY}`,
-        },
+    const simplifiedTeams = await loadCachedFootballData(
+      "cfbd:teams:fbs",
+      FOOTBALL_CACHE_TTL_MS.teams,
+      async () => {
+        const cfbdResponse = await fetchWithRetry(
+          "https://api.collegefootballdata.com/teams/fbs",
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.CFBD_API_KEY}`,
+            },
+          }
+        );
+
+        if (!cfbdResponse.ok) {
+          const errorText = await cfbdResponse.text();
+          throw new Error(
+            `CFBD teams request failed: ${cfbdResponse.status} ${errorText}`
+          );
+        }
+
+        const teams = await cfbdResponse.json();
+
+        return teams
+          .map((team) => ({
+            id: team.id,
+            school: team.school,
+            mascot: team.mascot,
+            abbreviation: team.abbreviation,
+            conference: team.conference,
+            color: team.color,
+            alternateColor: team.alt_color,
+            logos: team.logos || [],
+          }))
+          .sort((a, b) => a.school.localeCompare(b.school));
       }
     );
-
-    if (!cfbdResponse.ok) {
-      const errorText = await cfbdResponse.text();
-      console.error("CFBD teams request failed:", cfbdResponse.status, errorText);
-
-      return res.status(502).json({
-        error: "Failed to load college football teams",
-      });
-    }
-
-    const teams = await cfbdResponse.json();
-
-    const simplifiedTeams = teams
-      .map((team) => ({
-        id: team.id,
-        school: team.school,
-        mascot: team.mascot,
-        abbreviation: team.abbreviation,
-        conference: team.conference,
-        color: team.color,
-        alternateColor: team.alt_color,
-        logos: team.logos || [],
-      }))
-      .sort((a, b) => a.school.localeCompare(b.school));
 
     return res.json(simplifiedTeams);
   } catch (err) {
     console.error("GET /football/teams error:", err);
 
-    return res.status(500).json({
+    return res.status(502).json({
       error: "Failed to load college football teams",
     });
   }
@@ -1462,47 +1504,52 @@ app.get("/football/games", async (req, res) => {
     const team = req.query.team || "Texas Tech";
     const year = Number(req.query.year) || new Date().getFullYear();
     const awayOnly = req.query.awayOnly === "true";
+
     if (!process.env.CFBD_API_KEY) {
       return res
         .status(500)
         .json({ error: "CFBD_API_KEY is not configured" });
     }
 
-    const url = new URL("https://api.collegefootballdata.com/games");
-    url.searchParams.set("year", year);
-    url.searchParams.set("team", team);
+    const simplifiedGames = await loadCachedFootballData(
+      `cfbd:games:${year}:${team}`,
+      FOOTBALL_CACHE_TTL_MS.games,
+      async () => {
+        const url = new URL("https://api.collegefootballdata.com/games");
+        url.searchParams.set("year", year);
+        url.searchParams.set("team", team);
 
-    const cfbdResponse = await fetchWithRetry(url,{
-      headers: {
-        Authorization: `Bearer ${process.env.CFBD_API_KEY}`,
-      },
-    });
+        const cfbdResponse = await fetchWithRetry(url, {
+          headers: {
+            Authorization: `Bearer ${process.env.CFBD_API_KEY}`,
+          },
+        });
 
-    if (!cfbdResponse.ok) {
-      const errorText = await cfbdResponse.text();
-      console.error("CFBD request failed:", cfbdResponse.status, errorText);
+        if (!cfbdResponse.ok) {
+          const errorText = await cfbdResponse.text();
+          throw new Error(
+            `CFBD games request failed: ${cfbdResponse.status} ${errorText}`
+          );
+        }
 
-      return res.status(502).json({
-        error: "Failed to load college football schedule",
-      });
-    }
+        const games = await cfbdResponse.json();
 
-    const games = await cfbdResponse.json();
-
-    const simplifiedGames = games.map((game) => ({
-      id: game.id,
-      season: game.season,
-      week: game.week,
-      startDate: game.startDate,
-      startTimeTBD: game.startTimeTBD,
-      conferenceGame: game.conferenceGame,
-      neutralSite: game.neutralSite,
-      homeTeam: game.homeTeam,
-      awayTeam: game.awayTeam,
-      venue: publicVenueName(game.venueId, game.venue),
-      venueId: game.venueId,
-      isAwayGame: game.awayTeam === team && !game.neutralSite,
-    }));
+        return games.map((game) => ({
+          id: game.id,
+          season: game.season,
+          week: game.week,
+          startDate: game.startDate,
+          startTimeTBD: game.startTimeTBD,
+          conferenceGame: game.conferenceGame,
+          neutralSite: game.neutralSite,
+          homeTeam: game.homeTeam,
+          awayTeam: game.awayTeam,
+          venue: publicVenueName(game.venueId, game.venue),
+          venueId: game.venueId,
+          isAwayGame: game.awayTeam === team && !game.neutralSite,
+        }));
+      }
+    );
 
     const filteredGames = awayOnly
       ? simplifiedGames.filter((game) => game.isAwayGame)
@@ -1512,7 +1559,7 @@ app.get("/football/games", async (req, res) => {
   } catch (err) {
     console.error("GET /football/games error:", err);
 
-    return res.status(500).json({
+    return res.status(502).json({
       error: "Failed to load college football games",
     });
   }
@@ -1765,25 +1812,29 @@ app.get("/football/venues/:venueId", async (req, res) => {
         .json({ error: "CFBD_API_KEY is not configured" });
     }
 
-    const cfbdResponse = await fetch(
-      "https://api.collegefootballdata.com/venues",
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.CFBD_API_KEY}`,
-        },
+    const venues = await loadCachedFootballData(
+      "cfbd:venues",
+      FOOTBALL_CACHE_TTL_MS.venues,
+      async () => {
+        const cfbdResponse = await fetch(
+          "https://api.collegefootballdata.com/venues",
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.CFBD_API_KEY}`,
+            },
+          }
+        );
+
+        if (!cfbdResponse.ok) {
+          const errorText = await cfbdResponse.text();
+          throw new Error(
+            `CFBD venue request failed: ${cfbdResponse.status} ${errorText}`
+          );
+        }
+
+        return cfbdResponse.json();
       }
     );
-
-    if (!cfbdResponse.ok) {
-      const errorText = await cfbdResponse.text();
-      console.error("CFBD venue request failed:", cfbdResponse.status, errorText);
-
-      return res.status(502).json({
-        error: "Failed to load college football venue",
-      });
-    }
-
-    const venues = await cfbdResponse.json();
 
     const venue = venues.find(
       (item) => String(item.id) === String(venueId)
@@ -1807,7 +1858,7 @@ app.get("/football/venues/:venueId", async (req, res) => {
   } catch (err) {
     console.error("GET /football/venues/:venueId error:", err);
 
-    return res.status(500).json({
+    return res.status(502).json({
       error: "Failed to load college football venue",
     });
   }
