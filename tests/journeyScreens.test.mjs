@@ -223,6 +223,14 @@ test("advertiser demo mode can override the workspace partner only for its desti
   assert.ok(appSource.includes("advertiserDemoPartner ||"));
 });
 
+test("destination partner network spans destination journey stages but not Along the Way", () => {
+  assert.ok(appSource.includes('contextLabel="Route & Schedule"'));
+  assert.ok(appSource.includes('contextLabel="Stay & Itinerary"'));
+  assert.ok(appSource.includes("destinationPartners={destinationPartnerInventory}"));
+  assert.ok(appSource.includes("salesPreview={isAdvertiserSalesPreview}"));
+  assert.ok(!appSource.includes('<DestinationPartnerRail\n              contextLabel="Along the Way"'));
+});
+
 test("destination advertising supports at least five local partner positions", () => {
   assert.ok(appSource.includes("DestinationPartnerRail"));
   assert.ok(appSource.includes("destinationPartners"));
