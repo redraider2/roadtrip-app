@@ -6,6 +6,12 @@ const rateLimit = require("express-rate-limit");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const db = require("./db");
+const {
+  createGoogleProtection,
+  coordinateKey,
+  isGoogleBudgetExceeded,
+  normalizeTextKey,
+} = require("./googleProtection");
 
 const VENUE_NAME_OVERRIDES = new Map([
   ["3784", "Galaxy Stadium"],
@@ -25,6 +31,14 @@ const FOOTBALL_CACHE_TTL_MS = {
   games: 10 * 60 * 1000,
   venues: 24 * 60 * 60 * 1000,
 };
+
+const GOOGLE_CACHE_TTL_MS = {
+  geocode: 24 * 60 * 60 * 1000,
+  nearbyPlaces: 30 * 60 * 1000,
+  alongTheWay: 20 * 60 * 1000,
+};
+
+const googleProtection = createGoogleProtection();
 
 async function loadCachedFootballData(key, ttlMs, loader) {
   const now = Date.now();
@@ -60,11 +74,31 @@ app.set("trust proxy", 1);
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  limit: 300,
+  limit: 1200,
   standardHeaders: "draft-8",
   legacyHeaders: false,
   message: {
     error: "Too many requests. Please try again shortly.",
+  },
+});
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 30,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  message: {
+    error: "Too many sign-in attempts. Please try again shortly.",
+  },
+});
+
+const googleEndpointLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  limit: 120,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  message: {
+    error: "Map search is busy. Please try again shortly.",
   },
 });
 
@@ -160,7 +194,7 @@ function requireAuth(req, res, next) {
   }
 }
 
-app.post("/auth/register", async (req, res) => {
+app.post("/auth/register", authLimiter, async (req, res) => {
   try {
     const username = String(req.body.username || "").trim();
     const email = String(req.body.email || "").trim().toLowerCase();
@@ -210,7 +244,7 @@ app.post("/auth/register", async (req, res) => {
   }
 });
 
-app.post("/auth/login", async (req, res) => {
+app.post("/auth/login", authLimiter, async (req, res) => {
   try {
     const email = String(req.body.email || "").trim().toLowerCase();
     const password = String(req.body.password || "");
@@ -373,7 +407,7 @@ async function fetchGoogleRoute(points) {
     },
   }));
 
-  const routeResponse = await fetch(
+  const routeResponse = await googleProtection.fetchGoogle(
     "https://routes.googleapis.com/directions/v2:computeRoutes",
     {
       method: "POST",
@@ -525,7 +559,7 @@ app.get("/locations/:id", async (req, res) => {
   }
 });
 
-app.get("/geocode", async (req, res) => {
+app.get("/geocode", googleEndpointLimiter, async (req, res) => {
   try {
     const query = String(req.query.q || "").trim();
 
@@ -541,38 +575,46 @@ app.get("/geocode", async (req, res) => {
       });
     }
 
-    const googleResponse = await fetch(
-      "https://places.googleapis.com/v1/places:searchText",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Goog-Api-Key": process.env.GOOGLE_MAPS_API_KEY,
-          "X-Goog-FieldMask":
-            "places.displayName,places.formattedAddress,places.location",
-        },
-        body: JSON.stringify({
-          textQuery: query,
-          maxResultCount: 1,
-        }),
+    const data = await googleProtection.loadCached(
+      `geocode:${normalizeTextKey(query)}`,
+      GOOGLE_CACHE_TTL_MS.geocode,
+      async () => {
+        const googleResponse = await googleProtection.fetchGoogle(
+          "https://places.googleapis.com/v1/places:searchText",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Goog-Api-Key": process.env.GOOGLE_MAPS_API_KEY,
+              "X-Goog-FieldMask":
+                "places.displayName,places.formattedAddress,places.location",
+            },
+            body: JSON.stringify({
+              textQuery: query,
+              maxResultCount: 1,
+            }),
+          }
+        );
+
+        if (!googleResponse.ok) {
+          const errorText = await googleResponse.text();
+
+          console.error(
+            "Google geocode request failed:",
+            googleResponse.status,
+            errorText
+          );
+
+          return res.status(502).json({
+            error: "Failed to geocode location",
+          });
+        }
+
+
+        return googleResponse.json();
       }
     );
 
-    if (!googleResponse.ok) {
-      const errorText = await googleResponse.text();
-
-      console.error(
-        "Google geocode request failed:",
-        googleResponse.status,
-        errorText
-      );
-
-      return res.status(502).json({
-        error: "Failed to geocode location",
-      });
-    }
-
-    const data = await googleResponse.json();
     const place = data.places?.[0];
 
     if (
@@ -593,6 +635,12 @@ app.get("/geocode", async (req, res) => {
     });
   } catch (err) {
     console.error("GET /geocode error:", err);
+
+    if (isGoogleBudgetExceeded(err)) {
+      return res.status(503).json({
+        error: "Map search is temporarily busy. Please try again shortly.",
+      });
+    }
 
     return res.status(500).json({
       error: "Failed to geocode location",
@@ -1271,7 +1319,7 @@ function sampleRouteGeometry(geometry, sampleCount = 5) {
   return samples;
 }
 
-app.post("/football/along-the-way", async (req, res) => {
+app.post("/football/along-the-way", googleEndpointLimiter, async (req, res) => {
   try {
     const { geometry, category = "restaurant" } = req.body;
 
@@ -1312,9 +1360,17 @@ app.post("/football/along-the-way", async (req, res) => {
       });
     }
 
-    const searches = routeSamples.map(async (sample) => {
-      const placesResponse = await fetch(
-        "https://places.googleapis.com/v1/places:searchNearby",
+    const routeCacheKey = routeSamples
+      .map((sample) => coordinateKey(sample, 3))
+      .join("|");
+
+    const response = await googleProtection.loadCached(
+      `along-the-way:${category}:${routeCacheKey}`,
+      GOOGLE_CACHE_TTL_MS.alongTheWay,
+      async () => {
+        const searches = routeSamples.map(async (sample) => {
+          const placesResponse = await googleProtection.fetchGoogle(
+            "https://places.googleapis.com/v1/places:searchNearby",
         {
           method: "POST",
           headers: {
@@ -1368,14 +1424,16 @@ app.post("/football/along-the-way", async (req, res) => {
       }));
     });
 
-    const results = (await Promise.all(searches)).flat();
+        });
 
-    const uniquePlaces = Array.from(
+        const results = (await Promise.all(searches)).flat();
+
+        const uniquePlaces = Array.from(
       new Map(results.map((place) => [place.id, place])).values()
     );
 
-    const rankedPlaces = uniquePlaces
-      .sort((a, b) => {
+        const rankedPlaces = uniquePlaces
+          .sort((a, b) => {
         const ratingDifference = (b.rating || 0) - (a.rating || 0);
 
         if (ratingDifference !== 0) {
@@ -1384,15 +1442,25 @@ app.post("/football/along-the-way", async (req, res) => {
 
         return (b.ratingCount || 0) - (a.ratingCount || 0);
       })
-      .slice(0, 15);
+          .slice(0, 15);
 
-    return res.json({
-      category,
-      sampledPoints: routeSamples.length,
-      places: rankedPlaces,
-    });
+        return {
+          category,
+          sampledPoints: routeSamples.length,
+          places: rankedPlaces,
+        };
+      }
+    );
+
+    return res.json(response);
   } catch (err) {
     console.error("POST /football/along-the-way error:", err);
+
+    if (isGoogleBudgetExceeded(err)) {
+      return res.status(503).json({
+        error: "Along-the-way search is temporarily busy. Please try again shortly.",
+      });
+    }
 
     return res.status(500).json({
       error: "Failed to load places along the route",
@@ -1864,7 +1932,7 @@ app.get("/football/venues/:venueId", async (req, res) => {
   }
 });
 
-app.get("/football/venues/:venueId/places", async (req, res) => {
+app.get("/football/venues/:venueId/places", googleEndpointLimiter, async (req, res) => {
   try {
     const { venueId } = req.params;
     const category = req.query.category || "restaurant";
@@ -1881,22 +1949,29 @@ app.get("/football/venues/:venueId/places", async (req, res) => {
         .json({ error: "GOOGLE_MAPS_API_KEY is not configured" });
     }
 
-    const venueResponse = await fetch(
-      "https://api.collegefootballdata.com/venues",
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.CFBD_API_KEY}`,
-        },
+    const venues = await loadCachedFootballData(
+      "cfbd:venues",
+      FOOTBALL_CACHE_TTL_MS.venues,
+      async () => {
+        const venueResponse = await fetchWithRetry(
+          "https://api.collegefootballdata.com/venues",
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.CFBD_API_KEY}`,
+            },
+          }
+        );
+
+        if (!venueResponse.ok) {
+          const errorText = await venueResponse.text();
+          throw new Error(
+            `CFBD venue request failed: ${venueResponse.status} ${errorText}`
+          );
+        }
+
+        return venueResponse.json();
       }
     );
-
-    if (!venueResponse.ok) {
-      return res.status(502).json({
-        error: "Failed to load venue details",
-      });
-    }
-
-    const venues = await venueResponse.json();
 
     const venue = venues.find(
       (item) => String(item.id) === String(venueId)
@@ -1918,47 +1993,55 @@ app.get("/football/venues/:venueId/places", async (req, res) => {
     const includedTypes =
       allowedCategories[category] || allowedCategories.restaurant;
 
-    const placesResponse = await fetch(
-      "https://places.googleapis.com/v1/places:searchNearby",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Goog-Api-Key": process.env.GOOGLE_MAPS_API_KEY,
-          "X-Goog-FieldMask":
-            "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.websiteUri,places.primaryType",
-        },
-        body: JSON.stringify({
-          includedPrimaryTypes: includedTypes,
-          maxResultCount: 10,
-          rankPreference: "POPULARITY",
-          locationRestriction: {
-            circle: {
-              center: {
-                latitude: venue.latitude,
-                longitude: venue.longitude,
-              },
-              radius: 5000,
+    const data = await googleProtection.loadCached(
+      `venue-places:${venueId}:${category}`,
+      GOOGLE_CACHE_TTL_MS.nearbyPlaces,
+      async () => {
+        const placesResponse = await googleProtection.fetchGoogle(
+          "https://places.googleapis.com/v1/places:searchNearby",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Goog-Api-Key": process.env.GOOGLE_MAPS_API_KEY,
+              "X-Goog-FieldMask":
+                "places.id,places.displayName,places.formattedAddress,places.location,places.rating,places.userRatingCount,places.websiteUri,places.primaryType",
             },
-          },
-        }),
+            body: JSON.stringify({
+              includedPrimaryTypes: includedTypes,
+              maxResultCount: 10,
+              rankPreference: "POPULARITY",
+              locationRestriction: {
+                circle: {
+                  center: {
+                    latitude: venue.latitude,
+                    longitude: venue.longitude,
+                  },
+                  radius: 5000,
+                },
+              },
+            }),
+          }
+        );
+
+        if (!placesResponse.ok) {
+          const errorText = await placesResponse.text();
+          console.error(
+            "Google Places request failed:",
+            placesResponse.status,
+            errorText
+          );
+
+          return res.status(502).json({
+            error: "Failed to load nearby places",
+          });
+        }
+
+
+        return placesResponse.json();
       }
     );
 
-    if (!placesResponse.ok) {
-      const errorText = await placesResponse.text();
-      console.error(
-        "Google Places request failed:",
-        placesResponse.status,
-        errorText
-      );
-
-      return res.status(502).json({
-        error: "Failed to load nearby places",
-      });
-    }
-
-    const data = await placesResponse.json();
 
     const places = (data.places || []).map((place) => ({
       id: place.id,
@@ -1986,6 +2069,12 @@ app.get("/football/venues/:venueId/places", async (req, res) => {
     });
   } catch (err) {
     console.error("GET /football/venues/:venueId/places error:", err);
+
+    if (isGoogleBudgetExceeded(err)) {
+      return res.status(503).json({
+        error: "Nearby places search is temporarily busy. Please try again shortly.",
+      });
+    }
 
     return res.status(500).json({
       error: "Failed to load nearby places",
