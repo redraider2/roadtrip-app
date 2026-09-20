@@ -20,12 +20,30 @@ export default function DestinationPartnerRail({
   partners = [],
   minimumPositions = 5,
   salesPreview = false,
+  comingSoon = false,
 }) {
   const realPartners = partners.filter(Boolean);
   const positions = Array.from(
     { length: Math.max(minimumPositions, realPartners.length) },
     (_, index) => realPartners[index] || availablePosition(index)
   );
+
+  if (comingSoon) {
+    return (
+      <section className="destination-partner-marketplace is-coming-soon" aria-label="Local partners coming soon">
+        <div className="destination-partner-marketplace-heading">
+          <div>
+            <span className="section-kicker">LOCAL PARTNERS</span>
+            <h3>Destination Partner Network — Coming Soon</h3>
+            <p className="section-copy">
+              Kickoff Miles is building the local partner network for this destination.
+            </p>
+          </div>
+          <span className="destination-partner-count">COMING SOON</span>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="destination-partner-marketplace" aria-label="Local partners">
