@@ -7,6 +7,14 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const db = require("./db");
 
+const VENUE_NAME_OVERRIDES = new Map([
+  ["3784", "Galaxy Stadium"],
+]);
+
+function publicVenueName(venueId, fallback) {
+  return VENUE_NAME_OVERRIDES.get(String(venueId || "")) || fallback || "";
+}
+
 const app = express();
 const routeCache = new Map();
 
@@ -1491,7 +1499,7 @@ app.get("/football/games", async (req, res) => {
       neutralSite: game.neutralSite,
       homeTeam: game.homeTeam,
       awayTeam: game.awayTeam,
-      venue: game.venue,
+      venue: publicVenueName(game.venueId, game.venue),
       venueId: game.venueId,
       isAwayGame: game.awayTeam === team && !game.neutralSite,
     }));
@@ -1789,7 +1797,7 @@ app.get("/football/venues/:venueId", async (req, res) => {
 
     return res.json({
       id: venue.id,
-      name: venue.name,
+      name: publicVenueName(venue.id, venue.name),
       city: venue.city,
       state: venue.state,
       capacity: venue.capacity,
