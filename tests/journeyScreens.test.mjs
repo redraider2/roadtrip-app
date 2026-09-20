@@ -223,6 +223,13 @@ test("advertiser demo mode can override the workspace partner only for its desti
   assert.ok(appSource.includes("advertiserDemoPartner ||"));
 });
 
+test("Lubbock venue naming and route advertising stay correctly scoped", () => {
+  assert.ok(appSource.includes('["3784", "Galaxy Stadium"]'));
+  assert.ok(appSource.includes('partner={routePartner}'));
+  assert.ok(appSource.includes("normalizeVenueDestination"));
+  assert.ok(!appSource.includes('contextLabel="Along the Way"\n              partner={workspacePartner}'));
+});
+
 test("destination partner network spans destination journey stages but not Along the Way", () => {
   assert.ok(appSource.includes('contextLabel="Route & Schedule"'));
   assert.ok(appSource.includes('contextLabel="Stay & Itinerary"'));
