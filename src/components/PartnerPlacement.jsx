@@ -92,7 +92,6 @@ export default function PartnerPlacement({
             {partner.locationText ? <p>{partner.locationText}</p> : null}
             {description ? <p>{description}</p> : null}
           </div>
-        </div>
           {partner.offerText ? (
             <strong className="partner-placement-offer">
               Kickoff Miles Offer · {partner.offerText}
