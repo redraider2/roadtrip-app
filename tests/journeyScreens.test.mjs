@@ -211,6 +211,20 @@ test("partner visual-QA sample is limited to development workspace placements", 
   assert.ok(appSource.includes("Development-only placement preview"));
 });
 
+test("advertiser demo mode can override the workspace partner without changing production campaign data", () => {
+  assert.ok(appSource.includes("ADVERTISER_DEMO_PARTNERS"));
+  assert.ok(appSource.includes('new URLSearchParams(window.location.search).get("demo")'));
+  assert.ok(appSource.includes('"demo-spankys"'));
+  assert.ok(appSource.includes('"demo-triple-j"'));
+  assert.ok(appSource.includes("advertiserDemoPartner ||"));
+});
+
+test("Game Day includes a destination partner placement for advertiser demos", () => {
+  assert.ok(appSource.includes('contextLabel="Game Day"'));
+  assert.ok(appSource.includes('type="destination"'));
+  assert.ok(appSource.includes("partner={workspacePartner}"));
+});
+
 test("Home excludes custom-trip and saved-trip management", () => {
   assert.ok(!homeSource.includes("Return to saved trips"));
   assert.ok(!homeSource.includes("Saved Trips"));
