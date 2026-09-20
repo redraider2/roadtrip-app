@@ -15,6 +15,7 @@ function contextualCopy(partner, contextLabel) {
 }
 
 export default function PartnerPlacement({
+  compact = false,
   contextLabel,
   partner,
   type = "featured",
@@ -63,7 +64,7 @@ export default function PartnerPlacement({
 
   return (
     <aside
-      className={`partner-placement is-${type}${partner.isDemo ? " is-demo" : ""}`}
+      className={`partner-placement is-${type}${partner.isDemo ? " is-demo" : ""}${compact ? " is-compact" : ""}`}
       aria-label={`${placementLabel}: ${partner.businessName}`}
     >
       <div className="partner-placement-label-row">
