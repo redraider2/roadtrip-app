@@ -2148,7 +2148,11 @@ function App() {
       contextLabel="Stay & Itinerary"
       partners={destinationPartnerInventory}
       salesPreview={isAdvertiserSalesPreview}
-              comingSoon={destinationMarketComingSoon}
+      comingSoon={destinationMarketComingSoon}
+      venueId={destinationVenueId}
+      placement="stay_itinerary"
+      onSave={activeTrip ? saveDestinationPartner : undefined}
+      isSaved={destinationPartnerIsSaved}
     />
 
     <div className="trip-stop-groups plan-itinerary-timeline">
@@ -2247,7 +2251,6 @@ function App() {
       ))}
         </div>
   </div>
-  <DestinationPartnerDiscovery venueId={destinationVenueId} placement="stay_itinerary" onSave={activeTrip ? saveDestinationPartner : undefined} isSaved={destinationPartnerIsSaved} />
   </PlanWorkspace>
   </PlanStayItineraryScreen>
 ) : null}
@@ -2271,9 +2274,11 @@ function App() {
           trip={activeTrip}
           tripStats={tripStats}
         >
-        <PartnerPlacement
-          contextLabel="Featured Road Trip Partner"
-          partner={workspacePartner}
+        <DestinationPartnerDiscovery
+          venueId={destinationVenueId}
+          placement="trip_hq"
+          onSave={activeTrip ? saveDestinationPartner : undefined}
+          isSaved={destinationPartnerIsSaved}
         />
         <DestinationPartnerRail
           contextLabel="Trip HQ"
@@ -2677,7 +2682,6 @@ function App() {
           )}
           </div>
         </div>
-        <DestinationPartnerDiscovery venueId={destinationVenueId} placement="trip_hq" onSave={activeTrip ? saveDestinationPartner : undefined} isSaved={destinationPartnerIsSaved} />
         </TripHqExperience>
         </TripHqScreen>
         ) : null}
