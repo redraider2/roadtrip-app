@@ -1,4 +1,6 @@
 import PartnerPlacement from "./PartnerPlacement.jsx";
+import { DestinationPartnerCard } from "./DestinationPartnerDiscovery.jsx";
+import { getDestinationPartners } from "../lib/destinationPartners.js";
 
 function availablePosition(index) {
   return {
@@ -21,12 +23,17 @@ export default function DestinationPartnerRail({
   minimumPositions = 5,
   salesPreview = false,
   comingSoon = false,
+  venueId,
+  placement,
+  onSave,
+  isSaved,
 }) {
   const realPartners = partners.filter(Boolean);
-  const positions = Array.from(
-    { length: Math.max(minimumPositions, realPartners.length) },
-    (_, index) => realPartners[index] || availablePosition(index)
-  );
+  const discoveryPartners =
+    venueId && placement ? getDestinationPartners(venueId, placement) : [];
+  const occupiedCount = discoveryPartners.length + realPartners.length;
+  const positionCount = Math.max(minimumPositions, occupiedCount);
+  const availableCount = Math.max(0, positionCount - occupiedCount);
 
   if (comingSoon) {
     return (
@@ -54,13 +61,23 @@ export default function DestinationPartnerRail({
         </div>
         {salesPreview ? (
           <span className="destination-partner-count">
-            {realPartners.length} of {positions.length} founding partner positions filled
+            {occupiedCount} of {positionCount} founding partner positions filled
           </span>
         ) : null}
       </div>
 
       <div className="destination-partner-rail">
-        {positions.map((partner, index) => (
+        {discoveryPartners.map((partner) => (
+          <DestinationPartnerCard
+            compact
+            key={partner.id}
+            partner={partner}
+            placement={placement}
+            onSave={onSave}
+            saved={isSaved?.(partner)}
+          />
+        ))}
+        {realPartners.map((partner, index) => (
           <PartnerPlacement
             compact
             contextLabel={contextLabel}
@@ -69,6 +86,18 @@ export default function DestinationPartnerRail({
             type="destination"
           />
         ))}
+        {Array.from({ length: availableCount }, (_, index) => {
+          const partner = availablePosition(index);
+          return (
+            <PartnerPlacement
+              compact
+              contextLabel={contextLabel}
+              key={partner.id}
+              partner={partner}
+              type="destination"
+            />
+          );
+        })}
       </div>
     </section>
   );
