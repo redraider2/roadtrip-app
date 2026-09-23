@@ -17,7 +17,7 @@ export const destinationPartners = [{
   headline: "Make a Cactus show part of your Lubbock road trip.",
   description: "Historic live entertainment in the heart of Lubbock’s Depot District.",
   placements: {
-    trip_hq: { creative: "small", heading: "Things to Do in Lubbock", actions: ["view_events"] },
+    trip_hq: { creative: "featured", actions: ["view_events", "directions", "save_to_trip"] },
     stay_itinerary: { creative: "small", heading: "Add Something to Your Trip", actions: ["view_events", "save_to_trip"] },
     game_weekend: { creative: "featured", actions: ["view_events", "directions", "save_to_trip"] },
   },
