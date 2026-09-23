@@ -4,7 +4,7 @@ import { recordPartnerEvent } from "../lib/partnerMetrics.js";
 
 const ACTION_LABELS = { view_events: "VIEW EVENTS", directions: "DIRECTIONS", save_to_trip: "SAVE TO TRIP" };
 
-export function DestinationPartnerCard({ partner, placement, onSave, saved = false }) {
+export function DestinationPartnerCard({ partner, placement, onSave, saved = false, compact = false }) {
   const config = partner.placements[placement];
   const cardRef = useRef(null);
   const [saving, setSaving] = useState(false);
@@ -34,7 +34,7 @@ export function DestinationPartnerCard({ partner, placement, onSave, saved = fal
   }
 
   return (
-    <aside ref={cardRef} className={`destination-discovery-card is-${creative}`} aria-label={partner.name} data-partner-id={partner.id} data-placement={placement}>
+    <aside ref={cardRef} className={`destination-discovery-card is-${creative}${compact ? " is-rail" : ""}`} aria-label={partner.name} data-partner-id={partner.id} data-placement={placement}>
       <img src={`${import.meta.env.BASE_URL}${partner.imageUrl}`} alt={partner.imageAlt} loading="lazy" />
       <div className="destination-discovery-content">
         {creative === "featured" ? <span className="section-kicker">FEATURED IN {partner.marketName.toUpperCase()}</span> : null}
