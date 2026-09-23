@@ -4114,3 +4114,30 @@ select.trip-input {
     grid-template-columns: 1fr;
   }
 }
+
+/* Destination discovery follows the traveler's primary planning content. */
+.destination-discovery { margin: 1.5rem 0; min-width: 0; }
+.destination-discovery > h2 { font-size: 1.15rem; margin: 0 0 0.85rem; }
+.destination-discovery-card { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 1.25rem; padding: 1rem; border: 1px solid rgba(255,255,255,0.18); border-radius: 16px; background: rgba(18,18,18,0.9); overflow: hidden; }
+.destination-discovery-card > img { width: 100%; height: 140px; object-fit: cover; border-radius: 10px; align-self: center; }
+.destination-discovery-content { min-width: 0; }
+.destination-discovery-content h3 { margin: 0.3rem 0 0.6rem; font-size: 1.15rem; letter-spacing: 0.04em; }
+.destination-discovery-content p { margin: 0.5rem 0; line-height: 1.5; color: rgba(255,255,255,0.78); }
+.destination-discovery-content .destination-discovery-address { font-size: 0.85rem; }
+.destination-discovery-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }
+.destination-discovery-actions a, .destination-discovery-actions button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; box-sizing: border-box; padding: 0.65rem 0.85rem; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; background: transparent; color: #fff; font: inherit; font-size: 0.75rem; font-weight: 750; letter-spacing: 0.03em; text-decoration: none; cursor: pointer; }
+.destination-discovery-actions a:first-child { background: #b82025; border-color: #b82025; }
+.destination-discovery-actions :is(a,button):focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.destination-discovery-actions :is(a,button):hover { border-color: #fff; }
+.destination-discovery-actions button:disabled { opacity: 0.65; cursor: default; }
+.destination-discovery-card.is-featured { grid-template-columns: minmax(200px, 0.85fr) minmax(0, 1.15fr); padding: 1.5rem; gap: 1.5rem; }
+.destination-discovery-card.is-featured > img { height: 100%; min-height: 260px; }
+.destination-discovery-card.is-featured h3 { font-size: 1.55rem; }
+.destination-discovery-content .destination-discovery-headline { font-size: 1.2rem; font-weight: 650; color: #fff; }
+@media (max-width: 600px) {
+  .destination-discovery-card, .destination-discovery-card.is-featured { grid-template-columns: minmax(0, 1fr); padding: 1rem; gap: 1rem; }
+  .destination-discovery-card > img, .destination-discovery-card.is-featured > img { height: 180px; min-height: 0; }
+  .destination-discovery-card.is-featured > img { height: 230px; }
+  .destination-discovery-actions { gap: 0.5rem; }
+}
+.destination-discovery:has(> h2) { padding: 1.25rem; border-radius: 16px; background: rgba(12,16,20,0.96); }

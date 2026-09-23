@@ -16,8 +16,11 @@ export function recordPartnerEvent({
   eventType,
   contextLabel,
   placementType,
+  placement,
+  creative,
+  action,
 }) {
-  if (!partner?.id || !eventType) return;
+  if (!partner?.id || !(eventType || action)) return;
 
   try {
     const events = readEvents();
@@ -26,7 +29,8 @@ export function recordPartnerEvent({
       businessName: partner.businessName || "",
       venueId: partner.venueId || null,
       gameId: partner.gameId || null,
-      eventType,
+      eventType: eventType || action,
+      ...(action ? { partner_id: partner.id, market: partner.market, placement, creative, action } : {}),
       contextLabel: contextLabel || "",
       placementType: placementType || "featured",
       occurredAt: new Date().toISOString(),

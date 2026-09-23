@@ -9,6 +9,8 @@ import ChooseTeamExperience from "./components/ChooseTeamExperience.jsx";
 import ChooseGameExperience from "./components/ChooseGameExperience.jsx";
 import DriveExperience from "./components/DriveExperience.jsx";
 import TripHqExperience from "./components/TripHqExperience.jsx";
+import DestinationPartnerDiscovery from "./components/DestinationPartnerDiscovery.jsx";
+import { isDestinationPartnerSaved } from "./lib/destinationPartners.js";
 import PartnerPlacement from "./components/PartnerPlacement.jsx";
 import DestinationPartnerRail from "./components/DestinationPartnerRail.jsx";
 import PlanWorkspace from "./components/PlanWorkspace.jsx";
@@ -1204,7 +1206,7 @@ function App() {
     });
   }
 
-  async function addSuggestedStop(place, locationType) {
+  async function addSuggestedStop(place, locationType, reportFailure = false) {
     if (!activeTrip) return;
 
     if (isSuggestedStopAdded(place)) {
@@ -1267,10 +1269,21 @@ function App() {
 
       await fetchStops(activeTrip.id);
     } catch (err) {
+  if (reportFailure) throw err;
   console.error("Add suggested stop failed:", err);
   alert(err.message || "Could not add this recommendation to the trip.");
 }
 }
+
+  async function saveDestinationPartner(partner) {
+    if (!activeTrip || isDestinationPartnerSaved(partner, stops)) return;
+    const coordinates = await geocodePlace(partner.address);
+    await addSuggestedStop({ ...partner, ...coordinates }, "attraction", true);
+  }
+
+  function destinationPartnerIsSaved(partner) {
+    return isDestinationPartnerSaved(partner, stops);
+  }
 
   async function setStopRouteStatus(id, isRouteStop) {
     if (!activeTrip || !auth?.token) return;
@@ -2234,6 +2247,7 @@ function App() {
       ))}
         </div>
   </div>
+  <DestinationPartnerDiscovery venueId={destinationVenueId} placement="stay_itinerary" onSave={activeTrip ? saveDestinationPartner : undefined} isSaved={destinationPartnerIsSaved} />
   </PlanWorkspace>
   </PlanStayItineraryScreen>
 ) : null}
@@ -2663,6 +2677,7 @@ function App() {
           )}
           </div>
         </div>
+        <DestinationPartnerDiscovery venueId={destinationVenueId} placement="trip_hq" onSave={activeTrip ? saveDestinationPartner : undefined} isSaved={destinationPartnerIsSaved} />
         </TripHqExperience>
         </TripHqScreen>
         ) : null}
@@ -2717,6 +2732,7 @@ function App() {
               </div>
             ) : null}
           </div>
+          <DestinationPartnerDiscovery venueId={destinationVenueId} placement="game_weekend" onSave={activeTrip ? saveDestinationPartner : undefined} isSaved={destinationPartnerIsSaved} />
           </GameWeekendScreen>
 
           <GameDayScreen active={activeScreen === "game-day"}>

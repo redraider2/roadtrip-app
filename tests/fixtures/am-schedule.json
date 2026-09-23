@@ -1,0 +1,347 @@
+{
+  "season": {
+    "year": 2026,
+    "type": 2,
+    "name": "Regular Season",
+    "displayName": "2026",
+    "half": 1
+  },
+  "events": [
+    {
+      "id": "401856668",
+      "date": "2026-09-05T23:00Z",
+      "week": {
+        "number": 1,
+        "text": "Week 1"
+      },
+      "competitions": [
+        {
+          "timeValid": true,
+          "neutralSite": false,
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "location": "Texas A&M"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "location": "Missouri State"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401856683",
+      "date": "2026-09-12T16:00Z",
+      "week": {
+        "number": 2,
+        "text": "Week 2"
+      },
+      "competitions": [
+        {
+          "timeValid": true,
+          "neutralSite": false,
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "location": "Texas A&M"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "location": "Arizona State"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401856694",
+      "date": "2026-09-19T19:40Z",
+      "week": {
+        "number": 3,
+        "text": "Week 3"
+      },
+      "competitions": [
+        {
+          "timeValid": true,
+          "neutralSite": false,
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "location": "Texas A&M"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "location": "Kentucky"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401856702",
+      "date": "2026-09-26T23:30Z",
+      "week": {
+        "number": 4,
+        "text": "Week 4"
+      },
+      "competitions": [
+        {
+          "timeValid": true,
+          "neutralSite": false,
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "location": "LSU"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "location": "Texas A&M"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401856711",
+      "date": "2026-10-03T04:00Z",
+      "week": {
+        "number": 5,
+        "text": "Week 5"
+      },
+      "competitions": [
+        {
+          "timeValid": false,
+          "neutralSite": false,
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "location": "Texas A&M"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "location": "Arkansas"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401856716",
+      "date": "2026-10-10T04:00Z",
+      "week": {
+        "number": 6,
+        "text": "Week 6"
+      },
+      "competitions": [
+        {
+          "timeValid": false,
+          "neutralSite": false,
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "location": "Missouri"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "location": "Texas A&M"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401856725",
+      "date": "2026-10-17T17:00Z",
+      "week": {
+        "number": 7,
+        "text": "Week 7"
+      },
+      "competitions": [
+        {
+          "timeValid": true,
+          "neutralSite": false,
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "location": "Texas A&M"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "location": "The Citadel"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401856727",
+      "date": "2026-10-24T04:00Z",
+      "week": {
+        "number": 8,
+        "text": "Week 8"
+      },
+      "competitions": [
+        {
+          "timeValid": false,
+          "neutralSite": false,
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "location": "Alabama"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "location": "Texas A&M"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401856744",
+      "date": "2026-11-07T05:00Z",
+      "week": {
+        "number": 10,
+        "text": "Week 10"
+      },
+      "competitions": [
+        {
+          "timeValid": false,
+          "neutralSite": false,
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "location": "South Carolina"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "location": "Texas A&M"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401856888",
+      "date": "2026-11-14T05:00Z",
+      "week": {
+        "number": 11,
+        "text": "Week 11"
+      },
+      "competitions": [
+        {
+          "timeValid": false,
+          "neutralSite": false,
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "location": "Texas A&M"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "location": "Tennessee"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401856752",
+      "date": "2026-11-21T05:00Z",
+      "week": {
+        "number": 12,
+        "text": "Week 12"
+      },
+      "competitions": [
+        {
+          "timeValid": false,
+          "neutralSite": false,
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "location": "Oklahoma"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "location": "Texas A&M"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401856756",
+      "date": "2026-11-28T00:30Z",
+      "week": {
+        "number": 13,
+        "text": "Week 13"
+      },
+      "competitions": [
+        {
+          "timeValid": true,
+          "neutralSite": false,
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "location": "Texas A&M"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "location": "Texas"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
