@@ -451,6 +451,16 @@ function App() {
         auth.token
       );
 
+      if (res.status === 401) {
+        localStorage.removeItem(AUTH_STORAGE_KEY);
+        setAuth(null);
+        setTrips([]);
+        setStops([]);
+        setActiveTripId(null);
+        setTripsError("Your saved session expired. Sign in again to save trips.");
+        return;
+      }
+
       if (!res.ok) throw new Error("Failed to fetch trips");
 
       const data = await res.json();
@@ -1113,8 +1123,36 @@ function App() {
         auth.token
       );
 
+      if (tripRes.status === 401) {
+        localStorage.removeItem(AUTH_STORAGE_KEY);
+        setAuth(null);
+
+        const previewTrip = {
+          id: null,
+          title: matchup,
+          start: s,
+          end: destination,
+          venueId: selectedFootballGame.venueId,
+          notes: `${gameDate} · ${normalizedVenueName}`,
+          isPreview: true,
+        };
+
+        setStops([]);
+        setTrips((currentTrips) => [
+          ...currentTrips.filter((trip) => trip.id !== null),
+          previewTrip,
+        ]);
+        setActiveTripId(null);
+        setFootballError(
+          "Your saved session expired. The trip is open in preview mode; sign in again to save it."
+        );
+        navigateTo("trip-hq");
+        return;
+      }
+
       if (!tripRes.ok) {
-        throw new Error("Failed to create football road trip");
+        const errorData = await tripRes.json().catch(() => ({}));
+        throw new Error(errorData.error || "Failed to create football road trip");
       }
 
       const createdTrip = await tripRes.json();
