@@ -23,6 +23,7 @@ export default function DestinationPartnerRail({
   minimumPositions = 5,
   salesPreview = false,
   comingSoon = false,
+  hideEmpty = false,
   venueId,
   placement,
   onSave,
@@ -34,6 +35,8 @@ export default function DestinationPartnerRail({
   const occupiedCount = discoveryPartners.length + realPartners.length;
   const positionCount = Math.max(minimumPositions, occupiedCount);
   const availableCount = Math.max(0, positionCount - occupiedCount);
+
+  if (hideEmpty && occupiedCount === 0) return null;
 
   if (comingSoon) {
     return (

@@ -1,0 +1,46 @@
+.destination-artwork-placement {
+  min-width: 0;
+  margin: 1.25rem 0;
+  padding: 1.25rem;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 16px;
+  background: rgba(18,18,18,0.94);
+  box-sizing: border-box;
+}
+.destination-artwork-layout {
+  display: grid;
+  grid-template-columns: var(--artwork-columns, minmax(0, 2fr) minmax(0, 3fr));
+  align-items: center;
+  gap: 1.5rem;
+}
+.destination-artwork-context { margin: 0 0 1rem; font-size: 1.15rem; }
+.destination-artwork-image { display: block; width: 100%; max-width: none; min-width: 0; }
+.destination-artwork-placement a:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
+.destination-artwork-image:hover { opacity: 0.92; }
+.destination-artwork-image:active { opacity: 0.8; }
+.destination-artwork-placement img { display: block; width: 100%; max-width: none; height: auto; object-fit: contain; }
+.destination-artwork-copy { min-width: 0; overflow-wrap: anywhere; line-height: 1.5; }
+.destination-artwork-disclosure { font-size: 0.85rem; color: #ddd; }
+.destination-artwork-copy h3 { margin: 0.4rem 0 0.65rem; font-size: 1.4rem; }
+.destination-artwork-copy p { margin: 0.45rem 0; font-size: 0.95rem; }
+.destination-artwork-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 1rem; }
+.destination-artwork-actions a { display: inline-flex; align-items: center; min-height: 44px; padding: 0.6rem 1rem; box-sizing: border-box; border-radius: 8px; border: 1px solid #ffdb61; color: #ffdb61; font-weight: 700; text-decoration: none; }
+.destination-artwork-actions a.is-primary { background: #ffdb61; color: #17130a; }
+.destination-artwork-actions a:hover { background: #ffe995; color: #17130a; }
+.destination-artwork-actions a:active { background: #d5af35; color: #17130a; }
+/* Enlarge the three planning placements; Game Day retains its approved ratio. */
+.destination-artwork-placement:not([data-placement="game_day"]) {
+  container: planning-sponsor / inline-size;
+  padding: 16px;
+  --artwork-columns: minmax(0, 1.85fr) minmax(0, 1fr);
+}
+@container planning-sponsor (max-width: 720px) {
+  .destination-artwork-layout { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+}
+@media (max-width: 600px) {
+  .destination-artwork-placement[data-placement="game_day"] { padding: 1rem; }
+  .destination-artwork-placement[data-placement="game_day"] .destination-artwork-layout { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+}
+@media (max-width: 480px) {
+  .destination-artwork-placement:not([data-placement="game_day"]) { padding: 12px; }
+}

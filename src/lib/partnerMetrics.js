@@ -19,6 +19,8 @@ export function recordPartnerEvent({
   placement,
   creative,
   action,
+  campaignId,
+  destinationId,
 }) {
   if (!partner?.id || !(eventType || action)) return;
 
@@ -31,6 +33,7 @@ export function recordPartnerEvent({
       gameId: partner.gameId || null,
       eventType: eventType || action,
       ...(action ? { partner_id: partner.id, market: partner.market, placement, creative, action } : {}),
+      ...(campaignId ? { campaign_id: campaignId, destination_id: destinationId } : {}),
       contextLabel: contextLabel || "",
       placementType: placementType || "featured",
       occurredAt: new Date().toISOString(),

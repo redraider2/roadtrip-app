@@ -9,6 +9,8 @@ import ChooseTeamExperience from "./components/ChooseTeamExperience.jsx";
 import ChooseGameExperience from "./components/ChooseGameExperience.jsx";
 import DriveExperience from "./components/DriveExperience.jsx";
 import TripHqExperience from "./components/TripHqExperience.jsx";
+import DestinationArtworkPlacement from "./components/DestinationArtworkPlacement.jsx";
+import { culinaryGangsterTempe, selectDestinationArtwork } from "./lib/destinationArtworkCampaigns.js";
 import DestinationPartnerDiscovery from "./components/DestinationPartnerDiscovery.jsx";
 import { isDestinationPartnerSaved } from "./lib/destinationPartners.js";
 import PartnerPlacement from "./components/PartnerPlacement.jsx";
@@ -1543,6 +1545,9 @@ function App() {
   const isPlanScreen = PLAN_SCREEN_IDS.includes(activeScreen);
   const destinationVenueId =
     selectedFootballGame?.venueId || activeTrip?.venueId || null;
+  const campaignVenueId = activeTrip?.venueId || null;
+  const campaignPlacement = { "trip-hq": "trip_hq", "plan-along-the-way": "along_the_way", "game-weekend": "game_weekend", "game-day": "game_day" }[activeScreen];
+  const hasTempeSponsor = Boolean(selectDestinationArtwork(culinaryGangsterTempe, campaignVenueId, campaignPlacement));
   const advertiserDemoConfig = getAdvertiserDemoConfig(destinationVenueId);
   const advertiserDemoPartner = advertiserDemoConfig.partner;
   const advertiserDemoPackage = advertiserDemoConfig.packageType;
@@ -1929,10 +1934,12 @@ function App() {
               <h2>Along the Way</h2>
               <p>Food, stays, and memorable stops matched to your route.</p>
             </div>
-            <PartnerPlacement
+            <DestinationArtworkPlacement campaign={culinaryGangsterTempe} venueId={campaignVenueId} placement="along_the_way" fallback={
+<PartnerPlacement
               contextLabel="Along the Way"
               partner={routePartner}
             />
+} />
             {alongTheWayLoading ? (
               <p className="empty-state">
                 Finding food, hotels, and historic stops along your route...
@@ -2318,12 +2325,17 @@ function App() {
           onSave={activeTrip ? saveDestinationPartner : undefined}
           isSaved={destinationPartnerIsSaved}
         />
+        <DestinationArtworkPlacement campaign={culinaryGangsterTempe} venueId={campaignVenueId} placement="trip_hq" fallback={
         <DestinationPartnerRail
           contextLabel="Trip HQ"
           partners={destinationPartnerInventory}
           salesPreview={isAdvertiserSalesPreview}
               comingSoon={destinationMarketComingSoon}
 />
+        } />
+        {hasTempeSponsor && destinationPartnerInventory.length > 0 ? (
+          <DestinationPartnerRail contextLabel="Trip HQ" partners={destinationPartnerInventory} minimumPositions={0} />
+        ) : null}
         <div className="panel trip-workspace-panel">
           <div className="section-heading-row">
             <div>
@@ -2758,6 +2770,7 @@ function App() {
               </p>
             </div>
 
+            <DestinationArtworkPlacement campaign={culinaryGangsterTempe} venueId={campaignVenueId} placement="game_weekend" />
             {weekendVenue ? (
               <div className="destination-map-section">
                 <div className="destination-map-heading">
@@ -2799,13 +2812,16 @@ displayDestination ||
                 . Here’s what to know before kickoff.
               </p>
 
-              <PartnerPlacement
+              <DestinationArtworkPlacement campaign={culinaryGangsterTempe} venueId={campaignVenueId} placement="game_day" fallback={
+<PartnerPlacement
                 contextLabel="Game Day"
                 partner={workspacePartner}
                 type="destination"
               />
+} />
               <DestinationPartnerRail
                 contextLabel="Game Day"
+                hideEmpty={hasTempeSponsor}
                 partners={destinationPartnerInventory}
                 salesPreview={isAdvertiserSalesPreview}
               comingSoon={destinationMarketComingSoon}
@@ -3034,12 +3050,10 @@ displayDestination ||
               <p className="error-state">{weekendPlacesError}</p>
             ) : (
               <>
-  <PartnerPlacement
-    contextLabel="Game Weekend"
-    partner={workspacePartner}
-  />
+  {!hasTempeSponsor ? <PartnerPlacement contextLabel="Game Weekend" partner={workspacePartner} /> : null}
   <DestinationPartnerRail
     contextLabel="Game Weekend"
+                hideEmpty={hasTempeSponsor}
     partners={destinationPartnerInventory}
     salesPreview={isAdvertiserSalesPreview}
               comingSoon={destinationMarketComingSoon}
