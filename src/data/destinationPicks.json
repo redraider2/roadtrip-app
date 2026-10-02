@@ -1,0 +1,1672 @@
+{
+  "schemaVersion": 1,
+  "preparedOn": "2026-10-02",
+  "timezone": "America/Chicago",
+  "status": "implementation_candidate_not_live",
+  "canonicalRosterSource": "redraider2/roadtrip-app/backend/game-day/teamRegistry.mjs @ 128d403d748e0797db840eba980a741c6cfc722a",
+  "researchSource": {
+    "file": "Kickoff_Miles_136_Destination_Advertising_Master.xlsx",
+    "version": 7
+  },
+  "template": [
+    "Eat & drink",
+    "Stay",
+    "Things to do",
+    "Explore / coffee / pregame",
+    "Game day",
+    "Visitor / local community resource"
+  ],
+  "counts": {
+    "cities": 8,
+    "destinations": 9,
+    "entries": 54,
+    "sourceChecked": 54,
+    "needsReview": 0
+  },
+  "partnerContext": [
+    {
+      "canonicalTeamId": "arizona-state",
+      "name": "Culinary Gangster Tempe",
+      "relationship": "paid_partner",
+      "confirmationSource": "user statement 2026-10-01",
+      "menuUrl": "https://culinarygangsterusa.com/menu/tempe",
+      "placement": "preserve existing four-panel campaign; no mutation in this package"
+    },
+    {
+      "canonicalTeamId": "texas-tech",
+      "name": "Cactus Theater",
+      "relationship": "complimentary_partner",
+      "confirmationSource": "user statement 2026-10-01",
+      "eventsUrl": "https://cactustheater.com/events/",
+      "placement": "preserve existing featured partner surfaces; no mutation in this package"
+    }
+  ],
+  "categoryFallbacks": [],
+  "destinations": [
+    {
+      "destinationId": "DEST-003",
+      "canonicalTeamId": "rice",
+      "teamName": "Rice",
+      "market": "Houston",
+      "state": "TX",
+      "conference": "American",
+      "launchPriority": 1,
+      "destinationVenueIds": [
+        "3895"
+      ],
+      "targetingStatus": "mapped_to_game_day_tracker_r6",
+      "entries": [
+        {
+          "id": "DEST-003-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Hungry's Rice Village",
+          "summary": "Dine at Hungry’s Rice Village location on Rice Boulevard; check the menu and weekend brunch information.",
+          "url": "https://hungryscafe.com/locations/rice-village/",
+          "sourceUrl": "https://hungryscafe.com/locations/rice-village/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-003/3",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://hungryscafe.com/locations/rice-village/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://hungryscafe.com/locations/rice-village/",
+            "retrievalRef": "turn5view0",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-003-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Hotel ZaZa Museum District",
+          "summary": "Consider Hotel ZaZa’s Houston Museum District property for your stay; check rooms and booking terms.",
+          "url": "https://www.hotelzaza.com/houston-museum-district",
+          "sourceUrl": "https://www.hotelzaza.com/houston-museum-district",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-003/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.hotelzaza.com/houston-museum-district"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://www.hotelzaza.com/houston-museum-district",
+            "retrievalRef": "turn15view7",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Original hotelzazahouston.com resolves to an unrelated interior-design site. Replaced with Hotel ZaZa corporate location page."
+          }
+        },
+        {
+          "id": "DEST-003-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Rice Village District",
+          "summary": "Explore the shops and dining in Rice Village near Rice University during your Houston visit.",
+          "url": "https://rice-village.com/",
+          "sourceUrl": "https://rice-village.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-003/5",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://rice-village.com/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://rice-village.com/",
+            "retrievalRef": "turn5view1",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-003-E4",
+          "slot": 4,
+          "category": "Food & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Sixty Vines Rice Village",
+          "summary": "Visit Sixty Vines at 2540 University Boulevard in Rice Village for dining and wine.",
+          "url": "https://www.sixtyvines.com/locations/rice-village",
+          "sourceUrl": "https://www.sixtyvines.com/locations/rice-village",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-003/4",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.sixtyvines.com/locations/rice-village"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://www.sixtyvines.com/locations/rice-village",
+            "retrievalRef": "turn5view2",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-003-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Rice Tailgate Owley",
+          "summary": "Use Rice’s Tailgate Owley page for pregame activities and tailgating information; confirm details for your game.",
+          "url": "https://riceowls.com/sports/2018/7/17/tailgate-owley",
+          "sourceUrl": "https://riceowls.com/sports/2018/7/17/tailgate-owley",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Rice",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://riceowls.com/sports/2018/7/17/tailgate-owley"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://riceowls.com/sports/2018/7/17/tailgate-owley",
+            "retrievalRef": "turn5view3",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-003-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Visit Houston",
+          "summary": "Find Houston dining, attractions, events and lodging through the city’s visitor website.",
+          "url": "https://www.visithoustontexas.com/",
+          "sourceUrl": "https://www.visithoustontexas.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-003",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open visitor resources",
+              "url": "https://www.visithoustontexas.com/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://www.visithoustontexas.com/",
+            "retrievalRef": "turn1view6",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        }
+      ],
+      "venueMappingSource": "Kickoff_Miles_Game_Day_Guide_Tracker_R6.xlsx / Tailgating Tracker / School and Venue ID"
+    },
+    {
+      "destinationId": "DEST-004",
+      "canonicalTeamId": "utsa",
+      "teamName": "UTSA",
+      "market": "San Antonio",
+      "state": "TX",
+      "conference": "American",
+      "launchPriority": 1,
+      "destinationVenueIds": [
+        "3604"
+      ],
+      "targetingStatus": "mapped_to_game_day_tracker_r6",
+      "entries": [
+        {
+          "id": "DEST-004-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Mi Tierra Café y Panadería",
+          "summary": "Visit Mi Tierra in Market Square for Tex-Mex and bakery treats during your San Antonio weekend.",
+          "url": "https://lafamiliacortez.com/mi-tierra/",
+          "sourceUrl": "https://lafamiliacortez.com/mi-tierra/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-004/3",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://lafamiliacortez.com/mi-tierra/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://lafamiliacortez.com/mi-tierra/",
+            "retrievalRef": "turn5view4",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-004-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Hotel Emma",
+          "summary": "Stay at Hotel Emma in San Antonio’s Pearl district; check availability for your travel dates.",
+          "url": "https://thehotelemma.com/",
+          "sourceUrl": "https://thehotelemma.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-004/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://thehotelemma.com/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://thehotelemma.com/",
+            "retrievalRef": "turn5view5",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-004-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "GO RIO Cruises",
+          "summary": "See San Antonio from the river on a GO RIO cruise; check tours, tickets and accessibility before visiting.",
+          "url": "https://www.goriocruises.com/",
+          "sourceUrl": "https://www.goriocruises.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-004/5",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.goriocruises.com/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://www.goriocruises.com/",
+            "retrievalRef": "turn16view2",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-004-E4",
+          "slot": 4,
+          "category": "Food & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "The Esquire Tavern",
+          "summary": "Consider The Esquire Tavern for riverside drinks and dining; check its menu before your visit.",
+          "url": "https://esquiretavern-sa.com/",
+          "sourceUrl": "https://esquiretavern-sa.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-004/10",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://esquiretavern-sa.com/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://esquiretavern-sa.com/",
+            "retrievalRef": "turn16view3",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-004-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "UTSA game-day information",
+          "summary": "Check UTSA’s Alamodome parking and tailgating guidance before heading to the game.",
+          "url": "https://goutsa.com/alamodome-parking-tailgating-information",
+          "sourceUrl": "https://goutsa.com/alamodome-parking-tailgating-information",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/UTSA",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://goutsa.com/alamodome-parking-tailgating-information"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://goutsa.com/alamodome-parking-tailgating-information",
+            "retrievalRef": "turn5view8",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-004-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Visit San Antonio",
+          "summary": "Plan time around the game with San Antonio’s visitor guide, attractions, restaurants and event calendar.",
+          "url": "https://www.visitsanantonio.com/",
+          "sourceUrl": "https://www.visitsanantonio.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-004",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open visitor resources",
+              "url": "https://www.visitsanantonio.com/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://www.visitsanantonio.com/",
+            "retrievalRef": "turn11view0",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        }
+      ],
+      "venueMappingSource": "Kickoff_Miles_Game_Day_Guide_Tracker_R6.xlsx / Tailgating Tracker / School and Venue ID"
+    },
+    {
+      "destinationId": "DEST-005",
+      "canonicalTeamId": "baylor",
+      "teamName": "Baylor",
+      "market": "Waco",
+      "state": "TX",
+      "conference": "Big 12",
+      "launchPriority": 1,
+      "destinationVenueIds": [
+        "4727"
+      ],
+      "targetingStatus": "mapped_to_game_day_tracker_r6",
+      "entries": [
+        {
+          "id": "DEST-005-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Magnolia",
+          "summary": "Explore Magnolia’s Waco shops and dining; check its visit page for current options.",
+          "url": "https://magnolia.com/visit",
+          "sourceUrl": "https://magnolia.com/visit",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-005/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://magnolia.com/visit"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://magnolia.com/visit",
+            "retrievalRef": "turn4view0",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Magnolia remains a mixed shopping/dining stop, not a restaurant-only listing."
+          }
+        },
+        {
+          "id": "DEST-005-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Hotel 1928",
+          "summary": "Consider Hotel 1928 on Washington Avenue in downtown Waco; check availability for your travel dates.",
+          "url": "https://www.hotel1928.com/",
+          "sourceUrl": "https://www.hotel1928.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-005/2",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.hotel1928.com/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://www.hotel1928.com/",
+            "retrievalRef": "turn5view9",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-005-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Dr Pepper Museum",
+          "summary": "Explore the Dr Pepper Museum in downtown Waco; check admission and visitor information before arriving.",
+          "url": "https://drpeppermuseum.com/",
+          "sourceUrl": "https://drpeppermuseum.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-005/5",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://drpeppermuseum.com/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://drpeppermuseum.com/",
+            "retrievalRef": "turn5view10",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-005-E4",
+          "slot": 4,
+          "category": "Food & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "George's Restaurant",
+          "summary": "Try homestyle food at George’s in Waco; check which location works for your trip.",
+          "url": "https://georgesrestaurant.com/",
+          "sourceUrl": "https://georgesrestaurant.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-005/3",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://georgesrestaurant.com/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://georgesrestaurant.com/",
+            "retrievalRef": "turn5view11",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-005-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Baylor game-day information",
+          "summary": "Find Baylor’s pregame activities around McLane Stadium; confirm the schedule for your specific home game.",
+          "url": "https://baylorbears.com/sports/2020/9/8/pre-game-activities",
+          "sourceUrl": "https://baylorbears.com/sports/2020/9/8/pre-game-activities",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Baylor",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://baylorbears.com/sports/2020/9/8/pre-game-activities"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://baylorbears.com/sports/2020/9/8/pre-game-activities",
+            "retrievalRef": "turn5view12",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-005-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Waco Welcome Center",
+          "summary": "Get local guidance, maps and attraction brochures from Waco’s official welcome center.",
+          "url": "https://destinationwaco.org/plan-your-trip/waco-tourist-information-center-gift-shop/",
+          "sourceUrl": "https://destinationwaco.org/plan-your-trip/waco-tourist-information-center-gift-shop/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-005",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open visitor resources",
+              "url": "https://destinationwaco.org/plan-your-trip/waco-tourist-information-center-gift-shop/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://destinationwaco.org/plan-your-trip/waco-tourist-information-center-gift-shop/",
+            "retrievalRef": "turn15view4",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        }
+      ],
+      "venueMappingSource": "Kickoff_Miles_Game_Day_Guide_Tracker_R6.xlsx / Tailgating Tracker / School and Venue ID"
+    },
+    {
+      "destinationId": "DEST-006",
+      "canonicalTeamId": "houston",
+      "teamName": "Houston",
+      "market": "Houston",
+      "state": "TX",
+      "conference": "Big 12",
+      "launchPriority": 1,
+      "destinationVenueIds": [
+        "4728"
+      ],
+      "targetingStatus": "mapped_to_game_day_tracker_r6",
+      "entries": [
+        {
+          "id": "DEST-006-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "POST Houston",
+          "summary": "Explore POST’s food market and rooftop park during your Houston weekend.",
+          "url": "https://www.posthtx.com/",
+          "sourceUrl": "https://www.posthtx.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-006/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.posthtx.com/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://www.posthtx.com/",
+            "retrievalRef": "turn5view13",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-006-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "The Laura Hotel",
+          "summary": "Consider The Laura Hotel at 1070 Dallas Street in downtown Houston; check availability for your trip.",
+          "url": "https://thelaurahotel.com/",
+          "sourceUrl": "https://thelaurahotel.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-006/3",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://thelaurahotel.com/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://thelaurahotel.com/",
+            "retrievalRef": "turn5view14",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-006-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Hermann Park",
+          "summary": "Add a Hermann Park visit for gardens and outdoor time; check maps, hours and activity tickets.",
+          "url": "https://hermannpark.org/",
+          "sourceUrl": "https://hermannpark.org/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Editorial replacement of Prospects/DEST-006/2",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://hermannpark.org/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://hermannpark.org/",
+            "retrievalRef": "turn16view0",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Replaced event-dependent NRG Park pick with a general visitor park outing; no claim that the attraction is the UH football venue."
+          }
+        },
+        {
+          "id": "DEST-006-E4",
+          "slot": 4,
+          "category": "Food & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Saint Arnold Brewing Company",
+          "summary": "Visit Saint Arnold’s beer garden and restaurant on Lyons Avenue; check current hours and menu.",
+          "url": "https://www.saintarnold.com/",
+          "sourceUrl": "https://www.saintarnold.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-006/5",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.saintarnold.com/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://www.saintarnold.com/",
+            "retrievalRef": "turn5view15",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-006-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Houston game-day information",
+          "summary": "Use Houston Athletics’ game-day guide for stadium policies, parking and transportation; confirm your game’s details.",
+          "url": "https://uhcougars.com/sports/2025/11/6/football-gameday-guide",
+          "sourceUrl": "https://uhcougars.com/sports/2025/11/6/football-gameday-guide",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Houston",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://uhcougars.com/sports/2025/11/6/football-gameday-guide"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://uhcougars.com/sports/2025/11/6/football-gameday-guide",
+            "retrievalRef": "turn5view16",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-006-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Visit Houston",
+          "summary": "Find Houston dining, attractions, events and lodging through the city’s visitor website.",
+          "url": "https://www.visithoustontexas.com/",
+          "sourceUrl": "https://www.visithoustontexas.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-006",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open visitor resources",
+              "url": "https://www.visithoustontexas.com/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://www.visithoustontexas.com/",
+            "retrievalRef": "turn1view6",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        }
+      ],
+      "venueMappingSource": "Kickoff_Miles_Game_Day_Guide_Tracker_R6.xlsx / Tailgating Tracker / School and Venue ID"
+    },
+    {
+      "destinationId": "DEST-008",
+      "canonicalTeamId": "texas-tech",
+      "teamName": "Texas Tech",
+      "market": "Lubbock",
+      "state": "TX",
+      "conference": "Big 12",
+      "launchPriority": 1,
+      "destinationVenueIds": [
+        "3784"
+      ],
+      "targetingStatus": "mapped_to_game_day_tracker_r6",
+      "entries": [
+        {
+          "id": "DEST-008-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Caprock Cafe",
+          "summary": "Burgers and casual dining at two Lubbock locations.",
+          "url": "https://caprockcafe.com/",
+          "sourceUrl": "https://caprockcafe.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-008/4",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://caprockcafe.com/"
+            }
+          ]
+        },
+        {
+          "id": "DEST-008-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Overton Hotel & Conference Center",
+          "summary": "Lodging near Texas Tech University.",
+          "url": "https://www.overtonhotel.com/",
+          "sourceUrl": "https://www.overtonhotel.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-008/2",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.overtonhotel.com/"
+            }
+          ]
+        },
+        {
+          "id": "DEST-008-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Buddy Holly Hall",
+          "summary": "Browse concerts and performances for your travel dates.",
+          "url": "https://buddyhollyhall.org/",
+          "sourceUrl": "https://buddyhollyhall.org/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-008/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit venue website",
+              "url": "https://buddyhollyhall.org/"
+            }
+          ]
+        },
+        {
+          "id": "DEST-008-E4",
+          "slot": 4,
+          "category": "Explore",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "American Windmill Museum",
+          "summary": "Explore historic windmills and museum exhibits in Lubbock.",
+          "url": "https://windmill.com/",
+          "sourceUrl": "https://windmill.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-008/9",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://windmill.com/"
+            }
+          ]
+        },
+        {
+          "id": "DEST-008-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Texas Tech football game-day guide",
+          "summary": "Check the university’s current stadium, parking and arrival information before leaving.",
+          "url": "https://texastech.com/sports/2026/7/15/gameday-in-raiderland",
+          "sourceUrl": "https://texastech.com/sports/2026/7/15/gameday-in-raiderland",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Texas Tech",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://texastech.com/sports/2026/7/15/gameday-in-raiderland"
+            }
+          ]
+        },
+        {
+          "id": "DEST-008-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Visit Lubbock",
+          "summary": "Explore local visitor information and ideas for your trip.",
+          "url": "https://www.visitlubbock.org/",
+          "sourceUrl": "https://www.visitlubbock.org/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-008",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore visitor information",
+              "url": "https://www.visitlubbock.org/"
+            }
+          ]
+        }
+      ],
+      "venueMappingSource": "Kickoff_Miles_Game_Day_Guide_Tracker_R6.xlsx / Tailgating Tracker / School and Venue ID"
+    },
+    {
+      "destinationId": "DEST-012",
+      "canonicalTeamId": "texas",
+      "teamName": "Texas",
+      "market": "Austin",
+      "state": "TX",
+      "conference": "SEC",
+      "launchPriority": 1,
+      "destinationVenueIds": [
+        "3910"
+      ],
+      "targetingStatus": "mapped_to_game_day_tracker_r6",
+      "entries": [
+        {
+          "id": "DEST-012-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Terry Black's Barbecue",
+          "summary": "Explore the Austin barbecue menu before your visit.",
+          "url": "https://terryblacksbbq.com/austin",
+          "sourceUrl": "https://terryblacksbbq.com/austin",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-012/5",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://terryblacksbbq.com/austin"
+            }
+          ]
+        },
+        {
+          "id": "DEST-012-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "The LINE Austin",
+          "summary": "Downtown lodging overlooking Lady Bird Lake.",
+          "url": "https://www.thelinehotel.com/austin/",
+          "sourceUrl": "https://www.thelinehotel.com/austin/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-012/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.thelinehotel.com/austin/"
+            }
+          ]
+        },
+        {
+          "id": "DEST-012-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Blanton Museum of Art",
+          "summary": "Plan a museum visit at the University of Texas at Austin.",
+          "url": "https://blantonmuseum.org/visit/",
+          "sourceUrl": "https://blantonmuseum.org/visit/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-012/3",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://blantonmuseum.org/visit/"
+            }
+          ]
+        },
+        {
+          "id": "DEST-012-E4",
+          "slot": 4,
+          "category": "Explore",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "ACL Live at The Moody Theater",
+          "summary": "Browse live performances and venue tours for your trip.",
+          "url": "https://www.acllive.com/",
+          "sourceUrl": "https://www.acllive.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-012/6",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit venue website",
+              "url": "https://www.acllive.com/"
+            }
+          ]
+        },
+        {
+          "id": "DEST-012-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Texas football fan guide",
+          "summary": "Check the university’s current stadium, parking and arrival information before leaving.",
+          "url": "https://texaslonghorns.com/sports/2026/2/10/football-fan-guide",
+          "sourceUrl": "https://texaslonghorns.com/sports/2026/2/10/football-fan-guide",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Texas",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://texaslonghorns.com/sports/2026/2/10/football-fan-guide"
+            }
+          ]
+        },
+        {
+          "id": "DEST-012-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Visit Austin",
+          "summary": "Explore local visitor information and ideas for your trip.",
+          "url": "https://www.austintexas.org/",
+          "sourceUrl": "https://www.austintexas.org/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-012",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore visitor information",
+              "url": "https://www.austintexas.org/"
+            }
+          ]
+        }
+      ],
+      "venueMappingSource": "Kickoff_Miles_Game_Day_Guide_Tracker_R6.xlsx / Tailgating Tracker / School and Venue ID"
+    },
+    {
+      "destinationId": "DEST-013",
+      "canonicalTeamId": "texas-a-and-m",
+      "teamName": "Texas A&M",
+      "market": "College Station / Bryan",
+      "state": "TX",
+      "conference": "SEC",
+      "launchPriority": 1,
+      "destinationVenueIds": [
+        "3795"
+      ],
+      "targetingStatus": "mapped_to_game_day_tracker_r6",
+      "entries": [
+        {
+          "id": "DEST-013-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Messina Hof Estate Winery",
+          "summary": "Explore Messina Hof’s Estate Winery in Bryan for a wine-focused outing; check tastings and dining options.",
+          "url": "https://messinahof.com/",
+          "sourceUrl": "https://messinahof.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-013/2",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://messinahof.com/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://messinahof.com/",
+            "retrievalRef": "turn14view9",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-013-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "The George",
+          "summary": "Consider The George in College Station for your stay; check rooms and booking terms for your travel dates.",
+          "url": "https://www.thegeorgetexas.com/",
+          "sourceUrl": "https://www.thegeorgetexas.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-013/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.thegeorgetexas.com/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://www.thegeorgetexas.com/",
+            "retrievalRef": "turn7view11",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-013-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Topgolf Bryan",
+          "summary": "Add a golf-and-dining outing at Topgolf Bryan on West Villa Maria Road; check bay reservations.",
+          "url": "https://topgolf.com/us/bryan/",
+          "sourceUrl": "https://topgolf.com/us/bryan/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Editorial replacement of Prospects/DEST-013/8",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://topgolf.com/us/bryan/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://topgolf.com/us/bryan/",
+            "retrievalRef": "turn14view10",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Stale BigShots listing replaced with the current Topgolf Bryan brand/location."
+          }
+        },
+        {
+          "id": "DEST-013-E4",
+          "slot": 4,
+          "category": "Explore",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Santa’s Wonderland — seasonal",
+          "summary": "A seasonal Christmas outing near College Station, opening in November for 2026. Check operating dates before including it.",
+          "url": "https://www.santas-wonderland.com/",
+          "sourceUrl": "https://www.santas-wonderland.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-013/9",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.santas-wonderland.com/"
+            }
+          ],
+          "seasonality": {
+            "kind": "seasonal",
+            "operatingWindowNote": "2026 season opens in November; check operator calendar for exact dates."
+          },
+          "verificationEvidence": {
+            "sourceUrl": "https://www.santas-wonderland.com/",
+            "retrievalRef": "turn13view7",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Official site states November opening for the 2026 season. Marked seasonal; must be matched to actual travel dates."
+          }
+        },
+        {
+          "id": "DEST-013-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Texas A&M Kyle Field fan guide",
+          "summary": "Find Texas A&M’s new Kyle Field fan guide for stadium maps, entry, parking and pregame information.",
+          "url": "https://12thman.com/news/2026/08/28/introducing-the-new-kyle-field-fan-guide",
+          "sourceUrl": "https://12thman.com/news/2026/08/28/introducing-the-new-kyle-field-fan-guide",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Texas A&M",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://12thman.com/news/2026/08/28/introducing-the-new-kyle-field-fan-guide"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://12thman.com/news/2026/08/28/introducing-the-new-kyle-field-fan-guide",
+            "retrievalRef": "turn14view5",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "Visitor-focused copy checked against the official source. No sponsor relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-013-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Visit College Station",
+          "summary": "Find College Station dining, attractions, lodging and events through the city’s visitor resources; Bryan has separate visitor resources.",
+          "url": "https://visit.cstx.gov/",
+          "sourceUrl": "https://visit.cstx.gov/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-013",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open visitor resources",
+              "url": "https://visit.cstx.gov/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://visit.cstx.gov/",
+            "retrievalRef": "turn15view3",
+            "scope": "Official source, basic description and destination relevance; availability and individual game details require travel-date checks.",
+            "note": "College Station visitor resource does not imply that it is the tourism authority for neighboring Bryan."
+          }
+        }
+      ],
+      "venueMappingSource": "Kickoff_Miles_Game_Day_Guide_Tracker_R6.xlsx / Tailgating Tracker / School and Venue ID"
+    },
+    {
+      "destinationId": "DEST-015",
+      "canonicalTeamId": "arizona-state",
+      "teamName": "Arizona State",
+      "market": "Tempe",
+      "state": "AZ",
+      "conference": "Big 12",
+      "launchPriority": 2,
+      "destinationVenueIds": [
+        "3947"
+      ],
+      "targetingStatus": "mapped_to_game_day_tracker_r6",
+      "entries": [
+        {
+          "id": "DEST-015-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Proof Bread Tempe",
+          "summary": "Sourdough bread and pastries on Mill Avenue.",
+          "url": "https://www.proofbread.com/",
+          "sourceUrl": "https://www.proofbread.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-015/10",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.proofbread.com/"
+            }
+          ]
+        },
+        {
+          "id": "DEST-015-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Omni Tempe Hotel at ASU",
+          "summary": "Downtown lodging near the ASU Tempe campus.",
+          "url": "https://www.omnihotels.com/hotels/tempe-asu",
+          "sourceUrl": "https://www.omnihotels.com/hotels/tempe-asu",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-015/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.omnihotels.com/hotels/tempe-asu"
+            }
+          ]
+        },
+        {
+          "id": "DEST-015-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Tempe Marketplace",
+          "summary": "Explore shopping, dining and the center’s event calendar.",
+          "url": "https://tempemarketplace.com/",
+          "sourceUrl": "https://tempemarketplace.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-015/9",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://tempemarketplace.com/"
+            }
+          ]
+        },
+        {
+          "id": "DEST-015-E4",
+          "slot": 4,
+          "category": "Explore",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Tempe Boat Cruisin’",
+          "summary": "Explore bookable cruises on Tempe Town Lake.",
+          "url": "https://www.tempeboatcruisin.com/",
+          "sourceUrl": "https://www.tempeboatcruisin.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-015/8",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.tempeboatcruisin.com/"
+            }
+          ]
+        },
+        {
+          "id": "DEST-015-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Mountain America Stadium visitor guide",
+          "summary": "Check the university’s current stadium, parking and arrival information before leaving.",
+          "url": "https://thesundevils.com/facilities-venues/mountain-america-stadium",
+          "sourceUrl": "https://thesundevils.com/facilities-venues/mountain-america-stadium",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Arizona State",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://thesundevils.com/facilities-venues/mountain-america-stadium"
+            }
+          ]
+        },
+        {
+          "id": "DEST-015-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Tempe Tourism Office",
+          "summary": "Explore local visitor information and ideas for your trip.",
+          "url": "https://www.tempetourism.com/",
+          "sourceUrl": "https://www.tempetourism.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-01",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-015",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore visitor information",
+              "url": "https://www.tempetourism.com/"
+            }
+          ]
+        }
+      ],
+      "venueMappingSource": "Kickoff_Miles_Game_Day_Guide_Tracker_R6.xlsx / Tailgating Tracker / School and Venue ID"
+    },
+    {
+      "destinationId": "DEST-037",
+      "canonicalTeamId": "south-carolina",
+      "teamName": "South Carolina",
+      "market": "Columbia",
+      "state": "SC",
+      "conference": "SEC",
+      "launchPriority": 3,
+      "destinationVenueIds": [
+        "3994"
+      ],
+      "targetingStatus": "mapped_to_game_day_tracker_r6",
+      "entries": [
+        {
+          "id": "DEST-037-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Motor Supply Co. Bistro",
+          "summary": "Dine in the Congaree Vista with a changing dinner and brunch menu. Reservations are recommended.",
+          "url": "https://motorsupplycobistro.com/",
+          "sourceUrl": "https://motorsupplycobistro.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-02",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-037/4",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://motorsupplycobistro.com/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://motorsupplycobistro.com/",
+            "retrievalRef": "turn0view0",
+            "scope": "Current official operator, university or destination organization source; basic description and destination relevance.",
+            "note": "Editorial recommendation. No advertising relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-037-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Graduate by Hilton Columbia, S.C.",
+          "summary": "Stay near the University of South Carolina campus. Check room availability and plan transportation to Williams-Brice Stadium.",
+          "url": "https://www.hilton.com/en/hotels/caegcgu-graduate-columbia-sc/",
+          "sourceUrl": "https://www.hilton.com/en/hotels/caegcgu-graduate-columbia-sc/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-02",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-037/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.hilton.com/en/hotels/caegcgu-graduate-columbia-sc/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://www.hilton.com/en/hotels/caegcgu-graduate-columbia-sc/",
+            "retrievalRef": "turn0view1",
+            "scope": "Current official operator, university or destination organization source; basic description and destination relevance.",
+            "note": "Editorial recommendation. No advertising relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-037-E3",
+          "slot": 3,
+          "category": "Shopping",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Mast General Store — Columbia",
+          "summary": "Browse outdoor gear, clothing, gifts and old-fashioned candy on downtown Main Street.",
+          "url": "https://www.mastgeneralstore.com/pages/columbia-store",
+          "sourceUrl": "https://www.mastgeneralstore.com/pages/columbia-store",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-02",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-037/9",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.mastgeneralstore.com/pages/columbia-store"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://www.mastgeneralstore.com/pages/columbia-store",
+            "retrievalRef": "turn2search16",
+            "scope": "Current official operator, university or destination organization source; basic description and destination relevance.",
+            "note": "Editorial recommendation. No advertising relationship inferred.",
+            "additionalSourceUrl": "https://www.experiencecolumbiasc.com/listing/mast-general-store/17475/"
+          }
+        },
+        {
+          "id": "DEST-037-E4",
+          "slot": 4,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Riverbanks Zoo & Garden",
+          "summary": "Add a zoo and botanical garden visit to your Columbia weekend. Check tickets and visitor information before going.",
+          "url": "https://www.riverbanks.org/plan-your-visit/visitor-information",
+          "sourceUrl": "https://www.riverbanks.org/plan-your-visit/visitor-information",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-02",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Editorial research / 2026-10-02 / Riverbanks official visitor information",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.riverbanks.org/plan-your-visit/visitor-information"
+            }
+          ],
+          "replacesDraftTitle": "Columbia Craft Brewing Company",
+          "verificationEvidence": {
+            "sourceUrl": "https://www.riverbanks.org/plan-your-visit/visitor-information",
+            "retrievalRef": "turn3view0",
+            "scope": "Current official operator, university or destination organization source; basic description and destination relevance.",
+            "note": "Editorial recommendation. No advertising relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-037-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "South Carolina football parking and arrival",
+          "summary": "Use the Gamecocks’ official parking maps, traffic information and accessible shuttle guidance to plan your stadium arrival.",
+          "url": "https://gamecocksonline.com/gameday/parking/",
+          "sourceUrl": "https://gamecocksonline.com/gameday/parking/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-02",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/South Carolina",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://gamecocksonline.com/gameday/parking/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://gamecocksonline.com/gameday/parking/",
+            "retrievalRef": "turn0view4",
+            "scope": "Current official operator, university or destination organization source; basic description and destination relevance.",
+            "note": "Editorial recommendation. No advertising relationship inferred."
+          }
+        },
+        {
+          "id": "DEST-037-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "Experience Columbia SC",
+          "summary": "Find local restaurants, places to stay, events and visitor resources for your Gamecock weekend.",
+          "url": "https://www.experiencecolumbiasc.com/",
+          "sourceUrl": "https://www.experiencecolumbiasc.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-02",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-037",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore visitor information",
+              "url": "https://www.experiencecolumbiasc.com/"
+            }
+          ],
+          "verificationEvidence": {
+            "sourceUrl": "https://www.experiencecolumbiasc.com/",
+            "retrievalRef": "turn0view5",
+            "scope": "Current official operator, university or destination organization source; basic description and destination relevance.",
+            "note": "Editorial recommendation. No advertising relationship inferred."
+          }
+        }
+      ],
+      "venueMappingSource": "Kickoff_Miles_Game_Day_Guide_Tracker_R6.xlsx / Tailgating Tracker / School and Venue ID"
+    }
+  ],
+  "lastReviewedOn": "2026-10-02",
+  "reviewProgress": {
+    "integrationStatus": "React implementation candidate; not deployed.",
+    "inheritedSourceChecks": 48,
+    "newSourceChecks": 6,
+    "partnerHandling": "Existing paid and complimentary placements preserved; editorial content never recorded as partner advertising."
+  },
+  "disclosure": "Selected by Kickoff Miles. These recommendations are independent of paid partner placements."
+}

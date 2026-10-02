@@ -12,6 +12,7 @@ import TripHqExperience from "./components/TripHqExperience.jsx";
 import DestinationArtworkPlacement from "./components/DestinationArtworkPlacement.jsx";
 import { culinaryGangsterTempe, selectDestinationArtwork } from "./lib/destinationArtworkCampaigns.js";
 import DestinationPartnerDiscovery from "./components/DestinationPartnerDiscovery.jsx";
+import DestinationPicks from "./components/DestinationPicks.jsx";
 import { isDestinationPartnerSaved } from "./lib/destinationPartners.js";
 import PartnerPlacement from "./components/PartnerPlacement.jsx";
 import DestinationPartnerRail from "./components/DestinationPartnerRail.jsx";
@@ -2200,6 +2201,7 @@ function App() {
       isSaved={destinationPartnerIsSaved}
     />
 
+    <DestinationPicks venueId={activeTrip?.venueId || destinationVenueId} />
     <div className="trip-stop-groups plan-itinerary-timeline">
       {dayByDayPlan.map((day) => (
         <div key={day.dayNumber} className="trip-stop-group plan-itinerary-day">
@@ -2336,6 +2338,7 @@ function App() {
         {hasTempeSponsor && destinationPartnerInventory.length > 0 ? (
           <DestinationPartnerRail contextLabel="Trip HQ" partners={destinationPartnerInventory} minimumPositions={0} />
         ) : null}
+        <DestinationPicks venueId={activeTrip?.venueId} />
         <div className="panel trip-workspace-panel">
           <div className="section-heading-row">
             <div>
@@ -2788,6 +2791,7 @@ function App() {
             ) : null}
           </div>
           <DestinationPartnerDiscovery venueId={destinationVenueId} placement="game_weekend" onSave={activeTrip ? saveDestinationPartner : undefined} isSaved={destinationPartnerIsSaved} />
+          <DestinationPicks venueId={activeTrip?.venueId || destinationVenueId} />
           </GameWeekendScreen>
 
           <GameDayScreen active={activeScreen === "game-day"}>
