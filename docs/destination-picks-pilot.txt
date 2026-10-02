@@ -1,0 +1,29 @@
+Kickoff Miles Picks: eight-city pilot
+Prepared October 2, 2026
+
+Scope
+Lubbock, Tempe, Houston, San Antonio, Austin, Columbia (South Carolina), College Station/Bryan and Waco. Houston has separate UH and Rice inventories: nine venue destinations and 54 entries total.
+
+Behavior
+Recommendations fill vacant existing small, large and featured advertiser positions across the destination screens. The separate white-card Picks section is removed. Each venue has six recommendations/resources; the displayed number depends on available inventory. Unknown venues receive no picks. Away and neutral-site games do not inherit the selected team's home-city content. An active trip's venue takes precedence over a separate game selection for these picks.
+
+Partner handling
+The Culinary Gangster Tempe four-placement campaign and Cactus Theater inventory are unchanged. Picks do not enter the partner advertising event store. These editorial entries do not imply payment, sponsorship or an agreement with the featured businesses. Occupied paid and complimentary partner positions retain their order and artwork. Vacant house and development-preview positions can show editorial recommendations labeled Kickoff Miles Pick.
+
+Sources and copy
+48 entries retain source checks from October 1, 2026. Six Columbia entries were checked October 2 against operator, university and official destination sources. Columbia Craft's website currently describes distribution/product-finder activity without confirming a visitor taproom, so the draft brewery outing was replaced by Riverbanks Zoo & Garden. Mast is categorized as shopping. Each entry retains source URLs and check dates in src/data/destinationPicks.json. These are basic operation/description checks, not guarantees of travel-date availability.
+
+Seasonal handling
+Santa's Wonderland stays explicitly labeled seasonal, with a November opening note and a Check seasonal dates link. It is not presented as currently open. Travelers must check the operator calendar.
+
+Venue mapping
+Source: Kickoff_Miles_Game_Day_Guide_Tracker_R6.xlsx, Tailgating Tracker, School and Venue ID columns.
+Texas Tech 3784; Arizona State 3947; Houston 4728; Rice 3895; UTSA 3604; Texas 3910; South Carolina 3994; Texas A&M 3795; Baylor 4727.
+
+Validation
+Production build passes. Content, fallback and campaign unit tests: 13 pass. Server-rendered rail checks confirm paid-first ordering, vacancy filling and suppression of the separate white layout. Focused lint checks pass.
+Full suite: 83 pass, six fail. Unchanged baseline: 78 pass, the same six fail. One failure is the game-day inventory test's missing backend xlsx dependency. Other failures are pre-existing source assertions concerning Northwestern, Cactus targeting, commercial placements, demo mode and Trip HQ controls.
+Desktop/mobile browser tests are included at tests/browser/destinationPicks.test.mjs but have not run: no browser is installed and Playwright's Chromium download returned invalid/truncated archives. Run with a working Chrome installation and the Vite server at port 5180, or set PICKS_BASE_URL and PLAYWRIGHT_CHANNEL.
+
+Publication
+Implementation candidate in a draft pull request. An isolated private test deployment uses browser-local sample trips and never calls the live backend. Review the pull request and complete browser QA before production publication. The independent HTML preview is a content review aid, not a screenshot of the live app.

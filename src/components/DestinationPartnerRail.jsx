@@ -1,6 +1,7 @@
 import PartnerPlacement from "./PartnerPlacement.jsx";
 import { DestinationPartnerCard } from "./DestinationPartnerDiscovery.jsx";
 import { getDestinationPartners } from "../lib/destinationPartners.js";
+import { getRecommendationPartners } from "../lib/destinationPicks.js";
 
 function availablePosition(index) {
   return {
@@ -28,6 +29,8 @@ export default function DestinationPartnerRail({
   placement,
   onSave,
   isSaved,
+  recommendationVenueId,
+  recommendationExcludeNames = [],
 }) {
   const realPartners = partners.filter(Boolean);
   const discoveryPartners =
@@ -35,10 +38,15 @@ export default function DestinationPartnerRail({
   const occupiedCount = discoveryPartners.length + realPartners.length;
   const positionCount = Math.max(minimumPositions, occupiedCount);
   const availableCount = Math.max(0, positionCount - occupiedCount);
+  const recommendations = getRecommendationPartners(recommendationVenueId, [
+    ...recommendationExcludeNames,
+    ...realPartners.map((p) => p.businessName || p.name),
+    ...discoveryPartners.map((p) => p.businessName || p.name),
+  ]).slice(0, availableCount);
 
-  if (hideEmpty && occupiedCount === 0) return null;
+  if (hideEmpty && occupiedCount === 0 && recommendations.length === 0) return null;
 
-  if (comingSoon) {
+  if (comingSoon && recommendations.length === 0) {
     return (
       <section className="destination-partner-marketplace is-coming-soon" aria-label="Local partners coming soon">
         <div className="destination-partner-marketplace-heading">
@@ -90,7 +98,7 @@ export default function DestinationPartnerRail({
           />
         ))}
         {Array.from({ length: availableCount }, (_, index) => {
-          const partner = availablePosition(index);
+          const partner = recommendations[index] || availablePosition(index);
           return (
             <PartnerPlacement
               compact
