@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { getDestinationPicks } from "../src/lib/destinationPicks.js";
+import { getDestinationPicks, getRecommendationPartners, recommendationFallback } from "../src/lib/destinationPicks.js";
 import { destinationPartners } from "../src/lib/destinationPartners.js";
 import { culinaryGangsterTempe } from "../src/lib/destinationArtworkCampaigns.js";
 
@@ -40,4 +40,19 @@ test("seasonal recommendation stays explicitly labeled", () => {
   const seasonal = getDestinationPicks(3795).entries.find((e) => e.seasonality);
   assert.match(seasonal.title, /seasonal/);
   assert.match(seasonal.summary, /November/);
+});
+
+test("recommendations fill house inventory and return paying partners unchanged", () => {
+  const paying = { id: "paid-hotel", businessName: "Paid Hotel" };
+  assert.equal(recommendationFallback(paying, 3947), paying);
+  assert.equal(recommendationFallback(culinaryGangsterTempe, 3947), culinaryGangsterTempe);
+  assert.equal(recommendationFallback({ isHouseAd: true }, 3947).businessName, "Proof Bread Tempe");
+  assert.equal(recommendationFallback({ isHouseAd: true }, 3947, 1).businessName, "Omni Tempe Hotel at ASU");
+});
+
+test("small recommendation positions omit the featured business and existing partners", () => {
+  const recommendations = getRecommendationPartners(3994, ["Motor Supply Co. Bistro", "Graduate by Hilton Columbia, S.C."]);
+  assert.equal(recommendations.length, 4);
+  assert.ok(recommendations.every((p) => p.isEditorial));
+  assert.ok(recommendations.every((p) => !p.isHouseAd));
 });

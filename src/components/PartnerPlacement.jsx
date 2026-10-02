@@ -19,11 +19,12 @@ export default function PartnerPlacement({
   contextLabel,
   partner,
   type = "featured",
+  size,
 }) {
   const impressionKeyRef = useRef("");
 
   useEffect(() => {
-    if (!partner?.id) return;
+    if (!partner?.id || partner.isEditorial) return;
 
     const impressionKey = `${partner.id}:${type}:${contextLabel || ""}`;
     if (impressionKeyRef.current === impressionKey) return;
@@ -39,7 +40,9 @@ export default function PartnerPlacement({
 
   if (!partner) return null;
 
-  const placementLabel = partner.isHouseAd
+  const placementLabel = partner.isEditorial
+    ? partner.editorialLabel || "Kickoff Miles Pick"
+    : partner.isHouseAd
     ? "Advertising Opportunity"
     : partner.isDemo
       ? "Founding Partner Preview"
@@ -54,6 +57,7 @@ export default function PartnerPlacement({
     .toUpperCase();
 
   const recordAction = (eventType) => {
+    if (partner.isEditorial) return;
     recordPartnerEvent({
       partner,
       eventType,
@@ -64,7 +68,8 @@ export default function PartnerPlacement({
 
   return (
     <aside
-      className={`partner-placement is-${type}${partner.isDemo ? " is-demo" : ""}${compact ? " is-compact" : ""}`}
+      className={`partner-placement is-${type}${partner.isDemo ? " is-demo" : ""}${compact ? " is-compact" : ""}${size ? ` is-${size}` : ""}`}
+      data-recommendation-id={partner.isEditorial ? partner.id : undefined}
       aria-label={`${placementLabel}: ${partner.businessName}`}
     >
       <div className="partner-placement-label-row">

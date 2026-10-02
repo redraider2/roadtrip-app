@@ -4062,6 +4062,17 @@ select.trip-input {
   padding: 0.8rem;
 }
 
+.partner-placement.is-large {
+  padding: clamp(1.1rem, 2vw, 1.8rem);
+  min-height: 150px;
+}
+
+.partner-placement.is-large h3 { font-size: 1.4rem; }
+.partner-placement[data-recommendation-id] .partner-placement-actions a:focus-visible {
+  outline: 3px solid #e4bd6c;
+  outline-offset: 3px;
+}
+
 .partner-placement.is-compact .partner-placement-label-row small,
 .partner-placement.is-compact .partner-placement-tagline,
 .partner-placement.is-compact .partner-placement-identity > div > p:last-child {

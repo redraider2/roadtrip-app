@@ -29,17 +29,17 @@ async function setup(width, venueId, market) {
 }
 
 for (const width of [1280, 390]) {
-  test(`all nine venues show six picks on desktop/mobile (${width}px)`, async () => {
+  test(`all nine venues fill existing placements on desktop/mobile (${width}px)`, async () => {
     for (const [venueId, market] of venues) {
       const { context, page, errors } = await setup(width, venueId, market);
       try {
         await page.goto(`${baseURL}/#/trip-hq`);
-        const picks = page.locator(".destination-picks");
-        await expect(picks).toHaveCount(1);
-        await expect(picks.locator(".destination-pick")).toHaveCount(6);
-        await expect(picks).toContainText(market);
-        await picks.scrollIntoViewIfNeeded();
-        for (const card of await picks.locator(".destination-pick").all()) {
+        const picks = page.locator("[data-recommendation-id]");
+        await expect(picks).toHaveCount([3947, 3784].includes(venueId) ? 5 : 6);
+        await expect(picks.first()).toContainText(market);
+        await expect(page.locator(".destination-picks")).toHaveCount(0);
+        await picks.first().scrollIntoViewIfNeeded();
+        for (const card of await picks.all()) {
           const box = await card.boundingBox();
           assert.ok(box.x >= 0 && box.x + box.width <= width + 1);
         }
@@ -51,13 +51,13 @@ for (const width of [1280, 390]) {
         if ([3947, 3784].includes(venueId)) {
           await expect(sponsor).toHaveCount(1);
           const partnerBox = await sponsor.boundingBox();
-          assert.ok(partnerBox.y < (await picks.boundingBox()).y);
+          assert.ok(partnerBox.y < (await picks.first().boundingBox()).y);
         }
         if (venueId === 3994) {
-          await expect(picks).toContainText("Riverbanks Zoo & Garden");
-          await expect(picks).not.toContainText("Columbia Craft");
+          await expect(page.getByRole("heading", {name: "Riverbanks Zoo & Garden", exact: true})).toBeVisible();
+          await expect(page.getByRole("heading", {name: "Columbia Craft Brewing Company", exact: true})).toHaveCount(0);
           await mkdir("outputs/picks", { recursive: true });
-          await picks.screenshot({ path: `outputs/picks/columbia-${width}.png` });
+          await page.locator(".destination-partner-marketplace").screenshot({ path: `outputs/picks/columbia-${width}.png` });
         }
         assert.deepEqual(errors, []);
       } finally { await context.close(); }
@@ -71,7 +71,7 @@ test("picks appear on itinerary/weekend screens and stay hidden for unsupported 
     try {
       for (const screen of ["plan-stay-itinerary", "game-weekend"]) {
         await page.goto(`${baseURL}/#/${screen}`);
-        await expect(page.locator(".destination-picks")).toHaveCount(venueId === 3947 ? 1 : 0);
+        await expect(page.locator("[data-recommendation-id]")).toHaveCount(venueId === 3947 ? (screen === "game-weekend" ? 5 : 6) : 0);
       }
     } finally { await context.close(); }
   }

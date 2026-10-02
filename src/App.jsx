@@ -12,8 +12,8 @@ import TripHqExperience from "./components/TripHqExperience.jsx";
 import DestinationArtworkPlacement from "./components/DestinationArtworkPlacement.jsx";
 import { culinaryGangsterTempe, selectDestinationArtwork } from "./lib/destinationArtworkCampaigns.js";
 import DestinationPartnerDiscovery from "./components/DestinationPartnerDiscovery.jsx";
-import DestinationPicks from "./components/DestinationPicks.jsx";
-import { isDestinationPartnerSaved } from "./lib/destinationPartners.js";
+import { getDestinationPicks, recommendationFallback } from "./lib/destinationPicks.js";
+import { getDestinationPartners, isDestinationPartnerSaved } from "./lib/destinationPartners.js";
 import PartnerPlacement from "./components/PartnerPlacement.jsx";
 import DestinationPartnerRail from "./components/DestinationPartnerRail.jsx";
 import PlanWorkspace from "./components/PlanWorkspace.jsx";
@@ -59,6 +59,7 @@ const PLAN_SCREEN_IDS = [
 ];
 
 const DEVELOPMENT_PARTNER_PREVIEW = {
+  isDevelopmentPreview: true,
   businessName: "Sample Road Trip Partner",
   locationText: "Development-only placement preview",
   description:
@@ -1555,8 +1556,9 @@ function App() {
   const isAdvertiserSalesPreview = Boolean(advertiserDemoPartner);
   const isFeaturedAdvertiserDemo =
     isAdvertiserSalesPreview && advertiserDemoPackage === "featured";
-  const routePartner = KICKOFF_MILES_HOUSE_AD;
-  const workspacePartner =
+  const recommendationVenueId = activeTrip?.venueId || destinationVenueId;
+  const routePartner = recommendationFallback(KICKOFF_MILES_HOUSE_AD, recommendationVenueId, 1);
+  const existingWorkspacePartner =
     isFeaturedAdvertiserDemo
       ? advertiserDemoPartner
       : isAdvertiserSalesPreview
@@ -1566,6 +1568,9 @@ function App() {
           : import.meta.env.DEV
             ? DEVELOPMENT_PARTNER_PREVIEW
             : KICKOFF_MILES_HOUSE_AD;
+  const workspacePartner = recommendationFallback(existingWorkspacePartner, recommendationVenueId, activeScreen === "plan-stay-itinerary" ? 1 : 0);
+  const hasFeaturedDiscovery = activeScreen === "trip-hq" && getDestinationPartners(recommendationVenueId, "trip_hq").length > 0;
+  const recommendationExcludeNames = hasFeaturedDiscovery || hasTempeSponsor ? [] : [(["plan-route-schedule", "plan-along-the-way"].includes(activeScreen) ? routePartner : workspacePartner)?.businessName];
   const destinationPartnerInventory = advertiserDemoPartner
     ? [advertiserDemoPartner]
     : destinationPartners.filter((partner) => !isRetiredPartner(partner));
@@ -1917,9 +1922,10 @@ function App() {
             </div>
             <PartnerPlacement
               contextLabel="Road Trip Partner"
+              size="large"
               partner={routePartner}
             />
-            <DestinationPartnerRail
+            <DestinationPartnerRail recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames}
               contextLabel="Route & Schedule"
               partners={destinationPartnerInventory}
               salesPreview={isAdvertiserSalesPreview}
@@ -1938,6 +1944,7 @@ function App() {
             <DestinationArtworkPlacement campaign={culinaryGangsterTempe} venueId={campaignVenueId} placement="along_the_way" fallback={
 <PartnerPlacement
               contextLabel="Along the Way"
+              size="large"
               partner={routePartner}
             />
 } />
@@ -2190,7 +2197,7 @@ function App() {
       contextLabel="Stay & Itinerary"
       partner={workspacePartner}
     />
-    <DestinationPartnerRail
+    <DestinationPartnerRail recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames}
       contextLabel="Stay & Itinerary"
       partners={destinationPartnerInventory}
       salesPreview={isAdvertiserSalesPreview}
@@ -2201,7 +2208,6 @@ function App() {
       isSaved={destinationPartnerIsSaved}
     />
 
-    <DestinationPicks venueId={activeTrip?.venueId || destinationVenueId} />
     <div className="trip-stop-groups plan-itinerary-timeline">
       {dayByDayPlan.map((day) => (
         <div key={day.dayNumber} className="trip-stop-group plan-itinerary-day">
@@ -2328,17 +2334,16 @@ function App() {
           isSaved={destinationPartnerIsSaved}
         />
         <DestinationArtworkPlacement campaign={culinaryGangsterTempe} venueId={campaignVenueId} placement="trip_hq" fallback={
-        <DestinationPartnerRail
+        <>{!hasFeaturedDiscovery ? <PartnerPlacement contextLabel="Trip HQ" partner={workspacePartner} /> : null}<DestinationPartnerRail recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames}
           contextLabel="Trip HQ"
           partners={destinationPartnerInventory}
           salesPreview={isAdvertiserSalesPreview}
               comingSoon={destinationMarketComingSoon}
-/>
+/></>
         } />
-        {hasTempeSponsor && destinationPartnerInventory.length > 0 ? (
-          <DestinationPartnerRail contextLabel="Trip HQ" partners={destinationPartnerInventory} minimumPositions={0} />
+        {hasTempeSponsor && (destinationPartnerInventory.length > 0 || getDestinationPicks(recommendationVenueId)) ? (
+          <DestinationPartnerRail recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames} contextLabel="Trip HQ" partners={destinationPartnerInventory} minimumPositions={5} />
         ) : null}
-        <DestinationPicks venueId={activeTrip?.venueId} />
         <div className="panel trip-workspace-panel">
           <div className="section-heading-row">
             <div>
@@ -2791,8 +2796,7 @@ function App() {
             ) : null}
           </div>
           <DestinationPartnerDiscovery venueId={destinationVenueId} placement="game_weekend" onSave={activeTrip ? saveDestinationPartner : undefined} isSaved={destinationPartnerIsSaved} />
-          <DestinationPicks venueId={activeTrip?.venueId || destinationVenueId} />
-          </GameWeekendScreen>
+                </GameWeekendScreen>
 
           <GameDayScreen active={activeScreen === "game-day"}>
           <div className="panel destination-panel">
@@ -2823,7 +2827,7 @@ displayDestination ||
                 type="destination"
               />
 } />
-              <DestinationPartnerRail
+              <DestinationPartnerRail recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames}
                 contextLabel="Game Day"
                 hideEmpty={hasTempeSponsor}
                 partners={destinationPartnerInventory}
@@ -3055,7 +3059,7 @@ displayDestination ||
             ) : (
               <>
   {!hasTempeSponsor ? <PartnerPlacement contextLabel="Game Weekend" partner={workspacePartner} /> : null}
-  <DestinationPartnerRail
+  <DestinationPartnerRail recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames}
     contextLabel="Game Weekend"
                 hideEmpty={hasTempeSponsor}
     partners={destinationPartnerInventory}
