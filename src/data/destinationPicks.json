@@ -1755,40 +1755,39 @@
           "category": "Things to do",
           "contentKind": "editorial",
           "displayLabel": "Kickoff Miles Pick",
-          "title": "Perfect Games",
-          "summary": "Add bowling, laser tag or arcade games at Perfect Games to your Ames weekend. Check current availability before visiting.",
-          "url": "https://discoverames.com/business-listing/perfect-games/",
-          "sourceUrl": "https://discoverames.com/business-listing/perfect-games/",
+          "title": "Reiman Gardens — non-game-day visit",
+          "summary": "Explore Reiman Gardens and its Butterfly Wing on a non-game day in Ames. It is closed on Iowa State home football game days in 2026; check current hours and closures before visiting.",
+          "url": "https://reimangardens.com/admission-and-hours",
+          "sourceUrl": "https://reimangardens.com/admission-and-hours",
           "verificationStatus": "source_checked",
           "sourceCheckedOn": "2026-10-05",
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
-          "sourceRecord": "Prospects/DEST-019/10",
+          "sourceRecord": "Official operator review/DEST-019/Reiman Gardens/2026-10-05",
           "reviewRequired": [
             "current placement/agreement reconciliation",
             "canonical runtime venue targeting verification",
-            "final publication review",
-            "recheck operator site or confirm current operation directly before publication"
+            "final publication review"
           ],
           "actions": [
             {
-              "label": "View official visitor listing",
-              "url": "https://discoverames.com/business-listing/perfect-games/"
+              "label": "Check hours and closures",
+              "url": "https://reimangardens.com/admission-and-hours"
             }
           ],
-          "priorSourceUrl": "https://www.perfectgamesinc.com/PG/index.php/en/contact-us-directions/contact-us",
-          "verificationEvidence": "Discover Ames official visitor listing confirms activities and1320 DickinsonAve address. Operator site repeatedly timed out; official tourism fallback supports narrow copy.",
+          "verificationEvidence": "Official operator admission-and-hours page confirms Gardens, Butterfly Wing, Ames address and explicit 2026 home-football-game closures. Narrow non-game-day copy avoids prices and fixed hours.",
           "relationship": "editorial selection or public resource; no partner participation established",
           "provenance": {
-            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
-            "masterSnapshotDate": "2026-09-25",
-            "sourceRecord": "Prospects/DEST-019/10",
-            "historicalPipelineStatus": "Research complete; recipient verification",
-            "masterBusiness": "Perfect Games"
+            "sourceRecord": "Official operator review/DEST-019/Reiman Gardens/2026-10-05",
+            "sourceType": "official_operator",
+            "selectedOn": "2026-10-05",
+            "replacementFor": "Perfect Games",
+            "replacementReason": "Perfect Games operator/current-operation hold remains unresolved; retained as audited alternate.",
+            "advertisingMasterReconciliation": "New editorial selection, not asserted to be a prospect or contracted partner in the September 25 master."
           },
-          "sourceType": "official_tourism_listing",
-          "operatorUrl": "https://www.perfectgamesinc.com/PG/",
-          "operatorLinkStatus": "repeated_fetch_timeouts",
+          "sourceType": "official_operator",
+          "operatorUrl": "https://reimangardens.com/admission-and-hours",
+          "operatorLinkStatus": "fetched_successfully_2026-10-05",
           "reviewedPublicationStatus": "draft"
         },
         {
@@ -1922,7 +1921,52 @@
           "3772"
         ],
         "reviewScope": "Public game API home venue ID match; not browser placement QA"
-      }
+      },
+      "auditedAlternates": [
+        {
+          "id": "DEST-019-ALT-PerfectGames",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Perfect Games",
+          "summary": "Add bowling, laser tag or arcade games at Perfect Games to your Ames weekend. Check current availability before visiting.",
+          "url": "https://discoverames.com/business-listing/perfect-games/",
+          "sourceUrl": "https://discoverames.com/business-listing/perfect-games/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "held_alternate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-019/10",
+          "reviewRequired": [
+            "current placement/agreement reconciliation",
+            "canonical runtime venue targeting verification",
+            "final publication review",
+            "recheck operator site or confirm current operation directly before publication"
+          ],
+          "actions": [
+            {
+              "label": "View official visitor listing",
+              "url": "https://discoverames.com/business-listing/perfect-games/"
+            }
+          ],
+          "priorSourceUrl": "https://www.perfectgamesinc.com/PG/index.php/en/contact-us-directions/contact-us",
+          "verificationEvidence": "Discover Ames official visitor listing confirms activities and1320 DickinsonAve address. Operator site repeatedly timed out; official tourism fallback supports narrow copy.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-019/10",
+            "historicalPipelineStatus": "Research complete; recipient verification",
+            "masterBusiness": "Perfect Games"
+          },
+          "sourceType": "official_tourism_listing",
+          "operatorUrl": "https://www.perfectgamesinc.com/PG/",
+          "operatorLinkStatus": "repeated_fetch_timeouts",
+          "priorEntryId": "DEST-019-E3",
+          "alternateReason": "Replaced in core six by operator-verified Reiman Gardens; operator/current-operation check remains unresolved."
+        }
+      ]
     },
     {
       "destinationId": "DEST-020",
