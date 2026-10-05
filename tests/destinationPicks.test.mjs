@@ -17,7 +17,7 @@ test("all selected destination venues have six source-checked recommendations", 
 });
 
 test("unknown and neutral-site venues do not receive a team's home-city picks", () => {
-  for (const venue of [null, undefined, "", "9999", 3636]) assert.equal(getDestinationPicks(venue), null);
+  for (const venue of [null, undefined, "", "9999", 3634]) assert.equal(getDestinationPicks(venue), null);
   assert.equal(getDestinationPicks(" 3784 ").teamName, "Texas Tech");
 });
 
@@ -55,4 +55,50 @@ test("small recommendation positions omit the featured business and existing par
   assert.equal(recommendations.length, 4);
   assert.ok(recommendations.every((p) => p.isEditorial));
   assert.ok(recommendations.every((p) => !p.isHouseAd));
+});
+
+const reviewedVenues = [
+  [3772, "Iowa State"], [3833, "Kansas"], [3636, "Kansas State"],
+  [3646, "Oklahoma State"], [3652, "UCF"], [587, "Utah"], [3842, "West Virginia"],
+];
+
+test("seven reviewed destinations resolve by exact venue with six usable source links", () => {
+  const entryIds = new Set();
+  for (const [venue, team] of reviewedVenues) {
+    const destination = getDestinationPicks(venue);
+    assert.equal(destination.teamName, team);
+    assert.equal(getDestinationPicks(` ${venue} `).destinationId, destination.destinationId);
+    assert.equal(getDestinationPicks(`${venue}-unknown`), null);
+    assert.equal(destination.entries.length, 6);
+    for (const entry of destination.entries) {
+      assert.ok(!entryIds.has(entry.id));
+      entryIds.add(entry.id);
+      assert.equal(entry.sourceCheckedOn, "2026-10-05");
+      assert.equal(entry.publicationStatus, "implementation_candidate");
+      assert.equal(new URL(entry.url).protocol, "https:");
+      assert.equal(new URL(entry.sourceUrl).protocol, "https:");
+      assert.ok(entry.actions.length > 0);
+      for (const action of entry.actions) assert.equal(new URL(action.url).protocol, "https:");
+    }
+    assert.equal(getRecommendationPartners(venue).length, 6);
+    const title = destination.entries[0].title;
+    assert.equal(getRecommendationPartners(venue, [` ${title.toUpperCase()} `]).length, 5);
+  }
+  assert.equal(entryIds.size, 42);
+});
+
+test("new-city fallback preserves paid and complimentary partners in every slot", () => {
+  for (const [venue] of reviewedVenues) {
+    for (const relationship of ["paid_partner", "complimentary_partner"]) {
+      const partner = { id: relationship, relationship, businessName: "Existing partner", destinationVenueIds: [String(venue)] };
+      for (let slot = 0; slot < 6; slot++) assert.equal(recommendationFallback(partner, venue, slot), partner);
+    }
+    for (let slot = 0; slot < 6; slot++) {
+      const result = recommendationFallback({ isHouseAd: true }, venue, slot);
+      assert.equal(result.isEditorial, true);
+      assert.equal(result.businessName, getDestinationPicks(venue).entries[slot].title);
+    }
+  }
+  const empty = { isHouseAd: true };
+  assert.equal(recommendationFallback(empty, "unknown"), empty);
 });
