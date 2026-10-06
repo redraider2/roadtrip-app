@@ -62,14 +62,15 @@ const reviewedVenues = [
   [3646, "Oklahoma State"], [3652, "UCF"], [587, "Utah"], [3842, "West Virginia"],
 ];
 
-test("seven reviewed destinations resolve by exact venue with six usable source links", () => {
+test("seven reviewed destinations resolve by exact venue with only publication-eligible source links", () => {
   const entryIds = new Set();
   for (const [venue, team] of reviewedVenues) {
     const destination = getDestinationPicks(venue);
     assert.equal(destination.teamName, team);
     assert.equal(getDestinationPicks(` ${venue} `).destinationId, destination.destinationId);
     assert.equal(getDestinationPicks(`${venue}-unknown`), null);
-    assert.equal(destination.entries.length, 6);
+    const activeCount = venue === 3842 ? 5 : 6;
+    assert.equal(destination.entries.length, activeCount);
     for (const entry of destination.entries) {
       assert.ok(!entryIds.has(entry.id));
       entryIds.add(entry.id);
@@ -80,11 +81,22 @@ test("seven reviewed destinations resolve by exact venue with six usable source 
       assert.ok(entry.actions.length > 0);
       for (const action of entry.actions) assert.equal(new URL(action.url).protocol, "https:");
     }
-    assert.equal(getRecommendationPartners(venue).length, 6);
+    assert.equal(getRecommendationPartners(venue).length, activeCount);
     const title = destination.entries[0].title;
-    assert.equal(getRecommendationPartners(venue, [` ${title.toUpperCase()} `]).length, 5);
+    assert.equal(getRecommendationPartners(venue, [` ${title.toUpperCase()} `]).length, activeCount - 1);
   }
-  assert.equal(entryIds.size, 42);
+  assert.equal(entryIds.size, 41);
+});
+
+test("unverified seasonal excursion stays hidden and Wildwood warns about off-season", () => {
+  assert.ok(getDestinationPicks(3842).entries.every((entry) => entry.id !== "DEST-025-E3"));
+  assert.ok(getRecommendationPartners(3842).every((entry) => !entry.businessName.includes("Hovatter")));
+  const wildwood = getDestinationPicks(3636).entries.find((entry) => entry.id === "DEST-021-E3");
+  assert.match(wildwood.title, /seasonal/);
+  assert.match(wildwood.summary, /off-season/);
+  assert.equal(getRecommendationPartners(3636).find((entry) => entry.id === wildwood.id).websiteLabel, "Check seasonal dates");
+  const vacant = { isHouseAd: true };
+  assert.equal(recommendationFallback(vacant, 3842, 5), vacant);
 });
 
 test("new-city fallback preserves paid and complimentary partners in every slot", () => {
@@ -93,7 +105,7 @@ test("new-city fallback preserves paid and complimentary partners in every slot"
       const partner = { id: relationship, relationship, businessName: "Existing partner", destinationVenueIds: [String(venue)] };
       for (let slot = 0; slot < 6; slot++) assert.equal(recommendationFallback(partner, venue, slot), partner);
     }
-    for (let slot = 0; slot < 6; slot++) {
+    for (let slot = 0; slot < getDestinationPicks(venue).entries.length; slot++) {
       const result = recommendationFallback({ isHouseAd: true }, venue, slot);
       assert.equal(result.isEditorial, true);
       assert.equal(result.businessName, getDestinationPicks(venue).entries[slot].title);

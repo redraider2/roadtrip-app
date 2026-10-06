@@ -21,7 +21,8 @@
     "destinations": 16,
     "entries": 96,
     "sourceChecked": 96,
-    "needsReview": 0
+    "needsReview": 1,
+    "displayEligibleEntries": 95
   },
   "partnerContext": [
     {
@@ -1688,11 +1689,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-019/4",
-          "reviewRequired": [
-            "current placement/agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit website",
@@ -1726,11 +1723,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-019/1",
-          "reviewRequired": [
-            "current placement/agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit hotel website",
@@ -1764,11 +1757,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Official operator review/DEST-019/Reiman Gardens/2026-10-05",
-          "reviewRequired": [
-            "current placement/agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Check hours and closures",
@@ -1805,11 +1794,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-019/7",
-          "reviewRequired": [
-            "current placement/agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit website",
@@ -1845,9 +1830,6 @@
           "imageUrl": null,
           "sourceRecord": "backend/tailgating_ready_for_qa.json/Iowa State",
           "reviewRequired": [
-            "current placement/agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review",
             "refresh current-game logistics"
           ],
           "actions": [
@@ -1881,11 +1863,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Community_Partners/DEST-019",
-          "reviewRequired": [
-            "current placement/agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Explore visitor information",
@@ -1996,11 +1974,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-020/3",
-          "reviewRequired": [
-            "current placement/agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit website",
@@ -2034,11 +2008,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-020/1",
-          "reviewRequired": [
-            "current placement/agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit hotel website",
@@ -2072,11 +2042,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-020/8",
-          "reviewRequired": [
-            "current placement/agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit website",
@@ -2110,11 +2076,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-020/6",
-          "reviewRequired": [
-            "current placement/agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit website",
@@ -2150,9 +2112,6 @@
           "imageUrl": null,
           "sourceRecord": "backend/tailgating_ready_for_qa.json/Kansas",
           "reviewRequired": [
-            "current placement/agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review",
             "refresh current-game logistics"
           ],
           "actions": [
@@ -2191,11 +2150,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Community_Partners/DEST-020",
-          "reviewRequired": [
-            "current placement/agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Explore visitor information",
@@ -2261,11 +2216,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-021/4",
-          "reviewRequired": [
-            "current placement/agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit website",
@@ -2299,11 +2250,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-021/1",
-          "reviewRequired": [
-            "current placement/agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit hotel website",
@@ -2328,8 +2275,8 @@
           "category": "Things to do",
           "contentKind": "editorial",
           "displayLabel": "Kickoff Miles Pick",
-          "title": "Wildwood Adventure Park",
-          "summary": "Consider a reserved zipline outing at Wildwood Adventure Park. Check participant requirements, conditions and availability before booking.",
+          "title": "Wildwood Adventure Park — seasonal",
+          "summary": "Wildwood reported entering its off-season in September 2026. Confirm operating dates and reservation availability before planning a zipline outing.",
           "url": "https://www.mhkadventures.com/",
           "sourceUrl": "https://www.mhkadventures.com/",
           "verificationStatus": "source_checked",
@@ -2337,11 +2284,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-021/8",
-          "reviewRequired": [
-            "current placement/agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit website",
@@ -2358,7 +2301,8 @@
             "historicalPipelineStatus": "research complete",
             "masterBusiness": "Wildwood Adventure Park"
           },
-          "reviewedPublicationStatus": "draft"
+          "reviewedPublicationStatus": "draft",
+          "seasonality": "Operator reported entering off-season on 2026-09-27; confirm intended travel-date availability."
         },
         {
           "id": "DEST-021-E4",
@@ -2375,11 +2319,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-021/9",
-          "reviewRequired": [
-            "current placement/agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit website",
@@ -2415,9 +2355,6 @@
           "imageUrl": null,
           "sourceRecord": "backend/tailgating_ready_for_qa.json/Kansas State",
           "reviewRequired": [
-            "current placement/agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review",
             "refresh current-game logistics"
           ],
           "actions": [
@@ -2451,11 +2388,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Community_Partners/DEST-021",
-          "reviewRequired": [
-            "current placement/agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Explore visitor information",
@@ -2521,11 +2454,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-022/4",
-          "reviewRequired": [
-            "existing agreement/category conflict before placement",
-            "runtime destination targeting",
-            "publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit website",
@@ -2559,11 +2488,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-022/1",
-          "reviewRequired": [
-            "existing agreement/category conflict before placement",
-            "runtime destination targeting",
-            "publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit hotel website",
@@ -2594,11 +2519,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-022/9",
-          "reviewRequired": [
-            "existing agreement/category conflict before placement",
-            "runtime destination targeting",
-            "publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit website",
@@ -2629,11 +2550,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-022/6",
-          "reviewRequired": [
-            "existing agreement/category conflict before placement",
-            "runtime destination targeting",
-            "publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit website",
@@ -2665,10 +2582,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "backend/tailgating_ready_for_qa.json/Oklahoma State",
-          "reviewRequired": [
-            "runtime destination targeting",
-            "publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Open game-day guide",
@@ -2703,10 +2617,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Community_Partners/DEST-022",
-          "reviewRequired": [
-            "runtime destination targeting",
-            "publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Explore local information",
@@ -2769,11 +2680,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-023/4",
-          "reviewRequired": [
-            "existing agreement/category conflict before placement",
-            "runtime destination targeting",
-            "publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit website",
@@ -2804,11 +2711,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-023/1",
-          "reviewRequired": [
-            "existing agreement/category conflict before placement",
-            "runtime destination targeting",
-            "publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit hotel website",
@@ -2839,11 +2742,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-023/8",
-          "reviewRequired": [
-            "existing agreement/category conflict before placement",
-            "runtime destination targeting",
-            "publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit website",
@@ -2874,11 +2773,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-023/5",
-          "reviewRequired": [
-            "existing agreement/category conflict before placement",
-            "runtime destination targeting",
-            "publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit website",
@@ -2910,10 +2805,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "backend/tailgating_ready_for_qa.json/UCF",
-          "reviewRequired": [
-            "runtime destination targeting",
-            "publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Open game-day guide",
@@ -2951,10 +2843,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Community_Partners/DEST-023",
-          "reviewRequired": [
-            "runtime destination targeting",
-            "publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Explore local information",
@@ -3017,11 +2906,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-024/5",
-          "reviewRequired": [
-            "current paid/complimentary placement and agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit website",
@@ -3055,11 +2940,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-024/1",
-          "reviewRequired": [
-            "current paid/complimentary placement and agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit hotel website",
@@ -3092,11 +2973,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-024/9",
-          "reviewRequired": [
-            "current paid/complimentary placement and agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit website",
@@ -3129,11 +3006,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-024/8",
-          "reviewRequired": [
-            "current paid/complimentary placement and agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit website",
@@ -3168,9 +3041,6 @@
           "imageUrl": null,
           "sourceRecord": "backend/tailgating_ready_for_qa.json/Utah",
           "reviewRequired": [
-            "current paid/complimentary placement and agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review",
             "refresh game-specific notices"
           ],
           "actions": [
@@ -3210,11 +3080,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Community_Partners/DEST-024",
-          "reviewRequired": [
-            "current paid/complimentary placement and agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Explore visitor information",
@@ -3279,11 +3145,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-025/4",
-          "reviewRequired": [
-            "current paid/complimentary placement and agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit website",
@@ -3316,11 +3178,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-025/1",
-          "reviewRequired": [
-            "current paid/complimentary placement and agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit hotel website",
@@ -3344,19 +3202,16 @@
           "category": "Things to do",
           "contentKind": "editorial",
           "displayLabel": "Kickoff Miles Pick",
-          "title": "Hovatter’s Wildlife Zoo — Kingwood excursion",
+          "title": "Hovatter’s Wildlife Zoo — seasonal Kingwood excursion",
           "summary": "Consider a separate excursion to Hovatter’s Wildlife Zoo in Kingwood. It operates seasonally; confirm the opening date and weather-dependent late-season hours before driving out.",
           "url": "https://www.westvirginiazoo.com/",
           "sourceUrl": "https://www.westvirginiazoo.com/hours-and-prices/",
           "verificationStatus": "source_checked",
           "sourceCheckedOn": "2026-10-05",
-          "publicationStatus": "implementation_candidate",
+          "publicationStatus": "draft",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-025/10",
           "reviewRequired": [
-            "current paid/complimentary placement and agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review",
             "confirm seasonal opening for intended travel date"
           ],
           "actions": [
@@ -3374,7 +3229,8 @@
             "sourceRecord": "Prospects/DEST-025/10",
             "historicalPipelineStatus": "research complete; seasonal/market review"
           },
-          "reviewedPublicationStatus": "draft"
+          "reviewedPublicationStatus": "draft",
+          "seasonality": "April–October season; late-season operation depends on weather. Intended trip-date opening remains unverified."
         },
         {
           "id": "DEST-025-E4",
@@ -3391,11 +3247,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Prospects/DEST-025/5",
-          "reviewRequired": [
-            "current paid/complimentary placement and agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Visit website",
@@ -3430,9 +3282,6 @@
           "imageUrl": null,
           "sourceRecord": "backend/tailgating_ready_for_qa.json/West Virginia",
           "reviewRequired": [
-            "current paid/complimentary placement and agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review",
             "refresh game-specific notices"
           ],
           "actions": [
@@ -3468,11 +3317,7 @@
           "publicationStatus": "implementation_candidate",
           "imageUrl": null,
           "sourceRecord": "Community_Partners/DEST-025",
-          "reviewRequired": [
-            "current paid/complimentary placement and agreement reconciliation",
-            "canonical runtime venue targeting verification",
-            "final publication review"
-          ],
+          "reviewRequired": [],
           "actions": [
             {
               "label": "Explore visitor information",
@@ -3510,7 +3355,7 @@
       }
     }
   ],
-  "lastReviewedOn": "2026-10-05",
+  "lastReviewedOn": "2026-10-06",
   "reviewProgress": {
     "integrationStatus": "React implementation candidate; not deployed.",
     "inheritedSourceChecks": 48,
@@ -3528,7 +3373,32 @@
       "DEST-024",
       "DEST-025"
     ],
-    "status": "draft_pr_not_live",
-    "note": "42 source-checked entries proposed for vacant positions. Review gates and historical provenance preserved; no outreach or partner status changes."
+    "status": "approved_for_merge_with_one_held_entry",
+    "note": "41 new entries approved for editorial publication; Hovatter’s retained as a held draft. No partner agreements or exclusivity in the seven markets per John Wayne Lee on 2026-10-06. Historical source provenance and original 54 entries preserved.",
+    "publicationReview": {
+      "reviewedOn": "2026-10-06",
+      "agreementConfirmationBy": "John Wayne Lee",
+      "markets": [
+        "Ames",
+        "Lawrence",
+        "Manhattan",
+        "Stillwater",
+        "Orlando/UCF",
+        "Salt Lake City",
+        "Morgantown"
+      ],
+      "agreementDisposition": "No paid or complimentary commitments, reserved placements or category exclusivity.",
+      "approvedNewEntries": 41,
+      "heldEntryIds": [
+        "DEST-025-E3"
+      ],
+      "runtimeTargetingEvidence": "October 5 public game API venue matches and fixture-backed desktop/mobile placement QA; production verification required after merge.",
+      "categoryDisposition": "Approved Shopping, Shopping & dining and Local community as intentional category variations.",
+      "authorization": "John Wayne Lee authorized limited release changes, merge and deployment on 2026-10-06.",
+      "seasonalDispositions": {
+        "DEST-021-E3": "Wildwood 2026-09-27 email reports entering off-season and declining advertising participation for now. Seasonal copy and CTA approved; no partnership established.",
+        "DEST-025-E3": "Held as draft until intended travel-date opening is confirmed; excluded from runtime picks."
+      }
+    }
   }
 }

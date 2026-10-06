@@ -41,7 +41,12 @@ for (const width of [1280, 390]) {
       try {
         await page.goto(`${baseURL}/#/trip-hq`);
         const picks = page.locator("[data-recommendation-id]");
-        await expect(picks).toHaveCount([3947, 3784].includes(venueId) ? 5 : 6);
+        await expect(picks).toHaveCount([3947, 3784, 3842].includes(venueId) ? 5 : 6);
+        await expect(picks.filter({ hasText: "Hovatter" })).toHaveCount(0);
+        if (venueId === 3636) {
+          await expect(picks.filter({ hasText: "Wildwood Adventure Park — seasonal" })).toContainText("off-season");
+          await expect(picks.filter({ hasText: "Wildwood Adventure Park — seasonal" }).getByRole("link")).toHaveText("Check seasonal dates");
+        }
         await expect(picks.first()).toContainText(market);
         if (reviewedFirstPicks.has(venueId)) {
           await expect(picks.first()).toContainText(reviewedFirstPicks.get(venueId));
