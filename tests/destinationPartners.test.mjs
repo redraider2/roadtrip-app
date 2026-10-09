@@ -9,7 +9,8 @@ test('Cactus is restricted to Texas Tech destination and the three approved plac
     for (const venue of [null, '', 9999]) assert.deepEqual(getDestinationPartners(venue, placement), []);
   }
   assert.deepEqual(getDestinationPartners(3784, 'game_day'), []);
-  assert.equal(partner.placements.trip_hq.creative, 'small');
+  // Cactus moved to the Trip HQ featured slot in commit 0706128.
+  assert.equal(partner.placements.trip_hq.creative, 'featured');
   assert.equal(partner.placements.stay_itinerary.creative, 'small');
   assert.equal(partner.placements.game_weekend.creative, 'featured');
 });
