@@ -7,6 +7,12 @@ const baseURL = process.env.PICKS_BASE_URL || "http://127.0.0.1:5180";
 const browser = await chromium.launch({ channel: process.env.PLAYWRIGHT_CHANNEL || "chrome", headless: true });
 test.after(() => browser.close());
 const venues = [[3784, "Lubbock"], [3947, "Tempe"], [4728, "Houston"], [3895, "Houston"], [3604, "San Antonio"], [3910, "Austin"], [3994, "Columbia"], [3795, "College Station / Bryan"], [4727, "Waco"]];
+venues.push([3772, "Ames"], [3833, "Lawrence"], [3636, "Manhattan"], [3646, "Stillwater"], [3652, "Orlando"], [587, "Salt Lake City"], [3842, "Morgantown"]);
+const reviewedFirstPicks = new Map([
+  [3772, "Hickory Park BBQ"], [3833, "Free State Brewing Company"],
+  [3636, "Tallgrass Tap House"], [3646, "Eskimo Joe's"], [3652, "Lazy Moon Pizza - UCF"],
+  [587, "Red Iguana — original North Temple location"], [3842, "Kegler's Sports Bar"],
+]);
 
 async function setup(width, venueId, market) {
   const context = await browser.newContext({ viewport: { width, height: 900 } });
@@ -29,14 +35,22 @@ async function setup(width, venueId, market) {
 }
 
 for (const width of [1280, 390]) {
-  test(`all nine venues fill existing placements on desktop/mobile (${width}px)`, async () => {
+  test(`all sixteen venues fill existing placements on desktop/mobile (${width}px)`, async () => {
     for (const [venueId, market] of venues) {
       const { context, page, errors } = await setup(width, venueId, market);
       try {
         await page.goto(`${baseURL}/#/trip-hq`);
         const picks = page.locator("[data-recommendation-id]");
-        await expect(picks).toHaveCount([3947, 3784].includes(venueId) ? 5 : 6);
+        await expect(picks).toHaveCount([3947, 3784, 3842].includes(venueId) ? 5 : 6);
+        await expect(picks.filter({ hasText: "Hovatter" })).toHaveCount(0);
+        if (venueId === 3636) {
+          await expect(picks.filter({ hasText: "Wildwood Adventure Park — seasonal" })).toContainText("off-season");
+          await expect(picks.filter({ hasText: "Wildwood Adventure Park — seasonal" }).getByRole("link")).toHaveText("Check seasonal dates");
+        }
         await expect(picks.first()).toContainText(market);
+        if (reviewedFirstPicks.has(venueId)) {
+          await expect(picks.first()).toContainText(reviewedFirstPicks.get(venueId));
+        }
         await expect(page.locator(".destination-picks")).toHaveCount(0);
         await picks.first().scrollIntoViewIfNeeded();
         for (const card of await picks.all()) {
@@ -45,7 +59,8 @@ for (const width of [1280, 390]) {
         }
         for (const link of await picks.getByRole("link").all()) {
           assert.equal(new URL(await link.getAttribute("href")).protocol, "https:");
-          await expect(link).toHaveAttribute("rel", "noopener noreferrer");
+          // noreferrer also implies noopener; token order is not significant.
+          assert.ok((await link.getAttribute("rel")).split(/\s+/).includes("noreferrer"));
         }
         const sponsor = page.locator(venueId === 3947 ? '[data-campaign-id="culinary_gangster_tempe"]' : '[data-partner-id="cactus_theater"]');
         if ([3947, 3784].includes(venueId)) {

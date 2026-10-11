@@ -17,11 +17,12 @@
     "Visitor / local community resource"
   ],
   "counts": {
-    "cities": 8,
-    "destinations": 9,
-    "entries": 54,
-    "sourceChecked": 54,
-    "needsReview": 0
+    "cities": 15,
+    "destinations": 16,
+    "entries": 96,
+    "sourceChecked": 96,
+    "needsReview": 1,
+    "displayEligibleEntries": 95
   },
   "partnerContext": [
     {
@@ -1659,14 +1660,1745 @@
         }
       ],
       "venueMappingSource": "Kickoff_Miles_Game_Day_Guide_Tracker_R6.xlsx / Tailgating Tracker / School and Venue ID"
+    },
+    {
+      "destinationId": "DEST-019",
+      "canonicalTeamId": "iowa-state",
+      "teamName": "Iowa State",
+      "market": "Ames",
+      "state": "IA",
+      "conference": "Big 12",
+      "launchPriority": 2,
+      "destinationVenueIds": [
+        "3772"
+      ],
+      "targetingStatus": "live_game_api_venue_matched_draft_review",
+      "entries": [
+        {
+          "id": "DEST-019-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Hickory Park BBQ",
+          "summary": "Plan an Ames meal at Hickory Park, with smoked barbecue and ice-cream desserts.",
+          "url": "https://hickoryparkbbq.com/",
+          "sourceUrl": "https://hickoryparkbbq.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-019/4",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://hickoryparkbbq.com/"
+            }
+          ],
+          "priorSourceUrl": "https://hickoryparkbbq.com/",
+          "verificationEvidence": "Official restaurant homepage confirms Ames address, smoked meats and desserts.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-019/4",
+            "historicalPipelineStatus": "research complete",
+            "masterBusiness": "Hickory Park BBQ"
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-019-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Gateway Hotel & Conference Center",
+          "summary": "Consider Gateway Hotel for an Ames stay near Iowa State, with the IowaStater Restaurant on site.",
+          "url": "https://www.gatewayames.com/",
+          "sourceUrl": "https://www.gatewayames.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-019/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.gatewayames.com/"
+            }
+          ],
+          "priorSourceUrl": "https://www.gatewayames.com/request-for-proposal",
+          "verificationEvidence": "Hotel homepage identifies Ames/ISU setting and on-site restaurant.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-019/1",
+            "historicalPipelineStatus": "research complete",
+            "masterBusiness": "Gateway Hotel & Conference Center"
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-019-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Reiman Gardens — non-game-day visit",
+          "summary": "Explore Reiman Gardens and its Butterfly Wing on a non-game day in Ames. It is closed on Iowa State home football game days in 2026; check current hours and closures before visiting.",
+          "url": "https://reimangardens.com/admission-and-hours",
+          "sourceUrl": "https://reimangardens.com/admission-and-hours",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Official operator review/DEST-019/Reiman Gardens/2026-10-05",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Check hours and closures",
+              "url": "https://reimangardens.com/admission-and-hours"
+            }
+          ],
+          "verificationEvidence": "Official operator admission-and-hours page confirms Gardens, Butterfly Wing, Ames address and explicit 2026 home-football-game closures. Narrow non-game-day copy avoids prices and fixed hours.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "sourceRecord": "Official operator review/DEST-019/Reiman Gardens/2026-10-05",
+            "sourceType": "official_operator",
+            "selectedOn": "2026-10-05",
+            "replacementFor": "Perfect Games",
+            "replacementReason": "Perfect Games operator/current-operation hold remains unresolved; retained as audited alternate.",
+            "advertisingMasterReconciliation": "New editorial selection, not asserted to be a prospect or contracted partner in the September 25 master."
+          },
+          "sourceType": "official_operator",
+          "operatorUrl": "https://reimangardens.com/admission-and-hours",
+          "operatorLinkStatus": "fetched_successfully_2026-10-05",
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-019-E4",
+          "slot": 4,
+          "category": "Food & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Torrent Brewing Company",
+          "summary": "Visit Torrent’s Ames taproom on Burnett Avenue. Check its current opening schedule before making plans.",
+          "url": "https://torrentbrewingco.com/",
+          "sourceUrl": "https://torrentbrewingco.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-019/7",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://torrentbrewingco.com/"
+            }
+          ],
+          "priorSourceUrl": "https://torrentbrewingco.com/contact-us-2/",
+          "verificationEvidence": "Operator homepage confirms taproom and504BurnettAve location.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-019/7",
+            "historicalPipelineStatus": "research complete",
+            "masterBusiness": "Torrent Brewing Company"
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-019-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Iowa State stadium and game-day guide",
+          "summary": "Review Iowa State’s official Jack Trice Stadium guide for parking, entry and tailgating policies before game day.",
+          "url": "https://cyclones.com/sports/2015/3/2/GEN_2014010120",
+          "sourceUrl": "https://cyclones.com/sports/2015/3/2/GEN_2014010120",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Iowa State",
+          "reviewRequired": [
+            "refresh current-game logistics"
+          ],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://cyclones.com/sports/2015/3/2/GEN_2014010120"
+            }
+          ],
+          "priorSourceUrl": "https://cyclones.com/sports/2026/8/13/not-public-jts-policies-testing",
+          "verificationEvidence": "Public official stadium guide covers parking, digital passes, stadium rules and2026accessibility resource; replaces NOT PUBLIC testing URL.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "backend/tailgating_ready_for_qa.json/Iowa State"
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-019-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "Discover Ames",
+          "summary": "Use Discover Ames to find dining, attractions and local events for your Iowa State weekend.",
+          "url": "https://discoverames.com/",
+          "sourceUrl": "https://discoverames.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-019",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore visitor information",
+              "url": "https://discoverames.com/"
+            }
+          ],
+          "priorSourceUrl": "https://discoverames.com/about/",
+          "verificationEvidence": "Official tourism homepage provides lodging, activities, dining, shopping and event calendar.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Community_Partners/DEST-019",
+            "historicalPipelineStatus": "Draft prepared - awaiting review"
+          },
+          "reviewedPublicationStatus": "draft"
+        }
+      ],
+      "venueMappingEvidence": {
+        "fileId": "13lkdCFuyF2GBiIG0jGK7RxZSrgPi_8In",
+        "school": "Iowa State",
+        "stadium": "Jack Trice Stadium",
+        "venueId": "3772",
+        "trackerStatus": "Ready for QA",
+        "trackerLastVerified": "2026-09-08",
+        "mappedOn": "2026-10-05",
+        "runtimeMappingVerified": false
+      },
+      "runtimeVenueEvidence": {
+        "checkedOn": "2026-10-05",
+        "sourceUrl": "https://roadtrip-app-53u2.onrender.com/football/games?team=Iowa+State&year=2026&awayOnly=false",
+        "observedHomeVenueIds": [
+          "3772"
+        ],
+        "reviewScope": "Public game API home venue ID match; not browser placement QA"
+      },
+      "auditedAlternates": [
+        {
+          "id": "DEST-019-ALT-PerfectGames",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Perfect Games",
+          "summary": "Add bowling, laser tag or arcade games at Perfect Games to your Ames weekend. Check current availability before visiting.",
+          "url": "https://discoverames.com/business-listing/perfect-games/",
+          "sourceUrl": "https://discoverames.com/business-listing/perfect-games/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "held_alternate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-019/10",
+          "reviewRequired": [
+            "current placement/agreement reconciliation",
+            "canonical runtime venue targeting verification",
+            "final publication review",
+            "recheck operator site or confirm current operation directly before publication"
+          ],
+          "actions": [
+            {
+              "label": "View official visitor listing",
+              "url": "https://discoverames.com/business-listing/perfect-games/"
+            }
+          ],
+          "priorSourceUrl": "https://www.perfectgamesinc.com/PG/index.php/en/contact-us-directions/contact-us",
+          "verificationEvidence": "Discover Ames official visitor listing confirms activities and1320 DickinsonAve address. Operator site repeatedly timed out; official tourism fallback supports narrow copy.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-019/10",
+            "historicalPipelineStatus": "Research complete; recipient verification",
+            "masterBusiness": "Perfect Games"
+          },
+          "sourceType": "official_tourism_listing",
+          "operatorUrl": "https://www.perfectgamesinc.com/PG/",
+          "operatorLinkStatus": "repeated_fetch_timeouts",
+          "priorEntryId": "DEST-019-E3",
+          "alternateReason": "Replaced in core six by operator-verified Reiman Gardens; operator/current-operation check remains unresolved."
+        }
+      ]
+    },
+    {
+      "destinationId": "DEST-020",
+      "canonicalTeamId": "kansas",
+      "teamName": "Kansas",
+      "market": "Lawrence",
+      "state": "KS",
+      "conference": "Big 12",
+      "launchPriority": 2,
+      "destinationVenueIds": [
+        "3833"
+      ],
+      "targetingStatus": "live_game_api_venue_matched_draft_review",
+      "entries": [
+        {
+          "id": "DEST-020-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Free State Brewing Company",
+          "summary": "Plan a brewpub meal at Free State Brewing Company in downtown Lawrence. Check its current menu before visiting.",
+          "url": "https://www.freestatebrewing.com/",
+          "sourceUrl": "https://www.freestatebrewing.com/brewpub/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-020/3",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.freestatebrewing.com/"
+            }
+          ],
+          "priorSourceUrl": "https://www.freestatebrewing.com/contact/",
+          "verificationEvidence": "Official brewpub page confirms downtown dining, carryout and menu.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-020/3",
+            "historicalPipelineStatus": "research complete",
+            "masterBusiness": "Free State Brewing Company"
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-020-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "The Oread Lawrence, Tapestry Collection by Hilton",
+          "summary": "Consider The Oread for a Lawrence stay beside the University of Kansas campus.",
+          "url": "https://www.hilton.com/en/hotels/lwctoup-the-oread-lawrence/",
+          "sourceUrl": "https://www.hilton.com/en/hotels/lwctoup-the-oread-lawrence/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-020/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.hilton.com/en/hotels/lwctoup-the-oread-lawrence/"
+            }
+          ],
+          "priorSourceUrl": "https://www.hilton.com/en/hotels/lwctoup-the-oread-lawrence/",
+          "verificationEvidence": "Hilton confirms property onOreadAve besideKU; no travel-time,rate or availability claim.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-020/1",
+            "historicalPipelineStatus": "research complete",
+            "masterBusiness": "The Oread Lawrence, Tapestry Collection by Hilton"
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-020-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Liberty Hall",
+          "summary": "Check Liberty Hall’s calendar for a concert or film during your Lawrence stay.",
+          "url": "https://www.liberty-hall.com/",
+          "sourceUrl": "https://www.liberty-hall.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-020/8",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.liberty-hall.com/"
+            }
+          ],
+          "priorSourceUrl": "https://www.liberty-hall.com/contact",
+          "verificationEvidence": "Official venue homepage confirms Lawrence address,live events and cinema; no specific event promised.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-020/8",
+            "historicalPipelineStatus": "Draft prepared - awaiting review",
+            "masterBusiness": "Liberty Hall"
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-020-E4",
+          "slot": 4,
+          "category": "Food & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "The Burger Stand at The Casbah",
+          "summary": "Stop for burgers at The Burger Stand’s Casbah location on Massachusetts Street in downtown Lawrence.",
+          "url": "https://www.burgerstandrestaurants.com/",
+          "sourceUrl": "https://www.burgerstandrestaurants.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-020/6",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.burgerstandrestaurants.com/"
+            }
+          ],
+          "priorSourceUrl": "https://www.burgerstandrestaurants.com/location/",
+          "verificationEvidence": "Operator homepage confirms Casbah803Massachusetts and burger/vegetarian menu.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-020/6",
+            "historicalPipelineStatus": "research complete",
+            "masterBusiness": "The Burger Stand at The Casbah"
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-020-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Kansas football game-day parking",
+          "summary": "Check KU’s football parking information for game-day permits, visitor lots and transport options before arriving.",
+          "url": "https://parking.ku.edu/football-game-day",
+          "sourceUrl": "https://parking.ku.edu/football-game-day",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Kansas",
+          "reviewRequired": [
+            "refresh current-game logistics"
+          ],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://parking.ku.edu/football-game-day"
+            }
+          ],
+          "priorSourceUrl": "https://kuathletics.com/news/2026/1/22/kansas-football-announces-2026-season-tickets-on-sale",
+          "verificationEvidence": "KU Transportation Services football page covers donor/visitorparking,RV,shuttles and accessibleparking; narrowly scoped replacement for ticket announcement.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "backend/tailgating_ready_for_qa.json/Kansas"
+          },
+          "additionalOfficialResource": {
+            "title": "KU Football Fan Guide",
+            "url": "https://kuathletics.com/feature/the-booth",
+            "status": "linked_from_current_KU_football_page; content requires browser review"
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-020-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "eXplore Lawrence",
+          "summary": "Explore Lawrence dining, local events and trip ideas with the city’s visitor guide.",
+          "url": "https://www.explorelawrence.com/",
+          "sourceUrl": "https://www.explorelawrence.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-020",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore visitor information",
+              "url": "https://www.explorelawrence.com/"
+            }
+          ],
+          "priorSourceUrl": "https://www.explorelawrence.com/contact/",
+          "verificationEvidence": "Official tourism homepage includes events,dining,things-to-do,visitor guides and KUgame-day links.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Community_Partners/DEST-020",
+            "historicalPipelineStatus": "Research complete"
+          },
+          "reviewedPublicationStatus": "draft"
+        }
+      ],
+      "venueMappingEvidence": {
+        "fileId": "13lkdCFuyF2GBiIG0jGK7RxZSrgPi_8In",
+        "school": "Kansas",
+        "stadium": "David Booth Kansas Memorial Stadium",
+        "venueId": "3833",
+        "trackerStatus": "Complete",
+        "trackerLastVerified": "2026-09-08",
+        "mappedOn": "2026-10-05",
+        "runtimeMappingVerified": false
+      },
+      "runtimeVenueEvidence": {
+        "checkedOn": "2026-10-05",
+        "sourceUrl": "https://roadtrip-app-53u2.onrender.com/football/games?team=Kansas&year=2026&awayOnly=false",
+        "observedHomeVenueIds": [
+          "3833"
+        ],
+        "reviewScope": "Public game API home venue ID match; not browser placement QA"
+      }
+    },
+    {
+      "destinationId": "DEST-021",
+      "canonicalTeamId": "kansas-state",
+      "teamName": "Kansas State",
+      "market": "Manhattan",
+      "state": "KS",
+      "conference": "Big 12",
+      "launchPriority": 2,
+      "destinationVenueIds": [
+        "3636"
+      ],
+      "targetingStatus": "live_game_api_venue_matched_draft_review",
+      "entries": [
+        {
+          "id": "DEST-021-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Tallgrass Tap House",
+          "summary": "Plan a downtown Manhattan meal at Tallgrass Tap House, a brewpub on Poyntz Avenue.",
+          "url": "https://tallgrasstaphouse.com/",
+          "sourceUrl": "https://tallgrasstaphouse.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-021/4",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://tallgrasstaphouse.com/"
+            }
+          ],
+          "priorSourceUrl": "https://tallgrasstaphouse.com/shop/",
+          "verificationEvidence": "Operator homepage confirms brewpub320Poyntz and downtownManhattan.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-021/4",
+            "historicalPipelineStatus": "research complete",
+            "masterBusiness": "Tallgrass Tap House"
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-021-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Courtyard by Marriott Manhattan Aggieville",
+          "summary": "Stay in Aggieville near Kansas State’s campus, with neighborhood restaurants around Courtyard Manhattan Aggieville.",
+          "url": "https://www.marriott.com/en-us/hotels/mhkcm-courtyard-manhattan-aggieville/overview/",
+          "sourceUrl": "https://www.marriott.com/en-us/hotels/mhkcm-courtyard-manhattan-aggieville/overview/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-021/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.marriott.com/en-us/hotels/mhkcm-courtyard-manhattan-aggieville/overview/"
+            }
+          ],
+          "priorSourceUrl": "https://www.marriott.com/en-us/hotels/mhkcm-courtyard-manhattan-aggieville/overview/",
+          "verificationEvidence": "Marriott confirms Aggieville,campus-edge location715North12th; no stadium-walk or shuttle promise.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-021/1",
+            "historicalPipelineStatus": "research complete",
+            "masterBusiness": "Courtyard by Marriott Manhattan Aggieville"
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-021-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Wildwood Adventure Park — seasonal",
+          "summary": "Wildwood reported entering its off-season in September 2026. Confirm operating dates and reservation availability before planning a zipline outing.",
+          "url": "https://www.mhkadventures.com/",
+          "sourceUrl": "https://www.mhkadventures.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-021/8",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.mhkadventures.com/"
+            }
+          ],
+          "priorSourceUrl": "https://www.mhkadventures.com/contact-us",
+          "verificationEvidence": "Operator confirms zipline tours,reservations required,375JohnsonRdManhattan.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-021/8",
+            "historicalPipelineStatus": "research complete",
+            "masterBusiness": "Wildwood Adventure Park"
+          },
+          "reviewedPublicationStatus": "draft",
+          "seasonality": "Operator reported entering off-season on 2026-09-27; confirm intended travel-date availability."
+        },
+        {
+          "id": "DEST-021-E4",
+          "slot": 4,
+          "category": "Explore",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Colbert Hills Golf Course",
+          "summary": "Add a round of public golf or a meal at Colbert Hills to your Manhattan stay. Check tee times and current dining service.",
+          "url": "https://www.colberthills.com/",
+          "sourceUrl": "https://www.colberthills.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-021/9",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.colberthills.com/"
+            }
+          ],
+          "priorSourceUrl": "https://www.colberthills.com/",
+          "verificationEvidence": "Operator confirms public golf and public bar/grill; category corrected fromFood&drink toExplore.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-021/9",
+            "historicalPipelineStatus": "research complete",
+            "masterBusiness": "Colbert Hills Golf Course"
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-021-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Kansas State game-day information",
+          "summary": "Review K-State’s football game-day guide for stadium entry, parking and tailgating information before your visit.",
+          "url": "https://www.kstatesports.com/sports/2015/6/14/_131476205627337354",
+          "sourceUrl": "https://www.kstatesports.com/sports/2015/6/14/_131476205627337354",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Kansas State",
+          "reviewRequired": [
+            "refresh current-game logistics"
+          ],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://www.kstatesports.com/sports/2015/6/14/_131476205627337354"
+            }
+          ],
+          "priorSourceUrl": "https://www.kstatesports.com/sports/2015/6/14/_131476205627337354",
+          "verificationEvidence": "Official FootballGameDay page covers BillSnyderFamilyStadium policies,parking and tailgating. Fixed opening times omitted.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "backend/tailgating_ready_for_qa.json/Kansas State"
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-021-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "Visit Manhattan",
+          "summary": "Use Visit Manhattan to find local dining, attractions and events for your Kansas State weekend.",
+          "url": "https://www.visitmanhattanks.org/",
+          "sourceUrl": "https://www.visitmanhattanks.org/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-021",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore visitor information",
+              "url": "https://www.visitmanhattanks.org/"
+            }
+          ],
+          "priorSourceUrl": "https://www.visitmanhattanks.org/about-us/our-team/",
+          "verificationEvidence": "Official tourism site confirms ManhattanKansas visitor resources,eventcalendar,Aggieville and attractions.",
+          "relationship": "editorial selection or public resource; no partner participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Community_Partners/DEST-021",
+            "historicalPipelineStatus": "Research complete"
+          },
+          "reviewedPublicationStatus": "draft"
+        }
+      ],
+      "venueMappingEvidence": {
+        "fileId": "13lkdCFuyF2GBiIG0jGK7RxZSrgPi_8In",
+        "school": "Kansas State",
+        "stadium": "Bill Snyder Family Stadium",
+        "venueId": "3636",
+        "trackerStatus": "Complete",
+        "trackerLastVerified": "2026-09-08",
+        "mappedOn": "2026-10-05",
+        "runtimeMappingVerified": false
+      },
+      "runtimeVenueEvidence": {
+        "checkedOn": "2026-10-05",
+        "sourceUrl": "https://roadtrip-app-53u2.onrender.com/football/games?team=Kansas+State&year=2026&awayOnly=false",
+        "observedHomeVenueIds": [
+          "3636"
+        ],
+        "reviewScope": "Public game API home venue ID match; not browser placement QA"
+      }
+    },
+    {
+      "destinationId": "DEST-022",
+      "canonicalTeamId": "oklahoma-state",
+      "teamName": "Oklahoma State",
+      "market": "Stillwater",
+      "state": "OK",
+      "conference": "Big 12",
+      "launchPriority": 2,
+      "destinationVenueIds": [
+        "3646"
+      ],
+      "targetingStatus": "live_game_api_venue_matched_draft_review",
+      "entries": [
+        {
+          "id": "DEST-022-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Eskimo Joe's",
+          "summary": "A Stillwater restaurant and bar at 507 West Elm Street. Check the official dining and game-day menus before planning your stop.",
+          "url": "https://eskimojoes.com/special-menu/",
+          "sourceUrl": "https://eskimojoes.com/special-menu/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-022/4",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://eskimojoes.com/special-menu/"
+            }
+          ],
+          "originalUrl": "https://eskimojoes.com/",
+          "sourceEvidence": "Official menu page identifies 507 W. Elm Street, Stillwater, dining/bar/game-day menus and restaurant information. Homepage fetch timed out; menu page loaded successfully.",
+          "provenance": {
+            "sourceRecord": "Prospects/DEST-022/4",
+            "advertisingMasterSnapshotDate": "2026-09-25",
+            "historicalOutreachStatusNotCurrent": true
+          },
+          "supportingSourceUrls": [
+            "https://eskimojoes.com/contact-public-relations-marketing/"
+          ],
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-022-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Home2 Suites by Hilton Stillwater",
+          "summary": "Stay on East Hall of Fame Avenue near Oklahoma State University, with suites offering in-room kitchens. Check hotel availability and policies for your travel dates.",
+          "url": "https://www.hilton.com/en/hotels/swohtht-home2-suites-stillwater/",
+          "sourceUrl": "https://www.hilton.com/en/hotels/swohtht-home2-suites-stillwater/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-022/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.hilton.com/en/hotels/swohtht-home2-suites-stillwater/"
+            }
+          ],
+          "originalUrl": "https://www.hilton.com/en/hotels/swohtht-home2-suites-stillwater/",
+          "sourceEvidence": "Hilton identifies 306 E Hall of Fame Avenue, Stillwater, proximity to OSU and in-room kitchens.",
+          "provenance": {
+            "sourceRecord": "Prospects/DEST-022/1",
+            "advertisingMasterSnapshotDate": "2026-09-25",
+            "historicalOutreachStatusNotCurrent": true
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-022-E3",
+          "slot": 3,
+          "category": "Shopping",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Southern Wilde",
+          "summary": "Browse clothing and accessories at this South Main Street boutique in Stillwater. Check the shop’s current collection before your visit.",
+          "url": "https://www.shopsouthernwilde.com/",
+          "sourceUrl": "https://www.shopsouthernwilde.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-022/9",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.shopsouthernwilde.com/"
+            }
+          ],
+          "originalUrl": "https://www.shopsouthernwilde.com/",
+          "sourceEvidence": "Official shop lists clothing/accessories and welcomes visits to 713 South Main Street, Stillwater.",
+          "provenance": {
+            "sourceRecord": "Prospects/DEST-022/9",
+            "advertisingMasterSnapshotDate": "2026-09-25",
+            "historicalOutreachStatusNotCurrent": true
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-022-E4",
+          "slot": 4,
+          "category": "Food & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Iron Monk Brewing Company",
+          "summary": "Visit the brewery taproom on South Husband Street in downtown Stillwater. Check the current tap list and event schedule before stopping in.",
+          "url": "https://www.ironmonkbeer.com/",
+          "sourceUrl": "https://www.ironmonkbeer.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-022/6",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.ironmonkbeer.com/"
+            }
+          ],
+          "originalUrl": "https://www.ironmonkbeer.com/",
+          "sourceEvidence": "Official brewery identifies taproom at 519 S. Husband Street, downtown Stillwater; current tap list and events are linked.",
+          "provenance": {
+            "sourceRecord": "Prospects/DEST-022/6",
+            "advertisingMasterSnapshotDate": "2026-09-25",
+            "historicalOutreachStatusNotCurrent": true
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-022-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Oklahoma State game-day information",
+          "summary": "Start with Oklahoma State Athletics’ game-day guide for football tickets, parking, stadium policies and tailgating resources. Confirm the details for your specific home game.",
+          "url": "https://okstate.com/sports/2015/3/17/GEN_201401012",
+          "sourceUrl": "https://okstate.com/sports/2015/3/17/GEN_201401012",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Oklahoma State",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open game-day guide",
+              "url": "https://okstate.com/sports/2015/3/17/GEN_201401012"
+            }
+          ],
+          "originalUrl": "https://okstate.com/documents/download/2025/11/18/Football-Parking-map-F26.pdf",
+          "sourceEvidence": "Official university campus-tailgate page links this Athletics game-day hub. The hub contains Cowboy Football links for tickets, parking map, stadium A–Z, ADA information and tailgating. Old R6 2021 PDF is not used as current guidance.",
+          "provenance": {
+            "sourceRecord": "backend/tailgating_ready_for_qa.json/Oklahoma State",
+            "advertisingMasterSnapshotDate": "2026-09-25",
+            "historicalOutreachStatusNotCurrent": true
+          },
+          "supportingSourceUrls": [
+            "https://meetings.okstate.edu/campus-tailgates",
+            "https://okstate.com/documents/download/2025/11/18/Football-Parking-map-F26.pdf"
+          ],
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-022-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "Visit Stillwater",
+          "summary": "Explore Stillwater’s visitor website for local events, restaurants, places to stay and trip ideas.",
+          "url": "https://www.visitstillwater.org/",
+          "sourceUrl": "https://www.visitstillwater.org/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-022",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore local information",
+              "url": "https://www.visitstillwater.org/"
+            }
+          ],
+          "originalUrl": "https://www.visitstillwater.org/",
+          "sourceEvidence": "Official tourism site identifies Stillwater events, restaurants, lodging and visitor-planning resources.",
+          "provenance": {
+            "sourceRecord": "Community_Partners/DEST-022",
+            "advertisingMasterSnapshotDate": "2026-09-25",
+            "historicalOutreachStatusNotCurrent": true
+          },
+          "reviewedPublicationStatus": "draft"
+        }
+      ],
+      "venueMapping": {
+        "venueId": "3646",
+        "venueName": "Boone Pickens Stadium",
+        "source": "Game Day Guide Tracker R6 / Oklahoma State",
+        "sourceUrl": "https://drive.google.com/file/d/13lkdCFuyF2GBiIG0jGK7RxZSrgPi_8In/view",
+        "trackerVerifiedOn": "2026-09-08",
+        "reviewedOn": "2026-10-05",
+        "runtimeVerified": false
+      },
+      "runtimeVenueEvidence": {
+        "checkedOn": "2026-10-05",
+        "sourceUrl": "https://roadtrip-app-53u2.onrender.com/football/games?team=Oklahoma+State&year=2026&awayOnly=false",
+        "observedHomeVenueIds": [
+          "3646"
+        ],
+        "reviewScope": "Public game API home venue ID match; not browser placement QA"
+      }
+    },
+    {
+      "destinationId": "DEST-023",
+      "canonicalTeamId": "ucf",
+      "teamName": "UCF",
+      "market": "Orlando",
+      "state": "FL",
+      "conference": "Big 12",
+      "launchPriority": 2,
+      "destinationVenueIds": [
+        "3652"
+      ],
+      "targetingStatus": "live_game_api_venue_matched_draft_review",
+      "entries": [
+        {
+          "id": "DEST-023-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Lazy Moon Pizza - UCF",
+          "summary": "Stop for pizza at Lazy Moon’s UCF location on University Boulevard. Use this branch’s page for its menu, ordering options and current hours.",
+          "url": "https://www.lazymoonpizza.com/locations/university",
+          "sourceUrl": "https://www.lazymoonpizza.com/locations/university",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-023/4",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.lazymoonpizza.com/locations/university"
+            }
+          ],
+          "originalUrl": "https://www.lazymoonpizza.com/",
+          "sourceEvidence": "Official UCF location page and homepage identify 11551 University Boulevard, Orlando. This is distinct from Mills/50 and Maitland branches.",
+          "provenance": {
+            "sourceRecord": "Prospects/DEST-023/4",
+            "advertisingMasterSnapshotDate": "2026-09-25",
+            "historicalOutreachStatusNotCurrent": true
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-023-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "The Celeste Hotel, Orlando",
+          "summary": "Stay on the UCF campus at The Celeste Hotel on North Alafaya Trail. Check room availability and parking arrangements for your game weekend.",
+          "url": "https://thecelestehotel.com/contact-us/",
+          "sourceUrl": "https://thecelestehotel.com/contact-us/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-023/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://thecelestehotel.com/contact-us/"
+            }
+          ],
+          "originalUrl": "https://thecelestehotel.com/",
+          "sourceEvidence": "Official hotel contact page identifies 4105 N Alafaya Trail, Orlando, and location on UCF campus. Homepage fetch error avoided with working official contact page.",
+          "provenance": {
+            "sourceRecord": "Prospects/DEST-023/1",
+            "advertisingMasterSnapshotDate": "2026-09-25",
+            "historicalOutreachStatusNotCurrent": true
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-023-E3",
+          "slot": 3,
+          "category": "Shopping & dining",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Waterford Lakes Town Center",
+          "summary": "Explore an open-air shopping center on North Alafaya Trail with stores, dining and entertainment. Use its directory to plan stops and check individual business hours.",
+          "url": "https://www.waterfordlakestowncenter.com/",
+          "sourceUrl": "https://www.waterfordlakestowncenter.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-023/8",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.waterfordlakestowncenter.com/"
+            }
+          ],
+          "originalUrl": "https://www.waterfordlakestowncenter.com/",
+          "sourceEvidence": "Official center page lists 325 N Alafaya Trail, Orlando, with shopping, dining and entertainment directories.",
+          "provenance": {
+            "sourceRecord": "Prospects/DEST-023/8",
+            "advertisingMasterSnapshotDate": "2026-09-25",
+            "historicalOutreachStatusNotCurrent": true
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-023-E4",
+          "slot": 4,
+          "category": "Food & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "4 Rivers Smokehouse - Orlando UCF",
+          "summary": "Find barbecue and sides at the UCF/East Orlando smokehouse on University Boulevard. Use the location’s menu and ordering page for current options.",
+          "url": "https://www.4rsmokehouse.com/locations/orlando/",
+          "sourceUrl": "https://www.4rsmokehouse.com/locations/orlando/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-023/5",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.4rsmokehouse.com/locations/orlando/"
+            }
+          ],
+          "originalUrl": "https://www.4rsmokehouse.com/",
+          "sourceEvidence": "Official Orlando–UCF location page identifies 11764 University Boulevard, Orlando, barbecue menu and pickup/delivery. No broad-chain location ambiguity remains.",
+          "provenance": {
+            "sourceRecord": "Prospects/DEST-023/5",
+            "advertisingMasterSnapshotDate": "2026-09-25",
+            "historicalOutreachStatusNotCurrent": true
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-023-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "UCF game-day information",
+          "summary": "Use UCF’s 2026 football guide for digital tickets, parking, stadium arrival and bag policies at Acrisure Bounce House. Check the separate tailgating page for current rules and reservation eligibility.",
+          "url": "https://ucfknights.com/2026-gameday-guide",
+          "sourceUrl": "https://ucfknights.com/2026-gameday-guide",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/UCF",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open game-day guide",
+              "url": "https://ucfknights.com/2026-gameday-guide"
+            },
+            {
+              "label": "Review tailgating rules",
+              "url": "https://ucfknights.com/football-tailgating-1"
+            }
+          ],
+          "originalUrl": "https://ucfknights.com/football-tailgating-1",
+          "sourceEvidence": "Official guide explicitly covers 2026 home football games at Acrisure Bounce House and links parking, digital tickets, arrival, bags and tailgating. Memory Mall reservations on tailgate page have alumni/student/RSO eligibility; no unrestricted visiting-fan reservation claim.",
+          "provenance": {
+            "sourceRecord": "backend/tailgating_ready_for_qa.json/UCF",
+            "advertisingMasterSnapshotDate": "2026-09-25",
+            "historicalOutreachStatusNotCurrent": true
+          },
+          "supportingSourceUrls": [
+            "https://ucfknights.com/football-tailgating-1"
+          ],
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-023-E6",
+          "slot": 6,
+          "category": "Local community",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "East Orlando Chamber of Commerce",
+          "summary": "Use the East Orlando Chamber’s business directory and events calendar to explore local businesses and community activities.",
+          "url": "https://www.eocc.org/",
+          "sourceUrl": "https://www.eocc.org/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-023",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore local information",
+              "url": "https://www.eocc.org/"
+            }
+          ],
+          "originalUrl": "https://www.eocc.org/",
+          "sourceEvidence": "Official Chamber homepage includes business-directory and events-calendar links. It is a local business organization, not evidence of a Kickoff Miles partnership.",
+          "provenance": {
+            "sourceRecord": "Community_Partners/DEST-023",
+            "advertisingMasterSnapshotDate": "2026-09-25",
+            "historicalOutreachStatusNotCurrent": true
+          },
+          "reviewedPublicationStatus": "draft"
+        }
+      ],
+      "venueMapping": {
+        "venueId": "3652",
+        "venueName": "Acrisure Bounce House",
+        "source": "Game Day Guide Tracker R6 / UCF",
+        "sourceUrl": "https://drive.google.com/file/d/13lkdCFuyF2GBiIG0jGK7RxZSrgPi_8In/view",
+        "trackerVerifiedOn": "2026-09-08",
+        "reviewedOn": "2026-10-05",
+        "runtimeVerified": false
+      },
+      "runtimeVenueEvidence": {
+        "checkedOn": "2026-10-05",
+        "sourceUrl": "https://roadtrip-app-53u2.onrender.com/football/games?team=UCF&year=2026&awayOnly=false",
+        "observedHomeVenueIds": [
+          "3652"
+        ],
+        "reviewScope": "Public game API home venue ID match; not browser placement QA"
+      }
+    },
+    {
+      "destinationId": "DEST-024",
+      "canonicalTeamId": "utah",
+      "teamName": "Utah",
+      "market": "Salt Lake City",
+      "state": "UT",
+      "conference": "Big 12",
+      "launchPriority": 2,
+      "destinationVenueIds": [
+        "587"
+      ],
+      "targetingStatus": "live_game_api_venue_matched_draft_review",
+      "entries": [
+        {
+          "id": "DEST-024-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Red Iguana — original North Temple location",
+          "summary": "Visit the original Red Iguana on North Temple for Mexican dishes and house-made mole sauces. Check reservations and hours for your planned visit.",
+          "url": "https://www.rediguana.com/locations/red-iguana/",
+          "sourceUrl": "https://www.rediguana.com/locations/red-iguana/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-024/5",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.rediguana.com/locations/red-iguana/"
+            }
+          ],
+          "verificationEvidence": "Official original-location page successfully loaded in Chrome on October 5, 2026. Visible page confirms 736 W North Temple St, original Mexican restaurant, mole dishes, reservation links and hours. Earlier research-fetch failure resolved by browser verification.",
+          "address": "736 W North Temple St, Salt Lake City, UT 84116",
+          "relationship": "editorial selection or public resource; no paid or complimentary participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-024/5",
+            "historicalPipelineStatus": "Research complete; recipient verification"
+          },
+          "browserLinkVerifiedOn": "2026-10-05",
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-024-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Salt Lake City Marriott University Park",
+          "summary": "Stay near the University of Utah at Marriott University Park on Wakara Way. Check room availability and plan game-day transportation separately.",
+          "url": "https://www.marriott.com/en-us/hotels/slcup-salt-lake-city-marriott-university-park/overview/",
+          "sourceUrl": "https://www.marriott.com/en-us/hotels/slcup-salt-lake-city-marriott-university-park/overview/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-024/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.marriott.com/en-us/hotels/slcup-salt-lake-city-marriott-university-park/overview/"
+            }
+          ],
+          "verificationEvidence": "Official Marriott property page confirms University of Utah proximity and 480 Wakara Way. No rate, room availability, shuttle or stadium walking-time promise.",
+          "address": "480 Wakara Way, Salt Lake City, UT 84108",
+          "relationship": "editorial selection or public resource; no paid or complimentary participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-024/1",
+            "historicalPipelineStatus": "Research complete; recipient verification"
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-024-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Utah's Hogle Zoo",
+          "summary": "Add a family outing to Utah’s Hogle Zoo on Sunnyside Avenue. Check admission options and the current visitor information before your trip.",
+          "url": "https://www.hoglezoo.org/",
+          "sourceUrl": "https://www.hoglezoo.org/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-024/9",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.hoglezoo.org/"
+            }
+          ],
+          "verificationEvidence": "Official zoo homepage confirms visitor attraction, Salt Lake City address and current visit/ticket links. No guaranteed animal encounter or event availability.",
+          "address": "2600 Sunnyside Ave, Salt Lake City, UT 84108",
+          "relationship": "editorial selection or public resource; no paid or complimentary participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-024/9",
+            "historicalPipelineStatus": "Research complete; eligibility verification"
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-024-E4",
+          "slot": 4,
+          "category": "Food & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Uinta Brewhouse Pub & Kitchen (21+)",
+          "summary": "Visit Uinta’s Brewhouse Pub & Kitchen on Fremont Drive for beer and pub food. This location is for guests age 21 and older; check current opening hours.",
+          "url": "https://uintabrewing.com/brewhouse-pub",
+          "sourceUrl": "https://uintabrewing.com/brewhouse-pub",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-024/8",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://uintabrewing.com/brewhouse-pub"
+            }
+          ],
+          "verificationEvidence": "Official brewery homepage confirms Fremont Drive pub; dedicated Brewhouse Pub page states 21+ only. Distinct from airport location.",
+          "address": "1722 S Fremont Drive, Salt Lake City, UT 84104",
+          "relationship": "editorial selection or public resource; no paid or complimentary participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-024/8",
+            "historicalPipelineStatus": "Research complete; recipient verification"
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-024-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Utah game-day information",
+          "summary": "Use the University of Utah’s Game Day Central to plan transportation, parking and entry at Rice-Eccles Stadium. Review the current game’s notices before traveling.",
+          "url": "https://gameday.utah.edu/",
+          "sourceUrl": "https://gameday.utah.edu/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Utah",
+          "reviewRequired": [
+            "refresh game-specific notices"
+          ],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://gameday.utah.edu/"
+            }
+          ],
+          "verificationEvidence": "Official Game Day Central successfully loaded in Chrome on October 5, 2026. Visible Rice-Eccles fan guide provides parking, gates, pregame activities, shuttles, stadium policies, transportation and upcoming Kansas/Houston/BYU events. Current game times remain on source rather than copied into evergreen entry.",
+          "address": null,
+          "relationship": "editorial selection or public resource; no paid or complimentary participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "backend/tailgating_ready_for_qa.json/Utah",
+            "historicalPipelineStatus": null
+          },
+          "replacedUrl": "https://utahutes.com/news/2025/9/1/general-game-week-fan-guide-presented-by-utah-360-football-season-opener-on-saturday",
+          "supportingSourceUrls": [
+            "https://utahutes.com/news/2026/9/14/general-game-week-fan-guide-presented-by-utah-360-hall-of-fame-ute-proud-game-vs-utah-state"
+          ],
+          "browserLinkVerifiedOn": "2026-10-05",
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-024-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "Visit Salt Lake",
+          "summary": "Explore Visit Salt Lake’s dining, attractions and event listings to build a Salt Lake City weekend around the game.",
+          "url": "https://www.visitsaltlake.com/",
+          "sourceUrl": "https://www.visitsaltlake.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-024",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore visitor information",
+              "url": "https://www.visitsaltlake.com/"
+            }
+          ],
+          "verificationEvidence": "Official tourism homepage confirms Salt Lake trip planning, restaurants, attractions and current events.",
+          "address": null,
+          "relationship": "editorial selection or public resource; no paid or complimentary participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Community_Partners/DEST-024",
+            "historicalPipelineStatus": "Research complete"
+          },
+          "reviewedPublicationStatus": "draft"
+        }
+      ],
+      "venueMappingEvidence": {
+        "fileId": "13lkdCFuyF2GBiIG0jGK7RxZSrgPi_8In",
+        "school": "Utah",
+        "stadium": "Rice-Eccles Stadium",
+        "venueId": "587",
+        "trackerLastVerified": "2026-09-08",
+        "mappedOn": "2026-10-05",
+        "runtimeMappingVerified": false
+      },
+      "runtimeVenueEvidence": {
+        "checkedOn": "2026-10-05",
+        "sourceUrl": "https://roadtrip-app-53u2.onrender.com/football/games?team=Utah&year=2026&awayOnly=false",
+        "observedHomeVenueIds": [
+          "587"
+        ],
+        "reviewScope": "Public game API home venue ID match; not browser placement QA"
+      }
+    },
+    {
+      "destinationId": "DEST-025",
+      "canonicalTeamId": "west-virginia",
+      "teamName": "West Virginia",
+      "market": "Morgantown",
+      "state": "WV",
+      "conference": "Big 12",
+      "launchPriority": 2,
+      "destinationVenueIds": [
+        "3842"
+      ],
+      "targetingStatus": "live_game_api_venue_matched_draft_review",
+      "entries": [
+        {
+          "id": "DEST-025-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Kegler's Sports Bar",
+          "summary": "Stop at Kegler’s on Chestnut Ridge Road for wings and sports-bar dining during your Morgantown visit. Check current menus and kitchen hours.",
+          "url": "https://www.keglerssportsbar.com/",
+          "sourceUrl": "https://www.keglerssportsbar.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-025/4",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.keglerssportsbar.com/"
+            }
+          ],
+          "verificationEvidence": "Official homepage confirms wings, sports-bar dining and 735-A Chestnut Ridge Road, Morgantown.",
+          "address": "735-A Chestnut Ridge Road, Morgantown, WV 26505",
+          "relationship": "editorial selection or public resource; no paid or complimentary participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-025/4",
+            "historicalPipelineStatus": "research complete"
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-025-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Morgantown Marriott at Waterfront Place",
+          "summary": "Stay at Morgantown Marriott at Waterfront Place for a waterfront base near downtown. Plan transportation to the stadium separately.",
+          "url": "https://www.marriott.com/en-us/hotels/mgwmc-morgantown-marriott-at-waterfront-place/overview/",
+          "sourceUrl": "https://www.marriott.com/en-us/hotels/mgwmc-morgantown-marriott-at-waterfront-place/overview/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-025/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.marriott.com/en-us/hotels/mgwmc-morgantown-marriott-at-waterfront-place/overview/"
+            }
+          ],
+          "verificationEvidence": "Official Marriott property page confirms waterfront/downtown context and Two Waterfront Place. No stadium proximity/shuttle promises.",
+          "address": "Two Waterfront Place, Morgantown, WV 26501",
+          "relationship": "editorial selection or public resource; no paid or complimentary participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-025/1",
+            "historicalPipelineStatus": "research complete"
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-025-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Hovatter’s Wildlife Zoo — seasonal Kingwood excursion",
+          "summary": "Consider a separate excursion to Hovatter’s Wildlife Zoo in Kingwood. It operates seasonally; confirm the opening date and weather-dependent late-season hours before driving out.",
+          "url": "https://www.westvirginiazoo.com/",
+          "sourceUrl": "https://www.westvirginiazoo.com/hours-and-prices/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "draft",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-025/10",
+          "reviewRequired": [
+            "confirm seasonal opening for intended travel date"
+          ],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.westvirginiazoo.com/"
+            }
+          ],
+          "verificationEvidence": "Official 2026 hours page confirms Kingwood address, April–October season and weather-dependent November operation. Specific trip-date opening remains unverified.",
+          "address": "291 Wagner Lane, Kingwood, WV 26537",
+          "relationship": "editorial selection or public resource; no paid or complimentary participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-025/10",
+            "historicalPipelineStatus": "research complete; seasonal/market review"
+          },
+          "reviewedPublicationStatus": "draft",
+          "seasonality": "April–October season; late-season operation depends on weather. Intended trip-date opening remains unverified."
+        },
+        {
+          "id": "DEST-025-E4",
+          "slot": 4,
+          "category": "Food & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Iron Horse Tavern",
+          "summary": "Visit Iron Horse Tavern in downtown Morgantown for pub food and West Virginia craft beer. Check the current menu and reservation options.",
+          "url": "https://ironhorsetvrn.com/",
+          "sourceUrl": "https://ironhorsetvrn.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-025/5",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://ironhorsetvrn.com/"
+            }
+          ],
+          "verificationEvidence": "Official homepage identifies downtown Morgantown pub fare, West Virginia beer and 140 High St.",
+          "address": "140 High St, Morgantown, WV",
+          "relationship": "editorial selection or public resource; no paid or complimentary participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Prospects/DEST-025/5",
+            "historicalPipelineStatus": "research complete"
+          },
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-025-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "West Virginia game-day information",
+          "summary": "Use WVU’s football A-to-Z guide for stadium entry, parking and visitor information at Milan Puskar Stadium. Check game-specific notices before departure.",
+          "url": "https://wvusports.com/sports/2017/8/2/football-a-to-z-guide",
+          "sourceUrl": "https://wvusports.com/sports/2017/8/2/football-a-to-z-guide",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/West Virginia",
+          "reviewRequired": [
+            "refresh game-specific notices"
+          ],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://wvusports.com/sports/2017/8/2/football-a-to-z-guide"
+            }
+          ],
+          "verificationEvidence": "WVU 2026 season-ticket page links official football A-to-Z guide, whose live page provides stadium policies and parking sections. Replaces inaccessible old football-gameday URL.",
+          "address": null,
+          "relationship": "editorial selection or public resource; no paid or complimentary participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "backend/tailgating_ready_for_qa.json/West Virginia",
+            "historicalPipelineStatus": null
+          },
+          "replacedUrl": "https://wvusports.com/sports/2019/7/24/football-gameday.aspx",
+          "reviewedPublicationStatus": "draft"
+        },
+        {
+          "id": "DEST-025-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "Visit Mountaineer Country Convention & Visitors Bureau",
+          "summary": "Use Visit Mountaineer Country’s visitor information to explore Morgantown dining and attractions, plus ideas for the surrounding North Central West Virginia region.",
+          "url": "https://www.visitmountaineercountry.com/",
+          "sourceUrl": "https://www.visitmountaineercountry.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-05",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-025",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore visitor information",
+              "url": "https://www.visitmountaineercountry.com/"
+            }
+          ],
+          "verificationEvidence": "Official CVB homepage identifies North Central WV coverage and provides Morgantown-specific visitor and game-day resources. No partnership inferred.",
+          "address": null,
+          "relationship": "editorial selection or public resource; no paid or complimentary participation established",
+          "provenance": {
+            "masterFileId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+            "masterSnapshotDate": "2026-09-25",
+            "sourceRecord": "Community_Partners/DEST-025",
+            "historicalPipelineStatus": "Research complete"
+          },
+          "reviewedPublicationStatus": "draft"
+        }
+      ],
+      "venueMappingEvidence": {
+        "fileId": "13lkdCFuyF2GBiIG0jGK7RxZSrgPi_8In",
+        "school": "West Virginia",
+        "stadium": "Mountaineer Field at Milan Puskar Stadium",
+        "venueId": "3842",
+        "trackerLastVerified": "2026-09-08",
+        "mappedOn": "2026-10-05",
+        "runtimeMappingVerified": false
+      },
+      "runtimeVenueEvidence": {
+        "checkedOn": "2026-10-05",
+        "sourceUrl": "https://roadtrip-app-53u2.onrender.com/football/games?team=West+Virginia&year=2026&awayOnly=false",
+        "observedHomeVenueIds": [
+          "3842"
+        ],
+        "reviewScope": "Public game API home venue ID match; not browser placement QA"
+      }
     }
   ],
-  "lastReviewedOn": "2026-10-02",
+  "lastReviewedOn": "2026-10-06",
   "reviewProgress": {
     "integrationStatus": "React implementation candidate; not deployed.",
     "inheritedSourceChecks": 48,
     "newSourceChecks": 6,
     "partnerHandling": "Existing paid and complimentary placements preserved; editorial content never recorded as partner advertising."
   },
-  "disclosure": "Selected by Kickoff Miles. These recommendations are independent of paid partner placements."
+  "disclosure": "Selected by Kickoff Miles. These recommendations are independent of paid partner placements.",
+  "batchReview": {
+    "addedDestinationIds": [
+      "DEST-019",
+      "DEST-020",
+      "DEST-021",
+      "DEST-022",
+      "DEST-023",
+      "DEST-024",
+      "DEST-025"
+    ],
+    "status": "approved_for_merge_with_one_held_entry",
+    "note": "41 new entries approved for editorial publication; Hovatter’s retained as a held draft. No partner agreements or exclusivity in the seven markets per John Wayne Lee on 2026-10-06. Historical source provenance and original 54 entries preserved.",
+    "publicationReview": {
+      "reviewedOn": "2026-10-06",
+      "agreementConfirmationBy": "John Wayne Lee",
+      "markets": [
+        "Ames",
+        "Lawrence",
+        "Manhattan",
+        "Stillwater",
+        "Orlando/UCF",
+        "Salt Lake City",
+        "Morgantown"
+      ],
+      "agreementDisposition": "No paid or complimentary commitments, reserved placements or category exclusivity.",
+      "approvedNewEntries": 41,
+      "heldEntryIds": [
+        "DEST-025-E3"
+      ],
+      "runtimeTargetingEvidence": "October 5 public game API venue matches and fixture-backed desktop/mobile placement QA; production verification required after merge.",
+      "categoryDisposition": "Approved Shopping, Shopping & dining and Local community as intentional category variations.",
+      "authorization": "John Wayne Lee authorized limited release changes, merge and deployment on 2026-10-06.",
+      "seasonalDispositions": {
+        "DEST-021-E3": "Wildwood 2026-09-27 email reports entering off-season and declining advertising participation for now. Seasonal copy and CTA approved; no partnership established.",
+        "DEST-025-E3": "Held as draft until intended travel-date opening is confirmed; excluded from runtime picks."
+      }
+    }
+  }
 }
