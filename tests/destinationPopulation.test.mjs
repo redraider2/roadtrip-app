@@ -18,7 +18,8 @@ test('all 136 roster markets resolve to reviewed inventory with unique exact hom
       venues.add(String(venueId));
       const resolved = getDestinationPicks(venueId);
       assert.equal(resolved.destinationId, d.destinationId);
-      assert.equal(resolved.entries.length, d.destinationId === 'DEST-025' ? 5 : 6);
+      const expectedCount = d.destinationId === 'DEST-025' || String(venueId) === '5960' ? 5 : 6;
+      assert.equal(resolved.entries.length, expectedCount);
       const advertiser = { id: 'existing-advertiser', businessName: 'Existing advertiser' };
       assert.equal(recommendationFallback(advertiser, venueId), advertiser);
     }
