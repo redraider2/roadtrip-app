@@ -114,3 +114,34 @@ test("new-city fallback preserves paid and complimentary partners in every slot"
   const empty = { isHouseAd: true };
   assert.equal(recommendationFallback(empty, "unknown"), empty);
 });
+
+
+test("national roster targets all136 exact home venues and retains partner precedence", async () => {
+  const { default: content } = await import("../src/data/destinationPicks.json", { with: { type: "json" } });
+  const seen = new Set();
+  assert.equal(content.destinations.length,136);
+  for (const d of content.destinations) {
+    assert.ok(d.destinationVenueIds.length);
+    for (const venue of d.destinationVenueIds) {
+      assert.ok(!seen.has(venue), `duplicate venue ${venue}`);seen.add(venue);
+      const actual=getDestinationPicks(venue);
+      assert.equal(actual.destinationId,d.destinationId);
+      assert.ok(actual.entries.length>=5);
+      for (const e of actual.entries) {
+        assert.equal(e.verificationStatus,"source_checked");
+        assert.equal(e.publicationStatus,"implementation_candidate");
+        assert.equal(new URL(e.url).protocol,"https:");
+        assert.equal(new URL(e.sourceUrl).protocol,"https:");
+        assert.notEqual(e.displayLabel,"Sponsored");
+      }
+      const paid={id:"real",businessName:"Existing advertiser"};
+      for(let slot=0;slot<6;slot++)assert.equal(recommendationFallback(paid,venue,slot),paid);
+    }
+  }
+  assert.equal(content.counts.displayEligibleEntries,815);
+  assert.equal(getDestinationPicks(3634).teamName,"Florida");
+  assert.equal(getDestinationPicks(5348),null);
+  assert.equal(getDestinationPicks(11823).entries.length,6);
+  assert.equal(getDestinationPicks(5960).entries.length,5);
+  assert.ok(getDestinationPicks(5960).entries.every(e=>e.id!=="DEST-048-E5"));
+});

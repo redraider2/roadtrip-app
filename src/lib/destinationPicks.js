@@ -8,7 +8,8 @@ export function getDestinationPicks(venueId) {
   return {
     ...destination,
     entries: destination.entries.filter((entry) => entry.verificationStatus === "source_checked"
-      && entry.publicationStatus === "implementation_candidate"),
+      && entry.publicationStatus === "implementation_candidate"
+      && (!entry.venuePolicyScope || entry.venuePolicyScope.includes(String(venueId).trim()))),
   };
 }
 
