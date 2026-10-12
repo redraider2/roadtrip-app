@@ -1,0 +1,29 @@
+.music-city-feature { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(220px, 1fr); overflow: hidden; margin: 24px 0; border: 1px solid #b59153; border-radius: 22px; background: #101d20; color: #f9f4e8; box-shadow: 0 16px 45px rgba(0,0,0,.22); }
+.music-city-feature-copy { padding: clamp(24px, 3.4vw, 42px); background: radial-gradient(ellipse at 0 0, rgba(196,155,80,.12), transparent 75%); min-width: 0; }
+.music-city-feature-eyebrow { display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; color: #e3be75; font-size: 10px; letter-spacing: .16em; font-weight: 800; text-transform: uppercase; }
+.music-city-feature h3 { margin: 22px 0 14px; font-size: 16px; font-weight: 600; color: #f9f4e8; }
+.music-city-feature-headline { margin: 0; font-size: clamp(26px, 3.2vw, 42px); line-height: 1.13; letter-spacing: -.045em; font-weight: 800; text-wrap: balance; }
+.music-city-feature-headline em { display: inline-block; padding-top: 6px; font-family: Georgia, serif; font-weight: 400; color: #f0ca82; letter-spacing: -.035em; }
+.music-city-feature-description { margin: 20px 0 24px; max-width: 480px; color: #d3d9d5; font-size: 15px; line-height: 1.65; }
+.music-city-feature-footer { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+.music-city-feature-footer a { display: inline-flex; align-items: center; justify-content: space-between; gap: 24px; padding: 14px 20px; border: 1px solid #f0ca82; border-radius: 10px; background: #edc77d; color: #152022; font-size: 14px; font-weight: 800; text-decoration: none; transition: background .15s ease, transform .15s ease; }
+.music-city-feature-footer a:hover { background: #ffdda1; transform: translateY(-2px); }
+.music-city-feature-footer a:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
+.music-city-feature-note { color: #b9c3bd; font-size: 11px; line-height: 1.5; }
+.music-city-feature-art { position: relative; display: flex; flex-direction: column; justify-content: center; min-width: 0; padding: 24px 0; background: radial-gradient(ellipse at 65% 35%, #395045, #203b36 55%, #142c2e); border-left: 1px solid rgba(229,192,117,.18); }
+.music-city-feature-art-kicker { text-align: center; color: #e6c58b; font-size: 9px; font-weight: 700; letter-spacing: .25em; }
+.music-city-skyline { display: block; width: 100%; height: auto; }
+.music-city-feature-art-caption { display: flex; flex-direction: column; align-items: center; gap: 7px; margin-top: -24px; color: #f3dbab; }
+.music-city-feature-art-caption strong { font-size: clamp(25px, 3vw, 40px); font-weight: 900; letter-spacing: .08em; }
+.music-city-feature-art-caption span { font-size: 9px; letter-spacing: .18em; }
+.nashville-guide > .music-city-feature { margin: 0 0 28px; }
+@media (max-width: 700px) { .music-city-feature { grid-template-columns: minmax(0,1fr); } .music-city-feature-copy { padding: 24px; } .music-city-feature-art { border-left: 0; border-top: 1px solid rgba(229,192,117,.18); padding: 20px 0; } .music-city-skyline { max-width: 370px; height: 200px; margin: 0 auto; } .music-city-feature-art-caption { margin-top: -5px; } .music-city-feature-headline { font-size: clamp(25px, 5.5vw, 36px); } }
+.music-city-feature { container-type: inline-size; }
+@container (max-width: 650px) {
+  .music-city-feature-copy, .music-city-feature-art { grid-column: 1 / -1; }
+  .music-city-feature-copy { padding: 24px; }
+  .music-city-feature-headline { font-size: clamp(25px, 5.5cqw, 36px); }
+  .music-city-feature-art { border-left: 0; border-top: 1px solid rgba(229,192,117,.18); padding: 20px 0; }
+  .music-city-skyline { max-width: 370px; height: 200px; margin: 0 auto; }
+  .music-city-feature-art-caption { margin-top: -5px; }
+}
