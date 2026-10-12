@@ -17,7 +17,7 @@ test("all selected destination venues have six source-checked recommendations", 
 });
 
 test("unknown and neutral-site venues do not receive a team's home-city picks", () => {
-  for (const venue of [null, undefined, "", "9999", 3634]) assert.equal(getDestinationPicks(venue), null);
+  for (const venue of [null, undefined, "", "9999", 5348]) assert.equal(getDestinationPicks(venue), null);
   assert.equal(getDestinationPicks(" 3784 ").teamName, "Texas Tech");
 });
 
@@ -113,4 +113,23 @@ test("new-city fallback preserves paid and complimentary partners in every slot"
   }
   const empty = { isHouseAd: true };
   assert.equal(recommendationFallback(empty, "unknown"), empty);
+});
+
+const nextSixVenues = [[3634, "Florida"], [3917, "Georgia"], [3683, "Kentucky"], [3958, "LSU"], [3693, "Mississippi State"], [3838, "Missouri"]];
+test("six October 12 markets use exact home venues and preserve existing partners", () => {
+  for (const [venue, team] of nextSixVenues) {
+    const d = getDestinationPicks(venue);
+    assert.equal(d.teamName, team);
+    assert.equal(d.entries.length, 6);
+    const paid = { id: "existing", businessName: "Existing partner", destinationVenueIds: [String(venue)] };
+    assert.equal(recommendationFallback(paid, venue), paid);
+    for (const e of d.entries) {
+      assert.equal(e.sourceCheckedOn, "2026-10-12");
+      assert.equal(new URL(e.sourceUrl).protocol, "https:");
+    }
+  }
+  assert.equal(getDestinationPicks(5348), null); // Florida–Georgia neutral Atlanta game.
+  assert.equal(getDestinationPicks(3838).market, "Columbia");
+  assert.equal(getDestinationPicks(3838).state, "MO");
+  assert.equal(getDestinationPicks(3994).state, "SC");
 });

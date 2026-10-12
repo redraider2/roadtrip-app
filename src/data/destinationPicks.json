@@ -1,12 +1,13 @@
 {
   "schemaVersion": 1,
-  "preparedOn": "2026-10-02",
+  "preparedOn": "2026-10-12",
   "timezone": "America/Chicago",
   "status": "implementation_candidate_not_live",
   "canonicalRosterSource": "redraider2/roadtrip-app/backend/game-day/teamRegistry.mjs @ 128d403d748e0797db840eba980a741c6cfc722a",
   "researchSource": {
-    "file": "Kickoff_Miles_136_Destination_Advertising_Master.xlsx",
-    "version": 7
+    "file": "Kickoff_Miles_136_Destination_Advertising_Master.xlsm",
+    "driveId": "16tYiEBrwAAXGTnwkhIA9qX303AdHVowN",
+    "contentReviewDate": "2026-10-12"
   },
   "template": [
     "Eat & drink",
@@ -17,12 +18,12 @@
     "Visitor / local community resource"
   ],
   "counts": {
-    "cities": 15,
-    "destinations": 16,
-    "entries": 96,
-    "sourceChecked": 96,
+    "cities": 21,
+    "destinations": 22,
+    "entries": 132,
+    "sourceChecked": 132,
     "needsReview": 1,
-    "displayEligibleEntries": 95
+    "displayEligibleEntries": 131
   },
   "partnerContext": [
     {
@@ -3352,6 +3353,1957 @@
           "3842"
         ],
         "reviewScope": "Public game API home venue ID match; not browser placement QA"
+      }
+    },
+    {
+      "destinationId": "DEST-029",
+      "canonicalTeamId": "florida",
+      "teamName": "Florida",
+      "market": "Gainesville",
+      "state": "FL",
+      "conference": "SEC",
+      "launchPriority": 3,
+      "destinationVenueIds": [
+        "3634"
+      ],
+      "targetingStatus": "live_non_neutral_home_venue_verified",
+      "entries": [
+        {
+          "id": "DEST-029-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "The Swamp Restaurant",
+          "summary": "A Gainesville restaurant and bar at 1104 SW 2nd Avenue in the Innovation District. Check the current menu and event information before your visit.",
+          "url": "https://www.swamprestaurant.com/",
+          "sourceUrl": "https://www.swamprestaurant.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-029/3",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.swamprestaurant.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Supports the narrow editorial summary; does not establish sponsorship or commercial agreement"
+          }
+        },
+        {
+          "id": "DEST-029-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "AC Hotel Gainesville Downtown",
+          "summary": "A Midtown Gainesville hotel across University Avenue from the University of Florida campus, with a rooftop pool and on-site dining. Check room availability for your dates.",
+          "url": "https://www.marriott.com/en-us/hotels/gnvac-ac-hotel-gainesville-downtown/overview/",
+          "sourceUrl": "https://www.marriott.com/en-us/hotels/gnvac-ac-hotel-gainesville-downtown/overview/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-029/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.marriott.com/en-us/hotels/gnvac-ac-hotel-gainesville-downtown/overview/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Supports the narrow editorial summary; does not establish sponsorship or commercial agreement"
+          }
+        },
+        {
+          "id": "DEST-029-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Harn Museum of Art",
+          "summary": "Explore changing art exhibitions at the Harn Museum on the University of Florida campus. Admission is free; check current hours and parking instructions before visiting.",
+          "url": "https://harn.ufl.edu/visit/",
+          "sourceUrl": "https://harn.ufl.edu/visit/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "October 12 editorial replacement; original inn retained in originalDraft",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Plan your museum visit",
+              "url": "https://harn.ufl.edu/visit/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Supports the narrow editorial summary; does not establish sponsorship or commercial agreement"
+          },
+          "replacementReason": "Sweetwater Branch Inn is lodging/events rather than a general visitor attraction; replace with university art museum."
+        },
+        {
+          "id": "DEST-029-E4",
+          "slot": 4,
+          "category": "Food & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "First Magnitude Brewing Company",
+          "summary": "Visit the Gainesville taproom and shaded beer garden on SE Veitch Street. Check the brewery’s current tap list, food truck schedule and events.",
+          "url": "https://www.fmbrewing.com/",
+          "sourceUrl": "https://www.fmbrewing.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-029/8",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.fmbrewing.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Supports the narrow editorial summary; does not establish sponsorship or commercial agreement"
+          }
+        },
+        {
+          "id": "DEST-029-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Florida game-day information",
+          "summary": "Review the Florida Gators’ official game-day policies, including football entry guidance and prohibited items, before heading to the stadium.",
+          "url": "https://floridagators.com/sports/2015/12/10/_gameday_policies_",
+          "sourceUrl": "https://floridagators.com/sports/2015/12/10/_gameday_policies_",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Florida",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://floridagators.com/sports/2015/12/10/_gameday_policies_"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Supports the narrow editorial summary; does not establish sponsorship or commercial agreement"
+          }
+        },
+        {
+          "id": "DEST-029-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "Visit Gainesville, Alachua County",
+          "summary": "Find Visit Gainesville, Alachua County’s visitor contact details and website through its official VISIT FLORIDA listing.",
+          "url": "https://www.visitflorida.com/listing/visit-gainesville-alachua-county-fl/30245/",
+          "sourceUrl": "https://www.visitflorida.com/listing/visit-gainesville-alachua-county-fl/30245/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-029",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "View visitor bureau details",
+              "url": "https://www.visitflorida.com/listing/visit-gainesville-alachua-county-fl/30245/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Supports the narrow editorial summary; does not establish sponsorship or commercial agreement"
+          },
+          "reviewNotes": "Visit Gainesville homepage and What's Good page returned web retrieval errors. Verified official VISIT FLORIDA listing used as functioning alternative; no claim homepage is closed."
+        }
+      ],
+      "lastReviewedOn": "2026-10-12",
+      "reviewNote": "Six narrow editorial summaries source-checked. Publication remains draft. Venue mapping, partner/category conflict review and app placement checks are separate release requirements.",
+      "runtimeVenueEvidence": {
+        "destinationId": "DEST-029",
+        "canonicalTeamId": "florida",
+        "teamName": "Florida",
+        "market": "Gainesville",
+        "state": "FL",
+        "sourceUrl": "https://roadtrip-app-53u2.onrender.com/football/games?team=Florida&year=2026&awayOnly=false",
+        "season": 2026,
+        "checkedOn": "2026-10-12",
+        "responseGameCount": 12,
+        "nonNeutralHomeGameCount": 6,
+        "destinationVenueIds": [
+          3634
+        ],
+        "venues": [
+          {
+            "venueId": 3634,
+            "venueName": "Ben Hill Griffin Stadium"
+          }
+        ],
+        "homeGames": [
+          {
+            "id": 401856637,
+            "season": 2026,
+            "week": 1,
+            "startDate": "2026-09-05T23:45:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": false,
+            "neutralSite": false,
+            "homeTeam": "Florida",
+            "awayTeam": "Florida Atlantic",
+            "venue": "Ben Hill Griffin Stadium",
+            "venueId": 3634,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856672,
+            "season": 2026,
+            "week": 2,
+            "startDate": "2026-09-12T21:30:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": false,
+            "neutralSite": false,
+            "homeTeam": "Florida",
+            "awayTeam": "Campbell",
+            "venue": "Ben Hill Griffin Stadium",
+            "venueId": 3634,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856699,
+            "season": 2026,
+            "week": 4,
+            "startDate": "2026-09-26T19:30:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Florida",
+            "awayTeam": "Ole Miss",
+            "venue": "Ben Hill Griffin Stadium",
+            "venueId": 3634,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856714,
+            "season": 2026,
+            "week": 6,
+            "startDate": "2026-10-10T16:45:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Florida",
+            "awayTeam": "South Carolina",
+            "venue": "Ben Hill Griffin Stadium",
+            "venueId": 3634,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856739,
+            "season": 2026,
+            "week": 10,
+            "startDate": "2026-11-07T05:00:00.000Z",
+            "startTimeTBD": true,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Florida",
+            "awayTeam": "Oklahoma",
+            "venue": "Ben Hill Griffin Stadium",
+            "venueId": 3634,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856748,
+            "season": 2026,
+            "week": 12,
+            "startDate": "2026-11-21T05:00:00.000Z",
+            "startTimeTBD": true,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Florida",
+            "awayTeam": "Vanderbilt",
+            "venue": "Ben Hill Griffin Stadium",
+            "venueId": 3634,
+            "isAwayGame": false
+          }
+        ],
+        "excludedNeutralGames": [
+          {
+            "id": 401856734,
+            "season": 2026,
+            "week": 9,
+            "startDate": "2026-10-31T19:30:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": true,
+            "neutralSite": true,
+            "homeTeam": "Georgia",
+            "awayTeam": "Florida",
+            "venue": "Mercedes-Benz Stadium",
+            "venueId": 5348,
+            "isAwayGame": false
+          }
+        ],
+        "excludedAwayGameCount": 5,
+        "marketFitEvidence": {
+          "status": "confirmed_by_official_athletics_search_evidence",
+          "url": "https://floridagators.com/news/2016/6/9/football-florida-field-to-bear-spurrier-name",
+          "note": "Official athletics source associates the stadium with the canonical destination city; no alternate home venue occurred in the runtime response."
+        },
+        "targetingStatus": "runtime_non_neutral_home_venue_verified",
+        "excludedAlternateCityHomeGameCount": 0
+      },
+      "commercialReview": {
+        "asOf": "2026-10-12",
+        "masterModifiedTime": "2026-10-12T16:25:02.147Z",
+        "result": "No paid/complimentary/declined/opt-out statuses among 60 prospect rows across these six destinations; existing Tempe and Lubbock partners preserved. Editorial listing does not imply a commercial relationship."
+      }
+    },
+    {
+      "destinationId": "DEST-030",
+      "canonicalTeamId": "georgia",
+      "teamName": "Georgia",
+      "market": "Athens",
+      "state": "GA",
+      "conference": "SEC",
+      "launchPriority": 3,
+      "destinationVenueIds": [
+        "3917"
+      ],
+      "targetingStatus": "live_non_neutral_home_venue_verified",
+      "entries": [
+        {
+          "id": "DEST-030-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Last Resort Grill",
+          "summary": "An Athens restaurant serving Southern food with Southwestern influences. Browse the current menu and reservation options before visiting.",
+          "url": "https://www.lastresortgrill.com/",
+          "sourceUrl": "https://www.lastresortgrill.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-030/4",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.lastresortgrill.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Supports the narrow editorial summary; does not establish sponsorship or commercial agreement"
+          }
+        },
+        {
+          "id": "DEST-030-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "SpringHill Suites by Marriott Athens Downtown/University Area",
+          "summary": "An all-suite hotel adjoining the University of Georgia, with access to downtown Athens shops, restaurants and music venues. Check availability for your travel dates.",
+          "url": "https://www.marriott.com/en-us/hotels/ahnse-springhill-suites-athens-downtown-university-area/overview/",
+          "sourceUrl": "https://www.marriott.com/en-us/hotels/ahnse-springhill-suites-athens-downtown-university-area/overview/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-030/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.marriott.com/en-us/hotels/ahnse-springhill-suites-athens-downtown-university-area/overview/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Supports the narrow editorial summary; does not establish sponsorship or commercial agreement"
+          }
+        },
+        {
+          "id": "DEST-030-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Georgia Theatre",
+          "summary": "Check the Georgia Theatre’s show calendar for live entertainment in downtown Athens. Review event-specific tickets and entry rules before making plans.",
+          "url": "https://www.georgiatheatre.com/",
+          "sourceUrl": "https://www.georgiatheatre.com/getting-here/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-030/7",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit venue website",
+              "url": "https://www.georgiatheatre.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Supports the narrow editorial summary; does not establish sponsorship or commercial agreement"
+          }
+        },
+        {
+          "id": "DEST-030-E4",
+          "slot": 4,
+          "category": "Food & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Creature Comforts Brewing Co. Athens Taproom",
+          "summary": "A downtown Athens taproom with communal seating and an outdoor patio at 271 W. Hancock Avenue. Check hours and the current tap list; the operator notes there is no on-site parking.",
+          "url": "https://creaturecomforts.co/athens/",
+          "sourceUrl": "https://creaturecomforts.co/athens/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-030/9",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://creaturecomforts.co/athens/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Supports the narrow editorial summary; does not establish sponsorship or commercial agreement"
+          }
+        },
+        {
+          "id": "DEST-030-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Georgia game-day information",
+          "summary": "Read the University of Georgia’s official football tailgating guidance before setting up on campus. Check current restrictions and game-specific notices.",
+          "url": "https://georgiadogs.com/sports/2018/8/6/football-gameday-tailgating",
+          "sourceUrl": "https://georgiadogs.com/sports/2018/8/6/football-gameday-tailgating",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Georgia",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://georgiadogs.com/sports/2018/8/6/football-gameday-tailgating"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Supports the narrow editorial summary; does not establish sponsorship or commercial agreement"
+          }
+        },
+        {
+          "id": "DEST-030-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "Visit Athens",
+          "summary": "Use Visit Athens to find local itineraries, lodging, music events and visitor information for your Athens trip.",
+          "url": "https://www.visitathensga.com/",
+          "sourceUrl": "https://www.visitathensga.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-030",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore visitor information",
+              "url": "https://www.visitathensga.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Supports the narrow editorial summary; does not establish sponsorship or commercial agreement"
+          }
+        }
+      ],
+      "lastReviewedOn": "2026-10-12",
+      "reviewNote": "Six narrow editorial summaries source-checked. Publication remains draft. Venue mapping, partner/category conflict review and app placement checks are separate release requirements.",
+      "runtimeVenueEvidence": {
+        "destinationId": "DEST-030",
+        "canonicalTeamId": "georgia",
+        "teamName": "Georgia",
+        "market": "Athens",
+        "state": "GA",
+        "sourceUrl": "https://roadtrip-app-53u2.onrender.com/football/games?team=Georgia&year=2026&awayOnly=false",
+        "season": 2026,
+        "checkedOn": "2026-10-12",
+        "responseGameCount": 12,
+        "nonNeutralHomeGameCount": 7,
+        "destinationVenueIds": [
+          3917
+        ],
+        "venues": [
+          {
+            "venueId": 3917,
+            "venueName": "Sanford Stadium"
+          }
+        ],
+        "homeGames": [
+          {
+            "id": 401856658,
+            "season": 2026,
+            "week": 1,
+            "startDate": "2026-09-05T19:00:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": false,
+            "neutralSite": false,
+            "homeTeam": "Georgia",
+            "awayTeam": "Tennessee State",
+            "venue": "Sanford Stadium",
+            "venueId": 3917,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856673,
+            "season": 2026,
+            "week": 2,
+            "startDate": "2026-09-12T16:45:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": false,
+            "neutralSite": false,
+            "homeTeam": "Georgia",
+            "awayTeam": "Western Kentucky",
+            "venue": "Sanford Stadium",
+            "venueId": 3917,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856700,
+            "season": 2026,
+            "week": 4,
+            "startDate": "2026-09-26T19:30:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Georgia",
+            "awayTeam": "Oklahoma",
+            "venue": "Sanford Stadium",
+            "venueId": 3917,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856705,
+            "season": 2026,
+            "week": 5,
+            "startDate": "2026-10-03T16:45:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Georgia",
+            "awayTeam": "Vanderbilt",
+            "venue": "Sanford Stadium",
+            "venueId": 3917,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856719,
+            "season": 2026,
+            "week": 7,
+            "startDate": "2026-10-17T19:30:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Georgia",
+            "awayTeam": "Auburn",
+            "venue": "Sanford Stadium",
+            "venueId": 3917,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856883,
+            "season": 2026,
+            "week": 11,
+            "startDate": "2026-11-14T05:00:00.000Z",
+            "startTimeTBD": true,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Georgia",
+            "awayTeam": "Missouri",
+            "venue": "Sanford Stadium",
+            "venueId": 3917,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856760,
+            "season": 2026,
+            "week": 13,
+            "startDate": "2026-11-28T05:00:00.000Z",
+            "startTimeTBD": true,
+            "conferenceGame": false,
+            "neutralSite": false,
+            "homeTeam": "Georgia",
+            "awayTeam": "Georgia Tech",
+            "venue": "Sanford Stadium",
+            "venueId": 3917,
+            "isAwayGame": false
+          }
+        ],
+        "excludedNeutralGames": [
+          {
+            "id": 401856734,
+            "season": 2026,
+            "week": 9,
+            "startDate": "2026-10-31T19:30:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": true,
+            "neutralSite": true,
+            "homeTeam": "Georgia",
+            "awayTeam": "Florida",
+            "venue": "Mercedes-Benz Stadium",
+            "venueId": 5348,
+            "isAwayGame": false
+          }
+        ],
+        "excludedAwayGameCount": 4,
+        "marketFitEvidence": {
+          "status": "confirmed_by_official_athletics_search_evidence",
+          "url": "https://georgiadogs.com/sports/2026/9/21/satest",
+          "note": "Official athletics source associates the stadium with the canonical destination city; no alternate home venue occurred in the runtime response."
+        },
+        "targetingStatus": "runtime_non_neutral_home_venue_verified",
+        "excludedAlternateCityHomeGameCount": 0
+      },
+      "commercialReview": {
+        "asOf": "2026-10-12",
+        "masterModifiedTime": "2026-10-12T16:25:02.147Z",
+        "result": "No paid/complimentary/declined/opt-out statuses among 60 prospect rows across these six destinations; existing Tempe and Lubbock partners preserved. Editorial listing does not imply a commercial relationship."
+      }
+    },
+    {
+      "destinationId": "DEST-031",
+      "canonicalTeamId": "kentucky",
+      "teamName": "Kentucky",
+      "market": "Lexington",
+      "state": "KY",
+      "conference": "SEC",
+      "launchPriority": 3,
+      "destinationVenueIds": [
+        "3683"
+      ],
+      "targetingStatus": "live_non_neutral_home_venue_verified",
+      "entries": [
+        {
+          "id": "DEST-031-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Carson’s on Main",
+          "summary": "Plan a meal at Carson’s on Main, at 362 E. Main Street in Lexington. Check the current menu and select the Main location when reserving.",
+          "url": "https://carsonsfoodanddrink.com/",
+          "sourceUrl": "https://carsonsfoodanddrink.com/contact/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-031/4",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://carsonsfoodanddrink.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Supports the narrow editorial summary; does not establish sponsorship or commercial agreement"
+          }
+        },
+        {
+          "id": "DEST-031-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "21c Museum Hotel Lexington",
+          "summary": "A downtown Lexington hotel on Main Street that combines guest rooms with contemporary art. Check room availability and current museum offerings.",
+          "url": "https://21cmuseumhotels.com/lexington/",
+          "sourceUrl": "https://21cmuseumhotels.com/lexington/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-031/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://21cmuseumhotels.com/lexington/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Supports the narrow editorial summary; does not establish sponsorship or commercial agreement"
+          }
+        },
+        {
+          "id": "DEST-031-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Malibu Jack's Lexington",
+          "summary": "Explore indoor attractions, bowling and arcade games at Malibu Jack’s Lexington on Nicholasville Road. Check attraction restrictions and operating schedules before visiting.",
+          "url": "https://malibujacks.net/lexington/",
+          "sourceUrl": "https://malibujacks.net/lexington/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-031/7",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://malibujacks.net/lexington/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Supports the narrow editorial summary; does not establish sponsorship or commercial agreement",
+            "additionalSource": "https://malibujacks.net/lexington/locations-hours/"
+          }
+        },
+        {
+          "id": "DEST-031-E4",
+          "slot": 4,
+          "category": "Food & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Lexington Brewing & Distilling Co.",
+          "summary": "Explore brewery and distillery tour options at 401 Cross Street in Lexington. Book a tour ahead and check availability; tastings are for visitors 21 and older.",
+          "url": "https://lexingtonbrewingco.com/distilleries-tours",
+          "sourceUrl": "https://lexingtonbrewingco.com/distilleries-tours",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-031/8",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore tour options",
+              "url": "https://lexingtonbrewingco.com/distilleries-tours"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Supports the narrow editorial summary; does not establish sponsorship or commercial agreement"
+          }
+        },
+        {
+          "id": "DEST-031-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Kentucky game-day information",
+          "summary": "Use UK Athletics’ official football game-day guide for Kroger Field entry, parking, bag policies and other arrival information. Recheck it before your game.",
+          "url": "https://ukathletics.com/football-gameday-information/",
+          "sourceUrl": "https://ukathletics.com/football-gameday-information/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Kentucky",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://ukathletics.com/football-gameday-information/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Supports the narrow editorial summary; does not establish sponsorship or commercial agreement"
+          }
+        },
+        {
+          "id": "DEST-031-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "VisitLEX",
+          "summary": "Explore VisitLEX’s trip-planning resources for Lexington, including visitor guides, attractions, dining and seasonal ideas.",
+          "url": "https://www.visitlex.com/",
+          "sourceUrl": "https://www.visitlex.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-031",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore visitor information",
+              "url": "https://www.visitlex.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Supports the narrow editorial summary; does not establish sponsorship or commercial agreement"
+          }
+        }
+      ],
+      "lastReviewedOn": "2026-10-12",
+      "reviewNote": "Six narrow editorial summaries source-checked. Publication remains draft. Venue mapping, partner/category conflict review and app placement checks are separate release requirements.",
+      "runtimeVenueEvidence": {
+        "destinationId": "DEST-031",
+        "canonicalTeamId": "kentucky",
+        "teamName": "Kentucky",
+        "market": "Lexington",
+        "state": "KY",
+        "sourceUrl": "https://roadtrip-app-53u2.onrender.com/football/games?team=Kentucky&year=2026&awayOnly=false",
+        "season": 2026,
+        "checkedOn": "2026-10-12",
+        "responseGameCount": 12,
+        "nonNeutralHomeGameCount": 7,
+        "destinationVenueIds": [
+          3683
+        ],
+        "venues": [
+          {
+            "venueId": 3683,
+            "venueName": "Kroger Field"
+          }
+        ],
+        "homeGames": [
+          {
+            "id": 401856659,
+            "season": 2026,
+            "week": 1,
+            "startDate": "2026-09-05T17:00:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": false,
+            "neutralSite": false,
+            "homeTeam": "Kentucky",
+            "awayTeam": "Youngstown State",
+            "venue": "Kroger Field",
+            "venueId": 3683,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856674,
+            "season": 2026,
+            "week": 2,
+            "startDate": "2026-09-12T19:30:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Kentucky",
+            "awayTeam": "Alabama",
+            "venue": "Kroger Field",
+            "venueId": 3683,
+            "isAwayGame": false
+          },
+          {
+            "id": 401864576,
+            "season": 2026,
+            "week": 4,
+            "startDate": "2026-09-26T16:45:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": false,
+            "neutralSite": false,
+            "homeTeam": "Kentucky",
+            "awayTeam": "South Alabama",
+            "venue": "Kroger Field",
+            "venueId": 3683,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856715,
+            "season": 2026,
+            "week": 6,
+            "startDate": "2026-10-10T23:00:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Kentucky",
+            "awayTeam": "LSU",
+            "venue": "Kroger Field",
+            "venueId": 3683,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856729,
+            "season": 2026,
+            "week": 8,
+            "startDate": "2026-10-24T04:00:00.000Z",
+            "startTimeTBD": true,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Kentucky",
+            "awayTeam": "Vanderbilt",
+            "venue": "Kroger Field",
+            "venueId": 3683,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856884,
+            "season": 2026,
+            "week": 11,
+            "startDate": "2026-11-14T05:00:00.000Z",
+            "startTimeTBD": true,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Kentucky",
+            "awayTeam": "Florida",
+            "venue": "Kroger Field",
+            "venueId": 3683,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856761,
+            "season": 2026,
+            "week": 13,
+            "startDate": "2026-11-28T05:00:00.000Z",
+            "startTimeTBD": true,
+            "conferenceGame": false,
+            "neutralSite": false,
+            "homeTeam": "Kentucky",
+            "awayTeam": "Louisville",
+            "venue": "Kroger Field",
+            "venueId": 3683,
+            "isAwayGame": false
+          }
+        ],
+        "excludedNeutralGames": [],
+        "excludedAwayGameCount": 5,
+        "marketFitEvidence": {
+          "status": "confirmed_by_official_athletics_search_evidence",
+          "url": "https://ukathletics.com/facilities/kroger-field/",
+          "note": "Official athletics source associates the stadium with the canonical destination city; no alternate home venue occurred in the runtime response."
+        },
+        "targetingStatus": "runtime_non_neutral_home_venue_verified",
+        "excludedAlternateCityHomeGameCount": 0
+      },
+      "commercialReview": {
+        "asOf": "2026-10-12",
+        "masterModifiedTime": "2026-10-12T16:25:02.147Z",
+        "result": "No paid/complimentary/declined/opt-out statuses among 60 prospect rows across these six destinations; existing Tempe and Lubbock partners preserved. Editorial listing does not imply a commercial relationship."
+      }
+    },
+    {
+      "destinationId": "DEST-032",
+      "canonicalTeamId": "lsu",
+      "teamName": "LSU",
+      "market": "Baton Rouge",
+      "state": "LA",
+      "conference": "SEC",
+      "launchPriority": 3,
+      "destinationVenueIds": [
+        "3958"
+      ],
+      "targetingStatus": "live_non_neutral_home_venue_verified",
+      "entries": [
+        {
+          "id": "DEST-032-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "The Chimes – Highland",
+          "summary": "Visit The Chimes’ Highland Road restaurant and taproom at 3357 Highland Road in Baton Rouge. Select the Highland location for menus and reservation information.",
+          "url": "https://thechimes.com/",
+          "sourceUrl": "https://thechimes.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-032/3",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://thechimes.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary only; not commercial agreement or live publication."
+          }
+        },
+        {
+          "id": "DEST-032-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "WATERMARK Baton Rouge, Autograph Collection",
+          "summary": "Stay in a downtown Baton Rouge hotel housed in a former bank building, with guest rooms and on-site dining. Check availability for your travel dates.",
+          "url": "https://www.watermarkbr.com/",
+          "sourceUrl": "https://www.watermarkbr.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-032/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.watermarkbr.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary only; not commercial agreement or live publication."
+          }
+        },
+        {
+          "id": "DEST-032-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Louisiana Art & Science Museum",
+          "summary": "Explore art and science exhibitions and the Irene W. Pennington Planetarium in Baton Rouge. Check admission, current exhibitions and showtimes before visiting.",
+          "url": "https://www.lasm.org/",
+          "sourceUrl": "https://www.lasm.org/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-032/9",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.lasm.org/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary only; not commercial agreement or live publication."
+          }
+        },
+        {
+          "id": "DEST-032-E4",
+          "slot": 4,
+          "category": "Food & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Murphy's on Chimes Street",
+          "summary": "A nightlife stop at 268 West Chimes Street in Baton Rouge. Check current opening times and entry requirements with Murphy’s before making plans.",
+          "url": "https://www.murphysonchimes.com/",
+          "sourceUrl": "https://www.murphysonchimes.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-032/6",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit venue website",
+              "url": "https://www.murphysonchimes.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary only; not commercial agreement or live publication."
+          }
+        },
+        {
+          "id": "DEST-032-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "LSU game-day information",
+          "summary": "Review LSU Athletics’ official tailgating and parking policies before heading to Tiger Stadium. Check game-specific updates for access and transportation.",
+          "url": "https://lsusports.net/gameday/tailgating-parking",
+          "sourceUrl": "https://lsusports.net/gameday/tailgating-parking",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/LSU",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://lsusports.net/gameday/tailgating-parking"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary only; not commercial agreement or live publication."
+          }
+        },
+        {
+          "id": "DEST-032-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "Visit Baton Rouge",
+          "summary": "Find Baton Rouge dining, lodging, events and football-trip ideas through the city’s visitor information site.",
+          "url": "https://www.visitbatonrouge.com/",
+          "sourceUrl": "https://www.visitbatonrouge.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-032",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore visitor information",
+              "url": "https://www.visitbatonrouge.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary only; not commercial agreement or live publication."
+          }
+        }
+      ],
+      "lastReviewedOn": "2026-10-12",
+      "reviewNote": "Six source-checked summaries. Draft pending venue mapping, commercial conflict review and app QA.",
+      "runtimeVenueEvidence": {
+        "destinationId": "DEST-032",
+        "canonicalTeamId": "lsu",
+        "teamName": "LSU",
+        "market": "Baton Rouge",
+        "state": "LA",
+        "sourceUrl": "https://roadtrip-app-53u2.onrender.com/football/games?team=LSU&year=2026&awayOnly=false",
+        "season": 2026,
+        "checkedOn": "2026-10-12",
+        "responseGameCount": 12,
+        "nonNeutralHomeGameCount": 7,
+        "destinationVenueIds": [
+          3958
+        ],
+        "venues": [
+          {
+            "venueId": 3958,
+            "venueName": "Tiger Stadium (LA)"
+          }
+        ],
+        "homeGames": [
+          {
+            "id": 401856660,
+            "season": 2026,
+            "week": 1,
+            "startDate": "2026-09-05T23:30:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": false,
+            "neutralSite": false,
+            "homeTeam": "LSU",
+            "awayTeam": "Clemson",
+            "venue": "Tiger Stadium (LA)",
+            "venueId": 3958,
+            "isAwayGame": false
+          },
+          {
+            "id": 401867796,
+            "season": 2026,
+            "week": 2,
+            "startDate": "2026-09-12T23:30:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": false,
+            "neutralSite": false,
+            "homeTeam": "LSU",
+            "awayTeam": "Louisiana Tech",
+            "venue": "Tiger Stadium (LA)",
+            "venueId": 3958,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856702,
+            "season": 2026,
+            "week": 4,
+            "startDate": "2026-09-26T23:30:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "LSU",
+            "awayTeam": "Texas A&M",
+            "venue": "Tiger Stadium (LA)",
+            "venueId": 3958,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856706,
+            "season": 2026,
+            "week": 5,
+            "startDate": "2026-10-03T23:45:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": false,
+            "neutralSite": false,
+            "homeTeam": "LSU",
+            "awayTeam": "McNeese",
+            "venue": "Tiger Stadium (LA)",
+            "venueId": 3958,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856720,
+            "season": 2026,
+            "week": 7,
+            "startDate": "2026-10-17T16:00:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "LSU",
+            "awayTeam": "Mississippi State",
+            "venue": "Tiger Stadium (LA)",
+            "venueId": 3958,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856740,
+            "season": 2026,
+            "week": 10,
+            "startDate": "2026-11-07T05:00:00.000Z",
+            "startTimeTBD": true,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "LSU",
+            "awayTeam": "Alabama",
+            "venue": "Tiger Stadium (LA)",
+            "venueId": 3958,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856885,
+            "season": 2026,
+            "week": 11,
+            "startDate": "2026-11-14T05:00:00.000Z",
+            "startTimeTBD": true,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "LSU",
+            "awayTeam": "Texas",
+            "venue": "Tiger Stadium (LA)",
+            "venueId": 3958,
+            "isAwayGame": false
+          }
+        ],
+        "excludedNeutralGames": [],
+        "excludedAwayGameCount": 5,
+        "marketFitEvidence": {
+          "status": "confirmed_by_official_athletics_search_evidence",
+          "url": "https://lsusports.net/facilities/tiger-stadium",
+          "note": "Official athletics source associates the stadium with the canonical destination city; no alternate home venue occurred in the runtime response."
+        },
+        "targetingStatus": "runtime_non_neutral_home_venue_verified",
+        "excludedAlternateCityHomeGameCount": 0
+      },
+      "commercialReview": {
+        "asOf": "2026-10-12",
+        "masterModifiedTime": "2026-10-12T16:25:02.147Z",
+        "result": "No paid/complimentary/declined/opt-out statuses among 60 prospect rows across these six destinations; existing Tempe and Lubbock partners preserved. Editorial listing does not imply a commercial relationship."
+      }
+    },
+    {
+      "destinationId": "DEST-033",
+      "canonicalTeamId": "mississippi-state",
+      "teamName": "Mississippi State",
+      "market": "Starkville",
+      "state": "MS",
+      "conference": "SEC",
+      "launchPriority": 3,
+      "destinationVenueIds": [
+        "3693"
+      ],
+      "targetingStatus": "live_non_neutral_home_venue_verified",
+      "entries": [
+        {
+          "id": "DEST-033-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Restaurant Tyler",
+          "summary": "Explore Southern cuisine at Restaurant Tyler in downtown Starkville. Check the current menus and service schedule before planning a meal.",
+          "url": "https://www.eatlocalstarkville.com/restaurant-tyler",
+          "sourceUrl": "https://www.eatlocalstarkville.com/restaurant-tyler",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-033/4",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.eatlocalstarkville.com/restaurant-tyler"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary only; not commercial agreement or live publication."
+          }
+        },
+        {
+          "id": "DEST-033-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Courtyard by Marriott Starkville MSU at The Mill",
+          "summary": "A Starkville hotel at The Mill Conference Center near Mississippi State University, with an on-site Bistro. Check room availability for your dates.",
+          "url": "https://www.marriott.com/en-us/hotels/gtrsv-courtyard-starkville-msu-at-the-mill/overview/",
+          "sourceUrl": "https://www.marriott.com/en-us/hotels/gtrsv-courtyard-starkville-msu-at-the-mill/overview/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-033/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.marriott.com/en-us/hotels/gtrsv-courtyard-starkville-msu-at-the-mill/overview/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary only; not commercial agreement or live publication."
+          }
+        },
+        {
+          "id": "DEST-033-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Ulysses S. Grant Presidential Library Museum",
+          "summary": "Explore the Ulysses S. Grant Presidential Library Museum on the fourth floor of Mitchell Memorial Library at Mississippi State. Check current museum hours and campus access before visiting.",
+          "url": "https://www.usgrantlibrary.org/visit",
+          "sourceUrl": "https://www.usgrantlibrary.org/visit",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "October 12 editorial replacement; original retained in originalDraft",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Plan your visit",
+              "url": "https://www.usgrantlibrary.org/visit"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary only; not commercial agreement or live publication.",
+            "additionalSource": "https://www.usgrantlibrary.org/hours"
+          },
+          "replacementReason": "Replaced retail bookstore with a museum to fit Things to do slot.",
+          "reviewNotes": "Source contains expired road/entrance notices through January/July 2026. These are not repeated; current hours/access should be checked for specific visit."
+        },
+        {
+          "id": "DEST-033-E4",
+          "slot": 4,
+          "category": "More lodging",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Strange Brew Coffeehouse",
+          "summary": "Stop for coffee, espresso drinks and baked treats at Strange Brew Coffeehouse, at 605 Highway 12 in Starkville. Check current hours before your visit.",
+          "url": "https://strangebrewcoffeehouse.com/pages/about-us",
+          "sourceUrl": "https://strangebrewcoffeehouse.com/pages/about-us",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "October 12 editorial replacement; original retained in originalDraft",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Plan your visit",
+              "url": "https://strangebrewcoffeehouse.com/pages/about-us"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary only; not commercial agreement or live publication.",
+            "additionalSource": "https://strangebrewcoffeehouse.com/pages/contact-us"
+          },
+          "replacementReason": "Replaced second hotel in Food & drink slot with locally operated coffeehouse."
+        },
+        {
+          "id": "DEST-033-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Mississippi State game-day information",
+          "summary": "Use Mississippi State’s official football game-day guide to check stadium entry, parking and tailgating information before each home game.",
+          "url": "https://hailstate.com/sports/2017/5/15/football-gameday-a-z",
+          "sourceUrl": "https://hailstate.com/sports/2017/5/15/football-gameday-a-z",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Mississippi State",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://hailstate.com/sports/2017/5/15/football-gameday-a-z"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary only; not commercial agreement or live publication."
+          }
+        },
+        {
+          "id": "DEST-033-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "Visit Starkville / Starkville Convention & Visitors Bureau",
+          "summary": "Use Visit Starkville to explore lodging, restaurants, shopping, events and outdoor activities for your visit.",
+          "url": "https://starkville.org/",
+          "sourceUrl": "https://starkville.org/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-033",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore visitor information",
+              "url": "https://starkville.org/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary only; not commercial agreement or live publication."
+          }
+        }
+      ],
+      "lastReviewedOn": "2026-10-12",
+      "reviewNote": "Six source-checked summaries. Draft pending venue mapping, commercial conflict review and app QA.",
+      "runtimeVenueEvidence": {
+        "destinationId": "DEST-033",
+        "canonicalTeamId": "mississippi-state",
+        "teamName": "Mississippi State",
+        "market": "Starkville",
+        "state": "MS",
+        "sourceUrl": "https://roadtrip-app-53u2.onrender.com/football/games?team=Mississippi+State&year=2026&awayOnly=false",
+        "season": 2026,
+        "checkedOn": "2026-10-12",
+        "responseGameCount": 12,
+        "nonNeutralHomeGameCount": 7,
+        "destinationVenueIds": [
+          3693
+        ],
+        "venues": [
+          {
+            "venueId": 3693,
+            "venueName": "Davis Wade Stadium"
+          }
+        ],
+        "homeGames": [
+          {
+            "id": 401856662,
+            "season": 2026,
+            "week": 1,
+            "startDate": "2026-09-05T23:30:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": false,
+            "neutralSite": false,
+            "homeTeam": "Mississippi State",
+            "awayTeam": "UL Monroe",
+            "venue": "Davis Wade Stadium",
+            "venueId": 3693,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856703,
+            "season": 2026,
+            "week": 4,
+            "startDate": "2026-09-26T23:45:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Mississippi State",
+            "awayTeam": "Missouri",
+            "venue": "Davis Wade Stadium",
+            "venueId": 3693,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856707,
+            "season": 2026,
+            "week": 5,
+            "startDate": "2026-10-03T16:00:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Mississippi State",
+            "awayTeam": "Alabama",
+            "venue": "Davis Wade Stadium",
+            "venueId": 3693,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856730,
+            "season": 2026,
+            "week": 8,
+            "startDate": "2026-10-24T04:00:00.000Z",
+            "startTimeTBD": true,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Mississippi State",
+            "awayTeam": "Oklahoma",
+            "venue": "Davis Wade Stadium",
+            "venueId": 3693,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856742,
+            "season": 2026,
+            "week": 10,
+            "startDate": "2026-11-07T05:00:00.000Z",
+            "startTimeTBD": true,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Mississippi State",
+            "awayTeam": "Vanderbilt",
+            "venue": "Davis Wade Stadium",
+            "venueId": 3693,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856886,
+            "season": 2026,
+            "week": 11,
+            "startDate": "2026-11-14T05:00:00.000Z",
+            "startTimeTBD": true,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Mississippi State",
+            "awayTeam": "Auburn",
+            "venue": "Davis Wade Stadium",
+            "venueId": 3693,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856750,
+            "season": 2026,
+            "week": 12,
+            "startDate": "2026-11-21T18:00:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": false,
+            "neutralSite": false,
+            "homeTeam": "Mississippi State",
+            "awayTeam": "Tennessee Tech",
+            "venue": "Davis Wade Stadium",
+            "venueId": 3693,
+            "isAwayGame": false
+          }
+        ],
+        "excludedNeutralGames": [],
+        "excludedAwayGameCount": 5,
+        "marketFitEvidence": {
+          "status": "confirmed_by_official_athletics_search_evidence",
+          "url": "https://hailstate.com/sports/football",
+          "note": "Official athletics source associates the stadium with the canonical destination city; no alternate home venue occurred in the runtime response."
+        },
+        "targetingStatus": "runtime_non_neutral_home_venue_verified",
+        "excludedAlternateCityHomeGameCount": 0
+      },
+      "commercialReview": {
+        "asOf": "2026-10-12",
+        "masterModifiedTime": "2026-10-12T16:25:02.147Z",
+        "result": "No paid/complimentary/declined/opt-out statuses among 60 prospect rows across these six destinations; existing Tempe and Lubbock partners preserved. Editorial listing does not imply a commercial relationship."
+      }
+    },
+    {
+      "destinationId": "DEST-034",
+      "canonicalTeamId": "missouri",
+      "teamName": "Missouri",
+      "market": "Columbia",
+      "state": "MO",
+      "conference": "SEC",
+      "launchPriority": 3,
+      "destinationVenueIds": [
+        "3838"
+      ],
+      "targetingStatus": "live_non_neutral_home_venue_verified",
+      "entries": [
+        {
+          "id": "DEST-034-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Shakespeare's Pizza Downtown",
+          "summary": "Visit Shakespeare’s Pizza Downtown at 225 S. Ninth Street in Columbia. Browse the location’s menu and visitor information before your meal.",
+          "url": "https://shakespeares.com/location/downtown/",
+          "sourceUrl": "https://shakespeares.com/location/downtown/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-034/3",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "View downtown location",
+              "url": "https://shakespeares.com/location/downtown/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary only; not commercial agreement or live publication."
+          }
+        },
+        {
+          "id": "DEST-034-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "The Broadway Columbia – a DoubleTree by Hilton Hotel",
+          "summary": "A Columbia hotel at 1111 E. Broadway, with guest rooms and on-site dining. Check availability and parking arrangements for your travel dates.",
+          "url": "https://thebroadwaycolumbia.com/",
+          "sourceUrl": "https://thebroadwaycolumbia.com/our-hotel/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-034/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://thebroadwaycolumbia.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary only; not commercial agreement or live publication."
+          }
+        },
+        {
+          "id": "DEST-034-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "The Blue Note",
+          "summary": "Explore The Blue Note’s live-show calendar for your Columbia visit. Check each event’s ticket availability and age restrictions before booking.",
+          "url": "https://thebluenote.com/",
+          "sourceUrl": "https://thebluenote.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-034/9",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit venue website",
+              "url": "https://thebluenote.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary only; not commercial agreement or live publication."
+          }
+        },
+        {
+          "id": "DEST-034-E4",
+          "slot": 4,
+          "category": "Food & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Flat Branch Pub & Brewing",
+          "summary": "Explore Flat Branch Pub & Brewing at 115 S. Fifth Street in Columbia, with food and craft beer. View its listing through the city’s official visitor bureau.",
+          "url": "https://www.visitcolumbiamo.com/directory/flat-branch-pub-brewing/",
+          "sourceUrl": "https://www.visitcolumbiamo.com/directory/flat-branch-pub-brewing/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-034/4",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "View visitor bureau listing",
+              "url": "https://www.visitcolumbiamo.com/directory/flat-branch-pub-brewing/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary only; not commercial agreement or live publication."
+          },
+          "reviewNotes": "Operator homepage and map page returned web retrieval errors; official city visitor listing verified and used as CTA. No claim the business is closed."
+        },
+        {
+          "id": "DEST-034-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Missouri game-day information",
+          "summary": "Review Mizzou Athletics’ official tailgating and parking guidance before your Columbia game day. Recheck the university’s current rules and event updates.",
+          "url": "https://mutigers.com/tailgating",
+          "sourceUrl": "https://mutigers.com/tailgating",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Missouri",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://mutigers.com/tailgating"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary only; not commercial agreement or live publication."
+          }
+        },
+        {
+          "id": "DEST-034-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "Columbia Convention and Visitors Bureau",
+          "summary": "Use Columbia’s official visitor site to find local events, dining, places to stay and trip-planning information.",
+          "url": "https://www.visitcolumbiamo.com/",
+          "sourceUrl": "https://www.visitcolumbiamo.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-034",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore visitor information",
+              "url": "https://www.visitcolumbiamo.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary only; not commercial agreement or live publication."
+          }
+        }
+      ],
+      "lastReviewedOn": "2026-10-12",
+      "reviewNote": "Six source-checked summaries. Draft pending venue mapping, commercial conflict review and app QA.",
+      "runtimeVenueEvidence": {
+        "destinationId": "DEST-034",
+        "canonicalTeamId": "missouri",
+        "teamName": "Missouri",
+        "market": "Columbia",
+        "state": "MO",
+        "sourceUrl": "https://roadtrip-app-53u2.onrender.com/football/games?team=Missouri&year=2026&awayOnly=false",
+        "season": 2026,
+        "checkedOn": "2026-10-12",
+        "responseGameCount": 12,
+        "nonNeutralHomeGameCount": 7,
+        "destinationVenueIds": [
+          3838
+        ],
+        "venues": [
+          {
+            "venueId": 3838,
+            "venueName": "Memorial Stadium"
+          }
+        ],
+        "homeGames": [
+          {
+            "id": 401856663,
+            "season": 2026,
+            "week": 1,
+            "startDate": "2026-09-04T00:00:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": false,
+            "neutralSite": false,
+            "homeTeam": "Missouri",
+            "awayTeam": "Arkansas-Pine Bluff",
+            "venue": "Memorial Stadium",
+            "venueId": 3838,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856689,
+            "season": 2026,
+            "week": 3,
+            "startDate": "2026-09-19T23:00:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": false,
+            "neutralSite": false,
+            "homeTeam": "Missouri",
+            "awayTeam": "Troy",
+            "venue": "Memorial Stadium",
+            "venueId": 3838,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856708,
+            "season": 2026,
+            "week": 5,
+            "startDate": "2026-10-03T19:30:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Missouri",
+            "awayTeam": "Florida",
+            "venue": "Memorial Stadium",
+            "venueId": 3838,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856716,
+            "season": 2026,
+            "week": 6,
+            "startDate": "2026-10-10T16:00:00.000Z",
+            "startTimeTBD": false,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Missouri",
+            "awayTeam": "Texas A&M",
+            "venue": "Memorial Stadium",
+            "venueId": 3838,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856743,
+            "season": 2026,
+            "week": 10,
+            "startDate": "2026-11-07T05:00:00.000Z",
+            "startTimeTBD": true,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Missouri",
+            "awayTeam": "Texas",
+            "venue": "Memorial Stadium",
+            "venueId": 3838,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856751,
+            "season": 2026,
+            "week": 12,
+            "startDate": "2026-11-21T05:00:00.000Z",
+            "startTimeTBD": true,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Missouri",
+            "awayTeam": "Kentucky",
+            "venue": "Memorial Stadium",
+            "venueId": 3838,
+            "isAwayGame": false
+          },
+          {
+            "id": 401856763,
+            "season": 2026,
+            "week": 13,
+            "startDate": "2026-11-28T05:00:00.000Z",
+            "startTimeTBD": true,
+            "conferenceGame": true,
+            "neutralSite": false,
+            "homeTeam": "Missouri",
+            "awayTeam": "Oklahoma",
+            "venue": "Memorial Stadium",
+            "venueId": 3838,
+            "isAwayGame": false
+          }
+        ],
+        "excludedNeutralGames": [],
+        "excludedAwayGameCount": 5,
+        "marketFitEvidence": {
+          "status": "confirmed_by_official_athletics_search_evidence",
+          "url": "https://mutigers.com/sports/football/schedule?path=football",
+          "note": "Official athletics source associates the stadium with the canonical destination city; no alternate home venue occurred in the runtime response."
+        },
+        "targetingStatus": "runtime_non_neutral_home_venue_verified",
+        "excludedAlternateCityHomeGameCount": 0
+      },
+      "commercialReview": {
+        "asOf": "2026-10-12",
+        "masterModifiedTime": "2026-10-12T16:25:02.147Z",
+        "result": "No paid/complimentary/declined/opt-out statuses among 60 prospect rows across these six destinations; existing Tempe and Lubbock partners preserved. Editorial listing does not imply a commercial relationship."
       }
     }
   ],
