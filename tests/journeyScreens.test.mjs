@@ -56,7 +56,7 @@ const appCssSource = await readFile(
 
 test("approved journey screen order remains explicit", () => {
   assert.deepEqual(
-    JOURNEY_SCREENS.filter((screen) => screen.id !== "destinations").map((screen) => screen.id),
+    JOURNEY_SCREENS.map((screen) => screen.id),
     [
       "destinations",
       "home",
