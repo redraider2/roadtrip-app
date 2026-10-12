@@ -21,8 +21,8 @@ for (const width of [1280, 390]) {
       await page.getByRole('searchbox').fill('SMU');
       await page.getByRole('navigation', { name: 'Destinations' }).getByRole('link').click();
       await expect(page.getByRole('heading', { name: 'Dallas, TX', exact: true })).toBeVisible();
-      await expect(page.locator('[data-recommendation-id]')).toHaveCount(0);
-      await expect(page.getByText('Local recommendations are being prepared', { exact: false })).toBeVisible();
+      await expect(page.locator('[data-recommendation-id]')).toHaveCount(6);
+      await expect(page.locator('[data-recommendation-id]').first()).toContainText('Highland Park Village');
       await page.reload();
       await expect(page.getByRole('heading', { name: 'Dallas, TX', exact: true })).toBeVisible();
       await page.getByRole('button', { name: '← Home' }).click();
@@ -34,3 +34,33 @@ for (const width of [1280, 390]) {
     } finally { await context.close(); }
   });
 }
+
+
+test('every public market link renders eligible local content without an account',async()=>{
+  const {default: content}=await import('../../src/data/destinationPicks.json',{with:{type:'json'}});
+  for(const width of [1280,390]){
+    const context=await browser.newContext({viewport:{width,height:900}});
+    await context.route('http://localhost:5001/**',route=>route.fulfill({json:[]}));
+    const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+    try {
+      let total=0;
+      for(const d of content.destinations){
+        await page.goto(`http://127.0.0.1:5183/#/destinations?market=${d.destinationId}`);
+        await expect(page.getByRole('heading',{name:`${d.market}, ${d.state}`,exact:true})).toBeVisible();
+        const eligible=d.entries.filter(e=>e.verificationStatus==='source_checked'&&e.publicationStatus==='implementation_candidate'&&(!e.venuePolicyScope||e.venuePolicyScope.includes(d.destinationVenueIds[0])));
+        await expect(page.locator('[data-recommendation-id]')).toHaveCount(eligible.length);total+=eligible.length;
+        for(const e of eligible)await expect(page.locator(`[data-recommendation-id="${e.id}"]`)).toContainText(e.title);
+        assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));
+        if(d.destinationId==='DEST-015')await expect(page.locator('[data-campaign-id="culinary_gangster_tempe"]')).toHaveCount(1);
+        if(d.destinationId==='DEST-008')await expect(page.locator('[data-partner-id="cactus_theater"]')).toHaveCount(1);
+      }
+      assert.equal(total,815);assert.deepEqual(errors,[]);
+      await page.goto('http://127.0.0.1:5183/#/destinations?market=DEST-065');
+      await expect(page.getByRole('heading',{name:'Miami Lakes Hotel on Main',exact:true})).toBeVisible();
+      await expect(page.getByRole('heading',{name:'Stadium Hotel',exact:true})).toHaveCount(0);
+      await page.goto('http://127.0.0.1:5183/#/destinations?market=DEST-133');
+      await expect(page.getByRole('heading',{name:/Moe/})).toBeVisible();
+      await page.screenshot({path:`/tmp/national-destinations-${width}.png`,fullPage:true});
+    }finally{await context.close();}
+  }
+});
