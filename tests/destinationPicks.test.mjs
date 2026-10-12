@@ -17,7 +17,7 @@ test("all selected destination venues have six source-checked recommendations", 
 });
 
 test("unknown and neutral-site venues do not receive a team's home-city picks", () => {
-  for (const venue of [null, undefined, "", "9999", 3634]) assert.equal(getDestinationPicks(venue), null);
+  for (const venue of [null, undefined, "", "9999", 5348]) assert.equal(getDestinationPicks(venue), null);
   assert.equal(getDestinationPicks(" 3784 ").teamName, "Texas Tech");
 });
 
