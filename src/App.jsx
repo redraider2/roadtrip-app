@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import Background from "./components/Background";
 import "./App.css";
 import TripMap from "./components/TripMap";
@@ -3523,6 +3524,7 @@ displayDestination ||
           </p>
         </footer>
       </div>
+      <Analytics />
     </div>
   );
 }
