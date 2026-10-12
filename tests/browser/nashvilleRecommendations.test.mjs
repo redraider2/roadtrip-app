@@ -33,6 +33,12 @@ for(const width of [1280,390])test(`Nashville recommendations across journey and
    const guide=page.locator(`[data-nashville-placement="${placement}"]`);
    await expect(guide).toHaveCount(1);await guide.scrollIntoViewIfNeeded();
    await expect(page.getByRole('heading',{name:'VisitMusicCity.com',exact:true})).toHaveCount(1);
+   const feature=page.locator('[data-visit-music-city-feature]');
+   await expect(feature).toHaveCount(1);
+   await expect(feature.locator('svg')).toHaveCount(1);
+   const cta=feature.getByRole('link',{name:'Explore Music City'});
+   await cta.focus();assert.notEqual(await cta.evaluate(el=>getComputedStyle(el).outlineStyle),'none');
+   if(screen==='game-day')await feature.screenshot({path:`outputs/nashville-review/feature-${width}.png`});
    for(const link of await page.getByRole('link',{name:/Explore Music City|Plan your visit at VisitMusicCity/}).all())assert.equal(await link.getAttribute('href'),'https://www.visitmusiccity.com/');
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
    if(screen==='game-day') await expect(guide).toContainText('Breakfast at Brown’s Diner');

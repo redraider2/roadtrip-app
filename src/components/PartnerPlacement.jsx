@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import VisitMusicCityFeature from "./VisitMusicCityFeature.jsx";
 import { recordPartnerEvent } from "../lib/partnerMetrics.js";
 
 const PARTNER_LABELS = {
@@ -39,6 +40,9 @@ export default function PartnerPlacement({
   }, [contextLabel, partner, type]);
 
   if (!partner) return null;
+  if (!compact && partner.id === "visit_music_city_nashville") {
+    return <VisitMusicCityFeature partner={partner} contextLabel={contextLabel} />;
+  }
 
   const placementLabel = partner.isEditorial
     ? partner.editorialLabel || "Kickoff Miles Pick"
