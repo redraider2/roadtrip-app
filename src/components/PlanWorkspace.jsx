@@ -1,3 +1,5 @@
+import { formatGameCalendarDate } from "../lib/formatters.js";
+
 const PLAN_TABS = [
   { id: "plan-route-schedule", label: "Route & Schedule" },
   { id: "plan-along-the-way", label: "Along the Way" },
@@ -16,10 +18,7 @@ function destinationCity(value = "") {
 function shortGameDate(game) {
   if (!game?.startDate) return null;
 
-  return new Date(game.startDate).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-  });
+  return formatGameCalendarDate(game.startDate, game.startTimeTBD);
 }
 
 export default function PlanWorkspace({
