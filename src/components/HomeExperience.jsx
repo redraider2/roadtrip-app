@@ -4,6 +4,7 @@ export default function HomeExperience({
   accountLabel,
   children,
   onChooseTeam,
+  onBrowseDestinations,
 }) {
   return (
     <section className="home-experience" aria-labelledby="home-headline">
@@ -30,6 +31,7 @@ export default function HomeExperience({
               <span>Choose Your Team</span>
               <span aria-hidden="true">→</span>
             </button>
+            <button type="button" className="ghost-button" onClick={onBrowseDestinations}>Explore Destinations</button>
           </div>
         </div>
       </div>

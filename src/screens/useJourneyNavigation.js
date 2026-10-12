@@ -14,8 +14,12 @@ export function useJourneyNavigation() {
   useEffect(() => {
     const handlePopState = () => setActiveScreen(readActiveScreen());
     window.addEventListener("popstate", handlePopState);
+    window.addEventListener("hashchange", handlePopState);
 
-    return () => window.removeEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+      window.removeEventListener("hashchange", handlePopState);
+    };
   }, []);
 
   const navigateTo = useCallback((screenId) => {

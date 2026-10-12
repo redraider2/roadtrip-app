@@ -1,3 +1,4 @@
+import DestinationBrowser from "./components/DestinationBrowser.jsx";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import Background from "./components/Background";
@@ -1632,7 +1633,7 @@ function App() {
     }${
       activeScreen === "drive" ? " is-drive" : ""
     }`}>
-      {!["home", "choose-team", "choose-game", "trip-hq"].includes(activeScreen) &&
+      {!["home", "destinations", "choose-team", "choose-game", "trip-hq"].includes(activeScreen) &&
       !isPlanScreen ? (
         <JourneyNavigation
         activeScreen={activeScreen}
@@ -1641,6 +1642,7 @@ function App() {
       />
       ) : null}
 
+      {activeScreen === "destinations" ? <DestinationBrowser onHome={() => navigateTo("home")} /> : null}
       <HomeScreen active={activeScreen === "home"}>
       <HomeExperience
         accountLabel={
@@ -1649,6 +1651,7 @@ function App() {
             : "Sign in to save your trips"
         }
         onChooseTeam={() => navigateTo("choose-team")}
+        onBrowseDestinations={() => navigateTo("destinations")}
       >
         <div className="panel account-panel">
           <h2 className="panel-title">
