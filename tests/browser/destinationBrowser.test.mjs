@@ -48,7 +48,7 @@ test('every public market link renders eligible local content without an account
         await page.goto(`http://127.0.0.1:5183/#/destinations?market=${d.destinationId}`);
         await expect(page.getByRole('heading',{name:`${d.market}, ${d.state}`,exact:true})).toBeVisible();
         const eligible=d.entries.filter(e=>e.verificationStatus==='source_checked'&&e.publicationStatus==='implementation_candidate'&&(!e.venuePolicyScope||e.venuePolicyScope.includes(d.destinationVenueIds[0])));
-        await expect(page.locator('[data-recommendation-id]')).toHaveCount(eligible.length);total+=eligible.length;
+        await expect(page.locator('.destination-browser-picks [data-recommendation-id]')).toHaveCount(eligible.length);total+=eligible.length;
         for(const e of eligible)await expect(page.locator(`[data-recommendation-id="${e.id}"]`)).toContainText(e.title);
         assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));
         if(d.destinationId==='DEST-015')await expect(page.locator('[data-campaign-id="culinary_gangster_tempe"]')).toHaveCount(1);

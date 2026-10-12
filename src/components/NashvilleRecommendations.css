@@ -1,0 +1,10 @@
+.nashville-guide { margin: 24px 0; padding: clamp(18px, 3vw, 28px); border: 1px solid rgba(212,175,85,.45); border-radius: 22px; background: linear-gradient(125deg, rgba(212,175,85,.10), rgba(7,15,21,.94)); min-width: 0; }
+.nashville-guide > .partner-placement { margin: 0 0 24px; }
+.nashville-guide h2 { margin: 8px 0 22px; font-size: clamp(22px, 3vw, 30px); line-height: 1.25; }
+.nashville-guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 18px; }
+.nashville-guide-grid article { min-width: 0; padding: 20px; border: 1px solid rgba(255,255,255,.12); border-radius: 16px; background: rgba(5,12,17,.58); }
+.nashville-guide-grid h3 { margin: 0 0 14px; color: #e3c17c; font-size: 18px; }
+.nashville-guide-grid ul { padding-left: 20px; margin: 0; }
+.nashville-guide-grid li { padding-left: 3px; margin: 9px 0; line-height: 1.55; overflow-wrap: anywhere; }
+.nashville-guide-link { display: inline-block; margin-top: 22px; color: #e3c17c; font-weight: 700; line-height: 1.5; }
+.nashville-guide-link:focus-visible { outline: 2px solid #e3c17c; outline-offset: 5px; }

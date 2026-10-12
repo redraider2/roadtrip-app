@@ -16,7 +16,7 @@ for (const width of [1280,390]) {
       for (const d of content.destinations) {
         await page.evaluate(id => {window.location.hash=`/destinations?market=${id}`;},d.destinationId);
         await expect(page.getByRole('heading',{name:`${d.market}, ${d.state}`,exact:true})).toBeVisible();
-        const cards=page.locator('[data-recommendation-id]');
+        const cards=page.locator('.destination-browser-picks [data-recommendation-id]');
         const eligible=d.entries.filter(e=>e.publicationStatus==='implementation_candidate' && e.verificationStatus==='source_checked');
         await expect(cards).toHaveCount(eligible.length);
         assert.deepEqual(await cards.evaluateAll(nodes=>nodes.map(n=>n.dataset.recommendationId)),eligible.map(e=>e.id));

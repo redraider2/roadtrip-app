@@ -13,6 +13,8 @@ import DriveExperience from "./components/DriveExperience.jsx";
 import TripHqExperience from "./components/TripHqExperience.jsx";
 import DestinationArtworkPlacement from "./components/DestinationArtworkPlacement.jsx";
 import { culinaryGangsterTempe, selectDestinationArtwork } from "./lib/destinationArtworkCampaigns.js";
+import NashvilleRecommendations from "./components/NashvilleRecommendations.jsx";
+import { visitMusicCity, getNashvilleRecommendations } from "./lib/nashvilleRecommendations.js";
 import DestinationPartnerDiscovery from "./components/DestinationPartnerDiscovery.jsx";
 import { getDestinationPicks, recommendationFallback } from "./lib/destinationPicks.js";
 import { getDestinationPartners, isDestinationPartnerSaved } from "./lib/destinationPartners.js";
@@ -1573,7 +1575,8 @@ function App() {
   const isFeaturedAdvertiserDemo =
     isAdvertiserSalesPreview && advertiserDemoPackage === "featured";
   const recommendationVenueId = activeTrip?.venueId || destinationVenueId;
-  const routePartner = recommendationFallback(KICKOFF_MILES_HOUSE_AD, recommendationVenueId, 1);
+  const isNashvilleDestination = Boolean(getNashvilleRecommendations(recommendationVenueId, "destination"));
+  const routePartner = isNashvilleDestination ? visitMusicCity : recommendationFallback(KICKOFF_MILES_HOUSE_AD, recommendationVenueId, 1);
   const existingWorkspacePartner =
     isFeaturedAdvertiserDemo
       ? advertiserDemoPartner
@@ -1584,7 +1587,7 @@ function App() {
           : import.meta.env.DEV
             ? DEVELOPMENT_PARTNER_PREVIEW
             : KICKOFF_MILES_HOUSE_AD;
-  const workspacePartner = recommendationFallback(existingWorkspacePartner, recommendationVenueId, activeScreen === "plan-stay-itinerary" ? 1 : 0);
+  const workspacePartner = isNashvilleDestination && (existingWorkspacePartner.isHouseAd || existingWorkspacePartner.isDevelopmentPreview) ? visitMusicCity : recommendationFallback(existingWorkspacePartner, recommendationVenueId, activeScreen === "plan-stay-itinerary" ? 1 : 0);
   const hasFeaturedDiscovery = activeScreen === "trip-hq" && getDestinationPartners(recommendationVenueId, "trip_hq").length > 0;
   const recommendationExcludeNames = hasFeaturedDiscovery || hasTempeSponsor ? [] : [(["plan-route-schedule", "plan-along-the-way"].includes(activeScreen) ? routePartner : workspacePartner)?.businessName];
   const destinationPartnerInventory = advertiserDemoPartner
@@ -1966,6 +1969,7 @@ function App() {
               partner={routePartner}
             />
 } />
+            <NashvilleRecommendations venueId={recommendationVenueId} placement="along_the_way" />
             {alongTheWayLoading ? (
               <p className="empty-state">
                 Finding food, hotels, and historic stops along your route...
@@ -2322,6 +2326,7 @@ function App() {
       ))}
         </div>
   </div>
+  <NashvilleRecommendations venueId={recommendationVenueId} placement="stay_itinerary" featured={workspacePartner !== visitMusicCity} />
   </PlanWorkspace>
   </PlanStayItineraryScreen>
 ) : null}
@@ -2362,6 +2367,7 @@ function App() {
         {hasTempeSponsor && (destinationPartnerInventory.length > 0 || getDestinationPicks(recommendationVenueId)) ? (
           <DestinationPartnerRail recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames} contextLabel="Trip HQ" partners={destinationPartnerInventory} minimumPositions={5} />
         ) : null}
+        <NashvilleRecommendations venueId={recommendationVenueId} placement="trip_hq" featured={workspacePartner !== visitMusicCity} />
         <div className="panel trip-workspace-panel">
           <div className="section-heading-row">
             <div>
@@ -2797,6 +2803,7 @@ function App() {
             </div>
 
             <DestinationArtworkPlacement campaign={culinaryGangsterTempe} venueId={campaignVenueId} placement="game_weekend" />
+            {isNashvilleDestination ? <PartnerPlacement partner={visitMusicCity} contextLabel="Game Weekend" /> : null}
             {weekendVenue ? (
               <div className="destination-map-section">
                 <div className="destination-map-heading">
@@ -2853,6 +2860,7 @@ displayDestination ||
               comingSoon={destinationMarketComingSoon}
 />
 
+              <NashvilleRecommendations venueId={recommendationVenueId} placement="game_day" featured={workspacePartner !== visitMusicCity} />
               <div className="game-day-guide-grid">
                 <button
                   type="button"
@@ -3067,6 +3075,7 @@ displayDestination ||
             </GameDayScreen>
 
           <GameWeekendScreen active={activeScreen === "game-weekend"}>
+          <NashvilleRecommendations venueId={recommendationVenueId} placement="game_weekend" />
           <div className="panel destination-panel">
             {weekendPlacesLoading ? (
               <p className="empty-state">
@@ -3076,7 +3085,7 @@ displayDestination ||
               <p className="error-state">{weekendPlacesError}</p>
             ) : (
               <>
-  {!hasTempeSponsor ? <PartnerPlacement contextLabel="Game Weekend" partner={workspacePartner} /> : null}
+  {!hasTempeSponsor && workspacePartner !== visitMusicCity ? <PartnerPlacement contextLabel="Game Weekend" partner={workspacePartner} /> : null}
   <DestinationPartnerRail recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames}
     contextLabel="Game Weekend"
                 hideEmpty={hasTempeSponsor}
@@ -3313,6 +3322,7 @@ displayDestination ||
               trip={activeTrip}
               tripStats={tripStats}
             />
+            <NashvilleRecommendations venueId={recommendationVenueId} placement="drive" featured={workspacePartner !== visitMusicCity} />
           </DriveScreen>
         ) : null}
 
