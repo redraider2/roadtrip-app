@@ -1,4 +1,5 @@
 export const JOURNEY_SCREENS = [
+  { id: "destinations", label: "Destinations", status: "active-boundary" },
   { id: "home", label: "Home", status: "active-boundary" },
   { id: "choose-team", label: "Choose Team", status: "active-boundary" },
   { id: "choose-game", label: "Choose Game", status: "active-boundary" },
@@ -30,7 +31,7 @@ export const JOURNEY_SCREENS = [
 const JOURNEY_SCREEN_IDS = new Set(JOURNEY_SCREENS.map((screen) => screen.id));
 
 export function parseJourneyHash(hash = "") {
-  const screenId = String(hash).replace(/^#\/?/, "").trim();
+  const screenId = String(hash).split("?")[0].replace(/^#\/?/, "").trim();
   return JOURNEY_SCREEN_IDS.has(screenId) ? screenId : "home";
 }
 

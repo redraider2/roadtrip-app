@@ -1,0 +1,1090 @@
+[
+  {
+    "destinationId": "DEST-001",
+    "canonicalTeamId": "smu",
+    "teamName": "SMU",
+    "market": "Dallas",
+    "state": "TX",
+    "conference": "ACC"
+  },
+  {
+    "destinationId": "DEST-002",
+    "canonicalTeamId": "north-texas",
+    "teamName": "North Texas",
+    "market": "Denton",
+    "state": "TX",
+    "conference": "American"
+  },
+  {
+    "destinationId": "DEST-003",
+    "canonicalTeamId": "rice",
+    "teamName": "Rice",
+    "market": "Houston",
+    "state": "TX",
+    "conference": "American"
+  },
+  {
+    "destinationId": "DEST-004",
+    "canonicalTeamId": "utsa",
+    "teamName": "UTSA",
+    "market": "San Antonio",
+    "state": "TX",
+    "conference": "American"
+  },
+  {
+    "destinationId": "DEST-005",
+    "canonicalTeamId": "baylor",
+    "teamName": "Baylor",
+    "market": "Waco",
+    "state": "TX",
+    "conference": "Big 12"
+  },
+  {
+    "destinationId": "DEST-006",
+    "canonicalTeamId": "houston",
+    "teamName": "Houston",
+    "market": "Houston",
+    "state": "TX",
+    "conference": "Big 12"
+  },
+  {
+    "destinationId": "DEST-007",
+    "canonicalTeamId": "tcu",
+    "teamName": "TCU",
+    "market": "Fort Worth",
+    "state": "TX",
+    "conference": "Big 12"
+  },
+  {
+    "destinationId": "DEST-008",
+    "canonicalTeamId": "texas-tech",
+    "teamName": "Texas Tech",
+    "market": "Lubbock",
+    "state": "TX",
+    "conference": "Big 12"
+  },
+  {
+    "destinationId": "DEST-009",
+    "canonicalTeamId": "sam-houston",
+    "teamName": "Sam Houston",
+    "market": "Huntsville",
+    "state": "TX",
+    "conference": "Conference USA"
+  },
+  {
+    "destinationId": "DEST-010",
+    "canonicalTeamId": "utep",
+    "teamName": "UTEP",
+    "market": "El Paso",
+    "state": "TX",
+    "conference": "Mountain West"
+  },
+  {
+    "destinationId": "DEST-011",
+    "canonicalTeamId": "texas-state",
+    "teamName": "Texas State",
+    "market": "San Marcos",
+    "state": "TX",
+    "conference": "Pac-12"
+  },
+  {
+    "destinationId": "DEST-012",
+    "canonicalTeamId": "texas",
+    "teamName": "Texas",
+    "market": "Austin",
+    "state": "TX",
+    "conference": "SEC"
+  },
+  {
+    "destinationId": "DEST-013",
+    "canonicalTeamId": "texas-a-and-m",
+    "teamName": "Texas A&M",
+    "market": "College Station / Bryan",
+    "state": "TX",
+    "conference": "SEC"
+  },
+  {
+    "destinationId": "DEST-014",
+    "canonicalTeamId": "arizona",
+    "teamName": "Arizona",
+    "market": "Tucson",
+    "state": "AZ",
+    "conference": "Big 12"
+  },
+  {
+    "destinationId": "DEST-015",
+    "canonicalTeamId": "arizona-state",
+    "teamName": "Arizona State",
+    "market": "Tempe",
+    "state": "AZ",
+    "conference": "Big 12"
+  },
+  {
+    "destinationId": "DEST-016",
+    "canonicalTeamId": "byu",
+    "teamName": "BYU",
+    "market": "Provo",
+    "state": "UT",
+    "conference": "Big 12"
+  },
+  {
+    "destinationId": "DEST-017",
+    "canonicalTeamId": "cincinnati",
+    "teamName": "Cincinnati",
+    "market": "Cincinnati",
+    "state": "OH",
+    "conference": "Big 12"
+  },
+  {
+    "destinationId": "DEST-018",
+    "canonicalTeamId": "colorado",
+    "teamName": "Colorado",
+    "market": "Boulder",
+    "state": "CO",
+    "conference": "Big 12"
+  },
+  {
+    "destinationId": "DEST-019",
+    "canonicalTeamId": "iowa-state",
+    "teamName": "Iowa State",
+    "market": "Ames",
+    "state": "IA",
+    "conference": "Big 12"
+  },
+  {
+    "destinationId": "DEST-020",
+    "canonicalTeamId": "kansas",
+    "teamName": "Kansas",
+    "market": "Lawrence",
+    "state": "KS",
+    "conference": "Big 12"
+  },
+  {
+    "destinationId": "DEST-021",
+    "canonicalTeamId": "kansas-state",
+    "teamName": "Kansas State",
+    "market": "Manhattan",
+    "state": "KS",
+    "conference": "Big 12"
+  },
+  {
+    "destinationId": "DEST-022",
+    "canonicalTeamId": "oklahoma-state",
+    "teamName": "Oklahoma State",
+    "market": "Stillwater",
+    "state": "OK",
+    "conference": "Big 12"
+  },
+  {
+    "destinationId": "DEST-023",
+    "canonicalTeamId": "ucf",
+    "teamName": "UCF",
+    "market": "Orlando",
+    "state": "FL",
+    "conference": "Big 12"
+  },
+  {
+    "destinationId": "DEST-024",
+    "canonicalTeamId": "utah",
+    "teamName": "Utah",
+    "market": "Salt Lake City",
+    "state": "UT",
+    "conference": "Big 12"
+  },
+  {
+    "destinationId": "DEST-025",
+    "canonicalTeamId": "west-virginia",
+    "teamName": "West Virginia",
+    "market": "Morgantown",
+    "state": "WV",
+    "conference": "Big 12"
+  },
+  {
+    "destinationId": "DEST-026",
+    "canonicalTeamId": "alabama",
+    "teamName": "Alabama",
+    "market": "Tuscaloosa",
+    "state": "AL",
+    "conference": "SEC"
+  },
+  {
+    "destinationId": "DEST-027",
+    "canonicalTeamId": "arkansas",
+    "teamName": "Arkansas",
+    "market": "Fayetteville",
+    "state": "AR",
+    "conference": "SEC"
+  },
+  {
+    "destinationId": "DEST-028",
+    "canonicalTeamId": "auburn",
+    "teamName": "Auburn",
+    "market": "Auburn",
+    "state": "AL",
+    "conference": "SEC"
+  },
+  {
+    "destinationId": "DEST-029",
+    "canonicalTeamId": "florida",
+    "teamName": "Florida",
+    "market": "Gainesville",
+    "state": "FL",
+    "conference": "SEC"
+  },
+  {
+    "destinationId": "DEST-030",
+    "canonicalTeamId": "georgia",
+    "teamName": "Georgia",
+    "market": "Athens",
+    "state": "GA",
+    "conference": "SEC"
+  },
+  {
+    "destinationId": "DEST-031",
+    "canonicalTeamId": "kentucky",
+    "teamName": "Kentucky",
+    "market": "Lexington",
+    "state": "KY",
+    "conference": "SEC"
+  },
+  {
+    "destinationId": "DEST-032",
+    "canonicalTeamId": "lsu",
+    "teamName": "LSU",
+    "market": "Baton Rouge",
+    "state": "LA",
+    "conference": "SEC"
+  },
+  {
+    "destinationId": "DEST-033",
+    "canonicalTeamId": "mississippi-state",
+    "teamName": "Mississippi State",
+    "market": "Starkville",
+    "state": "MS",
+    "conference": "SEC"
+  },
+  {
+    "destinationId": "DEST-034",
+    "canonicalTeamId": "missouri",
+    "teamName": "Missouri",
+    "market": "Columbia",
+    "state": "MO",
+    "conference": "SEC"
+  },
+  {
+    "destinationId": "DEST-035",
+    "canonicalTeamId": "oklahoma",
+    "teamName": "Oklahoma",
+    "market": "Norman",
+    "state": "OK",
+    "conference": "SEC"
+  },
+  {
+    "destinationId": "DEST-036",
+    "canonicalTeamId": "ole-miss",
+    "teamName": "Ole Miss",
+    "market": "Oxford",
+    "state": "MS",
+    "conference": "SEC"
+  },
+  {
+    "destinationId": "DEST-037",
+    "canonicalTeamId": "south-carolina",
+    "teamName": "South Carolina",
+    "market": "Columbia",
+    "state": "SC",
+    "conference": "SEC"
+  },
+  {
+    "destinationId": "DEST-038",
+    "canonicalTeamId": "tennessee",
+    "teamName": "Tennessee",
+    "market": "Knoxville",
+    "state": "TN",
+    "conference": "SEC"
+  },
+  {
+    "destinationId": "DEST-039",
+    "canonicalTeamId": "vanderbilt",
+    "teamName": "Vanderbilt",
+    "market": "Nashville",
+    "state": "TN",
+    "conference": "SEC"
+  },
+  {
+    "destinationId": "DEST-040",
+    "canonicalTeamId": "illinois",
+    "teamName": "Illinois",
+    "market": "Champaign",
+    "state": "IL",
+    "conference": "Big Ten"
+  },
+  {
+    "destinationId": "DEST-041",
+    "canonicalTeamId": "indiana",
+    "teamName": "Indiana",
+    "market": "Bloomington",
+    "state": "IN",
+    "conference": "Big Ten"
+  },
+  {
+    "destinationId": "DEST-042",
+    "canonicalTeamId": "iowa",
+    "teamName": "Iowa",
+    "market": "Iowa City",
+    "state": "IA",
+    "conference": "Big Ten"
+  },
+  {
+    "destinationId": "DEST-043",
+    "canonicalTeamId": "maryland",
+    "teamName": "Maryland",
+    "market": "College Park",
+    "state": "MD",
+    "conference": "Big Ten"
+  },
+  {
+    "destinationId": "DEST-044",
+    "canonicalTeamId": "michigan",
+    "teamName": "Michigan",
+    "market": "Ann Arbor",
+    "state": "MI",
+    "conference": "Big Ten"
+  },
+  {
+    "destinationId": "DEST-045",
+    "canonicalTeamId": "michigan-state",
+    "teamName": "Michigan State",
+    "market": "East Lansing",
+    "state": "MI",
+    "conference": "Big Ten"
+  },
+  {
+    "destinationId": "DEST-046",
+    "canonicalTeamId": "minnesota",
+    "teamName": "Minnesota",
+    "market": "Minneapolis",
+    "state": "MN",
+    "conference": "Big Ten"
+  },
+  {
+    "destinationId": "DEST-047",
+    "canonicalTeamId": "nebraska",
+    "teamName": "Nebraska",
+    "market": "Lincoln",
+    "state": "NE",
+    "conference": "Big Ten"
+  },
+  {
+    "destinationId": "DEST-048",
+    "canonicalTeamId": "northwestern",
+    "teamName": "Northwestern",
+    "market": "Evanston",
+    "state": "IL",
+    "conference": "Big Ten"
+  },
+  {
+    "destinationId": "DEST-049",
+    "canonicalTeamId": "ohio-state",
+    "teamName": "Ohio State",
+    "market": "Columbus",
+    "state": "OH",
+    "conference": "Big Ten"
+  },
+  {
+    "destinationId": "DEST-050",
+    "canonicalTeamId": "oregon",
+    "teamName": "Oregon",
+    "market": "Eugene",
+    "state": "OR",
+    "conference": "Big Ten"
+  },
+  {
+    "destinationId": "DEST-051",
+    "canonicalTeamId": "penn-state",
+    "teamName": "Penn State",
+    "market": "University Park",
+    "state": "PA",
+    "conference": "Big Ten"
+  },
+  {
+    "destinationId": "DEST-052",
+    "canonicalTeamId": "purdue",
+    "teamName": "Purdue",
+    "market": "West Lafayette",
+    "state": "IN",
+    "conference": "Big Ten"
+  },
+  {
+    "destinationId": "DEST-053",
+    "canonicalTeamId": "rutgers",
+    "teamName": "Rutgers",
+    "market": "Piscataway",
+    "state": "NJ",
+    "conference": "Big Ten"
+  },
+  {
+    "destinationId": "DEST-054",
+    "canonicalTeamId": "ucla",
+    "teamName": "UCLA",
+    "market": "Pasadena / Los Angeles",
+    "state": "CA",
+    "conference": "Big Ten"
+  },
+  {
+    "destinationId": "DEST-055",
+    "canonicalTeamId": "usc",
+    "teamName": "USC",
+    "market": "Los Angeles",
+    "state": "CA",
+    "conference": "Big Ten"
+  },
+  {
+    "destinationId": "DEST-056",
+    "canonicalTeamId": "washington",
+    "teamName": "Washington",
+    "market": "Seattle",
+    "state": "WA",
+    "conference": "Big Ten"
+  },
+  {
+    "destinationId": "DEST-057",
+    "canonicalTeamId": "wisconsin",
+    "teamName": "Wisconsin",
+    "market": "Madison",
+    "state": "WI",
+    "conference": "Big Ten"
+  },
+  {
+    "destinationId": "DEST-058",
+    "canonicalTeamId": "boston-college",
+    "teamName": "Boston College",
+    "market": "Chestnut Hill",
+    "state": "MA",
+    "conference": "ACC"
+  },
+  {
+    "destinationId": "DEST-059",
+    "canonicalTeamId": "california",
+    "teamName": "California",
+    "market": "Berkeley",
+    "state": "CA",
+    "conference": "ACC"
+  },
+  {
+    "destinationId": "DEST-060",
+    "canonicalTeamId": "clemson",
+    "teamName": "Clemson",
+    "market": "Clemson",
+    "state": "SC",
+    "conference": "ACC"
+  },
+  {
+    "destinationId": "DEST-061",
+    "canonicalTeamId": "duke",
+    "teamName": "Duke",
+    "market": "Durham",
+    "state": "NC",
+    "conference": "ACC"
+  },
+  {
+    "destinationId": "DEST-062",
+    "canonicalTeamId": "florida-state",
+    "teamName": "Florida State",
+    "market": "Tallahassee",
+    "state": "FL",
+    "conference": "ACC"
+  },
+  {
+    "destinationId": "DEST-063",
+    "canonicalTeamId": "georgia-tech",
+    "teamName": "Georgia Tech",
+    "market": "Atlanta",
+    "state": "GA",
+    "conference": "ACC"
+  },
+  {
+    "destinationId": "DEST-064",
+    "canonicalTeamId": "louisville",
+    "teamName": "Louisville",
+    "market": "Louisville",
+    "state": "KY",
+    "conference": "ACC"
+  },
+  {
+    "destinationId": "DEST-065",
+    "canonicalTeamId": "miami",
+    "teamName": "Miami",
+    "market": "Miami Gardens",
+    "state": "FL",
+    "conference": "ACC"
+  },
+  {
+    "destinationId": "DEST-066",
+    "canonicalTeamId": "nc-state",
+    "teamName": "NC State",
+    "market": "Raleigh",
+    "state": "NC",
+    "conference": "ACC"
+  },
+  {
+    "destinationId": "DEST-067",
+    "canonicalTeamId": "north-carolina",
+    "teamName": "North Carolina",
+    "market": "Chapel Hill",
+    "state": "NC",
+    "conference": "ACC"
+  },
+  {
+    "destinationId": "DEST-068",
+    "canonicalTeamId": "pittsburgh",
+    "teamName": "Pittsburgh",
+    "market": "Pittsburgh",
+    "state": "PA",
+    "conference": "ACC"
+  },
+  {
+    "destinationId": "DEST-069",
+    "canonicalTeamId": "stanford",
+    "teamName": "Stanford",
+    "market": "Stanford",
+    "state": "CA",
+    "conference": "ACC"
+  },
+  {
+    "destinationId": "DEST-070",
+    "canonicalTeamId": "syracuse",
+    "teamName": "Syracuse",
+    "market": "Syracuse",
+    "state": "NY",
+    "conference": "ACC"
+  },
+  {
+    "destinationId": "DEST-071",
+    "canonicalTeamId": "virginia",
+    "teamName": "Virginia",
+    "market": "Charlottesville",
+    "state": "VA",
+    "conference": "ACC"
+  },
+  {
+    "destinationId": "DEST-072",
+    "canonicalTeamId": "virginia-tech",
+    "teamName": "Virginia Tech",
+    "market": "Blacksburg",
+    "state": "VA",
+    "conference": "ACC"
+  },
+  {
+    "destinationId": "DEST-073",
+    "canonicalTeamId": "wake-forest",
+    "teamName": "Wake Forest",
+    "market": "Winston-Salem",
+    "state": "NC",
+    "conference": "ACC"
+  },
+  {
+    "destinationId": "DEST-074",
+    "canonicalTeamId": "army",
+    "teamName": "Army",
+    "market": "West Point",
+    "state": "NY",
+    "conference": "American"
+  },
+  {
+    "destinationId": "DEST-075",
+    "canonicalTeamId": "charlotte",
+    "teamName": "Charlotte",
+    "market": "Charlotte",
+    "state": "NC",
+    "conference": "American"
+  },
+  {
+    "destinationId": "DEST-076",
+    "canonicalTeamId": "east-carolina",
+    "teamName": "East Carolina",
+    "market": "Greenville",
+    "state": "NC",
+    "conference": "American"
+  },
+  {
+    "destinationId": "DEST-077",
+    "canonicalTeamId": "florida-atlantic",
+    "teamName": "Florida Atlantic",
+    "market": "Boca Raton",
+    "state": "FL",
+    "conference": "American"
+  },
+  {
+    "destinationId": "DEST-078",
+    "canonicalTeamId": "memphis",
+    "teamName": "Memphis",
+    "market": "Memphis",
+    "state": "TN",
+    "conference": "American"
+  },
+  {
+    "destinationId": "DEST-079",
+    "canonicalTeamId": "navy",
+    "teamName": "Navy",
+    "market": "Annapolis",
+    "state": "MD",
+    "conference": "American"
+  },
+  {
+    "destinationId": "DEST-080",
+    "canonicalTeamId": "south-florida",
+    "teamName": "South Florida",
+    "market": "Tampa",
+    "state": "FL",
+    "conference": "American"
+  },
+  {
+    "destinationId": "DEST-081",
+    "canonicalTeamId": "temple",
+    "teamName": "Temple",
+    "market": "Philadelphia",
+    "state": "PA",
+    "conference": "American"
+  },
+  {
+    "destinationId": "DEST-082",
+    "canonicalTeamId": "tulane",
+    "teamName": "Tulane",
+    "market": "New Orleans",
+    "state": "LA",
+    "conference": "American"
+  },
+  {
+    "destinationId": "DEST-083",
+    "canonicalTeamId": "tulsa",
+    "teamName": "Tulsa",
+    "market": "Tulsa",
+    "state": "OK",
+    "conference": "American"
+  },
+  {
+    "destinationId": "DEST-084",
+    "canonicalTeamId": "uab",
+    "teamName": "UAB",
+    "market": "Birmingham",
+    "state": "AL",
+    "conference": "American"
+  },
+  {
+    "destinationId": "DEST-085",
+    "canonicalTeamId": "delaware",
+    "teamName": "Delaware",
+    "market": "Newark",
+    "state": "DE",
+    "conference": "Conference USA"
+  },
+  {
+    "destinationId": "DEST-086",
+    "canonicalTeamId": "florida-international",
+    "teamName": "Florida International",
+    "market": "Miami",
+    "state": "FL",
+    "conference": "Conference USA"
+  },
+  {
+    "destinationId": "DEST-087",
+    "canonicalTeamId": "jacksonville-state",
+    "teamName": "Jacksonville State",
+    "market": "Jacksonville",
+    "state": "AL",
+    "conference": "Conference USA"
+  },
+  {
+    "destinationId": "DEST-088",
+    "canonicalTeamId": "kennesaw-state",
+    "teamName": "Kennesaw State",
+    "market": "Kennesaw",
+    "state": "GA",
+    "conference": "Conference USA"
+  },
+  {
+    "destinationId": "DEST-089",
+    "canonicalTeamId": "liberty",
+    "teamName": "Liberty",
+    "market": "Lynchburg",
+    "state": "VA",
+    "conference": "Conference USA"
+  },
+  {
+    "destinationId": "DEST-090",
+    "canonicalTeamId": "middle-tennessee",
+    "teamName": "Middle Tennessee",
+    "market": "Murfreesboro",
+    "state": "TN",
+    "conference": "Conference USA"
+  },
+  {
+    "destinationId": "DEST-091",
+    "canonicalTeamId": "missouri-state",
+    "teamName": "Missouri State",
+    "market": "Springfield",
+    "state": "MO",
+    "conference": "Conference USA"
+  },
+  {
+    "destinationId": "DEST-092",
+    "canonicalTeamId": "new-mexico-state",
+    "teamName": "New Mexico State",
+    "market": "Las Cruces",
+    "state": "NM",
+    "conference": "Conference USA"
+  },
+  {
+    "destinationId": "DEST-093",
+    "canonicalTeamId": "western-kentucky",
+    "teamName": "Western Kentucky",
+    "market": "Bowling Green",
+    "state": "KY",
+    "conference": "Conference USA"
+  },
+  {
+    "destinationId": "DEST-094",
+    "canonicalTeamId": "notre-dame",
+    "teamName": "Notre Dame",
+    "market": "South Bend",
+    "state": "IN",
+    "conference": "Independent"
+  },
+  {
+    "destinationId": "DEST-095",
+    "canonicalTeamId": "uconn",
+    "teamName": "UConn",
+    "market": "Storrs",
+    "state": "CT",
+    "conference": "Independent"
+  },
+  {
+    "destinationId": "DEST-096",
+    "canonicalTeamId": "akron",
+    "teamName": "Akron",
+    "market": "Akron",
+    "state": "OH",
+    "conference": "MAC"
+  },
+  {
+    "destinationId": "DEST-097",
+    "canonicalTeamId": "ball-state",
+    "teamName": "Ball State",
+    "market": "Muncie",
+    "state": "IN",
+    "conference": "MAC"
+  },
+  {
+    "destinationId": "DEST-098",
+    "canonicalTeamId": "bowling-green",
+    "teamName": "Bowling Green",
+    "market": "Bowling Green",
+    "state": "OH",
+    "conference": "MAC"
+  },
+  {
+    "destinationId": "DEST-099",
+    "canonicalTeamId": "buffalo",
+    "teamName": "Buffalo",
+    "market": "Buffalo",
+    "state": "NY",
+    "conference": "MAC"
+  },
+  {
+    "destinationId": "DEST-100",
+    "canonicalTeamId": "central-michigan",
+    "teamName": "Central Michigan",
+    "market": "Mount Pleasant",
+    "state": "MI",
+    "conference": "MAC"
+  },
+  {
+    "destinationId": "DEST-101",
+    "canonicalTeamId": "eastern-michigan",
+    "teamName": "Eastern Michigan",
+    "market": "Ypsilanti",
+    "state": "MI",
+    "conference": "MAC"
+  },
+  {
+    "destinationId": "DEST-102",
+    "canonicalTeamId": "kent-state",
+    "teamName": "Kent State",
+    "market": "Kent",
+    "state": "OH",
+    "conference": "MAC"
+  },
+  {
+    "destinationId": "DEST-103",
+    "canonicalTeamId": "massachusetts",
+    "teamName": "Massachusetts",
+    "market": "Amherst",
+    "state": "MA",
+    "conference": "MAC"
+  },
+  {
+    "destinationId": "DEST-104",
+    "canonicalTeamId": "miami-oh",
+    "teamName": "Miami (OH)",
+    "market": "Oxford",
+    "state": "OH",
+    "conference": "MAC"
+  },
+  {
+    "destinationId": "DEST-105",
+    "canonicalTeamId": "ohio",
+    "teamName": "Ohio",
+    "market": "Athens",
+    "state": "OH",
+    "conference": "MAC"
+  },
+  {
+    "destinationId": "DEST-106",
+    "canonicalTeamId": "toledo",
+    "teamName": "Toledo",
+    "market": "Toledo",
+    "state": "OH",
+    "conference": "MAC"
+  },
+  {
+    "destinationId": "DEST-107",
+    "canonicalTeamId": "western-michigan",
+    "teamName": "Western Michigan",
+    "market": "Kalamazoo",
+    "state": "MI",
+    "conference": "MAC"
+  },
+  {
+    "destinationId": "DEST-108",
+    "canonicalTeamId": "air-force",
+    "teamName": "Air Force",
+    "market": "USAF Academy",
+    "state": "CO",
+    "conference": "Mountain West"
+  },
+  {
+    "destinationId": "DEST-109",
+    "canonicalTeamId": "hawaii",
+    "teamName": "Hawai'i",
+    "market": "Honolulu",
+    "state": "HI",
+    "conference": "Mountain West"
+  },
+  {
+    "destinationId": "DEST-110",
+    "canonicalTeamId": "nevada",
+    "teamName": "Nevada",
+    "market": "Reno",
+    "state": "NV",
+    "conference": "Mountain West"
+  },
+  {
+    "destinationId": "DEST-111",
+    "canonicalTeamId": "new-mexico",
+    "teamName": "New Mexico",
+    "market": "Albuquerque",
+    "state": "NM",
+    "conference": "Mountain West"
+  },
+  {
+    "destinationId": "DEST-112",
+    "canonicalTeamId": "northern-illinois",
+    "teamName": "Northern Illinois",
+    "market": "DeKalb",
+    "state": "IL",
+    "conference": "Mountain West"
+  },
+  {
+    "destinationId": "DEST-113",
+    "canonicalTeamId": "san-jose-state",
+    "teamName": "San Jos\u00e9 State",
+    "market": "San Jose",
+    "state": "CA",
+    "conference": "Mountain West"
+  },
+  {
+    "destinationId": "DEST-114",
+    "canonicalTeamId": "unlv",
+    "teamName": "UNLV",
+    "market": "Las Vegas",
+    "state": "NV",
+    "conference": "Mountain West"
+  },
+  {
+    "destinationId": "DEST-115",
+    "canonicalTeamId": "wyoming",
+    "teamName": "Wyoming",
+    "market": "Laramie",
+    "state": "WY",
+    "conference": "Mountain West"
+  },
+  {
+    "destinationId": "DEST-116",
+    "canonicalTeamId": "boise-state",
+    "teamName": "Boise State",
+    "market": "Boise",
+    "state": "ID",
+    "conference": "Pac-12"
+  },
+  {
+    "destinationId": "DEST-117",
+    "canonicalTeamId": "colorado-state",
+    "teamName": "Colorado State",
+    "market": "Fort Collins",
+    "state": "CO",
+    "conference": "Pac-12"
+  },
+  {
+    "destinationId": "DEST-118",
+    "canonicalTeamId": "fresno-state",
+    "teamName": "Fresno State",
+    "market": "Fresno",
+    "state": "CA",
+    "conference": "Pac-12"
+  },
+  {
+    "destinationId": "DEST-119",
+    "canonicalTeamId": "oregon-state",
+    "teamName": "Oregon State",
+    "market": "Corvallis",
+    "state": "OR",
+    "conference": "Pac-12"
+  },
+  {
+    "destinationId": "DEST-120",
+    "canonicalTeamId": "san-diego-state",
+    "teamName": "San Diego State",
+    "market": "San Diego",
+    "state": "CA",
+    "conference": "Pac-12"
+  },
+  {
+    "destinationId": "DEST-121",
+    "canonicalTeamId": "utah-state",
+    "teamName": "Utah State",
+    "market": "Logan",
+    "state": "UT",
+    "conference": "Pac-12"
+  },
+  {
+    "destinationId": "DEST-122",
+    "canonicalTeamId": "washington-state",
+    "teamName": "Washington State",
+    "market": "Pullman",
+    "state": "WA",
+    "conference": "Pac-12"
+  },
+  {
+    "destinationId": "DEST-123",
+    "canonicalTeamId": "app-state",
+    "teamName": "App State",
+    "market": "Boone",
+    "state": "NC",
+    "conference": "Sun Belt"
+  },
+  {
+    "destinationId": "DEST-124",
+    "canonicalTeamId": "arkansas-state",
+    "teamName": "Arkansas State",
+    "market": "Jonesboro",
+    "state": "AR",
+    "conference": "Sun Belt"
+  },
+  {
+    "destinationId": "DEST-125",
+    "canonicalTeamId": "coastal-carolina",
+    "teamName": "Coastal Carolina",
+    "market": "Conway",
+    "state": "SC",
+    "conference": "Sun Belt"
+  },
+  {
+    "destinationId": "DEST-126",
+    "canonicalTeamId": "georgia-southern",
+    "teamName": "Georgia Southern",
+    "market": "Statesboro",
+    "state": "GA",
+    "conference": "Sun Belt"
+  },
+  {
+    "destinationId": "DEST-127",
+    "canonicalTeamId": "georgia-state",
+    "teamName": "Georgia State",
+    "market": "Atlanta",
+    "state": "GA",
+    "conference": "Sun Belt"
+  },
+  {
+    "destinationId": "DEST-128",
+    "canonicalTeamId": "james-madison",
+    "teamName": "James Madison",
+    "market": "Harrisonburg",
+    "state": "VA",
+    "conference": "Sun Belt"
+  },
+  {
+    "destinationId": "DEST-129",
+    "canonicalTeamId": "louisiana",
+    "teamName": "Louisiana",
+    "market": "Lafayette",
+    "state": "LA",
+    "conference": "Sun Belt"
+  },
+  {
+    "destinationId": "DEST-130",
+    "canonicalTeamId": "louisiana-tech",
+    "teamName": "Louisiana Tech",
+    "market": "Ruston",
+    "state": "LA",
+    "conference": "Sun Belt"
+  },
+  {
+    "destinationId": "DEST-131",
+    "canonicalTeamId": "marshall",
+    "teamName": "Marshall",
+    "market": "Huntington",
+    "state": "WV",
+    "conference": "Sun Belt"
+  },
+  {
+    "destinationId": "DEST-132",
+    "canonicalTeamId": "old-dominion",
+    "teamName": "Old Dominion",
+    "market": "Norfolk",
+    "state": "VA",
+    "conference": "Sun Belt"
+  },
+  {
+    "destinationId": "DEST-133",
+    "canonicalTeamId": "south-alabama",
+    "teamName": "South Alabama",
+    "market": "Mobile",
+    "state": "AL",
+    "conference": "Sun Belt"
+  },
+  {
+    "destinationId": "DEST-134",
+    "canonicalTeamId": "southern-miss",
+    "teamName": "Southern Miss",
+    "market": "Hattiesburg",
+    "state": "MS",
+    "conference": "Sun Belt"
+  },
+  {
+    "destinationId": "DEST-135",
+    "canonicalTeamId": "troy",
+    "teamName": "Troy",
+    "market": "Troy",
+    "state": "AL",
+    "conference": "Sun Belt"
+  },
+  {
+    "destinationId": "DEST-136",
+    "canonicalTeamId": "ul-monroe",
+    "teamName": "UL Monroe",
+    "market": "Monroe",
+    "state": "LA",
+    "conference": "Sun Belt"
+  }
+]
