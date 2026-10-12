@@ -6,6 +6,7 @@ import DestinationPartnerDiscovery from "./DestinationPartnerDiscovery.jsx";
 import DestinationArtworkPlacement from "./DestinationArtworkPlacement.jsx";
 import { culinaryGangsterTempe } from "../lib/destinationArtworkCampaigns.js";
 import "./DestinationBrowser.css";
+import NashvilleRecommendations from "./NashvilleRecommendations.jsx";
 
 const destinationIdFromHash = () => new URLSearchParams(window.location.hash.split("?")[1]).get("market");
 
@@ -51,6 +52,7 @@ export default function DestinationBrowser({ onHome }) {
             <a href={`#/destinations?market=${selected.destinationId}`}>Link to this destination</a>
             <DestinationPartnerDiscovery venueId={venueId} placement="trip_hq" />
             <DestinationArtworkPlacement campaign={culinaryGangsterTempe} venueId={venueId} placement="trip_hq" />
+            <NashvilleRecommendations venueId={venueId} placement="destination" featured />
             {entries.length ? <div className="destination-browser-picks">
               {entries.map((entry) => <article key={entry.id} data-recommendation-id={entry.id}>
                 <span className="section-kicker">{entry.displayLabel} · {entry.category}</span>
