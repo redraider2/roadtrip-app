@@ -45,6 +45,7 @@ import {
 } from "./screens/JourneyScreens.jsx";
 import { useJourneyNavigation } from "./screens/useJourneyNavigation.js";
 import { selectDestinationDemoPartner } from "./lib/destinationAdvertising.js";
+import { getUpcomingGames } from "./lib/footballSchedule.js";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5001";
@@ -311,6 +312,7 @@ function App() {
   const [footballTeamsLoading, setFootballTeamsLoading] = useState(true);
   const [selectedFootballTeam, setSelectedFootballTeam] = useState("");
   const [footballGames, setFootballGames] = useState([]);
+  const [scheduleNow, setScheduleNow] = useState(() => new Date());
   const [selectedFootballGameId, setSelectedFootballGameId] = useState("");
   const [dailyDriveHours, setDailyDriveHours] = useState("8");
   const [footballStart, setFootballStart] = useState("");
@@ -624,12 +626,24 @@ function App() {
     [trips, activeTripId]
   );
 
+  useEffect(() => {
+    const refresh = () => setScheduleNow(new Date());
+    const timer = window.setInterval(refresh, 60_000);
+    window.addEventListener("focus", refresh);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener("focus", refresh);
+    };
+  }, []);
+
+  const upcomingFootballGames = getUpcomingGames(footballGames, scheduleNow);
+
   const selectedFootballGame = useMemo(
     () =>
-      footballGames.find(
+      getUpcomingGames(footballGames, scheduleNow).find(
         (game) => String(game.id) === String(selectedFootballGameId)
       ) || null,
-    [footballGames, selectedFootballGameId]
+    [footballGames, scheduleNow, selectedFootballGameId]
   );
   
 
@@ -1830,7 +1844,7 @@ function App() {
               authenticated={Boolean(auth)}
               dailyDriveHours={dailyDriveHours}
               error={footballError}
-              games={footballGames}
+              games={upcomingFootballGames}
               loading={footballLoading}
               onBack={() => navigateTo("choose-team")}
               onDailyDriveHoursChange={setDailyDriveHours}

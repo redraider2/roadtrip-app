@@ -63,7 +63,7 @@ export default function ChooseGameExperience({
         <p className="error-state">{error}</p>
       ) : games.length === 0 ? (
         <p className="choose-game-status">
-          No road games were returned for {selectedTeam} in {season}.
+          No upcoming road games remain for {selectedTeam} in {season}.
         </p>
       ) : (
         <div className="choose-game-grid">
