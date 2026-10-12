@@ -15,9 +15,9 @@ export const visitMusicCity = {
 };
 
 export const nashvilleCategories = [
-  { id: "breakfast", title: "Where to Eat · Breakfast", items: ["Butter Milk Ranch", "D’Andrews Bakery", "Loveless Cafe", "Pancake Pantry"] },
-  { id: "lunch", title: "Where to Eat · Lunch", items: ["Arnold’s Country Kitchen", "Hot chicken at Prince’s Hot Chicken", "Hattie B’s", "BBQ at Peg Leg Porker", "Martin's Bar-B-Que Joint", "Shotgun Willies", "San Antonio Taco Co.", "Midtown Cafe", "Etch", "Bacco"] },
-  { id: "dinner", title: "Where to Eat · Dinner", items: ["Rolf & Daughters", "Sho Pizza Bar", "Noko", "Bastion", "Chauhan Ale and Masala House", "The Twelve Thirty Club"] },
+  { id: "breakfast", title: "Where to Eat · Breakfast", items: ["The Butter Milk Ranch (Tuesday–Sunday)", "D’Andrews Bakery & Cafe", "The Loveless Cafe — Highway 100", "The Pancake Pantry — Hillsboro Village or Downtown"] },
+  { id: "lunch", title: "Where to Eat · Lunch", items: ["Arnold’s Country Kitchen (Monday–Saturday lunch)", "Hot chicken at Prince’s Hot Chicken (choose a Nashville location)", "Hattie B’s Hot Chicken (choose a Nashville location)", "BBQ at Peg Leg Porker", "Martin’s Bar-B-Que Joint (choose a Nashville location)", "Shotgun Willie’s BBQ — Madison (Wednesday–Sunday; until sold out)", "San Antonio Taco Co.", "Midtown Cafe (weekday lunch; weekend brunch)", "etch — Nashville (weekday lunch)", "Bacco at Four Seasons Hotel Nashville"] },
+  { id: "dinner", title: "Where to Eat · Dinner", items: ["Rolf & Daughters", "Sho Pizza Bar", "Noko (closed Mondays)", "Bastion restaurant (Wednesday–Saturday; reservations required)", "Chauhan Ale and Masala House", "The Twelve Thirty Club"] },
   { id: "activities", title: "Discover Music City", items: ["Grand Ole Opry", "Country Music Hall of Fame and Museum", "Historic RCA Studio B", "National Museum of African American Music", "Musicians Hall of Fame", "Ryman Auditorium", "Songwriter’s rounds at The Listening Room Cafe and Bluebird Cafe", "Zanies Comedy Club", "Third Man Records", "Carter Vintage Guitars"] },
   { id: "family", title: "Family Friendly Activities", items: ["Frist Art Museum", "Nashville Zoo", "The Parthenon", "Lane Motor Museum", "Adventure Science Center", "Professional sporting events: Nashville Predators, Tennessee Titans, Nashville Soccer Club, and Nashville Sounds", "Explore Centennial Park"] },
   { id: "coffee", title: "Coffee and Sweet Treats", items: ["8th and Roast", "Frothy Monkey", "Elegy Coffee", "Cupcake Collection", "Five Daughters Bakery", "Poppy & Peep", "Rolled 4 Ever Ice Cream"] },
