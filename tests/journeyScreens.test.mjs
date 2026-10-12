@@ -58,6 +58,7 @@ test("approved journey screen order remains explicit", () => {
   assert.deepEqual(
     JOURNEY_SCREENS.filter((screen) => screen.id !== "destinations").map((screen) => screen.id),
     [
+      "destinations",
       "home",
       "choose-team",
       "choose-game",
