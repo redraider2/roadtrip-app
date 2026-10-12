@@ -9,6 +9,7 @@ test.after(() => browser.close());
 const venues = [[3784, "Lubbock"], [3947, "Tempe"], [4728, "Houston"], [3895, "Houston"], [3604, "San Antonio"], [3910, "Austin"], [3994, "Columbia"], [3795, "College Station / Bryan"], [4727, "Waco"]];
 venues.push([3772, "Ames"], [3833, "Lawrence"], [3636, "Manhattan"], [3646, "Stillwater"], [3652, "Orlando"], [587, "Salt Lake City"], [3842, "Morgantown"]);
 venues.push([3634, "Gainesville"], [3917, "Athens"], [3683, "Lexington"], [3958, "Baton Rouge"], [3693, "Starkville"], [3838, "Columbia"]);
+venues.push([3835, "Norman"], [3974, "Oxford"], [3853, "Knoxville"], [3973, "Nashville"], [3832, "Champaign"], [3830, "Bloomington"]);
 const reviewedFirstPicks = new Map([
   [3772, "Hickory Park BBQ"], [3833, "Free State Brewing Company"],
   [3636, "Tallgrass Tap House"], [3646, "Eskimo Joe's"], [3652, "Lazy Moon Pizza - UCF"],
@@ -36,7 +37,7 @@ async function setup(width, venueId, market) {
 }
 
 for (const width of [1280, 390]) {
-  test(`all twenty-two venues fill existing placements on desktop/mobile (${width}px)`, async () => {
+  test(`all twenty-eight venues fill existing placements on desktop/mobile (${width}px)`, async () => {
     for (const [venueId, market] of venues) {
       const { context, page, errors } = await setup(width, venueId, market);
       try {

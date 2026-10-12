@@ -18,12 +18,12 @@
     "Visitor / local community resource"
   ],
   "counts": {
-    "cities": 21,
-    "destinations": 22,
-    "entries": 132,
-    "sourceChecked": 132,
+    "cities": 27,
+    "destinations": 28,
+    "entries": 168,
+    "sourceChecked": 168,
     "needsReview": 1,
-    "displayEligibleEntries": 131
+    "displayEligibleEntries": 167
   },
   "partnerContext": [
     {
@@ -5304,6 +5304,1261 @@
         "asOf": "2026-10-12",
         "masterModifiedTime": "2026-10-12T16:25:02.147Z",
         "result": "No paid/complimentary/declined/opt-out statuses among 60 prospect rows across these six destinations; existing Tempe and Lubbock partners preserved. Editorial listing does not imply a commercial relationship."
+      }
+    },
+    {
+      "destinationId": "DEST-035",
+      "canonicalTeamId": "oklahoma",
+      "teamName": "Oklahoma",
+      "market": "Norman",
+      "state": "OK",
+      "conference": "SEC",
+      "launchPriority": 3,
+      "destinationVenueIds": [
+        "3835"
+      ],
+      "targetingStatus": "runtime_venue_verified",
+      "entries": [
+        {
+          "id": "DEST-035-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Scratch Kitchen & Cocktails",
+          "summary": "Plan a meal or cocktail stop at Scratch, at 132 W. Main Street in Norman. Check current menus and opening times before visiting.",
+          "url": "https://www.eatatscratch.com/",
+          "sourceUrl": "https://www.eatatscratch.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-035/4",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.eatatscratch.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary; no commercial relationship implied."
+          }
+        },
+        {
+          "id": "DEST-035-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "NOUN Hotel",
+          "summary": "A boutique hotel on Campus Corner just north of the University of Oklahoma. Check rooms and on-site dining options for your Norman visit.",
+          "url": "https://www.nounhotel.com/",
+          "sourceUrl": "https://www.nounhotel.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-035/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.nounhotel.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary; no commercial relationship implied."
+          }
+        },
+        {
+          "id": "DEST-035-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Fred Jones Jr. Museum of Art",
+          "summary": "Explore the Fred Jones Jr. Museum of Art on the University of Oklahoma campus at 555 Elm Avenue. Check admission and current hours before visiting.",
+          "url": "https://www.ou.edu/fjjma/visit",
+          "sourceUrl": "https://www.ou.edu/fjjma/visit",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-035/8",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Plan your visit",
+              "url": "https://www.ou.edu/fjjma/visit"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary; no commercial relationship implied."
+          },
+          "reviewNotes": "Replaces retail boutique for Things to do fit. Admission not assumed free."
+        },
+        {
+          "id": "DEST-035-E4",
+          "slot": 4,
+          "category": "Food & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "O'Connell's Irish Pub & Grille",
+          "summary": "Explore O’Connell’s Irish Pub & Grille in Norman for food and scheduled events. Check its menu and event calendar for your travel dates.",
+          "url": "https://www.oconnellsnorman.com/",
+          "sourceUrl": "https://www.oconnellsnorman.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-035/6",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.oconnellsnorman.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary; no commercial relationship implied."
+          }
+        },
+        {
+          "id": "DEST-035-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Oklahoma game-day information",
+          "summary": "Read Oklahoma Athletics’ 2026 fan-experience update, including links to traffic, parking and stadium-entry guidance. Check game-specific notices before leaving.",
+          "url": "https://soonersports.com/news/2026/8/27/ou-announces-2026-football-fan-experience-enhancements",
+          "sourceUrl": "https://soonersports.com/news/2026/8/27/ou-announces-2026-football-fan-experience-enhancements",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Oklahoma",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://soonersports.com/news/2026/8/27/ou-announces-2026-football-fan-experience-enhancements"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary; no commercial relationship implied."
+          }
+        },
+        {
+          "id": "DEST-035-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "VisitNorman / Norman Convention & Visitors Bureau",
+          "summary": "Use VisitNorman to explore museums, dining, events and local game-day planning resources.",
+          "url": "https://www.visitnorman.com/",
+          "sourceUrl": "https://www.visitnorman.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-035",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore visitor information",
+              "url": "https://www.visitnorman.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary; no commercial relationship implied."
+          }
+        }
+      ],
+      "runtimeVenueEvidence": {
+        "checkedOn": "2026-10-12",
+        "sourceUrl": "https://roadtrip-app-53u2.onrender.com/football/games?team=Oklahoma&year=2026&awayOnly=false",
+        "homeGameCount": 6,
+        "gameIds": [
+          401856664,
+          401856690,
+          401856722,
+          401856736,
+          401856887,
+          401856752
+        ],
+        "venueNames": [
+          "Memorial Stadium (Norman, OK)"
+        ],
+        "neutralSitesExcluded": true
+      },
+      "lastReviewedOn": "2026-10-12",
+      "commercialReview": {
+        "asOf": "2026-10-12",
+        "result": "No paid/complimentary statuses among60marketprospects. Hamilton Walker’s decline preserved; not included in this inventory. Visit Music City concept already sent; visitor-information listing here is editorial, not approval or sponsorship."
+      }
+    },
+    {
+      "destinationId": "DEST-036",
+      "canonicalTeamId": "ole-miss",
+      "teamName": "Ole Miss",
+      "market": "Oxford",
+      "state": "MS",
+      "conference": "SEC",
+      "launchPriority": 3,
+      "destinationVenueIds": [
+        "3974"
+      ],
+      "targetingStatus": "runtime_venue_verified",
+      "entries": [
+        {
+          "id": "DEST-036-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "City Grocery",
+          "summary": "Plan a meal at City Grocery, at 152 Courthouse Square in Oxford. Review its current menu and reservation options.",
+          "url": "https://citygroceryonline.com/restaurants/city-grocery/",
+          "sourceUrl": "https://citygroceryonline.com/restaurants/city-grocery/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-036/3",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Plan your visit",
+              "url": "https://citygroceryonline.com/restaurants/city-grocery/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary; no commercial relationship implied."
+          },
+          "reviewNotes": "Specific Oxford restaurant replaces group-wide landing page."
+        },
+        {
+          "id": "DEST-036-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Graduate by Hilton Oxford",
+          "summary": "A hotel on Oxford’s Square near the University of Mississippi, with a lobby café and terrace bar. Check room availability for your travel dates.",
+          "url": "https://www.hilton.com/en/hotels/tupgogu-graduate-oxford/",
+          "sourceUrl": "https://www.hilton.com/en/hotels/tupgogu-graduate-oxford/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-036/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.hilton.com/en/hotels/tupgogu-graduate-oxford/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary; no commercial relationship implied."
+          }
+        },
+        {
+          "id": "DEST-036-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "University of Mississippi Museum",
+          "summary": "Explore the University of Mississippi Museum at University Avenue and 5th Street. Check current exhibitions, visitor hours and campus access before visiting.",
+          "url": "https://olemiss.edu/museum/visit/",
+          "sourceUrl": "https://olemiss.edu/museum/visit/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-036/5",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Plan your visit",
+              "url": "https://olemiss.edu/museum/visit/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary; no commercial relationship implied."
+          },
+          "reviewNotes": "Replaces department store for museum attraction fit."
+        },
+        {
+          "id": "DEST-036-E4",
+          "slot": 4,
+          "category": "Explore / coffee",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Square Books",
+          "summary": "Browse Square Books at 160 Courthouse Square in Oxford, with books and a second-floor coffee bar. Check current hours and author events.",
+          "url": "https://squarebooks.com/store/1",
+          "sourceUrl": "https://squarebooks.com/store/1",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-036/8",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Plan your visit",
+              "url": "https://squarebooks.com/store/1"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary; no commercial relationship implied."
+          },
+          "reviewNotes": "Location-specific official page confirms coffee bar; category reflects books and coffee."
+        },
+        {
+          "id": "DEST-036-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Ole Miss 2026 game-day information",
+          "summary": "Read Ole Miss Athletics’ 2026 game-day update for Grove traffic changes, stadium enhancements and links to current policies.",
+          "url": "https://olemisssports.com/news/2026/9/10/football-unveils-2026-gameday-enhancements-adjustments",
+          "sourceUrl": "https://olemisssports.com/news/2026/9/10/football-unveils-2026-gameday-enhancements-adjustments",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Ole Miss",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Plan your visit",
+              "url": "https://olemisssports.com/news/2026/9/10/football-unveils-2026-gameday-enhancements-adjustments"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary; no commercial relationship implied."
+          },
+          "reviewNotes": "Replaces 2025 seasonal article; avoids treating prior-year traffic instructions as current."
+        },
+        {
+          "id": "DEST-036-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "Visit Oxford MS / Oxford Tourism Council",
+          "summary": "Use Visit Oxford to explore attractions, restaurants, lodging and home football weekend information in Oxford, Mississippi.",
+          "url": "https://visitoxfordms.com/",
+          "sourceUrl": "https://visitoxfordms.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-036",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore visitor information",
+              "url": "https://visitoxfordms.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary; no commercial relationship implied."
+          }
+        }
+      ],
+      "runtimeVenueEvidence": {
+        "checkedOn": "2026-10-12",
+        "sourceUrl": "https://roadtrip-app-53u2.onrender.com/football/games?team=Ole+Miss&year=2026&awayOnly=false",
+        "homeGameCount": 7,
+        "gameIds": [
+          401856676,
+          401856688,
+          401856721,
+          401856735,
+          401856741,
+          401856749,
+          401856762
+        ],
+        "venueNames": [
+          "Vaught-Hemingway Stadium"
+        ],
+        "neutralSitesExcluded": true
+      },
+      "lastReviewedOn": "2026-10-12",
+      "commercialReview": {
+        "asOf": "2026-10-12",
+        "result": "No paid/complimentary statuses among60marketprospects. Hamilton Walker’s decline preserved; not included in this inventory. Visit Music City concept already sent; visitor-information listing here is editorial, not approval or sponsorship."
+      }
+    },
+    {
+      "destinationId": "DEST-038",
+      "canonicalTeamId": "tennessee",
+      "teamName": "Tennessee",
+      "market": "Knoxville",
+      "state": "TN",
+      "conference": "SEC",
+      "launchPriority": 3,
+      "destinationVenueIds": [
+        "3853"
+      ],
+      "targetingStatus": "runtime_venue_verified",
+      "entries": [
+        {
+          "id": "DEST-038-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Calhoun's On the River",
+          "summary": "A restaurant beside the Tennessee River across from the University of Tennessee campus, with river-view deck spaces. Check the current menu and visit details.",
+          "url": "https://calhouns.com/locations/tennessee-river/",
+          "sourceUrl": "https://calhouns.com/locations/tennessee-river/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-038/5",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://calhouns.com/locations/tennessee-river/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary; no commercial relationship implied."
+          }
+        },
+        {
+          "id": "DEST-038-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Graduate by Hilton Knoxville",
+          "summary": "A hotel adjacent to the University of Tennessee with locally inspired rooms and on-site dining. Check availability and parking arrangements.",
+          "url": "https://www.hilton.com/en/hotels/tysgkgu-graduate-knoxville/",
+          "sourceUrl": "https://www.hilton.com/en/hotels/tysgkgu-graduate-knoxville/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-038/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.hilton.com/en/hotels/tysgkgu-graduate-knoxville/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary; no commercial relationship implied."
+          }
+        },
+        {
+          "id": "DEST-038-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Women's Basketball Hall of Fame",
+          "summary": "Explore exhibits celebrating women’s basketball at the Women’s Basketball Hall of Fame in Knoxville. Check current admission and visitor hours.",
+          "url": "https://www.wbhof.com/",
+          "sourceUrl": "https://www.wbhof.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-038/9",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.wbhof.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary; no commercial relationship implied."
+          }
+        },
+        {
+          "id": "DEST-038-E4",
+          "slot": 4,
+          "category": "Explore",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Zoo Knoxville",
+          "summary": "Plan a visit to Zoo Knoxville using its official admission, parking, map and accessibility resources. Check current hours and ticket options.",
+          "url": "https://www.zooknoxville.org/plan-your-visit/",
+          "sourceUrl": "https://www.zooknoxville.org/plan-your-visit/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-038/10",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Plan your visit",
+              "url": "https://www.zooknoxville.org/plan-your-visit/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary; no commercial relationship implied."
+          },
+          "reviewNotes": "Official planning page; category corrected to Explore."
+        },
+        {
+          "id": "DEST-038-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Tennessee game-day information",
+          "summary": "Use Tennessee Athletics’ official football game-day guide for Neyland Stadium entry, services and stadium policies. Recheck guidance for your game.",
+          "url": "https://utsports.com/sports/2019/7/29/football-gameday",
+          "sourceUrl": "https://utsports.com/sports/2019/7/29/football-gameday",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Tennessee",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://utsports.com/sports/2019/7/29/football-gameday"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary; no commercial relationship implied."
+          }
+        },
+        {
+          "id": "DEST-038-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "Visit Knoxville",
+          "summary": "Find Knoxville attractions, local events, lodging and trip ideas through Visit Knoxville.",
+          "url": "https://www.visitknoxville.com/",
+          "sourceUrl": "https://www.visitknoxville.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-038",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore visitor information",
+              "url": "https://www.visitknoxville.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read in web tool",
+            "scope": "Narrow editorial summary; no commercial relationship implied."
+          }
+        }
+      ],
+      "runtimeVenueEvidence": {
+        "checkedOn": "2026-10-12",
+        "sourceUrl": "https://roadtrip-app-53u2.onrender.com/football/games?team=Tennessee&year=2026&awayOnly=false",
+        "homeGameCount": 7,
+        "gameIds": [
+          401856666,
+          401856692,
+          401856704,
+          401856710,
+          401856723,
+          401856745,
+          401856754
+        ],
+        "venueNames": [
+          "Neyland Stadium"
+        ],
+        "neutralSitesExcluded": true
+      },
+      "lastReviewedOn": "2026-10-12",
+      "commercialReview": {
+        "asOf": "2026-10-12",
+        "result": "No paid/complimentary statuses among60marketprospects. Hamilton Walker’s decline preserved; not included in this inventory. Visit Music City concept already sent; visitor-information listing here is editorial, not approval or sponsorship."
+      }
+    },
+    {
+      "destinationId": "DEST-039",
+      "canonicalTeamId": "vanderbilt",
+      "teamName": "Vanderbilt",
+      "market": "Nashville",
+      "state": "TN",
+      "conference": "SEC",
+      "launchPriority": 3,
+      "destinationVenueIds": [
+        "3973"
+      ],
+      "targetingStatus": "runtime_venue_verified",
+      "entries": [
+        {
+          "id": "DEST-039-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "The Pancake Pantry — Hillsboro Village",
+          "summary": "Plan breakfast or lunch at The Pancake Pantry’s Hillsboro Village location, at 1796 21st Avenue South. Check the current menu and opening times.",
+          "url": "https://thepancakepantry.com/",
+          "sourceUrl": "https://thepancakepantry.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-039/4",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://thepancakepantry.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read through web tool",
+            "scope": "Narrow summary only; no commercial relationship asserted."
+          }
+        },
+        {
+          "id": "DEST-039-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Graduate by Hilton Nashville",
+          "summary": "A Midtown Nashville hotel near Vanderbilt University, with guest rooms and on-site dining. Check room availability and parking before your stay.",
+          "url": "https://www.hilton.com/en/hotels/bnagngu-graduate-nashville/",
+          "sourceUrl": "https://www.hilton.com/en/hotels/bnagngu-graduate-nashville/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-039/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.hilton.com/en/hotels/bnagngu-graduate-nashville/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read through web tool",
+            "scope": "Narrow summary only; no commercial relationship asserted."
+          }
+        },
+        {
+          "id": "DEST-039-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "The Parthenon",
+          "summary": "Explore Nashville’s Parthenon museum in Centennial Park. Review current admission, hours and holiday closures before visiting.",
+          "url": "https://www.nashvilleparthenon.com/hours-admission",
+          "sourceUrl": "https://www.nashvilleparthenon.com/hours-admission",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-039/8",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Plan your visit",
+              "url": "https://www.nashvilleparthenon.com/hours-admission"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read through web tool",
+            "scope": "Narrow summary only; no commercial relationship asserted."
+          },
+          "reviewNotes": "Replaced apparel retailer with museum attraction; original retained."
+        },
+        {
+          "id": "DEST-039-E4",
+          "slot": 4,
+          "category": "Coffee & breakfast",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Fido Café",
+          "summary": "Explore Fido’s coffee bar and breakfast or lunch menus at 1812 21st Avenue South in Hillsboro Village. Check current hours before visiting.",
+          "url": "https://www.bongojava.com/pages/fido",
+          "sourceUrl": "https://www.bongojava.com/pages/fido",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-039/7",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.bongojava.com/pages/fido"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read through web tool",
+            "scope": "Narrow summary only; no commercial relationship asserted."
+          }
+        },
+        {
+          "id": "DEST-039-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Vanderbilt game-day information",
+          "summary": "Use Vanderbilt’s official football game-day guide for FirstBank Stadium parking, entry, concessions and fan services. Recheck details for your game.",
+          "url": "https://vucommodores.com/football-gameday/",
+          "sourceUrl": "https://vucommodores.com/football-gameday/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Vanderbilt",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://vucommodores.com/football-gameday/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read through web tool",
+            "scope": "Narrow summary only; no commercial relationship asserted."
+          }
+        },
+        {
+          "id": "DEST-039-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "Nashville Convention & Visitors Corp / Visit Music City",
+          "summary": "Explore Nashville events, attractions, dining and lodging through Visit Music City’s visitor resources.",
+          "url": "https://www.visitmusiccity.com/",
+          "sourceUrl": "https://www.visitmusiccity.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-039",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore visitor information",
+              "url": "https://www.visitmusiccity.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read through web tool",
+            "scope": "Narrow summary only; no commercial relationship asserted."
+          }
+        }
+      ],
+      "runtimeVenueEvidence": {
+        "checkedOn": "2026-10-12",
+        "sourceUrl": "https://roadtrip-app-53u2.onrender.com/football/games?team=Vanderbilt&year=2026&awayOnly=false",
+        "homeGameCount": 7,
+        "gameIds": [
+          401856669,
+          401856684,
+          401856695,
+          401856718,
+          401856726,
+          401856889,
+          401856765
+        ],
+        "venueNames": [
+          "FirstBank Stadium"
+        ],
+        "neutralSitesExcluded": true
+      },
+      "lastReviewedOn": "2026-10-12",
+      "commercialReview": {
+        "asOf": "2026-10-12",
+        "result": "No paid/complimentary statuses among60marketprospects. Hamilton Walker’s decline preserved; not included in this inventory. Visit Music City concept already sent; visitor-information listing here is editorial, not approval or sponsorship."
+      }
+    },
+    {
+      "destinationId": "DEST-040",
+      "canonicalTeamId": "illinois",
+      "teamName": "Illinois",
+      "market": "Champaign",
+      "state": "IL",
+      "conference": "Big Ten",
+      "launchPriority": 4,
+      "destinationVenueIds": [
+        "3832"
+      ],
+      "targetingStatus": "runtime_venue_verified",
+      "entries": [
+        {
+          "id": "DEST-040-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Papa Del's Pizza Factory",
+          "summary": "Visit Papa Del’s Pizza Factory at 1201 S. Neil Street in Champaign for pan or thin-crust pizza. Check the current menu and service options.",
+          "url": "https://www.papadels.com/",
+          "sourceUrl": "https://www.papadels.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-040/3",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.papadels.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read through web tool",
+            "scope": "Narrow summary only; no commercial relationship asserted."
+          }
+        },
+        {
+          "id": "DEST-040-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "I Hotel and Illinois Conference Center",
+          "summary": "A hotel and conference center on the University of Illinois south campus near Memorial Stadium. Check room availability and arrival details.",
+          "url": "https://stayatthei.com/",
+          "sourceUrl": "https://stayatthei.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-040/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://stayatthei.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read through web tool",
+            "scope": "Narrow summary only; no commercial relationship asserted."
+          }
+        },
+        {
+          "id": "DEST-040-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Krannert Art Museum",
+          "summary": "Explore Krannert Art Museum at Sixth Street and Peabody Drive on the University of Illinois campus. Admission is free; check current hours and holiday closures.",
+          "url": "https://kam.illinois.edu/visit/plan-visit",
+          "sourceUrl": "https://kam.illinois.edu/visit/plan-visit",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-040/10",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Plan your visit",
+              "url": "https://kam.illinois.edu/visit/plan-visit"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read through web tool",
+            "scope": "Narrow summary only; no commercial relationship asserted."
+          },
+          "reviewNotes": "Canopy Club current operation was not established sufficiently; replaced with verified university attraction. Do not infer a confirmed closure."
+        },
+        {
+          "id": "DEST-040-E4",
+          "slot": 4,
+          "category": "Food & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Black Dog Smoke & Ale House – Champaign",
+          "summary": "Explore barbecue options at Black Dog Smoke & Ale House’s Champaign location, at 320 N. Chestnut Street. Check current ordering and visit details.",
+          "url": "https://www.blackdogchampaign.com/",
+          "sourceUrl": "https://www.blackdogchampaign.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-040/4",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.blackdogchampaign.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read through web tool",
+            "scope": "Narrow summary only; no commercial relationship asserted.",
+            "additionalSource": "https://www.blackdogchampaign.com/uploads/b/6b919bc0-cd31-11e9-ae38-f5eb1678609e/6d8833f0-f857-11ee-8099-e55f1c606c18.pdf"
+          },
+          "reviewNotes": "Operator site is client-rendered (no extracted body); search-indexed current operator address plus operator-hosted menu supports narrow barbecue/location copy. No prices/hours copied from dated menu."
+        },
+        {
+          "id": "DEST-040-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Illinois stadium game-day information",
+          "summary": "Use Illinois Athletics’ stadium game-day guide for entry policies, fan services and other Gies Memorial Stadium information. Check game-specific updates separately.",
+          "url": "https://fightingillini.com/sports/2015/7/31/football_gamedayguide",
+          "sourceUrl": "https://fightingillini.com/sports/2015/7/31/football_gamedayguide",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Illinois",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Plan your visit",
+              "url": "https://fightingillini.com/sports/2015/7/31/football_gamedayguide"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read through web tool",
+            "scope": "Narrow summary only; no commercial relationship asserted."
+          },
+          "reviewNotes": "Replaces date-specific Thursday parking advisory with general stadium guide."
+        },
+        {
+          "id": "DEST-040-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "Experience Champaign-Urbana",
+          "summary": "Use Experience Champaign-Urbana to explore dining, lodging, local events and attractions across the community.",
+          "url": "https://experiencecu.org/",
+          "sourceUrl": "https://experiencecu.org/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-040",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Explore visitor information",
+              "url": "https://experiencecu.org/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read through web tool",
+            "scope": "Narrow summary only; no commercial relationship asserted."
+          }
+        }
+      ],
+      "runtimeVenueEvidence": {
+        "checkedOn": "2026-10-12",
+        "sourceUrl": "https://roadtrip-app-53u2.onrender.com/football/games?team=Illinois&year=2026&awayOnly=false",
+        "homeGameCount": 7,
+        "gameIds": [
+          401858424,
+          401858217,
+          401858448,
+          401858472,
+          401858495,
+          401858510,
+          401858527
+        ],
+        "venueNames": [
+          "Memorial Stadium (Champaign, IL)"
+        ],
+        "neutralSitesExcluded": true
+      },
+      "lastReviewedOn": "2026-10-12",
+      "commercialReview": {
+        "asOf": "2026-10-12",
+        "result": "No paid/complimentary statuses among60marketprospects. Hamilton Walker’s decline preserved; not included in this inventory. Visit Music City concept already sent; visitor-information listing here is editorial, not approval or sponsorship."
+      }
+    },
+    {
+      "destinationId": "DEST-041",
+      "canonicalTeamId": "indiana",
+      "teamName": "Indiana",
+      "market": "Bloomington",
+      "state": "IN",
+      "conference": "Big Ten",
+      "launchPriority": 4,
+      "destinationVenueIds": [
+        "3830"
+      ],
+      "targetingStatus": "runtime_venue_verified",
+      "entries": [
+        {
+          "id": "DEST-041-E1",
+          "slot": 1,
+          "category": "Eat & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Mother Bear’s Pizza — Campus",
+          "summary": "Visit Mother Bear’s Pizza’s campus location at 1428 E. Third Street in Bloomington. Check the current menu and service options.",
+          "url": "https://www.motherbearspizza.com/",
+          "sourceUrl": "https://www.motherbearspizza.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-041/3",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.motherbearspizza.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read through web tool",
+            "scope": "Narrow summary only; no commercial relationship asserted."
+          }
+        },
+        {
+          "id": "DEST-041-E2",
+          "slot": 2,
+          "category": "Stay",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Graduate by Hilton Bloomington",
+          "summary": "A hotel on Kirkwood Avenue near Indiana University, with rooms inspired by the local community. Check availability and parking before your stay.",
+          "url": "https://www.hilton.com/en/hotels/indgbgu-graduate-bloomington/",
+          "sourceUrl": "https://www.hilton.com/en/hotels/indgbgu-graduate-bloomington/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-041/1",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit hotel website",
+              "url": "https://www.hilton.com/en/hotels/indgbgu-graduate-bloomington/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read through web tool",
+            "scope": "Narrow summary only; no commercial relationship asserted."
+          }
+        },
+        {
+          "id": "DEST-041-E3",
+          "slot": 3,
+          "category": "Things to do",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Sidney and Lois Eskenazi Museum of Art",
+          "summary": "Explore the Sidney and Lois Eskenazi Museum of Art at Indiana University Bloomington. Check current gallery hours, programs and visitor information.",
+          "url": "https://artmuseum.indiana.edu/visit/index.html",
+          "sourceUrl": "https://artmuseum.indiana.edu/visit/index.html",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-041/7",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Plan your visit",
+              "url": "https://artmuseum.indiana.edu/visit/index.html"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read through web tool",
+            "scope": "Narrow summary only; no commercial relationship asserted."
+          },
+          "reviewNotes": "Replaces retail bookstore with verified university museum attraction; original preserved."
+        },
+        {
+          "id": "DEST-041-E4",
+          "slot": 4,
+          "category": "Food & drink",
+          "contentKind": "editorial",
+          "displayLabel": "Kickoff Miles Pick",
+          "title": "Nick's English Hut",
+          "summary": "Visit Nick’s English Hut at 423 E. Kirkwood Avenue in Bloomington for food and drinks. Check current hours and entry requirements.",
+          "url": "https://www.nicksenglishhut.com/",
+          "sourceUrl": "https://www.nicksenglishhut.com/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Prospects/DEST-041/5",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Visit website",
+              "url": "https://www.nicksenglishhut.com/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read through web tool",
+            "scope": "Narrow summary only; no commercial relationship asserted."
+          }
+        },
+        {
+          "id": "DEST-041-E5",
+          "slot": 5,
+          "category": "Game day",
+          "contentKind": "official_resource",
+          "displayLabel": "Official Resource",
+          "title": "Indiana game-day information",
+          "summary": "Read Indiana Athletics’ 2026 football update for stadium enhancements, parking and arrival advice. Recheck game-specific information before traveling.",
+          "url": "https://iuhoosiers.com/news/2026/8/31/iu-announces-series-of-new-experiences-stadium-enhancements-for-the-2026-hoosier-football-season",
+          "sourceUrl": "https://iuhoosiers.com/news/2026/8/31/iu-announces-series-of-new-experiences-stadium-enhancements-for-the-2026-hoosier-football-season",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "inheritedVerifiedOn": "2026-09-08",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "backend/tailgating_ready_for_qa.json/Indiana",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Open university resource",
+              "url": "https://iuhoosiers.com/news/2026/8/31/iu-announces-series-of-new-experiences-stadium-enhancements-for-the-2026-hoosier-football-season"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read through web tool",
+            "scope": "Narrow summary only; no commercial relationship asserted."
+          }
+        },
+        {
+          "id": "DEST-041-E6",
+          "slot": 6,
+          "category": "Visitor information",
+          "contentKind": "community_resource",
+          "displayLabel": "Local Resource",
+          "title": "Visit Bloomington visitor guides",
+          "summary": "Use Visit Bloomington’s visitor guides to plan local dining, attractions, lodging and activities.",
+          "url": "https://www.visitbloomington.com/plan/virtual-guides/",
+          "sourceUrl": "https://www.visitbloomington.com/plan/virtual-guides/",
+          "verificationStatus": "source_checked",
+          "sourceCheckedOn": "2026-10-12",
+          "publicationStatus": "implementation_candidate",
+          "imageUrl": null,
+          "sourceRecord": "Community_Partners/DEST-041",
+          "reviewRequired": [],
+          "actions": [
+            {
+              "label": "Plan your visit",
+              "url": "https://www.visitbloomington.com/plan/virtual-guides/"
+            }
+          ],
+          "sourceEvidence": {
+            "checkedOn": "2026-10-12",
+            "method": "Official operator, university or tourism page read through web tool",
+            "scope": "Narrow summary only; no commercial relationship asserted."
+          },
+          "reviewNotes": "Homepage retrieval failed; official visitor-guide page verified."
+        }
+      ],
+      "runtimeVenueEvidence": {
+        "checkedOn": "2026-10-12",
+        "sourceUrl": "https://roadtrip-app-53u2.onrender.com/football/games?team=Indiana&year=2026&awayOnly=false",
+        "homeGameCount": 8,
+        "gameIds": [
+          401858425,
+          401858439,
+          401858449,
+          401858461,
+          401858488,
+          401858501,
+          401858518,
+          401858538
+        ],
+        "venueNames": [
+          "Memorial Stadium (Bloomington, IN)"
+        ],
+        "neutralSitesExcluded": true
+      },
+      "lastReviewedOn": "2026-10-12",
+      "commercialReview": {
+        "asOf": "2026-10-12",
+        "result": "No paid/complimentary statuses among60marketprospects. Hamilton Walker’s decline preserved; not included in this inventory. Visit Music City concept already sent; visitor-information listing here is editorial, not approval or sponsorship."
       }
     }
   ],

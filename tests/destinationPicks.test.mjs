@@ -133,3 +133,21 @@ test("six October 12 markets use exact home venues and preserve existing partner
   assert.equal(getDestinationPicks(3838).state, "MO");
   assert.equal(getDestinationPicks(3994).state, "SC");
 });
+
+const nextReviewedVenues = [[3835, "Oklahoma"], [3974, "Ole Miss"], [3853, "Tennessee"], [3973, "Vanderbilt"], [3832, "Illinois"], [3830, "Indiana"]];
+test("next six reviewed markets preserve exact destination routing and paid precedence", () => {
+  for (const [venue, team] of nextReviewedVenues) {
+    const d = getDestinationPicks(venue);
+    assert.equal(d.teamName, team);
+    assert.equal(d.entries.length, 6);
+    assert.equal(getDestinationPicks(`${venue}-other`), null);
+    const partner = { id: "existing", businessName: "Existing partner" };
+    for (let slot = 0; slot < 6; slot++) assert.equal(recommendationFallback(partner, venue, slot), partner);
+    for (const entry of d.entries) {
+      assert.equal(entry.sourceCheckedOn, "2026-10-12");
+      assert.equal(new URL(entry.url).protocol, "https:");
+      assert.equal(new URL(entry.sourceUrl).protocol, "https:");
+    }
+  }
+  assert.ok(getDestinationPicks(3973).entries.every(e => e.displayLabel !== "Sponsored"));
+});
