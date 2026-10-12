@@ -1,0 +1,18 @@
+.destination-browser { max-width: 1200px; margin: auto; padding: 24px; }
+.destination-browser > .section-kicker { display: block; margin-top: 24px; }
+.destination-browser h1 { font-size: clamp(2rem, 5vw, 3rem); }
+.destination-browser label { display: block; margin: 24px 0 8px; }
+.destination-browser-layout { display: grid; grid-template-columns: minmax(220px, 1fr) minmax(0, 2fr); gap: 24px; align-items: start; }
+.destination-browser-roster { display: grid; gap: 8px; max-height: 70vh; overflow: auto; }
+.destination-browser-roster a { display: grid; gap: 4px; padding: 14px; border: 1px solid #c8d1db; border-radius: 12px; color: inherit; text-decoration: none; }
+.destination-browser-roster a[aria-current] { background: #e8f1fb; color: #152b43; border-color: #427bb6; }
+.destination-browser-detail { min-width: 0; }
+.destination-browser-picks { display: grid; gap: 16px; margin-top: 24px; }
+.destination-browser-picks article { padding: 20px; border: 1px solid #c8d1db; border-radius: 16px; }
+.destination-browser a { overflow-wrap: anywhere; }
+.destination-browser a:focus-visible { outline: 3px solid #427bb6; outline-offset: 3px; }
+@media (max-width: 650px) {
+  .destination-browser { padding: 16px; }
+  .destination-browser-layout { grid-template-columns: minmax(0, 1fr); }
+  .destination-browser-roster { max-height: 240px; }
+}
