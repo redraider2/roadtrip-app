@@ -1,3 +1,4 @@
+import { guideLines } from "../../src/lib/gameDayGuide.js";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import XLSX from "xlsx";
@@ -48,7 +49,7 @@ const categoryDefinitions = Object.freeze({
 
 function analyzeCategory(row, definition) {
   const incompleteFields = definition.fields.filter(
-    (field) => cellLines(row[field]).length === 0
+    (field) => guideLines(row[field]).length === 0
   );
   const sourceUrl = cellText(row[definition.sourceField]);
 

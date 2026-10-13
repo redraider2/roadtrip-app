@@ -1,13 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { chromium, expect } from '@playwright/test';
-import { mkdir } from 'node:fs/promises';
+import { mkdir, readFile } from 'node:fs/promises';
 import { nashvilleCategories } from '../../src/lib/nashvilleRecommendations.js';
 const baseURL = process.env.NASHVILLE_BASE_URL || 'http://127.0.0.1:5191';
 const browser = await chromium.launch({channel:'chrome',headless:true});
 test.after(() => browser.close());
 await mkdir('outputs/nashville-review',{recursive:true});
-async function setup(width, venueId = 3973, advertiser = null) {
+async function setup(width, venueId = 3973, advertiser = null, gameDayGuide = null) {
  const context=await browser.newContext({viewport:{width,height:900}});
  await context.addInitScript(()=>localStorage.setItem('roadtrip_auth',JSON.stringify({token:'fixture',user:{email:'review@example.com'}})));
  await context.route('http://localhost:5001/**',async route=>{
@@ -17,7 +17,7 @@ async function setup(width, venueId = 3973, advertiser = null) {
   if(u.pathname==='/route') data={geometry:[[34.746,-92.29],[36.144,-86.808]],distanceMeters:558000,durationSeconds:18720};
   if(u.pathname.endsWith('/places'))data={places:[],venue:{name:'FirstBank Stadium',latitude:36.144,longitude:-86.808,city:'Nashville',state:'TN'}};
   if(u.pathname.endsWith('/featured-partner'))data=advertiser;
-  if(u.pathname.endsWith('/game-day-guide'))data={venueName:'FirstBank Stadium',homeTeam:'Vanderbilt'};
+  if(u.pathname.endsWith('/game-day-guide'))data=gameDayGuide || {venueName:'FirstBank Stadium',homeTeam:'Vanderbilt'};
   await route.fulfill({json:data});
  });
  const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
@@ -65,4 +65,20 @@ test('Nashville recommendations preserve advertisers and do not appear for other
    else{await expect(page.getByRole('heading',{name:'Existing Nashville Advertiser',exact:true})).toBeVisible();await expect(page.locator('[data-nashville-placement="trip_hq"]')).toHaveCount(1);}
   }finally{await context.close();}
  }
+});
+
+for (const width of [1280,390]) test(`Vanderbilt Game Day panels show guidance at ${width}px`, async()=>{
+ const row=JSON.parse(await readFile(new URL('../../backend/tailgating_ready_for_qa.json',import.meta.url),'utf8')).find(row=>row.school==='Vanderbilt');
+ const guide={school:'Vanderbilt',venueName:'FirstBank Stadium',tailgating:{where:row.where,arrival:row.arrival,rules:row.rules,visitors:row.visitors},parkingArrival:{details:row.parkingArrival},knowBeforeYouGo:{details:row.knowBeforeYouGo},traditions:{details:['Complete',...row.traditions]}};
+ const {context,page,errors}=await setup(width,3973,null,guide);
+ try {
+  await page.goto(`${baseURL}/#/game-day`);
+  for(const [label,text] of [['Explore tailgating','Vandyville'],['Explore parking & arrival','digital parking pass'],['Explore stadium information','clear bag'],['Explore traditions','Star Walk']]){
+   await page.getByRole('button',{name:new RegExp(label)}).click();
+   const panel=page.locator('.tailgating-guide-panel');
+   await expect(panel).toContainText(text);
+   await expect(panel.getByText('Complete',{exact:true})).toHaveCount(0);
+  }
+  assert.deepEqual(errors,[]);
+ }finally{await context.close();}
 });

@@ -4611,28 +4611,28 @@
     "school": "Vanderbilt",
     "venueName": "FirstBank Stadium",
     "where": [
-      "Complete"
+      "Vandyville is Vanderbilt’s designated pregame tailgating destination."
     ],
     "arrival": [
-      "Complete"
+      "Vandyville opens four hours before kickoff. Confirm the current game’s activation schedule and your specific parking facility’s opening time."
     ],
     "rules": [
-      "Complete"
+      "Do not tailgate in garages. Keep sidewalks, roads, bike lanes and emergency access clear; a parking pass is required for each occupied space."
     ],
     "visitors": [
-      "Complete"
+      "FirstBank Stadium gates open two hours before kickoff. Consult Vanderbilt’s current stadium map and game-specific information before arrival."
     ],
     "sourceUrl": "https://vucommodores.com/football-gameday/",
-    "lastVerified": "2026-09-08",
-    "notes": "Loaded to Neon 2026-09-02.",
+    "lastVerified": "2026-10-13",
+    "notes": "Tailgating, parking and policies checked October 13, 2026; placeholder values replaced. Check official game-specific parking times.",
     "parkingArrival": [
-      "Complete",
-      "Complete"
+      "Download your digital parking pass to your mobile wallet before traveling.",
+      "Parking opening times vary by facility and kickoff; overnight parking and advance setup are prohibited."
     ],
     "parkingSourceUrl": "https://vucommodores.com/football-gameday/",
     "knowBeforeYouGo": [
-      "Complete",
-      "Complete"
+      "Use a clear bag no larger than 12 × 6 × 12 inches, or a clear one-gallon resealable bag. Small clutches may be up to 4.5 × 6.5 inches.",
+      "Check the official prohibited-items policy; medical exception bags require gate screening."
     ],
     "policiesSourceUrl": "https://vucommodores.com/football-gameday/",
     "traditions": [

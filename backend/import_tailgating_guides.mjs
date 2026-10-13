@@ -1,3 +1,4 @@
+import { guideLines } from "../src/lib/gameDayGuide.js";
 import "dotenv/config";
 import fs from "node:fs";
 import path from "node:path";
@@ -18,6 +19,14 @@ if (!fs.existsSync(dataPath)) {
 }
 
 const guides = JSON.parse(fs.readFileSync(dataPath, "utf8"));
+for (const guide of guides) {
+  for (const key of ["where", "arrival", "rules", "visitors", "parkingArrival", "knowBeforeYouGo", "traditions"]) {
+    const values = guide[key];
+    if (Array.isArray(values) && values.some(value => typeof value === "string" && value.trim() && guideLines([value]).length === 0)) {
+      throw new Error(`Status placeholder in ${guide.school}: ${key}; supply verified guide text before importing`);
+    }
+  }
+}
 
 function optionalText(value) {
   const text = typeof value === "string" ? value.trim() : "";
