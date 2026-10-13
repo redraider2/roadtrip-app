@@ -1,3 +1,4 @@
+import { normalizeGameDayGuide } from "./lib/gameDayGuide.js";
 import DestinationBrowser from "./components/DestinationBrowser.jsx";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
@@ -890,7 +891,7 @@ function App() {
       const data = await res.json();
 
       if (!cancelled) {
-        setGameDayGuide(data);
+        setGameDayGuide(normalizeGameDayGuide(data));
       }
     } catch (err) {
       if (cancelled || err?.name === "AbortError") return;
@@ -3049,8 +3050,7 @@ displayDestination ||
                         </div>
                       ) : (
                         <p className="section-copy">
-                          {gameDayGuide[openGameDaySection]?.details ||
-                            "Information is being added for this destination."}
+                          Information is being added for this destination.
                         </p>
                       )}
 

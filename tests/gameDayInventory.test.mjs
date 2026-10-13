@@ -218,3 +218,10 @@ test("validation leaves its workbook byte-for-byte unchanged", async () => {
     await rm(temporaryDirectory, { recursive: true, force: true });
   }
 });
+
+test('status-only worksheet fields are incomplete', () => {
+  const report = analyzeGuideRows([completeRow({ 'Where to Tailgate': 'Complete', 'Parking & Arrival': 'Complete\nComplete' })]);
+  const record = report.records[0];
+  assert.equal(record.categories.tailgating.complete, false);
+  assert.equal(record.categories.parkingArrival.complete, false);
+});
