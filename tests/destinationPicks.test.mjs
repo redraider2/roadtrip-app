@@ -126,7 +126,8 @@ test("national roster targets all136 exact home venues and retains partner prece
       assert.ok(!seen.has(venue), `duplicate venue ${venue}`);seen.add(venue);
       const actual=getDestinationPicks(venue);
       assert.equal(actual.destinationId,d.destinationId);
-      assert.ok(actual.entries.length>=5);
+      if (d.destinationId === "DEST-039") assert.equal(actual.entries.length, 0);
+      else assert.ok(actual.entries.length>=5);
       for (const e of actual.entries) {
         assert.equal(e.verificationStatus,"source_checked");
         assert.equal(e.publicationStatus,"implementation_candidate");

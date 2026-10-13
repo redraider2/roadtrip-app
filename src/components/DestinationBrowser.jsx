@@ -6,6 +6,7 @@ import DestinationPartnerDiscovery from "./DestinationPartnerDiscovery.jsx";
 import DestinationArtworkPlacement from "./DestinationArtworkPlacement.jsx";
 import { culinaryGangsterTempe } from "../lib/destinationArtworkCampaigns.js";
 import "./DestinationBrowser.css";
+import { getNashvilleRecommendations } from "../lib/nashvilleRecommendations.js";
 import NashvilleRecommendations from "./NashvilleRecommendations.jsx";
 
 const destinationIdFromHash = () => new URLSearchParams(window.location.hash.split("?")[1]).get("market");
@@ -60,7 +61,7 @@ export default function DestinationBrowser({ onHome }) {
                 <p>{entry.summary}</p>
                 <a href={entry.url} target="_blank" rel="noopener noreferrer">{entry.seasonality ? "Check seasonal dates" : entry.actions[0]?.label || "Visit website"}</a>
               </article>)}
-            </div> : <p>Local recommendations are being prepared for this destination. Check back as coverage grows.</p>}
+            </div> : getNashvilleRecommendations(venueId, "destination") ? null : <p>Local recommendations are being prepared for this destination. Check back as coverage grows.</p>}
           </> : <p>{selectedId ? "Destination not found. Choose a destination from the list." : "Choose a destination to see local recommendations."}</p>}
         </section>
       </div>
