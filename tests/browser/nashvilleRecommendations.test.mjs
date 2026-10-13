@@ -47,6 +47,8 @@ for(const width of [1280,390])test(`Nashville recommendations across journey and
   }
   await page.goto(`${baseURL}/#/destinations?market=DEST-039`);
   const guide=page.locator('[data-nashville-placement="destination"]');await expect(guide).toHaveCount(1);
+  await expect(page.locator('.destination-browser-picks [data-recommendation-id]')).toHaveCount(0);
+  await expect(page.getByText('Local recommendations are being prepared for this destination. Check back as coverage grows.')).toHaveCount(0);
   for(const category of nashvilleCategories)for(const item of category.items)await expect(guide.getByText(item,{exact:true})).toBeVisible();
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await guide.screenshot({path:`outputs/nashville-review/public-${width}.png`});
