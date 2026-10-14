@@ -17,15 +17,26 @@ export function formatRouteDuration(seconds) {
   return `${hours} hr ${minutes} min`;
 }
 
+// A TBD kickoff is a calendar-day placeholder, not a timezone-aware event time.
+export function formatGameCalendarDate(startDate, startTimeTBD, options = {}) {
+  if (!startDate) return "Date TBD";
+  const value = startTimeTBD ? `${String(startDate).slice(0, 10)}T12:00:00Z` : startDate;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Date TBD";
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    ...options,
+    ...(startTimeTBD ? { timeZone: "UTC" } : {}),
+  });
+}
+
 export function formatGameDate(startDate, startTimeTBD) {
   if (!startDate) return "Date TBD";
 
   const date = new Date(startDate);
-  const dateText = date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
+  const dateText = formatGameCalendarDate(startDate, startTimeTBD, { year: "numeric" });
+  if (dateText === "Date TBD") return dateText;
 
   if (startTimeTBD) {
     return `${dateText} · Kickoff TBD`;
