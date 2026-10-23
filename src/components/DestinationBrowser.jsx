@@ -1,4 +1,5 @@
-import StadiumIdentity from "./StadiumIdentity.jsx";
+import { getNashvilleRecommendations } from "../lib/nashvilleRecommendations.js";
+import StadiumFeature from "./StadiumFeature.jsx";
 import { useEffect, useState } from "react";
 import roster from "../data/destinationRoster.json";
 import picks from "../data/destinationPicks.json" with { type: "json" };
@@ -7,7 +8,6 @@ import DestinationPartnerDiscovery from "./DestinationPartnerDiscovery.jsx";
 import DestinationArtworkPlacement from "./DestinationArtworkPlacement.jsx";
 import { culinaryGangsterTempe } from "../lib/destinationArtworkCampaigns.js";
 import "./DestinationBrowser.css";
-import { getNashvilleRecommendations } from "../lib/nashvilleRecommendations.js";
 import NashvilleRecommendations from "./NashvilleRecommendations.jsx";
 
 const destinationIdFromHash = () => new URLSearchParams(window.location.hash.split("?")[1]).get("market");
@@ -39,7 +39,6 @@ export default function DestinationBrowser({ onHome }) {
       <label htmlFor="destination-search">Search by city, state, team or conference</label>
       <input id="destination-search" className="trip-input" type="search" value={query} onChange={(event) => setQuery(event.target.value)} />
       <p aria-live="polite">{filtered.length} of {roster.length} destinations</p>
-      <StadiumIdentity venueId={venueId} screen="destinations" />
       <div className="destination-browser-layout">
         <nav className="destination-browser-roster" aria-label="Destinations">
           {filtered.map((destination) => <a key={destination.destinationId} href={`#/destinations?market=${destination.destinationId}`} aria-current={selectedId === destination.destinationId ? "page" : undefined}>
@@ -53,6 +52,7 @@ export default function DestinationBrowser({ onHome }) {
             <h2>{selected.market}, {selected.state}</h2>
             <p>{selected.teamName} · {selected.conference}</p>
             <a href={`#/destinations?market=${selected.destinationId}`}>Link to this destination</a>
+            <StadiumFeature venueId={venueId} variant="weekend" />
             <DestinationPartnerDiscovery venueId={venueId} placement="trip_hq" />
             <DestinationArtworkPlacement campaign={culinaryGangsterTempe} venueId={venueId} placement="trip_hq" />
             <NashvilleRecommendations venueId={venueId} placement="destination" featured />

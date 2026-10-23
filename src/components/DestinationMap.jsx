@@ -22,22 +22,22 @@ function createDestinationIcon(label, isStadium = false) {
   });
 }
 
-function FitDestinationBounds({ positions, animate }) {
+function FitDestinationBounds({ positions }) {
   const map = useMap();
 
   useEffect(() => {
     if (!positions.length) return;
 
     if (positions.length === 1) {
-      map.setView(positions[0], 14, { animate });
+      map.setView(positions[0], 14, { animate: false });
       return;
     }
 
     map.fitBounds(L.latLngBounds(positions), {
       padding: [45, 45],
-      animate,
+      animate: false,
     });
-  }, [map, positions, animate]);
+  }, [map, positions]);
 
   return null;
 }
@@ -59,7 +59,6 @@ export default function DestinationMap({
   restaurants = [],
   bars = [],
   hotels = [],
-  animate,
 }) {
   const places = useMemo(
     () => [
@@ -118,7 +117,7 @@ export default function DestinationMap({
         scrollWheelZoom={false}
         className="destination-map"
       >
-        <FitDestinationBounds positions={positions} animate={animate} />
+        <FitDestinationBounds positions={positions} />
 
         <TileLayer
           attribution="&copy; OpenStreetMap contributors"

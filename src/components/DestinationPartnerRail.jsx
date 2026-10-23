@@ -42,7 +42,7 @@ export default function DestinationPartnerRail({
     ...recommendationExcludeNames,
     ...realPartners.map((p) => p.businessName || p.name),
     ...discoveryPartners.map((p) => p.businessName || p.name),
-  ]).slice(0, availableCount);
+  ], contextLabel).slice(0, availableCount);
 
   if (hideEmpty && occupiedCount === 0 && recommendations.length === 0) return null;
 
@@ -62,6 +62,12 @@ export default function DestinationPartnerRail({
       </section>
     );
   }
+
+  // Editorial suggestions need not fill every sales position with a house ad.
+  const visibleRecommendations = salesPreview
+    ? Array.from({ length: availableCount }, (_, index) => recommendations[index] || availablePosition(index))
+    : recommendations;
+  if (!occupiedCount && !visibleRecommendations.length && !comingSoon) return null;
 
   return (
     <section className="destination-partner-marketplace" aria-label="Local partners">
@@ -97,8 +103,7 @@ export default function DestinationPartnerRail({
             type="destination"
           />
         ))}
-        {Array.from({ length: availableCount }, (_, index) => {
-          const partner = recommendations[index] || availablePosition(index);
+        {visibleRecommendations.map((partner) => {
           return (
             <PartnerPlacement
               compact

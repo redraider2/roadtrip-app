@@ -1,11 +1,12 @@
-import StadiumIdentity from "./components/StadiumIdentity.jsx";
-import { getStadiumProfile } from "./lib/stadiumIdentity.js";
 import { normalizeGameDayGuide } from "./lib/gameDayGuide.js";
+import DestinationRoadSign from "./components/DestinationRoadSign.jsx";
+import StadiumFeature from "./components/StadiumFeature.jsx";
 import DestinationBrowser from "./components/DestinationBrowser.jsx";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import Background from "./components/Background";
 import "./App.css";
+import "./WarmJourney.css";
 import TripMap from "./components/TripMap";
 import DestinationMap from "./components/DestinationMap";
 import JourneyNavigation from "./components/JourneyNavigation.jsx";
@@ -1568,8 +1569,6 @@ function App() {
   const isPlanScreen = PLAN_SCREEN_IDS.includes(activeScreen);
   const destinationVenueId =
     selectedFootballGame?.venueId || activeTrip?.venueId || null;
-  const stadiumVenueId = activeScreen === "trip-hq" ? activeTrip?.venueId : destinationVenueId;
-  const hasStadiumPilot = Boolean(getStadiumProfile(stadiumVenueId)) && ["trip-hq", "game-weekend", "game-day"].includes(activeScreen);
   const campaignVenueId = activeTrip?.venueId || null;
   const campaignPlacement = { "trip-hq": "trip_hq", "plan-along-the-way": "along_the_way", "game-weekend": "game_weekend", "game-day": "game_day" }[activeScreen];
   const hasTempeSponsor = Boolean(selectDestinationArtwork(culinaryGangsterTempe, campaignVenueId, campaignPlacement));
@@ -1581,7 +1580,7 @@ function App() {
     isAdvertiserSalesPreview && advertiserDemoPackage === "featured";
   const recommendationVenueId = activeTrip?.venueId || destinationVenueId;
   const isNashvilleDestination = Boolean(getNashvilleRecommendations(recommendationVenueId, "destination"));
-  const routePartner = isNashvilleDestination ? visitMusicCity : recommendationFallback(KICKOFF_MILES_HOUSE_AD, recommendationVenueId, 1);
+  const routePartner = isNashvilleDestination ? visitMusicCity : recommendationFallback(KICKOFF_MILES_HOUSE_AD, recommendationVenueId, 0, activeScreen === "plan-along-the-way" ? "Along the Way" : "Route & Schedule");
   const existingWorkspacePartner =
     isFeaturedAdvertiserDemo
       ? advertiserDemoPartner
@@ -1592,7 +1591,10 @@ function App() {
           : import.meta.env.DEV
             ? DEVELOPMENT_PARTNER_PREVIEW
             : KICKOFF_MILES_HOUSE_AD;
-  const workspacePartner = isNashvilleDestination && (existingWorkspacePartner.isHouseAd || existingWorkspacePartner.isDevelopmentPreview) ? visitMusicCity : recommendationFallback(existingWorkspacePartner, recommendationVenueId, activeScreen === "plan-stay-itinerary" ? 1 : 0);
+  const workspacePartner = isNashvilleDestination && (existingWorkspacePartner.isHouseAd || existingWorkspacePartner.isDevelopmentPreview) ? visitMusicCity : recommendationFallback(existingWorkspacePartner, recommendationVenueId, 0, {
+    "trip-hq": "Trip HQ", "plan-stay-itinerary": "Stay & Itinerary",
+    "game-weekend": "Game Weekend", "game-day": "Game Day", drive: "Drive",
+  }[activeScreen]);
   const hasFeaturedDiscovery = activeScreen === "trip-hq" && getDestinationPartners(recommendationVenueId, "trip_hq").length > 0;
   const recommendationExcludeNames = hasFeaturedDiscovery || hasTempeSponsor ? [] : [(["plan-route-schedule", "plan-along-the-way"].includes(activeScreen) ? routePartner : workspacePartner)?.businessName];
   const destinationPartnerInventory = advertiserDemoPartner
@@ -1628,8 +1630,8 @@ function App() {
   }
 
   return (
-    <div className={`page${activeScreen === "home" ? " is-home" : ""}${hasStadiumPilot ? " is-lubbock-pilot" : ""}`}>
-      <Background team={backgroundTeam} />
+    <div className={`page${activeScreen === "home" ? " is-home" : ""}`}>
+      <Background team={activeScreen === "home" ? null : backgroundTeam} />
     <div className={`app${activeScreen === "home" ? " is-home" : ""}${
       activeScreen === "choose-team" ? " is-choose-team" : ""
     }${
@@ -1893,7 +1895,6 @@ function App() {
             <div className="plan-route-layout">
               <div className="plan-route-map" aria-label="Road trip route map">
                 <TripMap
-                  animate={getStadiumProfile(stadiumVenueId) ? false : undefined}
                   start={mapStart}
                   end={mapEnd}
                   stops={stops.filter((stop) => stop.is_route_stop !== false)}
@@ -1947,6 +1948,15 @@ function App() {
                 </div>
               </div>
             </div>
+              <div className="route-next-step">
+                <span className="section-kicker">MAKE IT YOUR TRIP</span>
+                <h3>The route is just the beginning.</h3>
+                <p>Find food, overnight stays, and memorable stops along the road.</p>
+                <button className="primary-button" onClick={() => navigateTo("plan-along-the-way")}>Explore stops along the way <span aria-hidden="true">→</span></button>
+              </div>
+              </div>
+            </div>
+            <div className="route-partners">
             <PartnerPlacement
               contextLabel="Road Trip Partner"
               size="large"
@@ -1958,7 +1968,6 @@ function App() {
               salesPreview={isAdvertiserSalesPreview}
               comingSoon={destinationMarketComingSoon}
             />
-              </div>
             </div>
             </PlanRouteScheduleScreen>
 
@@ -1968,6 +1977,11 @@ function App() {
               <h2>Along the Way</h2>
               <p>Food, stays, and memorable stops matched to your route.</p>
             </div>
+            <DestinationRoadSign
+              destination={activeTrip.end}
+              venue={selectedFootballGame?.venue || displayGameVenue}
+              onExplore={() => navigateTo("game-weekend")}
+            />
             <DestinationArtworkPlacement campaign={culinaryGangsterTempe} venueId={campaignVenueId} placement="along_the_way" fallback={
 <PartnerPlacement
               contextLabel="Along the Way"
@@ -2192,7 +2206,7 @@ function App() {
               ) : null}
               </>
             )}
-            </PlanAlongTheWayScreen>
+          </PlanAlongTheWayScreen>
           </div>
           </PlanWorkspace>
         ) : null}
@@ -2389,7 +2403,6 @@ function App() {
             <div className="trip-map-section">
               <h3 className="workspace-heading">Route Map</h3>
               <TripMap
-                  animate={getStadiumProfile(stadiumVenueId) ? false : undefined}
   start={mapStart}
   end={mapEnd}
   stops={stops.filter((stop) => stop.is_route_stop !== false)}
@@ -2784,7 +2797,7 @@ function App() {
 {hasGameWeekend && ["game-weekend", "game-day"].includes(activeScreen) ? (
           <>
           <GameWeekendScreen active={activeScreen === "game-weekend"}>
-          <StadiumIdentity venueId={stadiumVenueId} screen="game-weekend" />
+          <StadiumFeature venueId={destinationVenueId} variant="weekend" />
           <div className="panel destination-panel">
             <div className="section-heading-row">
               <div>
@@ -2820,7 +2833,6 @@ function App() {
                 </div>
 
                 <DestinationMap
-                  animate={getStadiumProfile(stadiumVenueId) ? false : undefined}
                   venue={weekendVenue}
                   restaurants={weekendPlaces.restaurant}
                   bars={weekendPlaces.bar}
@@ -2833,7 +2845,7 @@ function App() {
                 </GameWeekendScreen>
 
           <GameDayScreen active={activeScreen === "game-day"}>
-          <StadiumIdentity venueId={stadiumVenueId} screen="game-day" />
+          <StadiumFeature venueId={destinationVenueId} variant="day" />
           <div className="panel destination-panel">
             <div className="game-day-guide-panel">
               <div className="section-heading-row">
@@ -3081,7 +3093,7 @@ displayDestination ||
               ) : null}
             </div>
           </div>
-            </GameDayScreen>
+          </GameDayScreen>
 
           <GameWeekendScreen active={activeScreen === "game-weekend"}>
           <NashvilleRecommendations venueId={recommendationVenueId} placement="game_weekend" />
@@ -3323,6 +3335,7 @@ displayDestination ||
               onBack={() => navigateTo("trip-hq")}
               partner={workspacePartner}
               destinationPartners={destinationPartnerInventory}
+              recommendationVenueId={recommendationVenueId}
               salesPreview={isAdvertiserSalesPreview}
               comingSoon={destinationMarketComingSoon}
               routeGeometry={routeGeometry}

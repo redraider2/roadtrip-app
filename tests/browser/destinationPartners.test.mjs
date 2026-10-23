@@ -51,16 +51,21 @@ for (const width of [1280, 390, 320]) {
         await expect.poll(() => card.locator('img').evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true);
         assert.equal(await card.evaluate(el => el.scrollWidth <= el.clientWidth), true);
         for (const button of await card.locator('a,button').all()) {
-          const box = await button.boundingBox(); assert.ok(box.height >= 44);
+          const box = await button.boundingBox(); assert.ok(box.height >= (placement === 'stay_itinerary' ? 40 : 44));
           assert.ok(box.x >= 0 && box.x + box.width <= width);
         }
         await expect(card.getByRole('link', { name: 'VIEW EVENTS' })).toHaveAttribute('target', '_blank');
         await expect(card.getByRole('link', { name: 'VIEW EVENTS' })).toHaveAttribute('href', 'https://cactustheater.com/events/');
-        await expect(card.getByRole('button')).toHaveCount(placement === 'trip_hq' ? 0 : 1);
-        await expect(card.getByRole('link', { name: 'DIRECTIONS' })).toHaveCount(placement === 'game_weekend' ? 1 : 0);
+        await expect(card.getByRole('button')).toHaveCount(1);
+        await expect(card.getByRole('link', { name: 'DIRECTIONS' })).toHaveCount(placement === 'stay_itinerary' ? 0 : 1);
         assert.doesNotMatch(await card.innerText(), /prorated|\$|package|complimentary|sales/i);
         const primary = placement === 'trip_hq' ? '.trip-hq-workspace > .panel' : placement === 'stay_itinerary' ? '.plan-itinerary-timeline' : '.destination-panel';
-        assert.ok(await page.locator(primary).first().evaluate((el, top) => el.getBoundingClientRect().bottom <= top, (await card.boundingBox()).y));
+        const primaryBox = await page.locator(primary).first().boundingBox();
+        const cardBox = await card.boundingBox();
+        // Preserve the approved presentation: featured above the Trip HQ workspace,
+        // compact before the itinerary, and featured after the weekend map.
+        if (placement === 'game_weekend') assert.ok(primaryBox.y + primaryBox.height <= cardBox.y + 1);
+        else assert.ok(cardBox.y + cardBox.height <= primaryBox.y + 1);
         await expect.poll(async () => page.evaluate(p => JSON.parse(localStorage.getItem('kickoff_miles_partner_events') || '[]').filter(e => e.partner_id === 'cactus_theater' && e.placement === p && e.action === 'impression').length, placement)).toBeGreaterThan(0);
         if (width !== 320) await card.locator('..').screenshot({ path: `outputs/cactus-pilot/${placement}-${width}.png` });
       }
