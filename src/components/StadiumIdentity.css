@@ -1,0 +1,35 @@
+/* Destination-only pilot. The shared introduction and other markets retain their published styles. */
+.stadium-identity { margin: 0 0 1.5rem; min-width: 0; color: #fff9ed; container-type: inline-size; }
+.stadium-identity * { box-sizing: border-box; }
+.stadium-identity-hero { position: relative; isolation: isolate; display: flex; align-items: center; justify-content: space-between; gap: 2rem; min-height: 410px; padding: clamp(1.5rem, 4vw, 3rem); background: #0c1d26; border-bottom: 4px solid #bf2839; overflow: hidden; }
+.stadium-identity-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, #07131ce6, #07131c66 56%, #07131c10), linear-gradient(0deg, #07131c77, transparent 70%); }
+.stadium-identity-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: -2; }
+.stadium-identity-copy { max-width: 57%; text-shadow: 0 4px 20px #0009; }
+.stadium-identity-eyebrow { display: block; color: #f2cf8d; font-size: 0.7rem; line-height: 1.8; letter-spacing: 0.14em; text-transform: uppercase; }
+.stadium-identity-copy :is(h1, h2) { margin: 0.9rem 0 1rem; font: 400 clamp(2.75rem, 5.4vw, 4.5rem)/1.03 Impact, "Arial Narrow", Arial, sans-serif; color: #fff9ed; letter-spacing: 0; text-transform: uppercase; text-wrap: balance; overflow-wrap: normal; }
+.stadium-identity-copy p { margin: 0; max-width: 420px; font-size: 0.95rem; line-height: 1.8; color: #fff9ed; }
+.stadium-identity .road-sign { position: relative; align-self: flex-end; flex: 0 1 300px; min-width: 0; padding: 1.1rem 1.25rem; margin: 0 0 1rem; background: #174f3feb; color: #fffde9; border: 3px solid #e1e8d4; outline: 4px solid #174e3c; border-radius: 7px; box-shadow: 0 13px 30px #0007; transform: rotate(-3deg); }
+.stadium-identity .road-sign::before, .stadium-identity .road-sign::after { content: ""; position: absolute; top: calc(100% + 6px); height: 27px; width: 8px; background: linear-gradient(90deg,#7b8c81,#e1e5da,#748276); }
+.stadium-identity .road-sign::before { left: 22%; }
+.stadium-identity .road-sign::after { right: 22%; }
+.stadium-identity .road-sign-exit { display: flex; justify-content: space-between; padding-bottom: 0.7rem; border-bottom: 1px solid #ffffff77; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; }
+.stadium-identity .road-sign-meta { display: block; margin-top: 0.9rem; font-size: 0.7rem; letter-spacing: 0.07em; }
+.stadium-identity .road-sign-title { display: block; margin: 0.6rem 0; font-size: clamp(1.6rem, 2.7vw, 2.1rem); line-height: 1.1; }
+.stadium-identity .road-sign-bottom { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; font-size: 0.72rem; line-height: 1.6; }
+.stadium-identity .road-sign-arrow { font-size: 2rem; }
+.stadium-photo-credit { padding: 0.8rem 1.25rem; background: #11212b; color: #dce3db; font-size: 0.69rem; line-height: 1.7; overflow-wrap: anywhere; }
+.stadium-photo-credit a { color: #f1ce8d; text-underline-offset: 3px; }
+.stadium-photo-credit span { display: block; }
+.stadium-identity-hero.has-photo-fallback { background: linear-gradient(130deg,#2e3433,#0b1b24); }
+.is-lubbock-pilot .trip-hq-experience { overflow: hidden; }
+.is-lubbock-pilot .trip-hq-hero { border-top: 0; padding-top: 0; }
+.is-lubbock-pilot .trip-hq-hero > h2 { font-size: 1.4rem; color: #fff9ed; }
+.is-lubbock-pilot .trip-hq-gateways button { background: linear-gradient(145deg,#18503fd9,#102a25e8); border-color: #b6c5a66b; }
+.is-lubbock-pilot .trip-hq-gateways button > span { display: none; }
+@container (max-width: 650px) {
+  .stadium-identity-hero { flex-direction: column; align-items: flex-start; min-height: 530px; gap: 2rem; padding: 1.5rem 1.4rem 2.7rem; }
+  .stadium-identity-copy { max-width: 100%; }
+  .stadium-identity-copy :is(h1,h2) { font-size: clamp(2.4rem, 9cqi, 3.1rem); }
+  .stadium-identity .road-sign { align-self: flex-end; flex: 0 0 auto; width: min(90%, 290px); }
+  .stadium-identity .road-sign-title { font-size: 1.8rem; }
+}

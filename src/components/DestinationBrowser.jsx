@@ -1,3 +1,4 @@
+import StadiumIdentity from "./StadiumIdentity.jsx";
 import { useEffect, useState } from "react";
 import roster from "../data/destinationRoster.json";
 import picks from "../data/destinationPicks.json" with { type: "json" };
@@ -38,6 +39,7 @@ export default function DestinationBrowser({ onHome }) {
       <label htmlFor="destination-search">Search by city, state, team or conference</label>
       <input id="destination-search" className="trip-input" type="search" value={query} onChange={(event) => setQuery(event.target.value)} />
       <p aria-live="polite">{filtered.length} of {roster.length} destinations</p>
+      <StadiumIdentity venueId={venueId} screen="destinations" />
       <div className="destination-browser-layout">
         <nav className="destination-browser-roster" aria-label="Destinations">
           {filtered.map((destination) => <a key={destination.destinationId} href={`#/destinations?market=${destination.destinationId}`} aria-current={selectedId === destination.destinationId ? "page" : undefined}>
