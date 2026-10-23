@@ -1,3 +1,5 @@
+import StadiumFeature from "./StadiumFeature.jsx";
+
 const PLAN_TABS = [
   { id: "plan-route-schedule", label: "Route & Schedule" },
   { id: "plan-along-the-way", label: "Along the Way" },
@@ -57,6 +59,8 @@ export default function PlanWorkspace({
           </span>
         </div>
       </div>
+
+      <StadiumFeature venueId={trip.venueId} />
 
       <nav className="plan-tabs" aria-label="Plan your road trip">
         {PLAN_TABS.map((tab) => (

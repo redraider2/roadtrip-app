@@ -1,0 +1,200 @@
+/* Approved journey layout. Home retains its stadium-and-road backdrop. */
+html:root .team-background {background:radial-gradient(ellipse at 95% 0%,#47151b 0%,#17191d 48%,#101215 85%) !important;}
+html:root .team-background-logo {opacity:.06;}
+html:root .team-background-name {opacity:.18;font-size:clamp(3rem,7vw,7rem);}
+html:root .app.is-plan {max-width:1320px;padding:2rem 2.5rem 4rem;}
+html:root .plan-workspace-title-row {margin-top:2rem;gap:2rem;}
+html:root .plan-workspace-title-row h1 {font-size:clamp(2rem,4vw,3.5rem);line-height:1.05;}
+html:root .plan-trip-identity {flex:0 1 370px;background:#202328;border-color:#e05950;border-radius:0 8px 8px 0;}
+html:root .plan-trip-identity span {opacity:1;color:#bfc4cb;}
+html:root .plan-tabs {margin-top:2rem;background:#191c20;border-radius:10px;}
+html:root .app.is-plan .along-panel {background:transparent;border:0;padding:1.5rem 0;box-shadow:none;}
+html:root .plan-section-heading h2 {font-size:clamp(1.5rem,2.7vw,2.25rem);line-height:1.25;max-width:900px;}
+html:root .plan-route-layout {grid-template-columns:minmax(0,1.8fr) minmax(300px,1fr);align-items:start;gap:24px;}
+html:root .plan-route-map {padding:0;border-radius:14px;background:#202328;}
+html:root .plan-route-map .map-wrap,html:root .plan-route-map .leaflet-container {height:485px;border-radius:14px;}
+html:root .trip-result-card {background:#22262b;border:1px solid #383d44;box-shadow:none;border-radius:14px;}
+html:root .trip-result-matchup {font-size:1.6rem;}
+html:root .trip-result-journey {font-size:.95rem;}
+html:root .trip-stat {padding:14px 22px;}
+html:root .trip-stat-label {color:#bdc3cb;opacity:1;}
+html:root .trip-stat-value {font-size:1.25rem;}
+.route-next-step {padding:22px;border:1px solid #494139;border-radius:14px;background:#252321;}
+.route-next-step h3 {margin:10px 0;font-size:1.15rem;}
+.route-next-step p {font-size:.95rem;line-height:1.55;color:#c6c7cb;margin:0 0 18px;}
+.route-next-step button {width:100%;min-height:48px;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;font-size:.9rem;background:#c33e35;}
+html:root .route-partners {margin-top:40px;padding-top:28px;border-top:1px solid #363a40;display:grid;grid-template-columns:minmax(0,1fr);gap:20px;}
+html:root .route-partners > .partner-placement {margin:0;background:#22262b;border:1px solid #4f493d;border-radius:12px;min-height:0;padding:20px;}
+html:root .destination-partner-marketplace {background:transparent;border:0;margin:0;padding:0;}
+html:root .destination-partner-marketplace-heading {margin-bottom:18px;}
+html:root .destination-partner-rail {grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+html:root .partner-placement.is-compact {padding:20px;background:#202328;border:1px solid #3d4147;border-radius:12px;display:flex;flex-direction:column;}
+html:root .partner-placement.is-compact .partner-placement-content {flex:1;display:flex;flex-direction:column;align-items:stretch;gap:18px;}
+html:root .partner-placement.is-compact .partner-placement-actions {margin-top:auto;}
+html:root .partner-placement.is-compact h3 {font-size:1rem;line-height:1.35;}
+html:root .partner-placement-actions a {min-height:44px;display:flex;align-items:center;justify-content:center;font-size:.8rem;}
+html:root .partner-placement p {font-size:.9rem;color:#bdc3cb;opacity:1;}
+@media(max-width:1000px){html:root .plan-workspace-title-row{align-items:start;flex-direction:column;}html:root .plan-trip-identity{flex:auto;max-width:100%;text-align:left;}html:root .plan-route-layout{grid-template-columns:1fr;}html:root .plan-route-summary{display:grid;grid-template-columns:1fr 1fr;align-items:start;}html:root .destination-partner-rail{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:600px){html:root .app.is-plan{padding:1.5rem 18px;}html:root .plan-route-summary,html:root .destination-partner-rail{grid-template-columns:1fr;}html:root .plan-route-map .map-wrap,html:root .plan-route-map .leaflet-container{height:320px;}html:root .plan-tabs button{font-size:.66rem;padding:10px 6px;}html:root .partner-placement-content{flex-direction:column;align-items:stretch;}html:root .plan-workspace-title-row h1{font-size:2.1rem;}html:root .plan-trip-identity{overflow-wrap:anywhere;}}
+
+/* Warm paper, scarlet accents, and the destination photograph. */
+html:root {color-scheme:light;}
+html:root body {background:#f3efe7;color:#292c2d;}
+html:root .team-background {background:radial-gradient(ellipse at 100% 0%,#ead9cd 0%,#f3efe7 52%,#eee9df 100%) !important;}
+html:root .team-background-overlay {background:none;}
+html:root .team-background-name {color:#9f292c;opacity:.045;text-shadow:none;}
+html:root .app:not(.is-home) {color:#292c2d;}
+html:root .plan-workspace-back,html:root .plan-workspace-brand {color:#454a4a;}
+html:root .plan-workspace-kicker,html:root .section-kicker {color:#9b312b;}
+html:root .plan-trip-identity {background:#fffaf3;border-color:#b93030;box-shadow:0 2px 10px #59381708;}
+html:root .plan-trip-identity span {color:#626562;}
+html:root .plan-tabs {background:#fffcf7;border-color:#d4cfc5;margin-top:24px;box-shadow:0 3px 8px #59381704;}
+html:root .plan-tabs button {color:#626562;}
+html:root .plan-tabs button + button {border-left-color:#ded8ce;}
+html:root .plan-tabs button:hover {background:#f3e6df;}
+html:root .plan-tabs button.is-active {color:#922a28;background:#f4e5dd;border-bottom-color:#b93030;}
+html:root .plan-route-map {background:#fffcf7;border-color:#d4cfc5;box-shadow:0 8px 28px #59381708;}
+html:root .trip-result-card {background:#fffdf8;border-color:#d9d2c7;box-shadow:0 6px 24px #59381706;color:#292c2d;}
+html:root .trip-result-eyebrow {color:#9b312b;}
+html:root .trip-result-journey {color:#555e5b;opacity:1;}
+html:root .trip-stat-label {color:#656b66;}
+html:root .trip-stat-value {color:#272e2a;}
+html:root .trip-stat + .trip-stat {border-color:#e6dfd4;}
+html:root .route-next-step {background:#ebeede;border-color:#d1d6bc;color:#283b2f;}
+html:root .route-next-step .section-kicker {color:#52664b;}
+html:root .route-next-step p {color:#51604f;}
+html:root .route-next-step button {color:#fff;}
+html:root .route-partners {border-color:#d8d0c4;}
+html:root .route-partners > .partner-placement {background:#fff9ec;border-color:#dac9a5;}
+html:root .partner-placement.is-compact {background:#fffdf8;border-color:#d9d2c7;box-shadow:0 4px 14px #59381704;}
+html:root .partner-placement-label-row span {color:#886017;}
+html:root .partner-placement-label-row small {color:#6d665d;opacity:1;}
+html:root .partner-placement p {color:#5e655e;}
+html:root .partner-placement-monogram {background:#f3edde;color:#826027;border-color:#c4ad7a;}
+html:root .partner-placement-actions a {color:#343c36;border-color:#cfc7b9;background:#fffdf7;}
+html:root .partner-placement-actions a:hover {background:#eee8dc;}
+html:root .section-copy {color:#555f56;}
+html:root .site-footer {color:#5e655e;border-color:#d8d0c4;}
+.route-stadium-feature {margin:28px 0 0;border-radius:16px;overflow:hidden;background:#fffaf3;border:1px solid #d5cab9;box-shadow:0 8px 30px #5938170d;}
+.route-stadium-photo {position:relative;height:320px;isolation:isolate;background:#798679;}
+.route-stadium-photo > img {position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 56%;z-index:-2;}
+.route-stadium-photo::after {content:"";position:absolute;inset:0;background:linear-gradient(90deg,#122820cc 0%,#10241c55 48%,#10241c00 78%);z-index:-1;}
+.route-stadium-heading {position:absolute;left:36px;bottom:35px;max-width:60%;color:#fff9e9;}
+.route-stadium-heading > span {font-size:11px;letter-spacing:.16em;font-weight:800;color:#f8dfac;}
+.route-stadium-heading h2 {margin:12px 0;font-size:clamp(2rem,3.7vw,3.4rem);line-height:1.02;font-weight:900;letter-spacing:-.045em;text-transform:uppercase;}
+.route-stadium-heading p {margin:0;font-size:15px;color:#fff7e7;}
+.route-stadium-sign {position:absolute;right:30px;bottom:36px;background:#1d5544f2;border:3px solid #f1e6c9;outline:2px solid #235541;border-radius:10px;padding:20px 24px;color:#fff9e9;transform:rotate(-3deg);box-shadow:0 8px 24px #0003;display:grid;gap:12px;}
+.route-stadium-sign > span {font-size:10px;font-weight:800;letter-spacing:.16em;}
+.route-stadium-sign strong {font-size:27px;letter-spacing:-.02em;}
+.route-stadium-sign small {font-size:11px;}
+.route-stadium-feature figcaption {padding:10px 16px;color:#6c6a61;font-size:10px;line-height:1.6;}
+.route-stadium-feature figcaption a {text-decoration:underline;text-underline-offset:2px;}
+@media(max-width:850px){.route-stadium-sign{right:20px;bottom:24px;padding:16px;}.route-stadium-sign strong{font-size:21px;}.route-stadium-heading{left:24px;bottom:160px;max-width:90%;}.route-stadium-heading p{display:none;}.route-stadium-photo{height:350px;}}
+@media(max-width:600px){.route-stadium-feature{margin-top:20px;border-radius:12px;}.route-stadium-heading{left:20px;bottom:auto;top:24px;}.route-stadium-heading h2{font-size:2rem;}.route-stadium-heading>span{font-size:9px;}.route-stadium-sign{left:20px;right:auto;bottom:22px;}.route-stadium-feature figcaption{font-size:10px;padding:10px 12px;}}
+html:root {background:#f3efe7;}
+html:root .page:not(.is-home) {background:#f3efe7;}
+html:root .team-background {z-index:0;}
+html:root .trip-result-main {border-color:#e6dfd4;}
+
+/* Carry the warm theme through the complete trip instead of just the route. */
+html:root .app:not(.is-home) {max-width:1320px;padding-left:40px;padding-right:40px;}
+html:root .app:not(.is-home) :is(.panel,.plan-itinerary-panel,.recommendation-column,.plan-day-content,.drive-overview,.drive-map-hero,.drive-today,.drive-saved-stops,.trip-map-section,.trip-summary-section,.trip-stops-section,.trip-hq-hero,.destination-discovery-card) {background:#fffdf8;color:#292c2d;border-color:#d9d2c7;box-shadow:0 4px 20px #59381706;backdrop-filter:none;}
+html:root .app:not(.is-home) :is(.drive-trip-identity,.drive-arrival,.live-journey) {background:#ebeede;color:#283b2f;border-color:#d1d6bc;box-shadow:none;}
+html:root .app:not(.is-home) .destination-partner-marketplace {background:transparent;border:0;}
+html:root .app:not(.is-home) .partner-placement {background:#fff9ec;color:#292c2d;border-color:#dac9a5;}
+html:root .app:not(.is-home) .partner-placement.is-compact {background:#fffdf8;border-color:#d9d2c7;}
+html:root .app:not(.is-home) :is(.game-day-guide-card,.tailgating-guide-panel,.tailgating-guide-item) {background:#fffaf2;color:#292c2d;border-color:#d9d2c7;box-shadow:none;}
+html:root .app:not(.is-home) .game-day-guide-card:hover {background:#f5e9dd;border-color:#ba8f76;}
+html:root .app:not(.is-home) .game-day-guide-icon {background:#f1e5d8;}
+html:root .app:not(.is-home) :is(.section-copy,.game-day-guide-intro,.game-day-guide-card p,.tailgating-guide-item li,.trip-address,.trip-meta,.drive-empty,.drive-intro p,.drive-trip-identity span,.drive-stop-copy span,.drive-arrival p) {color:#596154;opacity:1;}
+html:root .app:not(.is-home) :is(.drive-header button,.drive-header>span,.trip-hq-back,.trip-hq-brand) {color:#454a4a;}
+html:root .app:not(.is-home) :is(.drive-kicker,.trip-hq-kicker,.trip-result-eyebrow) {color:#923129;}
+html:root .app:not(.is-home) :is(.trip-stop-type,.drive-stop-type,.along-progress) {background:#e7eddf;color:#40573e;border-color:#bdcaae;}
+html:root .app:not(.is-home) :is(.ghost-button,.place-link,.game-day-guide-action,.drive-stop-actions a) {color:#923129;border-color:#d6b9ab;}
+html:root .app:not(.is-home) :is(.trip-row,.drive-stop,.trip-stat,.drive-overview>div,.trip-hq-stats>div) {border-color:#e0d9cc;}
+html:root .app:not(.is-home) .plan-itinerary-timeline::before {background:linear-gradient(#b33a30,#d8c7af);}
+html:root .app:not(.is-home) .plan-day-marker {box-shadow:0 0 0 7px #f3efe7;border-color:#fffaf3;color:white;}
+html:root .app:not(.is-home) .trip-hq-hero::before {opacity:.05;}
+html:root .app:not(.is-home) .trip-hq-gateways button {background:#e5eddf;color:#2d4938;border-color:#becdb2;}
+html:root .app:not(.is-home) .journey-navigation-item {background:#fffaf3;color:#50584f;border-color:#d5cec1;min-height:44px;}
+html:root .app:not(.is-home) .journey-navigation-item.is-active {background:#f4e5dd;color:#923129;border-color:#ba6557;}
+html:root .app:not(.is-home) .journey-navigation-item:disabled {opacity:.5;}
+html:root .app:not(.is-home) .destination-discovery:has(> h2) {background:transparent;color:#292c2d;}
+html:root .app:not(.is-home) .destination-discovery-actions :is(a,button) {color:#923129;border-color:#d6b9ab;background:#fffaf3;}
+html:root .app:not(.is-home) .destination-discovery-actions a:first-child {background:#b82025;color:white;}
+html:root .app:not(.is-home) .destination-discovery-card p {color:#596154;}
+html:root .app:not(.is-home) .drive-arrival button {background:#b6322e;color:white;}
+html:root .app:not(.is-home) .drive-today-route i {color:#778a68;}
+html:root .app:not(.is-home) .legal-section {background:transparent;color:#50584f;}
+html:root .app:not(.is-home) .route-stadium-feature + .destination-panel {margin-top:24px;}
+html:root .app:not(.is-home) .plan-itinerary-panel {padding:24px 0;background:transparent;border:0;box-shadow:none;}
+@media(max-width:600px){html:root .app{padding-left:18px;padding-right:18px;}html:root .app:not(.is-home) .plan-itinerary-panel{padding:20px 0;}html:root .app:not(.is-home) .plan-day-content{padding:16px;}html:root .app:not(.is-home) .plan-itinerary-day{grid-template-columns:42px minmax(0,1fr);gap:12px;}html:root .app:not(.is-home) .plan-day-marker{width:40px;height:40px;}html:root .app:not(.is-home) .plan-itinerary-timeline::before{left:19px;}}
+html:root .app:not(.is-home) :is(.drive-intro h1,.trip-hq-hero h1) {text-shadow:none;}
+html:root .app:not(.is-home) .stop-badge {background:#e5eddf;color:#40573e;border-color:#b8caa9;}
+html:root .app:not(.is-home) :is(.site-footer a,.legal-content a) {color:#923129;}
+html:root .app:not(.is-home) :is(.legal-content,.legal-content h2,.legal-content h3) {color:#343c36;}
+html:root .app:not(.is-home) .destination-panel .destination-partner-marketplace {margin:20px 0 24px;}
+
+/* Home retains the existing stadium-and-road background and original white type. */
+html:root .page.is-home {
+  background: #101317 url("/college-football-roadtrip-bg.png") center / cover fixed no-repeat;
+}
+html:root .app.is-home { color:rgba(255,255,255,.92); }
+html:root .page.is-home .site-footer {color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.2);}
+html:root .page.is-home .site-footer a {color:#e5edf3;}
+html:root .page.is-home .ghost-button {color:#fff;}
+html:root .page.is-home .account-panel {background:rgba(15,23,29,.9);color:#fff;}
+.along-destination-sign-section {display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.85fr);align-items:center;gap:32px;margin:24px 0 32px;padding:28px;background:#e9eddf;border:1px solid #cbd3bb;border-radius:16px;}
+.along-destination-sign-copy h3 {margin:12px 0;font-size:1.6rem;letter-spacing:-.025em;line-height:1.2;color:#2c4133;}
+.along-destination-sign-copy p {color:#52624e;line-height:1.6;margin:0;max-width:520px;}
+.along-destination-road-sign {display:grid;gap:12px;padding:22px 24px;border:3px solid #f3ebd3;outline:2px solid #235541;border-radius:10px;background:#205743;color:#fff9e9;text-align:left;box-shadow:0 6px 14px #153c2520;min-width:0;cursor:pointer;}
+.along-sign-top {display:flex;justify-content:space-between;font-size:11px;font-weight:800;letter-spacing:.14em;border-bottom:1px solid #ffffff50;padding-bottom:12px;}
+.along-destination-road-sign strong {font-size:clamp(1.5rem,3vw,2.2rem);line-height:1.1;letter-spacing:-.03em;overflow-wrap:anywhere;}
+.along-sign-venue {font-size:14px;}
+.along-sign-link {display:flex;justify-content:space-between;font-size:12px;margin-top:8px;font-weight:700;}
+.along-destination-road-sign:hover {background:#2b6850;}
+.along-destination-road-sign:focus-visible {outline:3px solid #b6322e;outline-offset:4px;}
+@media(max-width:700px){.along-destination-sign-section{grid-template-columns:1fr;padding:20px;gap:24px;}.along-destination-sign-copy h3{font-size:1.35rem;}}
+html:root:has(.page.is-home),
+html:root:has(.page.is-home) body {background:#101317;}
+html:root .page.is-home {background-attachment:scroll;}
+/* Saved trips can reopen without a selected team; retain the light interior. */
+html:root .page:not(.is-home) > .default-roadtrip-background {display:none;}
+
+/* Reuse the approved photo treatment for each venue's credited photograph. */
+.route-stadium-heading h2 {white-space:pre-line;}
+.trip-hq-experience > .route-stadium-feature {margin-bottom:24px;}
+.route-stadium-feature.is-national-stadium {container-type:inline-size;}
+.is-national-stadium .route-stadium-heading {max-width:54%;}
+.is-national-stadium .route-stadium-heading h2 {font-size:clamp(1.8rem,4cqi,3.4rem);}
+.is-national-stadium .route-stadium-sign {max-width:40%;}
+.is-national-stadium .route-stadium-sign strong {font-size:clamp(1.15rem,2.3cqi,1.7rem);overflow-wrap:anywhere;line-height:1.15;}
+.is-national-stadium .route-stadium-sign small {overflow-wrap:anywhere;}
+@container (max-width:850px) {
+  .is-national-stadium .route-stadium-photo {height:390px;}
+  .is-national-stadium .route-stadium-heading {left:24px;top:24px;bottom:auto;max-width:calc(100% - 48px);}
+  .is-national-stadium .route-stadium-heading h2 {font-size:clamp(1.6rem,5cqi,2.2rem);}
+  .is-national-stadium .route-stadium-heading p {display:none;}
+  .is-national-stadium .route-stadium-sign {left:24px;right:auto;bottom:24px;max-width:calc(100% - 48px);padding:16px;}
+}
+@media(max-width:600px){
+  .is-national-stadium .route-stadium-photo {height:410px;}
+  .is-national-stadium .route-stadium-heading {top:24px;bottom:auto;max-width:calc(100% - 40px);}
+  .is-national-stadium .route-stadium-heading h2 {font-size:1.7rem;}
+  .is-national-stadium .route-stadium-sign {max-width:calc(100% - 48px);}
+}
+/* The destination browser's detail column is narrower than the main trip pages. */
+.destination-browser-detail .route-stadium-feature {container-type:inline-size;}
+@container (max-width:850px) {
+  .destination-browser-detail .route-stadium-feature:not(.is-national-stadium) .route-stadium-photo {height:390px;}
+  .destination-browser-detail .route-stadium-feature:not(.is-national-stadium) .route-stadium-heading {left:24px;top:24px;bottom:auto;max-width:calc(100% - 48px);}
+  .destination-browser-detail .route-stadium-feature:not(.is-national-stadium) .route-stadium-heading h2 {font-size:clamp(1.6rem,5cqi,2.2rem);}
+  .destination-browser-detail .route-stadium-feature:not(.is-national-stadium) .route-stadium-heading p {display:none;}
+  .destination-browser-detail .route-stadium-feature:not(.is-national-stadium) .route-stadium-sign {left:24px;right:auto;bottom:24px;max-width:calc(100% - 48px);padding:16px;}
+}
+/* Let narrow photo panels grow with longer destination and stadium names. */
+@container (max-width:850px) {
+  :is(.route-stadium-feature.is-national-stadium,.destination-browser-detail .route-stadium-feature:not(.is-national-stadium)) .route-stadium-photo {display:flex;flex-direction:column;justify-content:space-between;gap:28px;padding:24px;min-height:390px;height:auto;}
+  :is(.route-stadium-feature.is-national-stadium,.destination-browser-detail .route-stadium-feature:not(.is-national-stadium)) .route-stadium-heading {position:relative;inset:auto;max-width:100%;}
+  :is(.route-stadium-feature.is-national-stadium,.destination-browser-detail .route-stadium-feature:not(.is-national-stadium)) .route-stadium-sign {position:relative;inset:auto;max-width:100%;width:fit-content;}
+}

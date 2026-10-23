@@ -1,5 +1,4 @@
-import StadiumIdentity from "./StadiumIdentity.jsx";
-import { getStadiumProfile } from "../lib/stadiumIdentity.js";
+import StadiumFeature from "./StadiumFeature.jsx";
 import { formatGameDate } from "../lib/formatters.js";
 
 export default function TripHqExperience({
@@ -14,7 +13,6 @@ export default function TripHqExperience({
   trip,
   tripStats,
 }) {
-  const stadiumProfile = getStadiumProfile(trip.venueId);
   const tripName = trip.name || trip.title || "College Football Road Trip";
 
   return (
@@ -26,10 +24,11 @@ export default function TripHqExperience({
         <span className="trip-hq-brand">Kickoff Miles</span>
       </header>
 
-      <StadiumIdentity venueId={trip.venueId} screen="trip-hq" headingId="trip-hq-title" primary />
+      <StadiumFeature venueId={trip.venueId || game?.venueId} />
+
       <div className="trip-hq-hero">
         <span className="trip-hq-kicker">Your road trip headquarters</span>
-        {stadiumProfile ? <h2>{tripName}</h2> : <h1 id="trip-hq-title">{tripName}</h1>}
+        <h1 id="trip-hq-title">{tripName}</h1>
 
         {game ? (
           <p className="trip-hq-game-date">

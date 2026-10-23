@@ -30,17 +30,17 @@ function createNumberedIcon(label) {
   });
 }
 
-function Recenter({ center, zoom, animate }) {
+function Recenter({ center, zoom }) {
   const map = useMap();
 
   useEffect(() => {
-    map.setView(center, zoom, { animate: animate ?? true });
-  }, [map, center, zoom, animate]);
+    map.setView(center, zoom, { animate: false });
+  }, [map, center, zoom]);
 
   return null;
 }
 
-function FitBounds({ positions, animate }) {
+function FitBounds({ positions }) {
   const map = useMap();
 
   useEffect(() => {
@@ -50,9 +50,9 @@ function FitBounds({ positions, animate }) {
 
     map.fitBounds(bounds, {
       padding: [50, 50],
-      animate,
+      animate: false,
     });
-  }, [map, positions, animate]);
+  }, [map, positions]);
 
   return null;
 }
@@ -99,7 +99,7 @@ function isValidCoordinate(stop) {
   );
 }
 
-export default function TripMap({ start, end, stops = [], routeGeometry = [], animate }) {
+export default function TripMap({ start, end, stops = [], routeGeometry = [] }) {
   const [startLoc, setStartLoc] = useState(null);
   const [endLoc, setEndLoc] = useState(null);
   const [status, setStatus] = useState("");
@@ -199,8 +199,8 @@ export default function TripMap({ start, end, stops = [], routeGeometry = [], an
 
       <div className="map-wrap">
         <MapContainer center={center} zoom={zoom} scrollWheelZoom={false}>
-          <Recenter center={center} zoom={zoom} animate={animate} />
-          <FitBounds positions={boundsPositions} animate={animate} />
+          <Recenter center={center} zoom={zoom} />
+          <FitBounds positions={boundsPositions} />
 
           <TileLayer
             attribution="&copy; OpenStreetMap contributors"

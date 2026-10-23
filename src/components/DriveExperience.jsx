@@ -80,6 +80,7 @@ export default function DriveExperience({
   onArrive,
   onBack,
   partner,
+  recommendationVenueId,
   destinationPartners = [],
   salesPreview = false,
   routeGeometry,
@@ -198,6 +199,8 @@ export default function DriveExperience({
       />
       <DestinationPartnerRail
         contextLabel="Drive"
+        recommendationVenueId={recommendationVenueId}
+        recommendationExcludeNames={[partner?.businessName]}
         partners={destinationPartners}
         salesPreview={salesPreview}
       />
