@@ -1,5 +1,4 @@
 import { getNashvilleRecommendations } from "../lib/nashvilleRecommendations.js";
-import StadiumFeature from "./StadiumFeature.jsx";
 import { useEffect, useState } from "react";
 import roster from "../data/destinationRoster.json";
 import picks from "../data/destinationPicks.json" with { type: "json" };
@@ -52,7 +51,6 @@ export default function DestinationBrowser({ onHome }) {
             <h2>{selected.market}, {selected.state}</h2>
             <p>{selected.teamName} · {selected.conference}</p>
             <a href={`#/destinations?market=${selected.destinationId}`}>Link to this destination</a>
-            <StadiumFeature venueId={venueId} variant="weekend" />
             <DestinationPartnerDiscovery venueId={venueId} placement="trip_hq" />
             <DestinationArtworkPlacement campaign={culinaryGangsterTempe} venueId={venueId} placement="trip_hq" />
             <NashvilleRecommendations venueId={venueId} placement="destination" featured />
