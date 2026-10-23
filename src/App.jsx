@@ -1,3 +1,5 @@
+import StadiumIdentity from "./components/StadiumIdentity.jsx";
+import { getStadiumProfile } from "./lib/stadiumIdentity.js";
 import { normalizeGameDayGuide } from "./lib/gameDayGuide.js";
 import DestinationBrowser from "./components/DestinationBrowser.jsx";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -891,7 +893,7 @@ function App() {
       const data = await res.json();
 
       if (!cancelled) {
-        setGameDayGuide(normalizeGameDayGuide(data));
+        setGameDayGuide(normalizeGameDayGuide({ ...data, venueName: normalizeVenueName(data.venueName, venueId) }));
       }
     } catch (err) {
       if (cancelled || err?.name === "AbortError") return;
@@ -1566,6 +1568,8 @@ function App() {
   const isPlanScreen = PLAN_SCREEN_IDS.includes(activeScreen);
   const destinationVenueId =
     selectedFootballGame?.venueId || activeTrip?.venueId || null;
+  const stadiumVenueId = activeTrip?.venueId || selectedFootballGame?.venueId;
+  const hasStadiumPilot = Boolean(getStadiumProfile(stadiumVenueId)) && ["trip-hq", "game-weekend", "game-day"].includes(activeScreen);
   const campaignVenueId = activeTrip?.venueId || null;
   const campaignPlacement = { "trip-hq": "trip_hq", "plan-along-the-way": "along_the_way", "game-weekend": "game_weekend", "game-day": "game_day" }[activeScreen];
   const hasTempeSponsor = Boolean(selectDestinationArtwork(culinaryGangsterTempe, campaignVenueId, campaignPlacement));
@@ -1624,7 +1628,7 @@ function App() {
   }
 
   return (
-    <div className={`page${activeScreen === "home" ? " is-home" : ""}`}>
+    <div className={`page${activeScreen === "home" ? " is-home" : ""}${hasStadiumPilot ? " is-lubbock-pilot" : ""}`}>
       <Background team={backgroundTeam} />
     <div className={`app${activeScreen === "home" ? " is-home" : ""}${
       activeScreen === "choose-team" ? " is-choose-team" : ""
@@ -1889,6 +1893,7 @@ function App() {
             <div className="plan-route-layout">
               <div className="plan-route-map" aria-label="Road trip route map">
                 <TripMap
+                  animate={getStadiumProfile(stadiumVenueId) ? false : undefined}
                   start={mapStart}
                   end={mapEnd}
                   stops={stops.filter((stop) => stop.is_route_stop !== false)}
@@ -2384,6 +2389,7 @@ function App() {
             <div className="trip-map-section">
               <h3 className="workspace-heading">Route Map</h3>
               <TripMap
+                  animate={getStadiumProfile(stadiumVenueId) ? false : undefined}
   start={mapStart}
   end={mapEnd}
   stops={stops.filter((stop) => stop.is_route_stop !== false)}
@@ -2778,6 +2784,7 @@ function App() {
 {hasGameWeekend && ["game-weekend", "game-day"].includes(activeScreen) ? (
           <>
           <GameWeekendScreen active={activeScreen === "game-weekend"}>
+          <StadiumIdentity venueId={stadiumVenueId} screen="game-weekend" />
           <div className="panel destination-panel">
             <div className="section-heading-row">
               <div>
@@ -2813,6 +2820,7 @@ function App() {
                 </div>
 
                 <DestinationMap
+                  animate={getStadiumProfile(stadiumVenueId) ? false : undefined}
                   venue={weekendVenue}
                   restaurants={weekendPlaces.restaurant}
                   bars={weekendPlaces.bar}
@@ -2825,6 +2833,7 @@ function App() {
                 </GameWeekendScreen>
 
           <GameDayScreen active={activeScreen === "game-day"}>
+          <StadiumIdentity venueId={stadiumVenueId} screen="game-day" />
           <div className="panel destination-panel">
             <div className="game-day-guide-panel">
               <div className="section-heading-row">
