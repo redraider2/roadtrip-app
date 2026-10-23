@@ -8,7 +8,7 @@ const browser = await chromium.launch({ channel: 'chrome', headless: true });
 test.after(() => browser.close());
 await mkdir('outputs/lubbock-pilot/review', { recursive: true });
 
-async function setup(width, venueId = 3784, authenticated = true) {
+async function setup(width, venueId = 3784, authenticated = true, gameVenueId = venueId) {
   const context = await browser.newContext({ viewport: { width, height: 900 } });
   if (authenticated) await context.addInitScript(() => localStorage.setItem('roadtrip_auth', JSON.stringify({ token: 'fixture', user: { email: 'review@example.com' } })));
   const stops = [], errors = [];
@@ -18,7 +18,7 @@ async function setup(width, venueId = 3784, authenticated = true) {
       { id: 1, school: 'Baylor', mascot: 'Bears', conference: 'Big 12', logos: [] },
       { id: 2, school: 'Texas Tech', mascot: 'Red Raiders', conference: 'Big 12', logos: [] },
     ];
-    if (url.pathname === '/football/games') data = [{ id: 1000, homeTeam: 'Texas Tech', awayTeam: 'Baylor', venueId, venue: 'Jones AT&T Stadium', startDate: '2026-11-14T18:00:00Z' }];
+    if (url.pathname === '/football/games') data = [{ id: 1000, homeTeam: gameVenueId === 3784 ? 'Texas Tech' : 'Oklahoma State', awayTeam: 'Baylor', venueId: gameVenueId, venue: gameVenueId === 3784 ? 'Jones AT&T Stadium' : 'Boone Pickens Stadium', startDate: '2026-11-14T18:00:00Z' }];
     if (url.pathname === '/trips') data = [{ id: 1, title: 'Lubbock Road Trip', start_location: 'Fort Worth, TX', end_location: 'Jones AT&T Stadium, Lubbock, TX', venue_id: venueId }];
     if (url.pathname === '/trips/1/stops') {
       if (route.request().method() === 'POST') stops.push({ id: stops.length + 1, ...route.request().postDataJSON() });
@@ -131,5 +131,22 @@ test('unavailable stadium photo falls back cleanly without a broken image', asyn
     await expect(page.locator('.stadium-identity')).toContainText('Stadium photo unavailable. Galaxy Stadium');
     await expect(page.locator('.stadium-identity img')).toHaveCount(0);
     await expect(page.locator('.stadium-identity .road-sign')).toBeVisible();
+  } finally { await context.close(); }
+});
+
+test('selected away-game destination cannot inherit an older Lubbock trip photo', async () => {
+  const { context, page } = await setup(390, 3784, true, 3947);
+  try {
+    await page.goto(`${baseURL}/#/home`);
+    await page.getByRole('button', { name: 'Choose Your Team', exact: true }).click();
+    await page.getByRole('searchbox').fill('Baylor');
+    await page.getByRole('button', { name: /Baylor Bears/ }).click();
+    await expect(page.locator('.game-destination')).toContainText('Boone Pickens Stadium');
+    await page.locator('.game-destination').click();
+    await page.evaluate(() => { window.location.hash = '#/game-weekend'; });
+    await expect(page.getByRole('heading', { name: 'Game Weekend', exact: true })).toBeVisible();
+    await expect(page.locator('.stadium-identity')).toHaveCount(0);
+    await page.getByRole('navigation', { name: 'Kickoff Miles journey' }).getByRole('button', { name: 'Trip HQ', exact: true }).click();
+    await expect(page.locator('.stadium-identity')).toContainText('Galaxy Stadium');
   } finally { await context.close(); }
 });

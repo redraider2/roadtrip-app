@@ -1568,7 +1568,7 @@ function App() {
   const isPlanScreen = PLAN_SCREEN_IDS.includes(activeScreen);
   const destinationVenueId =
     selectedFootballGame?.venueId || activeTrip?.venueId || null;
-  const stadiumVenueId = activeTrip?.venueId || selectedFootballGame?.venueId;
+  const stadiumVenueId = activeScreen === "trip-hq" ? activeTrip?.venueId : destinationVenueId;
   const hasStadiumPilot = Boolean(getStadiumProfile(stadiumVenueId)) && ["trip-hq", "game-weekend", "game-day"].includes(activeScreen);
   const campaignVenueId = activeTrip?.venueId || null;
   const campaignPlacement = { "trip-hq": "trip_hq", "plan-along-the-way": "along_the_way", "game-weekend": "game_weekend", "game-day": "game_day" }[activeScreen];

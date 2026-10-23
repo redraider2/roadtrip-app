@@ -20,7 +20,7 @@ Implementation uses a separate checkout so the existing IDE working tree is not 
 - Production build passes; existing bundle-size advisory remains.
 - Focused ESLint: no errors; existing App effect dependency warning remains.
 - Three stadium profile tests pass: host scoping, bundled asset and attribution, separate Weekend/Day identity.
-- Six browser tests pass: 1280/820/390/320px, photo/credits/sign, maps, partner inventory, Cactus links/save analytics, all guide sections, public destination switching, neutral homepage, image failure.
+- Seven browser tests pass: 1280/820/390/320px, photo/credits/sign, maps, partner inventory, Cactus links/save analytics, all guide sections, public destination switching, neutral homepage, image failure, and a selected away-game destination that differs from a stored Lubbock trip.
 - Seven Tempe artwork browser tests pass.
 - Five Nashville/guide browser tests pass.
 - Full unit suite: 109 pass, six fail. Untouched production baseline: 106 pass, the same six fail. These are existing source-contract assertions for Northwestern, commercial fallback, demo parsing and Trip HQ markup, plus two workbook inventory checks against the available local R6 file. No new unit failures.
