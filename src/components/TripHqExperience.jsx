@@ -1,4 +1,3 @@
-import StadiumFeature from "./StadiumFeature.jsx";
 import { formatGameDate } from "../lib/formatters.js";
 
 export default function TripHqExperience({
@@ -24,7 +23,6 @@ export default function TripHqExperience({
         <span className="trip-hq-brand">Kickoff Miles</span>
       </header>
 
-      <StadiumFeature venueId={trip.venueId || game?.venueId} />
 
       <div className="trip-hq-hero">
         <span className="trip-hq-kicker">Your road trip headquarters</span>
