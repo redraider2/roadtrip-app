@@ -198,3 +198,49 @@ html:root .page:not(.is-home) > .default-roadtrip-background {display:none;}
   :is(.route-stadium-feature.is-national-stadium,.destination-browser-detail .route-stadium-feature:not(.is-national-stadium)) .route-stadium-heading {position:relative;inset:auto;max-width:100%;}
   :is(.route-stadium-feature.is-national-stadium,.destination-browser-detail .route-stadium-feature:not(.is-national-stadium)) .route-stadium-sign {position:relative;inset:auto;max-width:100%;width:fit-content;}
 }
+
+html:root .planner-panel:is(.choose-team-panel,.choose-game-panel) .planner-form {grid-template-columns:minmax(0,1fr);}
+/* Selection screens share the warm interior palette and a centered full-width layout. */
+html:root .app:not(.is-home) :is(.choose-team-panel,.choose-game-panel) {
+  background:transparent;border:0;box-shadow:none;padding:0;
+}
+html:root :is(.choose-team-heading,.choose-game-heading) {
+  margin-top:clamp(2rem,5vh,3.5rem);text-shadow:none;
+}
+html:root :is(.choose-team-heading,.choose-game-heading) h1 {
+  font-size:clamp(2.5rem,6vw,4.8rem);line-height:1;
+}
+html:root :is(.choose-team-back,.choose-game-back) {color:#454a4a;}
+html:root :is(.choose-team-kicker,.choose-game-kicker) {color:#923129;}
+html:root .choose-team-search {
+  background:#fffdf8;border-color:#b7afa2;box-shadow:0 4px 18px #59381708;
+  backdrop-filter:none;-webkit-backdrop-filter:none;
+}
+html:root .choose-team-search:focus-within {outline:2px solid #923129;outline-offset:3px;}
+html:root .choose-team-search input {color:#292c2d;}
+html:root .choose-team-search input::placeholder {color:#626562;}
+html:root .choose-team-search button {color:#923129;}
+html:root .choose-team-grid {border-color:#d9d2c7;}
+html:root .team-choice {color:#292c2d;border-color:#d9d2c7;}
+html:root .team-choice-copy > span {color:#596154;opacity:1;}
+html:root .team-choice:is(:hover,:focus-visible,.is-selected) {background:#e7eddf;transform:none;}
+html:root .team-choice:focus-visible {outline-color:#52664b;}
+html:root :is(.team-choice-mark,.game-team-mark) {background:#fffdf8;color:#454a4a;}
+html:root :is(.team-choice-mark,.game-team-mark) img {filter:none;}
+html:root :is(.choose-game-team-context,.game-destination,.game-trip-setup) {
+  background:#fffdf8;color:#292c2d;border-color:#d9d2c7;
+  box-shadow:0 4px 18px #59381708;backdrop-filter:none;-webkit-backdrop-filter:none;
+}
+html:root .game-destination:is(:hover,:focus-visible,.is-selected) {
+  background:#f4e5dd;border-color:#b93030;box-shadow:0 6px 20px #59381710;
+}
+html:root .game-destination-venue {border-color:#d9d2c7;}
+html:root :is(.game-destination-at,.game-destination-action,.game-destination-venue > span:first-child) {color:#923129;}
+html:root :is(.game-destination-date,.game-destination-venue small,.choose-game-team-context small,.choose-game-team-context > div > span,.game-trip-fields label > span,.game-trip-setup-heading p,.game-trip-guest-note) {color:#596154;opacity:1;}
+html:root .game-trip-fields .trip-input {background:#fffdf8;color:#292c2d;border-color:#b7afa2;}
+@media(max-width:600px) {
+  html:root .app:is(.is-choose-team,.is-choose-game) {padding-left:18px;padding-right:18px;}
+  html:root :is(.choose-team-header,.choose-game-header) {flex-wrap:wrap;}
+}
+
+
