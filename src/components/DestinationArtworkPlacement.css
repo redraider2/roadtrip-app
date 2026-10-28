@@ -44,3 +44,8 @@
 @media (max-width: 480px) {
   .destination-artwork-placement:not([data-placement="game_day"]) { padding: 12px; }
 }
+
+/* Keep sponsored details readable within the light journey theme. */
+html:root .destination-artwork-placement .destination-artwork-context,
+html:root .destination-artwork-placement .destination-artwork-copy h3 { color: #fff8e9; }
+html:root .destination-artwork-placement .destination-artwork-copy p { color: #eee6d8; }
