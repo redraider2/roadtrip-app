@@ -7,7 +7,7 @@ import { chromium, expect } from '@playwright/test';
 // API fixtures keep this visual/interaction test independent of production data.
 const baseURL = process.env.CULINARY_BASE_URL || 'http://127.0.0.1:5180';
 const screens = { trip_hq: 'trip-hq', along_the_way: 'plan-along-the-way', game_weekend: 'game-weekend', game_day: 'game-day' };
-const creatives = {trip_hq:'directions', along_the_way:'game_day', game_weekend:'menu', game_day:'game_day'};
+const creatives = {trip_hq:'burger_fries', along_the_way:'chicken_avocado_bowl', game_weekend:'street_gyros', game_day:'hot_honey_chicken'};
 const browser = await chromium.launch({ channel: process.env.PLAYWRIGHT_CHANNEL || 'chrome', headless: true });
 await mkdir('outputs/culinary-tempe', { recursive: true });
 test.after(() => browser.close());
@@ -84,7 +84,7 @@ for (const width of [1280, 820, 390, 320]) {
         const imageClicksBefore = await page.evaluate(() => JSON.parse(localStorage.getItem('kickoff_miles_partner_events') || '[]').filter(e => e.campaign_id === 'culinary_gangster_tempe' && e.action !== 'impression').length);
         const popupPromise = context.waitForEvent('page');
         await imageLink.press('Enter'); const popup = await popupPromise; await popup.waitForLoadState();
-        if (creatives[placement] === 'directions') assert.equal(new URL(popup.url()).searchParams.get('destination'), '501 S Mill Avenue, Tempe, AZ');
+        if (creatives[placement] === 'directions') assert.equal(new URL(popup.url()).searchParams.get('destination'), '501 S Mill Ave #200, Tempe, AZ');
         else assert.equal(popup.url(), 'https://culinarygangsterusa.com/menu/tempe');
         await popup.close();
         assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('kickoff_miles_partner_events') || '[]').filter(e => e.campaign_id === 'culinary_gangster_tempe' && e.action !== 'impression').length), imageClicksBefore + 1);

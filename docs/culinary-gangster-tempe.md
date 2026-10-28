@@ -2,34 +2,30 @@
 
 Campaign eligibility uses the active trip's canonical venue ID `3947` (Arizona State / Mountain America Stadium), with the existing exact-ID destination matcher. Route selection alone never enables the campaign. Other destinations retain their partner behavior.
 
-## Positions and actions
+## Positions and actions — October 28, 2026 refresh
 
-| Placement | Route | Position | Creative | Primary / secondary |
-| --- | --- | --- | --- | --- |
-| Trip HQ | `/#/trip-hq` | After main trip navigation, before Your Trip Workspace | A: directions | Get Directions / View Menu |
-| Along the Way | `/#/plan-along-the-way` | After introduction, before recommendations; “When you reach Tempe” | B: game-day appetite | View Menu |
-| Game Weekend | `/#/game-weekend` | Immediately before Game Weekend Map | C: Big flavor | View Menu |
-| Game Day | `/#/game-day` | After introduction, before guide topics | B: game-day appetite | View Menu / Get Directions |
+| Placement | Route | Creative | Primary / secondary |
+| --- | --- | --- | --- |
+| Trip HQ | `/#/trip-hq` | Burger, crinkle-cut fries and beer — Make Tempe your next bite | View Menu / Get Directions |
+| Along the Way | `/#/plan-along-the-way` | Chicken Avocado Quinoa Bowl and citrus cocktail — Fresh fuel. Big flavor | View Menu |
+| Game Weekend | `/#/game-weekend` | Street Gyros and cocktail — Wrap up your game plan | View Menu |
+| Game Day | `/#/game-day` | Hot Honey Chicken, loaded fries and beer — Bring the heat | View Menu / Get Directions |
+
+All four images link to the Tempe menu, matching the embedded Explore the Menu CTA. Directions buttons link to 501 S Mill Ave #200, Tempe, AZ.
 
 Menu: `https://culinarygangsterusa.com/menu/tempe`
 
-Directions: `https://www.google.com/maps/dir/?api=1&destination=501%20S%20Mill%20Avenue%2C%20Tempe%2C%20AZ`
+The four approved AI-assisted concept images are separate, versioned 1536 × 1024 PNGs under `public/partners/`, suffixed `20261028`. Food imagery follows the Tempe menu; drinks are illustrative, unbranded pairings. Original assets remain in Git for rollback. Campaign targeting, disclosure, responsive layout and tracking remain in place. Sponsored companion titles, descriptions and context headings have explicit light colors to remain readable in the warm site theme.
 
-Both destinations were supplied/confirmed by the user. The image is a separate link to its embedded CTA's target, not a wrapper around other links. All external links use a new tab and `noopener noreferrer`.
+Source artwork and page-named copies: https://drive.google.com/drive/folders/1YsvCHzpWfNRSnnFJ4OSyGSaeCDLC3V1e
 
-## Shared layout and assets
-
-`DestinationArtworkPlacement` uses a roughly 65/35 grid for Trip HQ, Along the Way and Game Weekend after accounting for a 24px gap, with 16px padding and uncropped artwork at automatic height. A named container query stacks these cards when their content width is 720px or less; small screens use 12px padding. Game Day retains its previous ratio and breakpoint. Gold primary actions and outlined secondary actions include hover, focus-visible and pressed states. HTML disclosure, title, placement-specific sentence and the unchanged address remain readable independently of the image.
-
-All three original 1536 × 1024 PNGs in `public/partners/culinary-gangster-tempe-*.png` are preserved byte-for-byte. No new artwork or runtime local-machine paths are used.
-
-Empty Coming Soon rails are hidden only alongside this active campaign. Real destination partner listings remain visible, including Trip HQ. The old below-map campaign instance and sample partner are absent when the Tempe card is displayed.
+The user explicitly authorized saving the four ads to Drive and publishing them to the production public website on October 28, 2026.
 
 ## Tracking and verification
 
 Existing partner metrics record campaign/destination/placement/creative/action dimensions. Each mounted card records one impression after reaching 25% visibility. Image and CTA links record their own single action event. Ineligible destinations mount no campaign observer.
 
-- 6 focused unit tests pass, covering targeting, mappings, approved links, asset integrity and analytics compatibility.
+- 6 focused unit tests pass, covering targeting, mappings, approved links, four-creative asset integrity and analytics compatibility.
 - Browser suite covers all four screens at 1280, 820, 390 and 320px, container-responsive geometry, full artwork, direct navigation/refresh, same-session destination switching, no duplicates, above-map adjacency, approved image and CTA targets, keyboard focus, single click events, placeholder absence, and preservation of real partner listings.
 - Focused ESLint and production build pass.
 - Release candidate on production commit `663351d`: full Node suite 78 pass, 6 fail. The unchanged production baseline has the same 6 failures (72 pass); the campaign adds 6 passing tests. Repository lint retains 2 existing errors in PartnerFieldTestReport and 1 existing App effect dependency warning.
