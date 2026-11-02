@@ -18,3 +18,7 @@ The shared campaign renderer now uses campaign business/market labels and action
 Validation: 8 campaign unit checks and 11 browser checks pass (hotel and existing Tempe campaigns). Hotel browser checks cover all four journey screens at 1280px and 390px, public destination detail, out-of-market exclusion, booking links and single click events. Screenshots are in `outputs/college-station-hotel/`. Focused ESLint and production build pass. Full unit suite: 111 pass / 4 fail; clean HEAD baseline: 109 pass / the same 4 failures (missing game-day inventory fixture and three pre-existing journey source assertions). No new failures. No backend/data/schema/environment changes.
 
 Production uses the existing Vercel integration from `main` in `redraider2/roadtrip-app` to www.kickoffmiles.com. Public destination: https://www.kickoffmiles.com/#/destinations?market=DEST-013 .
+
+## November 2 layout refinement
+
+Following John's screenshot feedback, hotel artwork now fills the card width across all four screens and public destination detail. Eight-pixel framing and a compact disclosure/name/Book Now footer replace the large duplicate side copy. Tempe retains its existing layout. Desktop/mobile browser geometry checks assert full-width artwork and a compact footer. The maroon 96 placement restrictions are unchanged.

@@ -33,7 +33,7 @@ function ArtworkLink({ campaign, venueId, placement, selection }) {
   return (
     <aside ref={linkRef} className="destination-artwork-placement" aria-label={`Sponsored: ${displayName}`}
       data-campaign-id={campaign.id} data-destination-id={String(venueId)}
-      data-placement={placement} data-creative={creativeId}>
+      data-placement={placement} data-creative={creativeId} data-layout={campaign.layout}>
       {content.heading ? <h2 className="destination-artwork-context">{content.heading}</h2> : null}
       <div className="destination-artwork-layout">
         <a className="destination-artwork-image" href={href} target="_blank" rel="noopener noreferrer"
@@ -48,10 +48,14 @@ function ArtworkLink({ campaign, venueId, placement, selection }) {
           )}
         </a>
         <div className="destination-artwork-copy">
-          <span className="destination-artwork-disclosure">Sponsored · {marketLabel}</span>
-          <h3>{displayName}</h3>
-          <p>{content.sentence}</p>
-          <p>{campaign.displayAddress}</p>
+          <div className="destination-artwork-identity">
+            <span className="destination-artwork-disclosure">Sponsored · {marketLabel}</span>
+            <h3>{displayName}</h3>
+          </div>
+          {campaign.layout !== "full_width" ? <>
+            <p>{content.sentence}</p>
+            <p>{campaign.displayAddress}</p>
+          </> : null}
           <div className="destination-artwork-actions">
             {content.actions.map((action, index) => (
               <a key={action} className={index === 0 ? "is-primary" : "is-secondary"}
