@@ -70,3 +70,31 @@ test('campaign dimensions reuse the existing partner event store', () => {
     assert.equal(event.creative, 'directions');
   } finally { delete globalThis.window; }
 });
+
+test('College Station hotel targets Kyle Field only and preserves each supplied placement', async () => {
+  const { texasAmHotelCollegeStation: hotel, getDestinationArtworkCampaign } = await import('../src/lib/destinationArtworkCampaigns.js');
+  assert.equal(getDestinationArtworkCampaign('3795'), hotel);
+  assert.equal(getDestinationArtworkCampaign('3947'), culinaryGangsterTempe);
+  for (const venue of [null, '37950', 'texas-a-and-m', '3784']) {
+    assert.equal(getDestinationArtworkCampaign(venue), null);
+    assert.equal(selectDestinationArtwork(hotel, venue, 'game_day'), null);
+  }
+  const expected = { trip_hq: 'campus_home_base', along_the_way: 'arrival', game_weekend: 'weekend_stay', game_day: 'maroon_96' };
+  for (const [slot, id] of Object.entries(expected)) {
+    const selection = selectDestinationArtwork(hotel, 3795, slot);
+    assert.equal(selection.creativeId, id);
+    assert.equal(selection.href, 'https://www.texasamhotelcc.com/');
+    const bytes = await readFile(new URL(`../public/${selection.creative.imageUrl}`, import.meta.url));
+    assert.equal(bytes.readUInt32BE(16), selection.creative.width);
+    assert.equal(bytes.readUInt32BE(20), selection.creative.height);
+    const [x, y, width, height] = selection.creative.crop;
+    assert.ok(x >= 0 && y >= 0 && x + width <= selection.creative.width && y + height <= selection.creative.height);
+  }
+});
+
+test('maroon 96 cannot leak into Trip HQ or Along the Way even if a mapping is changed', async () => {
+  const { texasAmHotelCollegeStation: hotel } = await import('../src/lib/destinationArtworkCampaigns.js');
+  const remapped = { ...hotel, placements: { trip_hq: 'maroon_96', along_the_way: 'maroon_96', game_weekend: 'maroon_96', game_day: 'maroon_96' } };
+  for (const slot of ['trip_hq', 'along_the_way']) assert.equal(selectDestinationArtwork(remapped, 3795, slot), null);
+  for (const slot of ['game_weekend', 'game_day']) assert.equal(selectDestinationArtwork(remapped, 3795, slot).creativeId, 'maroon_96');
+});

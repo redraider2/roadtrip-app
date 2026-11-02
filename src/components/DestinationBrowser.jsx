@@ -5,7 +5,7 @@ import picks from "../data/destinationPicks.json" with { type: "json" };
 import { getDestinationPicks } from "../lib/destinationPicks.js";
 import DestinationPartnerDiscovery from "./DestinationPartnerDiscovery.jsx";
 import DestinationArtworkPlacement from "./DestinationArtworkPlacement.jsx";
-import { culinaryGangsterTempe } from "../lib/destinationArtworkCampaigns.js";
+import { getDestinationArtworkCampaign } from "../lib/destinationArtworkCampaigns.js";
 import "./DestinationBrowser.css";
 import NashvilleRecommendations from "./NashvilleRecommendations.jsx";
 
@@ -52,7 +52,7 @@ export default function DestinationBrowser({ onHome }) {
             <p>{selected.teamName} · {selected.conference}</p>
             <a href={`#/destinations?market=${selected.destinationId}`}>Link to this destination</a>
             <DestinationPartnerDiscovery venueId={venueId} placement="trip_hq" />
-            <DestinationArtworkPlacement campaign={culinaryGangsterTempe} venueId={venueId} placement="trip_hq" />
+            <DestinationArtworkPlacement campaign={getDestinationArtworkCampaign(venueId)} venueId={venueId} placement="trip_hq" />
             <NashvilleRecommendations venueId={venueId} placement="destination" featured />
             {entries.length ? <div className="destination-browser-picks">
               {entries.map((entry) => <article key={entry.id} data-recommendation-id={entry.id}>

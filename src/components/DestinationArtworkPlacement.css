@@ -49,3 +49,5 @@
 html:root .destination-artwork-placement .destination-artwork-context,
 html:root .destination-artwork-placement .destination-artwork-copy h3 { color: #fff8e9; }
 html:root .destination-artwork-placement .destination-artwork-copy p { color: #eee6d8; }
+
+.destination-artwork-panel { display: block; width: 100%; height: auto; overflow: hidden; }

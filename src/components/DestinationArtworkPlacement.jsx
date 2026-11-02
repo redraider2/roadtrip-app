@@ -26,29 +26,37 @@ function ArtworkLink({ campaign, venueId, placement, selection }) {
     partner: campaign, placement, creative: creativeId, action,
     campaignId: campaign.id, destinationId: String(venueId),
   });
-  const actionLabel = (action) => action === "directions" ? "Get Directions" : "View Menu";
+  const actionLabel = (action) => campaign.actionLabels?.[action] || (action === "directions" ? "Get Directions" : "View Menu");
+  const displayName = campaign.displayName || "Culinary Gangster";
+  const marketLabel = campaign.marketLabel || "Tempe";
 
   return (
-    <aside ref={linkRef} className="destination-artwork-placement" aria-label="Sponsored: Culinary Gangster"
+    <aside ref={linkRef} className="destination-artwork-placement" aria-label={`Sponsored: ${displayName}`}
       data-campaign-id={campaign.id} data-destination-id={String(venueId)}
       data-placement={placement} data-creative={creativeId}>
       {content.heading ? <h2 className="destination-artwork-context">{content.heading}</h2> : null}
       <div className="destination-artwork-layout">
         <a className="destination-artwork-image" href={href} target="_blank" rel="noopener noreferrer"
           aria-label={creative.linkLabel} onClick={() => track(creative.action)}>
-          <img src={`${import.meta.env.BASE_URL}${creative.imageUrl}`} alt={creative.alt}
-            width={creative.width} height={creative.height} loading="lazy" />
+          {creative.crop ? (
+            <svg className="destination-artwork-panel" viewBox={creative.crop.join(" ")} role="img" aria-label={creative.alt}>
+              <image href={`${import.meta.env.BASE_URL}${creative.imageUrl}`} width={creative.width} height={creative.height} />
+            </svg>
+          ) : (
+            <img src={`${import.meta.env.BASE_URL}${creative.imageUrl}`} alt={creative.alt}
+              width={creative.width} height={creative.height} loading="lazy" />
+          )}
         </a>
         <div className="destination-artwork-copy">
-          <span className="destination-artwork-disclosure">Sponsored · Tempe</span>
-          <h3>Culinary Gangster</h3>
+          <span className="destination-artwork-disclosure">Sponsored · {marketLabel}</span>
+          <h3>{displayName}</h3>
           <p>{content.sentence}</p>
           <p>{campaign.displayAddress}</p>
           <div className="destination-artwork-actions">
             {content.actions.map((action, index) => (
               <a key={action} className={index === 0 ? "is-primary" : "is-secondary"}
                 href={campaign.links[action]} target="_blank" rel="noopener noreferrer"
-                aria-label={`${actionLabel(action)} — Culinary Gangster Tempe (opens in a new tab)`}
+                aria-label={`${actionLabel(action)} — ${campaign.businessName} (opens in a new tab)`}
                 onClick={() => track(action)}>{actionLabel(action)}</a>
             ))}
           </div>
