@@ -57,6 +57,11 @@ for (const width of [1280, 390]) {
         await expect(picture).toBeVisible();
         const box=await picture.boundingBox();
         assert.ok(box.width>100 && box.height>50 && box.x>=0 && box.x+box.width<=width);
+        const layout=await ad.locator('.destination-artwork-layout').boundingBox();
+        const footer=await ad.locator('.destination-artwork-copy').boundingBox();
+        assert.ok(Math.abs(box.width-layout.width)<1,'hotel artwork fills the entire card width');
+        assert.ok(footer.y>=box.y+box.height,'booking footer sits below the enlarged artwork');
+        assert.ok(footer.height<140,'booking footer stays compact');
         assert.equal(await ad.locator('.destination-artwork-image').getAttribute('href'),'https://www.texasamhotelcc.com/');
         const before=await page.evaluate(()=>JSON.parse(localStorage.getItem('kickoff_miles_partner_events')||'[]').filter(e=>e.campaign_id==='texas_am_hotel_college_station' && e.action==='book_now').length);
         const popupPromise=context.waitForEvent('page');

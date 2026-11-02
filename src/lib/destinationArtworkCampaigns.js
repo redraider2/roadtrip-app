@@ -95,6 +95,7 @@ export const culinaryGangsterTempe = {
 // Supplied hotel artwork; viewports show the creative panels without preview-page chrome.
 export const texasAmHotelCollegeStation = {
   "id": "texas_am_hotel_college_station",
+  "layout": "full_width",
   "businessName": "Texas A&M Hotel and Conference Center",
   "displayName": "Texas A&M Hotel and Conference Center",
   "market": "college_station",
