@@ -16,7 +16,7 @@ import ChooseGameExperience from "./components/ChooseGameExperience.jsx";
 import DriveExperience from "./components/DriveExperience.jsx";
 import TripHqExperience from "./components/TripHqExperience.jsx";
 import DestinationArtworkPlacement from "./components/DestinationArtworkPlacement.jsx";
-import { culinaryGangsterTempe, selectDestinationArtwork } from "./lib/destinationArtworkCampaigns.js";
+import { getDestinationArtworkCampaign, selectDestinationArtwork } from "./lib/destinationArtworkCampaigns.js";
 import NashvilleRecommendations from "./components/NashvilleRecommendations.jsx";
 import { visitMusicCity, getNashvilleRecommendations } from "./lib/nashvilleRecommendations.js";
 import DestinationPartnerDiscovery from "./components/DestinationPartnerDiscovery.jsx";
@@ -1571,7 +1571,8 @@ function App() {
     selectedFootballGame?.venueId || activeTrip?.venueId || null;
   const campaignVenueId = activeTrip?.venueId || null;
   const campaignPlacement = { "trip-hq": "trip_hq", "plan-along-the-way": "along_the_way", "game-weekend": "game_weekend", "game-day": "game_day" }[activeScreen];
-  const hasTempeSponsor = Boolean(selectDestinationArtwork(culinaryGangsterTempe, campaignVenueId, campaignPlacement));
+  const artworkCampaign = getDestinationArtworkCampaign(campaignVenueId);
+  const hasDestinationSponsor = Boolean(selectDestinationArtwork(artworkCampaign, campaignVenueId, campaignPlacement));
   const advertiserDemoConfig = getAdvertiserDemoConfig(destinationVenueId);
   const advertiserDemoPartner = advertiserDemoConfig.partner;
   const advertiserDemoPackage = advertiserDemoConfig.packageType;
@@ -1596,7 +1597,7 @@ function App() {
     "game-weekend": "Game Weekend", "game-day": "Game Day", drive: "Drive",
   }[activeScreen]);
   const hasFeaturedDiscovery = activeScreen === "trip-hq" && getDestinationPartners(recommendationVenueId, "trip_hq").length > 0;
-  const recommendationExcludeNames = hasFeaturedDiscovery || hasTempeSponsor ? [] : [(["plan-route-schedule", "plan-along-the-way"].includes(activeScreen) ? routePartner : workspacePartner)?.businessName];
+  const recommendationExcludeNames = hasFeaturedDiscovery || hasDestinationSponsor ? [] : [(["plan-route-schedule", "plan-along-the-way"].includes(activeScreen) ? routePartner : workspacePartner)?.businessName];
   const destinationPartnerInventory = advertiserDemoPartner
     ? [advertiserDemoPartner]
     : destinationPartners.filter((partner) => !isRetiredPartner(partner));
@@ -1982,7 +1983,7 @@ function App() {
               venue={selectedFootballGame?.venue || displayGameVenue}
               onExplore={() => navigateTo("game-weekend")}
             />
-            <DestinationArtworkPlacement campaign={culinaryGangsterTempe} venueId={campaignVenueId} placement="along_the_way" fallback={
+            <DestinationArtworkPlacement campaign={artworkCampaign} venueId={campaignVenueId} placement="along_the_way" fallback={
 <PartnerPlacement
               contextLabel="Along the Way"
               size="large"
@@ -2376,7 +2377,7 @@ function App() {
           onSave={activeTrip ? saveDestinationPartner : undefined}
           isSaved={destinationPartnerIsSaved}
         />
-        <DestinationArtworkPlacement campaign={culinaryGangsterTempe} venueId={campaignVenueId} placement="trip_hq" fallback={
+        <DestinationArtworkPlacement campaign={artworkCampaign} venueId={campaignVenueId} placement="trip_hq" fallback={
         <>{!hasFeaturedDiscovery ? <PartnerPlacement contextLabel="Trip HQ" partner={workspacePartner} /> : null}<DestinationPartnerRail recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames}
           contextLabel="Trip HQ"
           partners={destinationPartnerInventory}
@@ -2384,7 +2385,7 @@ function App() {
               comingSoon={destinationMarketComingSoon}
 /></>
         } />
-        {hasTempeSponsor && (destinationPartnerInventory.length > 0 || getDestinationPicks(recommendationVenueId)) ? (
+        {hasDestinationSponsor && (destinationPartnerInventory.length > 0 || getDestinationPicks(recommendationVenueId)) ? (
           <DestinationPartnerRail recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames} contextLabel="Trip HQ" partners={destinationPartnerInventory} minimumPositions={5} />
         ) : null}
         <NashvilleRecommendations venueId={recommendationVenueId} placement="trip_hq" featured={workspacePartner !== visitMusicCity} />
@@ -2823,7 +2824,7 @@ function App() {
               </p>
             </div>
 
-            <DestinationArtworkPlacement campaign={culinaryGangsterTempe} venueId={campaignVenueId} placement="game_weekend" />
+            <DestinationArtworkPlacement campaign={artworkCampaign} venueId={campaignVenueId} placement="game_weekend" />
             {isNashvilleDestination ? <PartnerPlacement partner={visitMusicCity} contextLabel="Game Weekend" /> : null}
             {weekendVenue ? (
               <div className="destination-map-section">
@@ -2867,7 +2868,7 @@ displayDestination ||
                 . Here’s what to know before kickoff.
               </p>
 
-              <DestinationArtworkPlacement campaign={culinaryGangsterTempe} venueId={campaignVenueId} placement="game_day" fallback={
+              <DestinationArtworkPlacement campaign={artworkCampaign} venueId={campaignVenueId} placement="game_day" fallback={
 <PartnerPlacement
                 contextLabel="Game Day"
                 partner={workspacePartner}
@@ -2876,7 +2877,7 @@ displayDestination ||
 } />
               <DestinationPartnerRail recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames}
                 contextLabel="Game Day"
-                hideEmpty={hasTempeSponsor}
+                hideEmpty={hasDestinationSponsor}
                 partners={destinationPartnerInventory}
                 salesPreview={isAdvertiserSalesPreview}
               comingSoon={destinationMarketComingSoon}
@@ -3106,10 +3107,10 @@ displayDestination ||
               <p className="error-state">{weekendPlacesError}</p>
             ) : (
               <>
-  {!hasTempeSponsor && workspacePartner !== visitMusicCity ? <PartnerPlacement contextLabel="Game Weekend" partner={workspacePartner} /> : null}
+  {!hasDestinationSponsor && workspacePartner !== visitMusicCity ? <PartnerPlacement contextLabel="Game Weekend" partner={workspacePartner} /> : null}
   <DestinationPartnerRail recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames}
     contextLabel="Game Weekend"
-                hideEmpty={hasTempeSponsor}
+                hideEmpty={hasDestinationSponsor}
     partners={destinationPartnerInventory}
     salesPreview={isAdvertiserSalesPreview}
               comingSoon={destinationMarketComingSoon}
