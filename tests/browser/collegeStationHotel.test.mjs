@@ -8,7 +8,7 @@ import { chromium, expect } from '@playwright/test';
 const baseURL = process.env.HOTEL_BASE_URL || 'http://127.0.0.1:5180';
 const screens = { trip_hq: 'trip-hq', along_the_way: 'plan-along-the-way', game_weekend: 'game-weekend', game_day: 'game-day' };
 const creatives = {trip_hq:'campus_home_base', along_the_way:'arrival', game_weekend:'weekend_stay', game_day:'maroon_96'};
-const browser = await chromium.launch({ channel: process.env.PLAYWRIGHT_CHANNEL || 'chrome', headless: true });
+const browser = await chromium.launch({ ...(process.env.PLAYWRIGHT_EXECUTABLE_PATH ? { executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH } : { channel: process.env.PLAYWRIGHT_CHANNEL || 'chrome' }), headless: true });
 await mkdir('outputs/college-station-hotel', { recursive: true });
 test.after(() => browser.close());
 
@@ -31,7 +31,12 @@ async function setup(width = 1280, venueId = 3795) {
     }
     if (u.pathname === '/geocode') data = { latitude: 33.578, longitude: -101.844 };
     if (u.pathname === '/route') data = { geometry: [[30.267,-97.743],[33.58,-101.85]], distanceMeters: 600000, durationSeconds: 22000 };
-    if (u.pathname.endsWith('/places')) data = { places: [], venue: { name: 'Jones AT&T Stadium', latitude: 33.591, longitude: -101.872, city: 'Lubbock', state: 'TX' } };
+    if (u.pathname.endsWith('/places')) data = { places: u.searchParams.get('category') === 'hotel' ? [
+      {id:'other-one',name:'Alternative Hotel One',latitude:30.6,longitude:-96.3,website:'https://example.com'},
+      {id:'am-hotel',name:'Texas A&M Hotel and Conference Center',latitude:30.61,longitude:-96.34,website:'https://www.texasamhotelcc.com/'},
+      {id:'other-two',name:'Alternative Hotel Two'},
+      {id:'other-three',name:'Alternative Hotel Three'},
+    ] : [], venue: { name: 'Jones AT&T Stadium', latitude: 33.591, longitude: -101.872, city: 'Lubbock', state: 'TX' } };
     if (u.pathname.endsWith('/featured-partner')) data = null;
     if (u.pathname.endsWith('/game-day-guide')) data = { venueName: 'Jones AT&T Stadium', homeTeam: 'Texas Tech' };
     await r.fulfill({ json: data });
@@ -93,4 +98,36 @@ test('non-College-Station trips cannot show hotel in any placement',async()=>{
   await expect(page.locator('body')).toContainText(screen==='game-day'?'Your Game Day Guide':screen==='game-weekend'?'Game Weekend':screen==='plan-along-the-way'?'Along the Way':'College Station Road Trip');
   await expect(page.locator(selector)).toHaveCount(0);
  }}finally{await context.close();}
+});
+
+for (const width of [1280,390]) {
+  test(`sponsored hotel leads category list with two alternatives at ${width}px`, async () => {
+    const {context,page} = await setup(width);
+    try {
+      await page.goto(`${baseURL}/?review=game-weekend#/game-weekend`);
+      const column = page.locator('.recommendation-column').filter({has:page.getByRole('heading',{name:'🛏 Stay Near the Stadium',exact:true})});
+      const rows = column.locator('.trip-row');
+      await expect(rows).toHaveCount(3);
+      await expect(rows.first().getByText('Texas A&M Hotel & Conference Center',{exact:true})).toBeVisible();
+      await expect(rows.first().getByText('Kickoff Miles Pick · Sponsored Partner',{exact:true})).toBeVisible();
+      await expect(rows.nth(1)).toContainText('Alternative Hotel One');
+      await expect(rows.nth(2)).toContainText('Alternative Hotel Two');
+      await expect(rows.first().getByRole('link',{name:'Visit website'})).toHaveAttribute('href','https://www.texasamhotelcc.com/');
+      for (const screen of ['trip-hq','plan-along-the-way','game-day']) {
+        await page.goto(`${baseURL}/?review=${screen}#/${screen}`);
+        await expect(page.getByText('Kickoff Miles Pick · Sponsored Partner',{exact:true})).toHaveCount(0);
+        await expect(page.getByRole('heading',{name:/Hotels Along the Route|Overnight Options/})).toHaveCount(0);
+        await expect(page.locator(selector)).toHaveCount(1);
+      }
+    } finally { await context.close(); }
+  });
+}
+test('another destination retains hotel API ordering without sponsorship',async()=>{
+  const {context,page} = await setup(1280,3784);
+  try {
+    await page.goto(`${baseURL}/?review=game-weekend#/game-weekend`);
+    const column=page.locator('.recommendation-column').filter({has:page.getByRole('heading',{name:'🛏 Stay Near the Stadium',exact:true})});
+    await expect(column.locator('.trip-row').first()).toContainText('Alternative Hotel One');
+    await expect(page.getByText('Kickoff Miles Pick · Sponsored Partner',{exact:true})).toHaveCount(0);
+  } finally {await context.close();}
 });

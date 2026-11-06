@@ -1,3 +1,4 @@
+import { filterHotelCards } from "./collegeStationLodging.js";
 import { getNashvilleRecommendations } from "./nashvilleRecommendations.js";
 import content from "../data/destinationPicks.json" with { type: "json" };
 import { partnerMatchesDestination } from "./destinationAdvertising.js";
@@ -46,7 +47,7 @@ function pageEntries(venueId, contextLabel) {
 
 export function getRecommendationPartners(venueId, excludeNames = [], contextLabel = "") {
   const excluded = new Set(excludeNames.filter(Boolean).map((name) => name.trim().toLowerCase()));
-  return pageEntries(venueId, contextLabel)
+  return filterHotelCards(pageEntries(venueId, contextLabel), venueId, contextLabel)
     .filter((entry) => !excluded.has(entry.title.trim().toLowerCase()))
     .map((entry) => ({
       id: entry.id,

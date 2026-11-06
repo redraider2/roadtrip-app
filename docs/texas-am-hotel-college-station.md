@@ -22,3 +22,22 @@ Production uses the existing Vercel integration from `main` in `redraider2/roadt
 ## November 2 layout refinement
 
 Following John's screenshot feedback, hotel artwork now fills the card width across all four screens and public destination detail. Eight-pixel framing and a compact disclosure/name/Book Now footer replace the large duplicate side copy. Tempe retains its existing layout. Desktop/mobile browser geometry checks assert full-width artwork and a compact footer. The maroon 96 placement restrictions are unchanged.
+
+## November 6 sponsored category-list release
+
+Baseline inspected: main commit cb9cd2a (App.jsx blob 49ac11fec6ef393de2d0aa6e8697b73a7e929a2d).
+The four November 2 ad placements are implemented on that baseline. The November 5 revised concepts were sent separately; this patch does not install or change artwork.
+The November 5 sponsored category ordering and label are absent from that baseline.
+
+This release:
+- Uses exact destination venue 3795, independent of the visiting fan's selected team.
+- Places Texas A&M Hotel & Conference Center first in Game Weekend's Stay Near the Stadium list, labeled “Kickoff Miles Pick · Sponsored Partner.” That position is paid placement, not a separate editorial award.
+- Deduplicates the hotel's API entry by normalized name or official website and retains its real coordinates, rating, and review count when available.
+- Uses the verified official booking website even when the API omits the sponsor. It fabricates neither coordinates nor reviews; Save to Trip is disabled for the fallback without coordinates.
+- Shows at most two returned alternative hotels underneath, including when other categories are expanded. If fewer than two alternatives are returned, it shows only available results rather than inventing hotels.
+- Suppresses lodging recommendation cards in the destination recommendation rails on Trip HQ, Along the Way, Game Weekend, and Game Day, and hides the Along the Way hotel recommendation column for this destination. Dining and attraction categories remain. Route planning data, saved itinerary stops, map markers, and the separate Stay & Itinerary page are not rewritten.
+- Leaves every other city's hotel list and artwork campaign configuration unchanged.
+
+Validation: 13 focused lodging/artwork checks pass; production build passes; focused ESLint has no errors and one existing App.jsx hook warning. Full unit suite: 116 pass / 4 fail; clean baseline: 111 pass / the same 4 fail (missing game-day inventory fixture plus three existing source assertions). Added desktop/mobile browser assertions for ordering, disclosure, links, suppression, and another city's original ordering. Browser execution is blocked in this runtime: Chromium exits before launching because socket creation is prohibited. Browser assertions therefore remain unverified here.
+
+John approved pushing this category-list change to GitHub for production release on November 6. The existing Vercel integration deploys main. Artwork replacement and partner correspondence remain outside this release.

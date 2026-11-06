@@ -1,3 +1,4 @@
+import { getWeekendHotels, isCollegeStation, filterHotelCards } from "./lib/collegeStationLodging.js";
 import { normalizeGameDayGuide } from "./lib/gameDayGuide.js";
 import DestinationRoadSign from "./components/DestinationRoadSign.jsx";
 import StadiumFeature from "./components/StadiumFeature.jsx";
@@ -1580,6 +1581,8 @@ function App() {
   const isFeaturedAdvertiserDemo =
     isAdvertiserSalesPreview && advertiserDemoPackage === "featured";
   const recommendationVenueId = activeTrip?.venueId || destinationVenueId;
+  const collegeStationLodging = isCollegeStation(recommendationVenueId);
+  const weekendHotels = getWeekendHotels(weekendPlaces.hotel, recommendationVenueId);
   const isNashvilleDestination = Boolean(getNashvilleRecommendations(recommendationVenueId, "destination"));
   const routePartner = isNashvilleDestination ? visitMusicCity : recommendationFallback(KICKOFF_MILES_HOUSE_AD, recommendationVenueId, 0, activeScreen === "plan-along-the-way" ? "Along the Way" : "Route & Schedule");
   const existingWorkspacePartner =
@@ -1600,7 +1603,7 @@ function App() {
   const recommendationExcludeNames = hasFeaturedDiscovery || hasDestinationSponsor ? [] : [(["plan-route-schedule", "plan-along-the-way"].includes(activeScreen) ? routePartner : workspacePartner)?.businessName];
   const destinationPartnerInventory = advertiserDemoPartner
     ? [advertiserDemoPartner]
-    : destinationPartners.filter((partner) => !isRetiredPartner(partner));
+    : filterHotelCards(destinationPartners.filter((partner) => !isRetiredPartner(partner)), recommendationVenueId, { "trip-hq": "Trip HQ", "plan-along-the-way": "Along the Way", "game-weekend": "Game Weekend", "game-day": "Game Day" }[activeScreen]);
   const isLubbockDestination = String(destinationVenueId || "") === "3784";
   const destinationMarketComingSoon =
     Boolean(destinationVenueId) &&
@@ -2062,6 +2065,7 @@ function App() {
                   )}
                 </div>
 
+                {!collegeStationLodging && (
                 <div className="recommendation-column">
                   <h3 className="game-weekend-heading">
   🛏 {travelDayCount > 1 ? "Overnight Options" : "Hotels Along the Route"}
@@ -2126,6 +2130,8 @@ function App() {
                     </ul>
                   )}
                 </div>
+
+                )}
 
                 <div className="recommendation-column">
                   <h3 className="game-weekend-heading">
@@ -3244,14 +3250,15 @@ displayDestination ||
                 <div className="recommendation-column">
                   <h3 className="game-weekend-heading">🛏 Stay Near the Stadium</h3>
 
-                  {weekendPlaces.hotel.length === 0 ? (
+                  {weekendHotels.length === 0 ? (
                     <p className="empty-state">No nearby hotels returned.</p>
                   ) : (
                     <ul className="trip-list">
-                      {weekendPlaces.hotel.slice(0, showAllWeekend ? 6 : 3).map((place) => (
+                      {weekendHotels.slice(0, showAllWeekend ? 6 : 3).map((place) => (
                         <li key={place.id} className="trip-row">
                           <div className="trip-details">
                             <span className="trip-name">{place.name}</span>
+                            {place.sponsorshipLabel ? <span className="section-kicker">{place.sponsorshipLabel}</span> : null}
 
                             <span className="trip-route">
                               {place.rating
@@ -3274,7 +3281,7 @@ displayDestination ||
                                 className={`ghost-button${
                                   isSuggestedStopAdded(place) ? " is-added" : ""
                                 }`}
-                                disabled={isSuggestedStopAdded(place)}
+                                disabled={isSuggestedStopAdded(place) || (place.sponsorshipLabel && (!Number.isFinite(Number(place.latitude)) || !Number.isFinite(Number(place.longitude))))}
                                 onClick={() =>
                                   addSuggestedStop(place, "hotel")
                                 }
@@ -3305,7 +3312,7 @@ displayDestination ||
 
               {(weekendPlaces.restaurant.length > 3 ||
                 weekendPlaces.bar.length > 3 ||
-                weekendPlaces.hotel.length > 3) ? (
+                weekendHotels.length > 3) ? (
                 <div className="recommendation-expand-row">
                   <button
                     type="button"

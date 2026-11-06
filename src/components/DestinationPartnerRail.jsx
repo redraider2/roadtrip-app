@@ -1,3 +1,4 @@
+import { filterHotelCards } from "../lib/collegeStationLodging.js";
 import PartnerPlacement from "./PartnerPlacement.jsx";
 import { DestinationPartnerCard } from "./DestinationPartnerDiscovery.jsx";
 import { getDestinationPartners } from "../lib/destinationPartners.js";
@@ -32,7 +33,7 @@ export default function DestinationPartnerRail({
   recommendationVenueId,
   recommendationExcludeNames = [],
 }) {
-  const realPartners = partners.filter(Boolean);
+  const realPartners = filterHotelCards(partners.filter(Boolean), recommendationVenueId || venueId, contextLabel);
   const discoveryPartners =
     venueId && placement ? getDestinationPartners(venueId, placement) : [];
   const occupiedCount = discoveryPartners.length + realPartners.length;
