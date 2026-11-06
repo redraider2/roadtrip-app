@@ -41,3 +41,22 @@ This release:
 Validation: 13 focused lodging/artwork checks pass; production build passes; focused ESLint has no errors and one existing App.jsx hook warning. Full unit suite: 116 pass / 4 fail; clean baseline: 111 pass / the same 4 fail (missing game-day inventory fixture plus three existing source assertions). Added desktop/mobile browser assertions for ordering, disclosure, links, suppression, and another city's original ordering. Browser execution is blocked in this runtime: Chromium exits before launching because socket creation is prohibited. Browser assertions therefore remain unverified here.
 
 John approved pushing this category-list change to GitHub for production release on November 6. The existing Vercel integration deploys main. Artwork replacement and partner correspondence remain outside this release.
+
+## November 6 creative and paid-tier correction
+
+The four 20261106 assets replace the November 2 artwork in production. Source HTML,
+CSS and supplied photo/logo are retained in `docs/hotel-creative-20261106/` with a
+renderer. Trip HQ now reads “STAY JUST 96 YARDS FROM KYLE FIELD”; the photo tag is
+removed. All four use Anna's exact paragraph, while Along the Way retains its
+ombré treatment and the other three retain their respective compositions.
+
+Paid placements use “Kickoff Miles Super Pick · Sponsored Partner.” The shared
+`partnerLabels.js` helper requires `isPaidPartner: true` or `partnershipType: "paid"`;
+editorial, house and demo entries cannot receive that designation. The hotel is
+explicitly marked paid. Do not infer payment for complimentary or unverified
+partners. Use the same explicit flag for future paying customer records.
+
+The Game Weekend hotel category remains sponsor-first with two ordinary alternatives.
+The George is withdrawn from editorial Picks and featured fallback cards, but is
+still eligible as a regular API hotel-list result below the sponsored hotel, per
+John's clarification. No competitor exclusion from ordinary hotel results is added.

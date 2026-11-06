@@ -106,59 +106,59 @@ export const texasAmHotelCollegeStation = {
   ],
   "creatives": {
     "campus_home_base": {
-      "imageUrl": "partners/texas-am-hotel-01-trip-hq-20261102.png",
-      "alt": "Make campus your home base. Texas A&M Hotel and Conference Center.",
+      "imageUrl": "partners/texas-am-hotel-01-trip-hq-20261106.png",
+      "alt": "Texas A&M Hotel and Conference Center. STAY JUST 96 YARDS FROM KYLE FIELD. Stay at the only hotel on the Texas A&M campus, just steps from Kyle Field. Enjoy upscale accommodations, convenient on-site parking, and the option to enhance your stay with a Gameday Hullabaloo Experience pass featuring unlimited game day dining, live music, and more.",
       "linkLabel": "Book at Texas A&M Hotel and Conference Center (opens in a new tab)",
       "action": "book_now",
-      "width": 1440,
-      "height": 1100,
+      "width": 1220,
+      "height": 470,
       "crop": [
-        110,
-        379,
+        0,
+        0,
         1220,
-        472
+        470
       ]
     },
     "arrival": {
-      "imageUrl": "partners/texas-am-hotel-02-along-the-way-20261102.png",
-      "alt": "The miles end. Your weekend begins. Arrive at Texas A&M Hotel.",
+      "imageUrl": "partners/texas-am-hotel-02-along-the-way-20261106.png",
+      "alt": "Texas A&M Hotel and Conference Center. Stay at the only hotel on the Texas A&M campus, just steps from Kyle Field. Enjoy upscale accommodations, convenient on-site parking, and the option to enhance your stay with a Gameday Hullabaloo Experience pass featuring unlimited game day dining, live music, and more.",
       "linkLabel": "Book at Texas A&M Hotel and Conference Center (opens in a new tab)",
       "action": "book_now",
-      "width": 1440,
-      "height": 1100,
+      "width": 1220,
+      "height": 413,
       "crop": [
-        110,
-        477,
+        0,
+        0,
         1220,
-        411
+        413
       ]
     },
     "weekend_stay": {
-      "imageUrl": "partners/texas-am-hotel-03-game-weekend-20261102.png",
-      "alt": "Check in. Settle in. Soak it all in. Texas A&M Hotel and Conference Center.",
+      "imageUrl": "partners/texas-am-hotel-03-game-weekend-20261106.png",
+      "alt": "Texas A&M Hotel and Conference Center. Stay at the only hotel on the Texas A&M campus, just steps from Kyle Field. Enjoy upscale accommodations, convenient on-site parking, and the option to enhance your stay with a Gameday Hullabaloo Experience pass featuring unlimited game day dining, live music, and more.",
       "linkLabel": "Book at Texas A&M Hotel and Conference Center (opens in a new tab)",
       "action": "book_now",
-      "width": 1440,
-      "height": 1100,
+      "width": 1220,
+      "height": 493,
       "crop": [
-        110,
-        379,
+        0,
+        0,
         1220,
-        509
+        493
       ]
     },
     "maroon_96": {
-      "imageUrl": "partners/texas-am-hotel-04-game-day-20261102.png",
-      "alt": "96 yards from Kyle Field. Closer to the game. Right in the experience. Texas A&M Hotel.",
+      "imageUrl": "partners/texas-am-hotel-04-game-day-20261106.png",
+      "alt": "Texas A&M Hotel and Conference Center. Stay at the only hotel on the Texas A&M campus, just steps from Kyle Field. Enjoy upscale accommodations, convenient on-site parking, and the option to enhance your stay with a Gameday Hullabaloo Experience pass featuring unlimited game day dining, live music, and more.",
       "linkLabel": "Book at Texas A&M Hotel and Conference Center (opens in a new tab)",
       "action": "book_now",
-      "width": 1440,
-      "height": 1100,
+      "width": 1220,
+      "height": 541,
       "crop": [
-        110,
-        379,
+        0,
+        0,
         1220,
-        453
+        541
       ],
       "allowedPlacements": [
         "game_weekend",
@@ -174,26 +174,26 @@ export const texasAmHotelCollegeStation = {
   },
   "placementContent": {
     "trip_hq": {
-      "sentence": "Make campus your home base for your Aggieland weekend.",
+      "sentence": "Stay at the only hotel on the Texas A&M campus, just steps from Kyle Field. Enjoy upscale accommodations, convenient on-site parking, and the option to enhance your stay with a Gameday Hullabaloo Experience pass featuring unlimited game day dining, live music, and more.",
       "actions": [
         "book_now"
       ]
     },
     "along_the_way": {
       "heading": "When you reach College Station",
-      "sentence": "The miles end. Your weekend begins. Arrive at Texas A&M Hotel in the heart of campus.",
+      "sentence": "Stay at the only hotel on the Texas A&M campus, just steps from Kyle Field. Enjoy upscale accommodations, convenient on-site parking, and the option to enhance your stay with a Gameday Hullabaloo Experience pass featuring unlimited game day dining, live music, and more.",
       "actions": [
         "book_now"
       ]
     },
     "game_weekend": {
-      "sentence": "Check in. Settle in. Soak it all in. Make the hotel your College Station weekend home base.",
+      "sentence": "Stay at the only hotel on the Texas A&M campus, just steps from Kyle Field. Enjoy upscale accommodations, convenient on-site parking, and the option to enhance your stay with a Gameday Hullabaloo Experience pass featuring unlimited game day dining, live music, and more.",
       "actions": [
         "book_now"
       ]
     },
     "game_day": {
-      "sentence": "Just 96 yards from Kyle Field. Closer to the game. Right in the experience.",
+      "sentence": "Stay at the only hotel on the Texas A&M campus, just steps from Kyle Field. Enjoy upscale accommodations, convenient on-site parking, and the option to enhance your stay with a Gameday Hullabaloo Experience pass featuring unlimited game day dining, live music, and more.",
       "actions": [
         "book_now"
       ]
@@ -204,7 +204,8 @@ export const texasAmHotelCollegeStation = {
   },
   "actionLabels": {
     "book_now": "Book Now"
-  }
+  },
+  "isPaidPartner": true
 };
 
 export function getDestinationArtworkCampaign(venueId) {

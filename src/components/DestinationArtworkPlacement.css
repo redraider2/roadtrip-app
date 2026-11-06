@@ -86,3 +86,24 @@ html:root .destination-artwork-placement .destination-artwork-copy p { color: #e
 .destination-artwork-placement[data-layout="full_width"] .destination-artwork-actions {
   margin: 0;
 }
+@media (max-width: 480px) {
+  .destination-artwork-placement[data-layout="full_width"] .destination-artwork-identity {
+    flex-basis: 100%;
+  }
+  .destination-artwork-placement[data-layout="full_width"] .destination-artwork-disclosure {
+    font-size: 0.7rem;
+    line-height: 1.3;
+  }
+  .destination-artwork-placement[data-layout="full_width"] .destination-artwork-copy h3 {
+    font-size: 0.9rem;
+  }
+}
+@media (max-width: 480px) {
+  html:root .destination-artwork-placement[data-layout="full_width"] .destination-artwork-disclosure {
+    display: block;
+    line-height: 1.3;
+  }
+  html:root .destination-artwork-placement[data-layout="full_width"] .destination-artwork-copy h3 {
+    line-height: 1.2;
+  }
+}

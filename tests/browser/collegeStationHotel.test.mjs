@@ -56,7 +56,7 @@ for (const width of [1280, 390]) {
         await expect(ad).toHaveCount(1);
         await ad.scrollIntoViewIfNeeded();
         await expect(ad).toHaveAttribute('data-creative',creatives[placement]);
-        await expect(ad.getByText('Sponsored · College Station',{exact:true})).toBeVisible();
+        await expect(ad.getByText('Kickoff Miles Super Pick · Sponsored Partner · College Station',{exact:true})).toBeVisible();
         await expect(ad.locator('h3')).toHaveText('Texas A&M Hotel and Conference Center');
         const picture=ad.locator('svg');
         await expect(picture).toBeVisible();
@@ -66,7 +66,8 @@ for (const width of [1280, 390]) {
         const footer=await ad.locator('.destination-artwork-copy').boundingBox();
         assert.ok(Math.abs(box.width-layout.width)<1,'hotel artwork fills the entire card width');
         assert.ok(footer.y>=box.y+box.height,'booking footer sits below the enlarged artwork');
-        assert.ok(footer.height<140,'booking footer stays compact');
+        await ad.screenshot({path:`outputs/college-station-hotel/${placement}-${width}.png`});
+        assert.ok(footer.height<140,`booking footer stays compact: ${footer.height}`);
         assert.equal(await ad.locator('.destination-artwork-image').getAttribute('href'),'https://www.texasamhotelcc.com/');
         const before=await page.evaluate(()=>JSON.parse(localStorage.getItem('kickoff_miles_partner_events')||'[]').filter(e=>e.campaign_id==='texas_am_hotel_college_station' && e.action==='book_now').length);
         const popupPromise=context.waitForEvent('page');
@@ -109,13 +110,13 @@ for (const width of [1280,390]) {
       const rows = column.locator('.trip-row');
       await expect(rows).toHaveCount(3);
       await expect(rows.first().getByText('Texas A&M Hotel & Conference Center',{exact:true})).toBeVisible();
-      await expect(rows.first().getByText('Kickoff Miles Pick · Sponsored Partner',{exact:true})).toBeVisible();
+      await expect(rows.first().getByText('Kickoff Miles Super Pick · Sponsored Partner',{exact:true})).toBeVisible();
       await expect(rows.nth(1)).toContainText('Alternative Hotel One');
       await expect(rows.nth(2)).toContainText('Alternative Hotel Two');
       await expect(rows.first().getByRole('link',{name:'Visit website'})).toHaveAttribute('href','https://www.texasamhotelcc.com/');
       for (const screen of ['trip-hq','plan-along-the-way','game-day']) {
         await page.goto(`${baseURL}/?review=${screen}#/${screen}`);
-        await expect(page.getByText('Kickoff Miles Pick · Sponsored Partner',{exact:true})).toHaveCount(0);
+        await expect(page.getByText('Kickoff Miles Super Pick · Sponsored Partner',{exact:true})).toHaveCount(0);
         await expect(page.getByRole('heading',{name:/Hotels Along the Route|Overnight Options/})).toHaveCount(0);
         await expect(page.locator(selector)).toHaveCount(1);
       }
@@ -128,6 +129,6 @@ test('another destination retains hotel API ordering without sponsorship',async(
     await page.goto(`${baseURL}/?review=game-weekend#/game-weekend`);
     const column=page.locator('.recommendation-column').filter({has:page.getByRole('heading',{name:'🛏 Stay Near the Stadium',exact:true})});
     await expect(column.locator('.trip-row').first()).toContainText('Alternative Hotel One');
-    await expect(page.getByText('Kickoff Miles Pick · Sponsored Partner',{exact:true})).toHaveCount(0);
+    await expect(page.getByText('Kickoff Miles Super Pick · Sponsored Partner',{exact:true})).toHaveCount(0);
   } finally {await context.close();}
 });

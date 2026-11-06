@@ -1,3 +1,4 @@
+import { partnerDisclosure } from "../lib/partnerLabels.js";
 import { useEffect, useRef } from "react";
 import { selectDestinationArtwork } from "../lib/destinationArtworkCampaigns.js";
 import { recordPartnerEvent } from "../lib/partnerMetrics.js";
@@ -49,7 +50,7 @@ function ArtworkLink({ campaign, venueId, placement, selection }) {
         </a>
         <div className="destination-artwork-copy">
           <div className="destination-artwork-identity">
-            <span className="destination-artwork-disclosure">Sponsored · {marketLabel}</span>
+            <span className="destination-artwork-disclosure">{partnerDisclosure(campaign, "Sponsored")} · {marketLabel}</span>
             <h3>{displayName}</h3>
           </div>
           {campaign.layout !== "full_width" ? <>

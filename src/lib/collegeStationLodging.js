@@ -1,5 +1,6 @@
 // Destination-only category policy, separate from the four artwork placements.
-export const SPONSORED_HOTEL_LABEL = "Kickoff Miles Pick · Sponsored Partner";
+import { PAID_PARTNER_LABEL } from "./partnerLabels.js";
+export const SPONSORED_HOTEL_LABEL = PAID_PARTNER_LABEL;
 export const isCollegeStation = venueId => String(venueId ?? "").trim() === "3795";
 const contexts = new Set(["Trip HQ", "Along the Way", "Game Weekend", "Game Day"]);
 

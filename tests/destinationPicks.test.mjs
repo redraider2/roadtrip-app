@@ -4,10 +4,10 @@ import { getDestinationPicks, getRecommendationPartners, recommendationFallback 
 import { destinationPartners } from "../src/lib/destinationPartners.js";
 import { culinaryGangsterTempe } from "../src/lib/destinationArtworkCampaigns.js";
 
-test("all selected destination venues have six source-checked recommendations", () => {
+test("selected destination venues retain their active source-checked recommendations", () => {
   for (const venue of [3784, 3947, 4728, 3895, 3604, 3910, 3994, 3795, 4727]) {
     const destination = getDestinationPicks(venue);
-    assert.equal(destination.entries.length, 6);
+    assert.equal(destination.entries.length, venue === 3795 ? 5 : 6);
     for (const entry of destination.entries) {
       assert.equal(entry.verificationStatus, "source_checked");
       assert.ok(entry.sourceCheckedOn);

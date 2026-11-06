@@ -1,3 +1,4 @@
+import { isPaidPartner, PAID_PARTNER_LABEL } from "../lib/partnerLabels.js";
 import { useEffect, useRef, useState } from "react";
 import { getDestinationPartners, partnerDirectionsUrl } from "../lib/destinationPartners.js";
 import { recordPartnerEvent } from "../lib/partnerMetrics.js";
@@ -37,7 +38,7 @@ export function DestinationPartnerCard({ partner, placement, onSave, saved = fal
     <aside ref={cardRef} className={`destination-discovery-card is-${creative}${compact ? " is-rail" : ""}`} aria-label={partner.name} data-partner-id={partner.id} data-placement={placement}>
       <img src={`${import.meta.env.BASE_URL}${partner.imageUrl}`} alt={partner.imageAlt} loading="lazy" />
       <div className="destination-discovery-content">
-        {creative === "featured" ? <span className="section-kicker">FEATURED IN {partner.marketName.toUpperCase()}</span> : null}
+        {isPaidPartner(partner) ? <span className="section-kicker">{PAID_PARTNER_LABEL}</span> : creative === "featured" ? <span className="section-kicker">FEATURED IN {partner.marketName.toUpperCase()}</span> : null}
         <h3>{partner.businessName}</h3>
         {creative === "featured" ? <><p className="destination-discovery-headline">{partner.headline}</p><p>{partner.description}</p></> : <p>{partner.summary}</p>}
         <p className="destination-discovery-address">{partner.displayAddress}</p>

@@ -1,3 +1,4 @@
+import { partnerDisclosure } from "../lib/partnerLabels.js";
 import { useEffect, useRef } from "react";
 import VisitMusicCityFeature from "./VisitMusicCityFeature.jsx";
 import { recordPartnerEvent } from "../lib/partnerMetrics.js";
@@ -50,7 +51,7 @@ export default function PartnerPlacement({
     ? "Advertising Opportunity"
     : partner.isDemo
       ? "Founding Partner Preview"
-      : PARTNER_LABELS[type] || PARTNER_LABELS.featured;
+      : partnerDisclosure(partner, PARTNER_LABELS[type] || PARTNER_LABELS.featured);
   const description = contextualCopy(partner, contextLabel);
   const monogram = String(partner.businessName || "")
     .split(/\s+/)
