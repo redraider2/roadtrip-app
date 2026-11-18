@@ -1,5 +1,6 @@
 import Header from "./Header.jsx";
 import SampleTrip from "./SampleTrip.jsx";
+import HomeFaq from "./HomeFaq.jsx";
 
 export default function HomeExperience({
   accountLabel,
@@ -45,6 +46,7 @@ export default function HomeExperience({
       </div>
 
       <SampleTrip onChooseTeam={onChooseTeam} onBrowseDestinations={onBrowseDestinations} />
+      <HomeFaq />
 
       <details className="home-account-access">
         <summary>{accountLabel}</summary>

@@ -349,6 +349,37 @@ body {
   text-align: center;
 }
 
+.home-faq {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto 2.5rem;
+  padding: clamp(1.25rem, 3vw, 3rem);
+  border: 1px solid #d8cebc;
+  border-radius: 18px;
+  background: #f6f0e5;
+  color: #29271f;
+}
+
+.home-faq h2 {
+  margin: 0.75rem 0 1.75rem;
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
+.home-faq-item { border-top: 1px solid #d8cebc; }
+.home-faq-item:last-child { border-bottom: 1px solid #d8cebc; }
+.home-faq-item summary {
+  padding: 1.25rem 0;
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  font-weight: 750;
+  line-height: 1.5;
+  cursor: pointer;
+}
+.home-faq-item summary::marker { color: #8b3029; }
+.home-faq-item summary:focus-visible { outline: 3px solid #bd493c; outline-offset: 4px; }
+.home-faq-item p { max-width: 80ch; margin: 0 0 1.4rem; color: #575247; line-height: 1.7; }
+
 .home-account-access > summary {
   width: fit-content;
   margin: 0.75rem auto 0;
