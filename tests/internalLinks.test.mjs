@@ -24,8 +24,8 @@ test("every public information page links to 2–5 distinct neighboring document
   }
 });
 
-test("every piece has three to five related links selected by its cluster and breadcrumbs", () => {
-  for (const page of PUBLIC_PAGES.filter((page) => page.component && !page.isHub)) {
+test("every information page, including the hub, has three to five related links and breadcrumbs", () => {
+  for (const page of PUBLIC_PAGES.filter((page) => page.component)) {
     const html = documents.get(page.path);
     const block = html.match(/<aside\b[^>]*aria-label="Related"[^>]*>([\s\S]*?)<\/aside>/)?.[1];
     assert.ok(block, `${page.path} lacks a related block`);
@@ -36,7 +36,7 @@ test("every piece has three to five related links selected by its cluster and br
     const breadcrumbs = html.match(/<nav\b[^>]*aria-label="Breadcrumb"[^>]*>([\s\S]*?)<\/nav>/)?.[1];
     assert.ok(breadcrumbs, `${page.path} lacks breadcrumbs`);
     const hub = PUBLIC_PAGES.find((other) => other.cluster === page.cluster && other.isHub);
-    assert.deepEqual(links(breadcrumbs).map(({ url }) => url.pathname), ["/", hub.path]);
+    assert.deepEqual(links(breadcrumbs).map(({ url }) => url.pathname), page.isHub ? ["/"] : ["/", hub.path]);
     assert.match(breadcrumbs, /aria-current="page"/);
   }
 });
