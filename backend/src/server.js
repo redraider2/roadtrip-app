@@ -6,6 +6,7 @@ const rateLimit = require("express-rate-limit");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const db = require("./db");
+const { loadTeamSchedule, filterTeamSchedule } = require("./footballSchedule");
 const {
   createGoogleProtection,
   coordinateKey,
@@ -1553,6 +1554,8 @@ app.get("/football/games", async (req, res) => {
     const team = req.query.team || "Texas Tech";
     const year = Number(req.query.year) || new Date().getFullYear();
     const awayOnly = req.query.awayOnly === "true";
+    const roadOnly = req.query.roadOnly === "true";
+    const includePostseason = req.query.includePostseason === "true";
 
     if (!process.env.CFBD_API_KEY) {
       return res
@@ -1561,48 +1564,26 @@ app.get("/football/games", async (req, res) => {
     }
 
     const simplifiedGames = await loadCachedFootballData(
-      `cfbd:games:${year}:${team}`,
+      `cfbd:games:${year}:${team}:${includePostseason ? "both" : "regular"}`,
       FOOTBALL_CACHE_TTL_MS.games,
-      async () => {
-        const url = new URL("https://api.collegefootballdata.com/games");
-        url.searchParams.set("year", year);
-        url.searchParams.set("team", team);
-
-        const cfbdResponse = await fetchWithRetry(url, {
-          headers: {
-            Authorization: `Bearer ${process.env.CFBD_API_KEY}`,
-          },
-        });
-
-        if (!cfbdResponse.ok) {
-          const errorText = await cfbdResponse.text();
-          throw new Error(
-            `CFBD games request failed: ${cfbdResponse.status} ${errorText}`
-          );
-        }
-
-        const games = await cfbdResponse.json();
-
-        return games.map((game) => ({
-          id: game.id,
-          season: game.season,
-          week: game.week,
-          startDate: game.startDate,
-          startTimeTBD: game.startTimeTBD,
-          conferenceGame: game.conferenceGame,
-          neutralSite: game.neutralSite,
-          homeTeam: game.homeTeam,
-          awayTeam: game.awayTeam,
-          venue: publicVenueName(game.venueId, game.venue),
-          venueId: game.venueId,
-          isAwayGame: game.awayTeam === team && !game.neutralSite,
-        }));
-      }
+      () => loadTeamSchedule({
+        team,
+        year,
+        includePostseason,
+        venueName: publicVenueName,
+        fetchGames: async (url) => {
+          const response = await fetchWithRetry(url, {
+            headers: { Authorization: `Bearer ${process.env.CFBD_API_KEY}` },
+          });
+          if (!response.ok) {
+            throw new Error(`CFBD games request failed: ${response.status} ${await response.text()}`);
+          }
+          return response.json();
+        },
+      })
     );
 
-    const filteredGames = awayOnly
-      ? simplifiedGames.filter((game) => game.isAwayGame)
-      : simplifiedGames;
+    const filteredGames = filterTeamSchedule(simplifiedGames, { awayOnly, roadOnly });
 
     return res.json(filteredGames);
   } catch (err) {
@@ -2075,6 +2056,10 @@ app.get("/debug-db", async (req, res) => {
 
 const port = Number(process.env.PORT) || 5001;
 
-app.listen(port, () => {
-  console.log(`RoadTrip API listening on http://localhost:${port}`);
-});
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`RoadTrip API listening on http://localhost:${port}`);
+  });
+}
+
+module.exports = app;

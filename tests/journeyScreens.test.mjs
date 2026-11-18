@@ -294,7 +294,7 @@ test("Choose Team retains contextual routing and automatic advancement", () => {
 test("Choose Game presents existing games as destination choices", () => {
   assert.ok(chooseGameSource.includes("Choose Your Game"));
   assert.ok(chooseGameSource.includes("Where are we going?"));
-  assert.ok(chooseGameSource.includes("Pick the away game worth hitting the road for."));
+  assert.ok(chooseGameSource.includes("Choose an away game, neutral-site matchup, or bowl trip."));
   assert.ok(chooseGameSource.includes("game.venue || \"Venue to be announced\""));
   assert.ok(chooseGameSource.includes("formatGameDate(game.startDate, game.startTimeTBD)"));
   assert.ok(chooseGameSource.includes("team?.logos?.[0]"));

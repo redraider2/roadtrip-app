@@ -188,6 +188,8 @@ async function buildLocalTeamsResponse() {
 
 function buildGameSnapshotResponse(url) {
   const parsed = new URL(url);
+  // A regular-season snapshot cannot stand in for a complete postseason request.
+  if (![null, "regular"].includes(parsed.searchParams.get("seasonType"))) return null;
   const team = parsed.searchParams.get("team") || "";
   const year = parsed.searchParams.get("year") || "";
   const snapshot = GAME_SNAPSHOTS.get(`${year}:${team}`);
