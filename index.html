@@ -37,7 +37,26 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Initial headline for non-JavaScript readers. React replaces this shell on mount. -->
+      <main class="app is-home">
+        <section class="home-experience" aria-labelledby="home-headline">
+          <div class="home-hero-stage">
+            <div class="home-hero-copy">
+              <span class="home-eyebrow">College football road trips start here</span>
+              <h1 id="home-headline">
+                <span class="home-headline-line home-headline-line-one">
+                  <span>Let&rsquo;s</span>
+                  <span>Hit</span>
+                </span>
+                <span class="home-headline-line">The Road!</span>
+              </h1>
+              <p>Pick your team. Choose a game. Build the road trip.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
