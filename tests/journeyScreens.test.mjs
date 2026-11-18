@@ -303,7 +303,8 @@ test("Choose Game presents existing games as destination choices", () => {
 test("Choose Game retains selected ID, trip inputs, submit, and back behavior", () => {
   assert.ok(chooseGameSource.includes("onSelectGame(String(game.id))"));
   assert.ok(chooseGameSource.includes('type="submit"'));
-  assert.ok(appSource.includes("onSelectGame={setSelectedFootballGameId}"));
+  assert.ok(appSource.includes("setSelectedFootballGameId(String(game.id))"));
+  assert.ok(appSource.includes("journeyAnalytics.gameSelected(game, FOOTBALL_SEASON)"));
   assert.ok(appSource.includes("onStartChange={setFootballStart}"));
   assert.ok(appSource.includes("onDailyDriveHoursChange={setDailyDriveHours}"));
   assert.ok(appSource.includes('onBack={() => navigateTo("choose-team")}'));
