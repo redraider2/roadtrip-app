@@ -1,12 +1,15 @@
 import { SITE_ORIGIN } from "./publicPages.js";
 import { FAQ_QUESTIONS } from "../data/homeFaq.js";
 
-// Verified in HeyCatch Settings → Social accounts → Kickoff Miles on 2026-11-18.
-// Use the connected account handles/ID, never guessed business-name variants.
+// Instagram, Facebook, and X verified in HeyCatch connected business accounts.
+// YouTube verified on its owned channel; LinkedIn verified via the managed
+// Kickoff Miles page and its public website link on 2026-11-18.
 export const OFFICIAL_PROFILE_URLS = [
   "https://www.instagram.com/kickoffmiles/",
   "https://www.facebook.com/1454843144369198",
   "https://x.com/kickoffmiles",
+  "https://www.youtube.com/@KickoffMiles",
+  "https://www.linkedin.com/company/kickoff-miles/",
 ];
 
 export function siteStructuredData(page) {
