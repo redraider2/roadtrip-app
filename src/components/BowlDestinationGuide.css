@@ -1,0 +1,28 @@
+.bowl-destination-guide {
+  margin: 24px 0;
+  padding: clamp(18px, 3vw, 28px);
+  border: 1px solid #c7b58f;
+  border-radius: 20px;
+  background: #faf6eb;
+  color: #28302e;
+  min-width: 0;
+}
+.bowl-destination-guide h2 { margin: 8px 0; font-size: clamp(1.4rem, 3vw, 2rem); }
+.bowl-destination-guide h3, .bowl-destination-guide h4 { margin: 6px 0 12px; }
+.bowl-destination-guide p { line-height: 1.65; }
+.bowl-destination-guide a { color: #86372a; font-weight: 700; overflow-wrap: anywhere; }
+.bowl-destination-guide a:focus-visible { outline: 3px solid #86372a; outline-offset: 4px; }
+.bowl-guide-venue { font-weight: 700; }
+.bowl-guide-events, .bowl-guide-disclosure, .bowl-guide-reviewed { font-size: 0.88rem; }
+.bowl-guide-arrival, .bowl-guide-picks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 20px 0; }
+.bowl-guide-arrival article, .bowl-guide-picks article { padding: 18px; background: #fffdf8; border: 1px solid #ddd5c7; border-radius: 14px; min-width: 0; }
+.bowl-guide-picks h4 { font-size: 1.15rem; }
+.bowl-guide-note { padding: 14px; border-left: 3px solid #b69b61; background: #f1eadb; }
+.bowl-guide-all-link { display: inline-block; margin: 12px 0; }
+.destination-browser-types { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0; }
+.destination-browser-types button { padding: 12px 18px; border: 1px solid #bcb2a1; background: #fffdf8; border-radius: 24px; color: #28302e; font: inherit; font-weight: 700; cursor: pointer; }
+.destination-browser-types button[aria-pressed="true"] { background: #843a2f; border-color: #843a2f; color: white; }
+.destination-browser-types button:focus-visible { outline: 3px solid #843a2f; outline-offset: 3px; }
+@media (max-width: 650px) { .bowl-guide-arrival, .bowl-guide-picks { grid-template-columns: minmax(0, 1fr); } }
+
+.choose-game-guide-link { display: inline-block; margin: 8px 0; color: #843a2f; font-weight: 700; }
