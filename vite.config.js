@@ -19,12 +19,14 @@ export default defineConfig(({ mode }) => ({
     async generateBundle(_options, bundle) {
       const base = mode === "github-pages" ? "/roadtrip-app/" : "/";
       const stylesheets = Object.keys(bundle).filter((file) => file.endsWith(".css"));
-      const { pages, homeLinks } = await generateInformationPages(stylesheets, base);
+      const { pages, homeLinks, mainNavigation } = await generateInformationPages(stylesheets, base);
       const index = bundle["index.html"];
       if (!index || !String(index.source).includes("<!-- planning-information-links -->")) {
         throw new Error("Homepage internal-link insertion point is missing.");
       }
       index.source = String(index.source).replace("<!-- planning-information-links -->", homeLinks);
+      if (!String(index.source).includes("<!-- planning-main-navigation -->")) throw new Error("Homepage main-navigation insertion point is missing.");
+      index.source = String(index.source).replace("<!-- planning-main-navigation -->", mainNavigation);
       for (const page of pages) this.emitFile({ type: "asset", fileName: page.path.slice(1), source: page.html });
     },
   }],
