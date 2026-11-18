@@ -2,7 +2,8 @@
 
 The application is React/Vite on Vercel. Its canonical public documents are
 the homepage and the existing About, FAQ, and sample-trip content published at
-`/about.html`, `/faq.html`, and `/sample-trip.html`. Journey screens use URL
+`/about.html`, `/faq.html`, and `/sample-trip.html`, plus the topic hub at
+`/planning.html`. Journey screens use URL
 fragments; they are not separate sitemap entries. There is no daily-post CMS.
 
 `src/screens/publicPages.js` supplies both public navigation and the sitemap's
@@ -31,7 +32,7 @@ deployment statuses, or a manual dispatch on main. It checks the live canonical
 sitemap against the exact deployed revision and checks that the public ownership
 key is served correctly. It then sends one POST to IndexNow with the published
 canonical page URLs. Preview and failed deployments do not submit URLs. This
-site currently publishes four canonical documents, so the payload contains those URLs.
+site currently publishes five canonical documents, so the payload contains those URLs.
 
 The generated ownership key is a public verification token, hosted as a root
 text file and configured in `scripts/indexnow-config.json`; no account or secret

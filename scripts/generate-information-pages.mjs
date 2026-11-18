@@ -25,8 +25,11 @@ export async function generateInformationPages(stylesheets, base = "/") {
     const Header = await load("Header");
     const Background = await load("Background");
     const Links = await load("PlanningInformationLinks");
+    const Breadcrumbs = await load("PlanningBreadcrumbs");
+    const MainNavigation = await load("PlanningMainNavigation");
     const render = (Component, props = {}) => renderToStaticMarkup(createElement(Component, props));
     const homeLinks = render(Links);
+    const mainNavigation = render(MainNavigation);
     const pages = [];
     for (const page of PUBLIC_PAGES.filter(({ component }) => component)) {
       const Component = await load(page.component);
@@ -43,13 +46,14 @@ export async function generateInformationPages(stylesheets, base = "/") {
 ${stylesheets.map((file) => `<link rel="stylesheet" href="${base}${file}">`).join("\n")}
 </head><body><div class="page is-home">${render(Background)}
 <main class="app is-home">${render(Header)}
+${render(Breadcrumbs, { page })}
 <h1 class="information-page-title">${escape(page.title)}</h1>
 ${content}
-${render(Links, { currentPath: page.path })}
+${page.isHub ? "" : render(Links, { currentPath: page.path, related: true })}
 </main></div></body></html>\n`;
       pages.push({ ...page, html });
     }
-    return { pages, homeLinks };
+    return { pages, homeLinks, mainNavigation };
   } finally {
     await server.close();
   }

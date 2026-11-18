@@ -1,14 +1,16 @@
-import { PUBLIC_PAGES } from "../screens/publicPages.js";
+import { PUBLIC_PAGES, getRelatedPublicPages } from "../screens/publicPages.js";
 
-export default function PlanningInformationLinks({ currentPath = "/" }) {
+export default function PlanningInformationLinks({ currentPath = "/", related = false }) {
+  const Container = related ? "aside" : "nav";
+  const pages = related ? getRelatedPublicPages(currentPath) : PUBLIC_PAGES.filter((page) => page.path !== currentPath);
   return (
-    <nav className="planning-information-links" aria-label="Trip planning information">
-      <h2>Explore trip planning</h2>
+    <Container className="planning-information-links" aria-label={related ? "Related" : "Trip planning information"}>
+      <h2>{related ? "Related trip planning guides" : "Explore trip planning"}</h2>
       <ul>
-        {PUBLIC_PAGES.filter((page) => page.path !== currentPath).map((page) => (
+        {pages.map((page) => (
           <li key={page.id}><a href={`${import.meta.env.BASE_URL}${page.path.slice(1)}`}>{page.linkLabel}</a></li>
         ))}
       </ul>
-    </nav>
+    </Container>
   );
 }

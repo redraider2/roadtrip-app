@@ -363,6 +363,17 @@ body {
 .planning-information-links ul { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding: 0; margin: 0; list-style: none; }
 .planning-information-links a { color: #8b3029; font-weight: 700; line-height: 1.6; text-underline-offset: 0.2em; }
 .planning-information-links a:focus-visible { outline: 3px solid #bd493c; outline-offset: 4px; }
+.planning-main-navigation { margin-top: 0.65rem; }
+.planning-main-navigation a { color: #fff; font-size: 0.82rem; font-weight: 700; text-underline-offset: 0.2em; }
+.planning-main-navigation a:focus-visible, .planning-breadcrumbs a:focus-visible { outline: 3px solid #e4a96c; outline-offset: 4px; }
+.planning-breadcrumbs { margin-top: 2rem; color: #fff; }
+.planning-breadcrumbs ol { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; list-style: none; font-size: 0.85rem; line-height: 1.6; }
+.planning-breadcrumbs li + li::before { content: "/"; margin-right: 0.5rem; opacity: 0.7; }
+.planning-breadcrumbs a { color: #fff; text-underline-offset: 0.2em; }
+.planning-hub ul { padding-left: 1.2rem; }
+.planning-hub li { padding: 0.75rem 0; }
+.planning-hub a { color: #8b3029; font-size: 1.1rem; font-weight: 750; text-underline-offset: 0.2em; }
+.planning-hub li p { margin: 0.65rem 0 0; }
 .information-page-title { margin: 2rem 0; font-size: clamp(1.8rem, 5vw, 3rem); line-height: 1.15; }
 .information-page-about { padding: clamp(1.25rem, 3vw, 3rem); margin-bottom: 2.5rem; border-radius: 18px; background: #f6f0e5; color: #29271f; }
 .information-page-about p { max-width: 80ch; line-height: 1.7; }

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { PUBLIC_PAGES, SITE_ORIGIN } from "../src/screens/publicPages.js";
+import { PUBLIC_PAGES, SITE_ORIGIN, getRelatedPublicPages } from "../src/screens/publicPages.js";
 import { generateInformationPages } from "../scripts/generate-information-pages.mjs";
 
 const generated = await generateInformationPages(["assets/site.css"]);
@@ -19,8 +19,42 @@ test("every public information page links to 2–5 distinct neighboring document
     for (const { url, text } of neighbors) {
       assert.ok(registeredPaths.has(url.pathname), `Unregistered destination: ${url.pathname}`);
       assert.ok(documents.has(url.pathname), `Missing generated page: ${url.pathname}`);
-      assert.ok(text.length > 15 && !/^(here|click here|read more|learn more)$/i.test(text), text);
+      assert.ok((text === "Home" || text.length > 15) && !/^(here|click here|read more|learn more)$/i.test(text), text);
     }
+  }
+});
+
+test("every piece has three to five related links selected by its cluster and breadcrumbs", () => {
+  for (const page of PUBLIC_PAGES.filter((page) => page.component && !page.isHub)) {
+    const html = documents.get(page.path);
+    const block = html.match(/<aside\b[^>]*aria-label="Related"[^>]*>([\s\S]*?)<\/aside>/)?.[1];
+    assert.ok(block, `${page.path} lacks a related block`);
+    const related = links(block);
+    assert.ok(related.length >= 3 && related.length <= 5);
+    assert.ok(related.every(({ url }) => url.pathname !== page.path && PUBLIC_PAGES.some((other) => other.path === url.pathname && other.cluster === page.cluster)));
+    assert.deepEqual(related.map(({ url }) => url.pathname), getRelatedPublicPages(page.path).map((other) => other.path));
+    const breadcrumbs = html.match(/<nav\b[^>]*aria-label="Breadcrumb"[^>]*>([\s\S]*?)<\/nav>/)?.[1];
+    assert.ok(breadcrumbs, `${page.path} lacks breadcrumbs`);
+    const hub = PUBLIC_PAGES.find((other) => other.cluster === page.cluster && other.isHub);
+    assert.deepEqual(links(breadcrumbs).map(({ url }) => url.pathname), ["/", hub.path]);
+    assert.match(breadcrumbs, /aria-current="page"/);
+  }
+});
+
+test("the topic hub links every piece and is linked from main navigation", () => {
+  for (const hub of PUBLIC_PAGES.filter((page) => page.isHub)) {
+    const targets = new Set(links(documents.get(hub.path)).map(({ url }) => url.pathname));
+    const pieces = PUBLIC_PAGES.filter((page) => page.cluster === hub.cluster && !page.isHub);
+    assert.ok(pieces.every((piece) => targets.has(piece.path)));
+    assert.ok(links(generated.mainNavigation).some(({ url }) => url.pathname === hub.path));
+    for (const page of generated.pages) assert.ok(page.html.includes('aria-label="Main navigation"'));
+  }
+});
+
+test("every registered piece receives links from at least three other cluster documents", () => {
+  for (const page of PUBLIC_PAGES.filter((page) => page.cluster && !page.isHub)) {
+    const incoming = [...documents].filter(([path, html]) => path !== page.path && PUBLIC_PAGES.some((other) => other.path === path && other.cluster === page.cluster) && links(html).some(({ url }) => !url.hash && url.pathname === page.path));
+    assert.ok(incoming.length >= 3, `${page.path} has only ${incoming.length} cluster recommendations`);
   }
 });
 
