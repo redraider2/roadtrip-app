@@ -1,6 +1,8 @@
+import { PUBLIC_PAGES } from "./publicPages.js";
+
 export const JOURNEY_SCREENS = [
   { id: "destinations", label: "Destinations", status: "active-boundary" },
-  { id: "home", label: "Home", status: "active-boundary" },
+  ...PUBLIC_PAGES.map(({ id, label }) => ({ id, label, status: "active-boundary" })),
   { id: "choose-team", label: "Choose Team", status: "active-boundary" },
   { id: "choose-game", label: "Choose Game", status: "active-boundary" },
   { id: "trip-hq", label: "Trip HQ", status: "active-boundary" },

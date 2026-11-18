@@ -8,6 +8,8 @@
     "dev": "vite",
     "test": "node --test tests/*.test.mjs",
     "build": "vite build",
+    "sitemap:generate": "node scripts/generate-sitemap.mjs",
+    "indexnow:publish": "node scripts/ping-indexnow.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "vite build --mode github-pages",
