@@ -4,7 +4,7 @@ export default function SampleTrip({ onChooseTeam, onBrowseDestinations, standal
       <header className="sample-trip-heading">
         <span className="sample-trip-kicker">A weekend worth the drive · Sample trip</span>
         <h2 id="sample-trip-title">Chicago to Tuscaloosa. Auburn at Alabama.</h2>
-        <p>See how a game becomes a road trip, from the first mile to game weekend.</p>
+        <p>A college football road trip is a journey built around a game, with a driving route and places to stop.</p>
       </header>
 
       <ol className="sample-trip-steps">

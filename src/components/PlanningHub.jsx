@@ -5,6 +5,7 @@ export default function PlanningHub() {
   return (
     <section className="home-faq planning-hub" aria-labelledby="planning-hub-title">
       <h2 id="planning-hub-title">Start with these guides</h2>
+      <p>College football road trip planning is the process of choosing a game, mapping the drive, and arranging stops.</p>
       <ul>
         {pieces.map((page) => <li key={page.id}>
           <a href={`${import.meta.env.BASE_URL}${page.path.slice(1)}`}>{page.title}</a>

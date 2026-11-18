@@ -5,6 +5,8 @@ import react from "@vitejs/plugin-react";
 import { fileURLToPath } from "node:url";
 import { PUBLIC_PAGES, SITE_ORIGIN } from "../src/screens/publicPages.js";
 
+import { structuredDataScript } from "../src/screens/siteStructuredData.js";
+
 const escape = (text) => String(text).replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 
 export async function generateInformationPages(stylesheets, base = "/") {
@@ -42,6 +44,7 @@ export async function generateInformationPages(stylesheets, base = "/") {
 <title>${escape(page.title)} | Kickoff Miles</title>
 <meta name="description" content="${escape(page.description)}">
 <link rel="canonical" href="${escape(canonical)}">
+${structuredDataScript(page)}
 <meta property="og:title" content="${escape(page.title)} | Kickoff Miles">
 <meta property="og:description" content="${escape(page.description)}">
 <meta property="og:type" content="website">
