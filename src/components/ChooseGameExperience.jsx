@@ -21,6 +21,8 @@ export default function ChooseGameExperience({
   games,
   loading,
   onBack,
+  onBrowseDestinations,
+  onViewSampleTrip,
   onDailyDriveHoursChange,
   onSelectGame,
   onStartChange,
@@ -62,9 +64,15 @@ export default function ChooseGameExperience({
       ) : error ? (
         <p className="error-state">{error}</p>
       ) : games.length === 0 ? (
-        <p className="choose-game-status">
-          No upcoming road games remain for {selectedTeam} in {season}.
-        </p>
+        <section className="choose-game-empty" aria-labelledby="no-road-games-title">
+          <h2 id="no-road-games-title">No upcoming road games remain for {selectedTeam} in {season}.</h2>
+          <p>There’s still a weekend worth exploring. Browse college towns for places to stay, eat, and visit, or see how a road trip comes together.</p>
+          <div className="choose-game-empty-actions">
+            <button type="button" className="home-primary-cta" onClick={onBrowseDestinations}>Explore college towns <span aria-hidden="true">→</span></button>
+            <button type="button" className="choose-game-empty-secondary" onClick={onViewSampleTrip}>See a sample trip</button>
+          </div>
+          <button type="button" className="choose-game-empty-secondary" onClick={onBack}>Choose another team</button>
+        </section>
       ) : (
         <div className="choose-game-grid">
           {games.map((game) => {

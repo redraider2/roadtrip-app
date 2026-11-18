@@ -299,6 +299,20 @@ const TAILGATING_GUIDES = {
 
 function App() {
   const { activeScreen, navigateTo } = useJourneyNavigation();
+  const [sampleTripRequested, setSampleTripRequested] = useState(false);
+
+  function handleViewSampleTrip() {
+    setSampleTripRequested(true);
+    navigateTo("home");
+  }
+
+  useEffect(() => {
+    if (activeScreen !== "home" || !sampleTripRequested) return;
+    const sample = document.getElementById("sample-trip");
+    sample?.focus({ preventScroll: true });
+    sample?.scrollIntoView({ block: "start" });
+    setSampleTripRequested(false);
+  }, [activeScreen, sampleTripRequested]);
   const [auth, setAuth] = useState(() => getStoredAuth());
   const [authMode, setAuthMode] = useState("login");
   const [authUsername, setAuthUsername] = useState("");
@@ -1666,6 +1680,7 @@ function App() {
         }
         onChooseTeam={() => navigateTo("choose-team")}
         onBrowseDestinations={() => navigateTo("destinations")}
+        onViewSampleTrip={handleViewSampleTrip}
       >
         <div className="panel account-panel">
           <h2 className="panel-title">
@@ -1864,6 +1879,8 @@ function App() {
               games={upcomingFootballGames}
               loading={footballLoading}
               onBack={() => navigateTo("choose-team")}
+              onBrowseDestinations={() => navigateTo("destinations")}
+              onViewSampleTrip={handleViewSampleTrip}
               onDailyDriveHoursChange={setDailyDriveHours}
               onSelectGame={setSelectedFootballGameId}
               onStartChange={setFootballStart}
