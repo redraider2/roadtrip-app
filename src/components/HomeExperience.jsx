@@ -1,10 +1,12 @@
 import Header from "./Header.jsx";
+import SampleTrip from "./SampleTrip.jsx";
 
 export default function HomeExperience({
   accountLabel,
   children,
   onChooseTeam,
   onBrowseDestinations,
+  onViewSampleTrip,
 }) {
   return (
     <section className="home-experience" aria-labelledby="home-headline">
@@ -33,8 +35,16 @@ export default function HomeExperience({
             </button>
             <button type="button" className="ghost-button" onClick={onBrowseDestinations}>Explore Destinations</button>
           </div>
+          <p className="home-guest-note">
+            No account needed to plan. Sign in when you want to save your trip.
+          </p>
+          <button type="button" className="home-sample-link" onClick={onViewSampleTrip}>
+            See a sample trip <span aria-hidden="true">↓</span>
+          </button>
         </div>
       </div>
+
+      <SampleTrip onChooseTeam={onChooseTeam} onBrowseDestinations={onBrowseDestinations} />
 
       <details className="home-account-access">
         <summary>{accountLabel}</summary>
