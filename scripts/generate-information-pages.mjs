@@ -49,7 +49,7 @@ ${stylesheets.map((file) => `<link rel="stylesheet" href="${base}${file}">`).joi
 ${render(Breadcrumbs, { page })}
 <h1 class="information-page-title">${escape(page.title)}</h1>
 ${content}
-${page.isHub ? "" : render(Links, { currentPath: page.path, related: true })}
+${render(Links, { currentPath: page.path, related: true })}
 </main></div></body></html>\n`;
       pages.push({ ...page, html });
     }
