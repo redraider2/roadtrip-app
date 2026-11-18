@@ -1,0 +1,30 @@
+name: Verify HeyCatch integration
+on:
+  push:
+    branches:
+      - feature/heycatch-analytics
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies and update lockfile
+        run: npm install --no-audit --no-fund
+      - name: Build
+        run: npm run build
+      - name: Verify lockfile is updated
+        run: |
+          if git diff --quiet -- package-lock.json; then
+            echo "Lockfile is up to date"
+          else
+            echo "::error::package-lock.json must be committed before deployment"
+            exit 1
+          fi
