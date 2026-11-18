@@ -42,6 +42,19 @@ export async function generateInformationPages(stylesheets, base = "/") {
 <title>${escape(page.title)} | Kickoff Miles</title>
 <meta name="description" content="${escape(page.description)}">
 <link rel="canonical" href="${escape(canonical)}">
+<meta property="og:title" content="${escape(page.title)} | Kickoff Miles">
+<meta property="og:description" content="${escape(page.description)}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="${escape(canonical)}">
+<meta property="og:image" content="${SITE_ORIGIN}/kickoff-miles-social.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kickoff Miles — The College Football Roadtrip Planner">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${escape(page.title)} | Kickoff Miles">
+<meta name="twitter:description" content="${escape(page.description)}">
+<meta name="twitter:image" content="${SITE_ORIGIN}/kickoff-miles-social.png">
+<meta name="twitter:image:alt" content="Kickoff Miles — The College Football Roadtrip Planner">
 <link rel="icon" type="image/png" href="${base}kickoff-miles-logo.png">
 ${stylesheets.map((file) => `<link rel="stylesheet" href="${base}${file}">`).join("\n")}
 </head><body><div class="page is-home">${render(Background)}
