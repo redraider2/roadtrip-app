@@ -1,3 +1,5 @@
+import { bowlDestinations, getBowlDestinationById } from "../lib/bowlDestinations.js";
+import BowlDestinationGuide from "./BowlDestinationGuide.jsx";
 import { getNashvilleRecommendations } from "../lib/nashvilleRecommendations.js";
 import { useEffect, useState } from "react";
 import roster from "../data/destinationRoster.json";
@@ -9,13 +11,22 @@ import { getDestinationArtworkCampaign } from "../lib/destinationArtworkCampaign
 import "./DestinationBrowser.css";
 import NashvilleRecommendations from "./NashvilleRecommendations.jsx";
 
+const postseasonFromHash = () => {
+  const params = new URLSearchParams(window.location.hash.split("?")[1]);
+  return params.get("type") === "postseason" || params.get("market")?.startsWith("BOWL-");
+};
 const destinationIdFromHash = () => new URLSearchParams(window.location.hash.split("?")[1]).get("market");
 
 export default function DestinationBrowser({ onHome }) {
+  const [destinationType, setDestinationType] = useState(() => postseasonFromHash() ? "postseason" : "college");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(destinationIdFromHash);
   useEffect(() => {
-    const update = () => setSelectedId(destinationIdFromHash());
+    const update = () => {
+      const id = destinationIdFromHash();
+      setSelectedId(id);
+      setDestinationType(postseasonFromHash() ? "postseason" : "college");
+    };
     window.addEventListener("hashchange", update);
     window.addEventListener("popstate", update);
     return () => {
@@ -23,21 +34,33 @@ export default function DestinationBrowser({ onHome }) {
       window.removeEventListener("popstate", update);
     };
   }, []);
-  const selected = roster.find((destination) => destination.destinationId === selectedId);
+  function selectType(type) {
+    setQuery("");
+    window.location.hash = `/destinations?type=${type}`;
+  }
+  const activeRoster = destinationType === "postseason" ? bowlDestinations.map(destination => ({
+    ...destination, teamName: destination.events.join(" · "), conference: destination.cfpRound ? "College Football Playoff" : "Bowl host",
+  })) : roster;
+  const selectedBowl = destinationType === "postseason" ? getBowlDestinationById(selectedId) : null;
+  const selected = activeRoster.find((destination) => destination.destinationId === selectedId);
   const inventory = picks.destinations.find((destination) => destination.destinationId === selectedId);
   const venueId = inventory?.destinationVenueIds[0];
   const entries = getDestinationPicks(venueId)?.entries || [];
-  const filtered = roster.filter((destination) => `${destination.market} ${destination.state} ${destination.teamName} ${destination.conference}`.toLowerCase().includes(query.trim().toLowerCase()));
+  const filtered = activeRoster.filter((destination) => `${destination.market} ${destination.state} ${destination.teamName} ${destination.conference} ${destination.venueName || ""} ${destination.cfpRound ? "CFP" : ""}`.toLowerCase().includes(query.trim().toLowerCase()));
 
   return (
     <main className="destination-browser">
       <button className="ghost-button" onClick={onHome}>← Home</button>
       <span className="section-kicker">KICKOFF MILES</span>
       <h1>Explore Destinations</h1>
-      <p>Find your college football destination and start exploring the weekend.</p>
-      <label htmlFor="destination-search">Search by city, state, team or conference</label>
+      <p>Find your college town, bowl host, or CFP destination and start exploring the weekend.</p>
+      <div className="destination-browser-types" role="group" aria-label="Destination type">
+        <button type="button" aria-pressed={destinationType === "college"} onClick={() => selectType("college")}>College towns</button>
+        <button type="button" aria-pressed={destinationType === "postseason"} onClick={() => selectType("postseason")}>Bowls & CFP</button>
+      </div>
+      <label htmlFor="destination-search">{destinationType === "postseason" ? "Search by city, state, bowl or CFP" : "Search by city, state, team or conference"}</label>
       <input id="destination-search" className="trip-input" type="search" value={query} onChange={(event) => setQuery(event.target.value)} />
-      <p aria-live="polite">{filtered.length} of {roster.length} destinations</p>
+      <p aria-live="polite">{filtered.length} of {activeRoster.length} destinations</p>
       <div className="destination-browser-layout">
         <nav className="destination-browser-roster" aria-label="Destinations">
           {filtered.map((destination) => <a key={destination.destinationId} href={`#/destinations?market=${destination.destinationId}`} aria-current={selectedId === destination.destinationId ? "page" : undefined}>
@@ -47,7 +70,7 @@ export default function DestinationBrowser({ onHome }) {
           {filtered.length === 0 ? <p>No destinations match this search.</p> : null}
         </nav>
         <section className="destination-browser-detail" aria-label="Destination details">
-          {selected ? <>
+          {selectedBowl ? <BowlDestinationGuide destination={selectedBowl} /> : selected ? <>
             <h2>{selected.market}, {selected.state}</h2>
             <p>{selected.teamName} · {selected.conference}</p>
             <a href={`#/destinations?market=${selected.destinationId}`}>Link to this destination</a>

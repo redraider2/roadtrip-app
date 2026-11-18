@@ -60,6 +60,7 @@ export default function ChooseGameExperience({
         <span className="choose-game-kicker">Where are we going?</span>
         <h1 id="choose-game-title">Choose Your Game</h1>
         <p>Choose an away game, neutral-site matchup, or bowl trip.</p>
+        <a className="choose-game-guide-link" href="#/destinations?type=postseason">Explore bowl & CFP host-city guides →</a>
         <p className="choose-game-schedule-note">Bowl and playoff matchups appear as they are announced and added to the schedule.</p>
       </div>
 

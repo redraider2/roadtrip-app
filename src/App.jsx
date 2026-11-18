@@ -22,6 +22,8 @@ import { getDestinationArtworkCampaign, selectDestinationArtwork } from "./lib/d
 import NashvilleRecommendations from "./components/NashvilleRecommendations.jsx";
 import { visitMusicCity, getNashvilleRecommendations } from "./lib/nashvilleRecommendations.js";
 import DestinationPartnerDiscovery from "./components/DestinationPartnerDiscovery.jsx";
+import BowlDestinationGuide from "./components/BowlDestinationGuide.jsx";
+import { getBowlDestination, usesBowlHostGuide, bowlVenueLocation } from "./lib/bowlDestinations.js";
 import { getDestinationPicks, recommendationFallback } from "./lib/destinationPicks.js";
 import { getDestinationPartners, isDestinationPartnerSaved } from "./lib/destinationPartners.js";
 import PartnerPlacement from "./components/PartnerPlacement.jsx";
@@ -895,6 +897,13 @@ function App() {
       return;
     }
 
+    if (usesBowlHostGuide(selectedFootballGame, activeTrip) && getBowlDestination(venueId)) {
+      setGameDayGuide(null);
+      setGameDayGuideError("");
+      setGameDayGuideLoading(false);
+      return;
+    }
+
     try {
       setGameDayGuideLoading(true);
       setGameDayGuideError("");
@@ -941,7 +950,7 @@ function App() {
     cancelled = true;
     controller.abort();
   };
-}, [selectedFootballGame?.venueId, activeTrip?.venueId]);
+}, [selectedFootballGame, activeTrip]);
 
   useEffect(() => {
     let cancelled = false;
@@ -1118,7 +1127,7 @@ function App() {
         throw new Error("Failed to load stadium details");
       }
 
-      const venue = await venueRes.json();
+      const venue = bowlVenueLocation(await venueRes.json());
 
       const normalizedVenueName = normalizeVenueName(
         venue.name,
@@ -1617,10 +1626,12 @@ function App() {
   const isFeaturedAdvertiserDemo =
     isAdvertiserSalesPreview && advertiserDemoPackage === "featured";
   const recommendationVenueId = activeTrip?.venueId || destinationVenueId;
+  const postseason = usesBowlHostGuide(selectedFootballGame, activeTrip);
+  const bowlDestination = postseason ? getBowlDestination(recommendationVenueId) : null;
   const collegeStationLodging = isCollegeStation(recommendationVenueId);
   const weekendHotels = getWeekendHotels(weekendPlaces.hotel, recommendationVenueId);
   const isNashvilleDestination = Boolean(getNashvilleRecommendations(recommendationVenueId, "destination"));
-  const routePartner = isNashvilleDestination ? visitMusicCity : recommendationFallback(KICKOFF_MILES_HOUSE_AD, recommendationVenueId, 0, activeScreen === "plan-along-the-way" ? "Along the Way" : "Route & Schedule");
+  const routePartner = isNashvilleDestination ? visitMusicCity : recommendationFallback(KICKOFF_MILES_HOUSE_AD, recommendationVenueId, 0, activeScreen === "plan-along-the-way" ? "Along the Way" : "Route & Schedule", { postseason });
   const existingWorkspacePartner =
     isFeaturedAdvertiserDemo
       ? advertiserDemoPartner
@@ -1634,7 +1645,7 @@ function App() {
   const workspacePartner = isNashvilleDestination && (existingWorkspacePartner.isHouseAd || existingWorkspacePartner.isDevelopmentPreview) ? visitMusicCity : recommendationFallback(existingWorkspacePartner, recommendationVenueId, 0, {
     "trip-hq": "Trip HQ", "plan-stay-itinerary": "Stay & Itinerary",
     "game-weekend": "Game Weekend", "game-day": "Game Day", drive: "Drive",
-  }[activeScreen]);
+  }[activeScreen], { postseason });
   const hasFeaturedDiscovery = activeScreen === "trip-hq" && getDestinationPartners(recommendationVenueId, "trip_hq").length > 0;
   const recommendationExcludeNames = hasFeaturedDiscovery || hasDestinationSponsor ? [] : [(["plan-route-schedule", "plan-along-the-way"].includes(activeScreen) ? routePartner : workspacePartner)?.businessName];
   const destinationPartnerInventory = advertiserDemoPartner
@@ -2012,7 +2023,7 @@ function App() {
               size="large"
               partner={routePartner}
             />
-            <DestinationPartnerRail recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames}
+            <DestinationPartnerRail postseason={postseason} recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames}
               contextLabel="Route & Schedule"
               partners={destinationPartnerInventory}
               salesPreview={isAdvertiserSalesPreview}
@@ -2292,7 +2303,7 @@ function App() {
       contextLabel="Stay & Itinerary"
       partner={workspacePartner}
     />
-    <DestinationPartnerRail recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames}
+    <DestinationPartnerRail postseason={postseason} recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames}
       contextLabel="Stay & Itinerary"
       partners={destinationPartnerInventory}
       salesPreview={isAdvertiserSalesPreview}
@@ -2423,6 +2434,7 @@ function App() {
           trip={activeTrip}
           tripStats={tripStats}
         >
+          <BowlDestinationGuide destination={bowlDestination} compact />
         <DestinationPartnerDiscovery
           venueId={destinationVenueId}
           placement="trip_hq"
@@ -2430,15 +2442,15 @@ function App() {
           isSaved={destinationPartnerIsSaved}
         />
         <DestinationArtworkPlacement campaign={artworkCampaign} venueId={campaignVenueId} placement="trip_hq" fallback={
-        <>{!hasFeaturedDiscovery ? <PartnerPlacement contextLabel="Trip HQ" partner={workspacePartner} /> : null}<DestinationPartnerRail recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames}
+        <>{!hasFeaturedDiscovery ? <PartnerPlacement contextLabel="Trip HQ" partner={workspacePartner} /> : null}<DestinationPartnerRail postseason={postseason} recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames}
           contextLabel="Trip HQ"
           partners={destinationPartnerInventory}
           salesPreview={isAdvertiserSalesPreview}
               comingSoon={destinationMarketComingSoon}
 /></>
         } />
-        {hasDestinationSponsor && (destinationPartnerInventory.length > 0 || getDestinationPicks(recommendationVenueId)) ? (
-          <DestinationPartnerRail recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames} contextLabel="Trip HQ" partners={destinationPartnerInventory} minimumPositions={5} />
+        {hasDestinationSponsor && (destinationPartnerInventory.length > 0 || getDestinationPicks(recommendationVenueId, { postseason })) ? (
+          <DestinationPartnerRail postseason={postseason} recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames} contextLabel="Trip HQ" partners={destinationPartnerInventory} minimumPositions={5} />
         ) : null}
         <NashvilleRecommendations venueId={recommendationVenueId} placement="trip_hq" featured={workspacePartner !== visitMusicCity} />
         <div className="panel trip-workspace-panel">
@@ -2876,6 +2888,7 @@ function App() {
               </p>
             </div>
 
+            <BowlDestinationGuide destination={bowlDestination} />
             <DestinationArtworkPlacement campaign={artworkCampaign} venueId={campaignVenueId} placement="game_weekend" />
             {isNashvilleDestination ? <PartnerPlacement partner={visitMusicCity} contextLabel="Game Weekend" /> : null}
             {weekendVenue ? (
@@ -2920,6 +2933,7 @@ displayDestination ||
                 . Here’s what to know before kickoff.
               </p>
 
+              <BowlDestinationGuide destination={bowlDestination} gameDay />
               <DestinationArtworkPlacement campaign={artworkCampaign} venueId={campaignVenueId} placement="game_day" fallback={
 <PartnerPlacement
                 contextLabel="Game Day"
@@ -2927,7 +2941,7 @@ displayDestination ||
                 type="destination"
               />
 } />
-              <DestinationPartnerRail recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames}
+              <DestinationPartnerRail postseason={postseason} recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames}
                 contextLabel="Game Day"
                 hideEmpty={hasDestinationSponsor}
                 partners={destinationPartnerInventory}
@@ -2936,6 +2950,7 @@ displayDestination ||
 />
 
               <NashvilleRecommendations venueId={recommendationVenueId} placement="game_day" featured={workspacePartner !== visitMusicCity} />
+              {!bowlDestination ? <>
               <div className="game-day-guide-grid">
                 <button
                   type="button"
@@ -3144,6 +3159,7 @@ displayDestination ||
                   )}
                 </div>
               ) : null}
+              </> : null}
             </div>
           </div>
           </GameDayScreen>
@@ -3160,7 +3176,7 @@ displayDestination ||
             ) : (
               <>
   {!hasDestinationSponsor && workspacePartner !== visitMusicCity ? <PartnerPlacement contextLabel="Game Weekend" partner={workspacePartner} /> : null}
-  <DestinationPartnerRail recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames}
+  <DestinationPartnerRail postseason={postseason} recommendationVenueId={recommendationVenueId} recommendationExcludeNames={recommendationExcludeNames}
     contextLabel="Game Weekend"
                 hideEmpty={hasDestinationSponsor}
     partners={destinationPartnerInventory}

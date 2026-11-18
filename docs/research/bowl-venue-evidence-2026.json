@@ -1,0 +1,456 @@
+{
+  "retrievedOn": "2026-11-18",
+  "provider": "College Football Data",
+  "endpoints": {
+    "venues": {
+      "path": "/venues",
+      "recordCount": 852
+    },
+    "currentPostseason": {
+      "path": "/games?year=2026&seasonType=postseason",
+      "recordCount": 0
+    },
+    "previousPostseason": {
+      "path": "/games?year=2025&seasonType=postseason",
+      "recordCount": 86
+    }
+  },
+  "currentAssignmentsSource": "https://bowlseason.com/sports/bowl/schedule/2026-27",
+  "cfpAssignmentsSource": "https://collegefootballplayoff.com/sports/2018/8/31/cfp-games-schedule",
+  "venueEvidence": [
+    {
+      "destinationId": "BOWL-ATLANTA",
+      "providerVenue": {
+        "id": 5348,
+        "name": "Mercedes-Benz Stadium",
+        "city": "Atlanta",
+        "state": "GA"
+      },
+      "reviewedName": "Mercedes-Benz Stadium",
+      "reviewedCity": "Atlanta",
+      "reviewedState": "GA"
+    },
+    {
+      "destinationId": "BOWL-MONTGOMERY",
+      "providerVenue": {
+        "id": 3689,
+        "name": "Cramton Bowl",
+        "city": "Montgomery",
+        "state": "AL"
+      },
+      "reviewedName": "Cramton Bowl",
+      "reviewedCity": "Montgomery",
+      "reviewedState": "AL"
+    },
+    {
+      "destinationId": "BOWL-FRISCO",
+      "providerVenue": {
+        "id": 5455,
+        "name": "Ford Center At The Star",
+        "city": "Frisco",
+        "state": "TX"
+      },
+      "reviewedName": "Ford Center at The Star",
+      "reviewedCity": "Frisco",
+      "reviewedState": "TX"
+    },
+    {
+      "destinationId": "BOWL-SAN-JUAN",
+      "providerVenue": null,
+      "reviewedName": "Hiram Bithorn Stadium",
+      "reviewedCity": "San Juan",
+      "reviewedState": "PR"
+    },
+    {
+      "destinationId": "BOWL-BOCA-RATON",
+      "providerVenue": {
+        "id": 3715,
+        "name": "FAU Stadium",
+        "city": "Boca Raton",
+        "state": "FL"
+      },
+      "reviewedName": "Flagler Credit Union Stadium",
+      "reviewedCity": "Boca Raton",
+      "reviewedState": "FL"
+    },
+    {
+      "destinationId": "BOWL-TAMPA",
+      "providerVenue": {
+        "id": 3886,
+        "name": "Raymond James Stadium",
+        "city": "Tampa",
+        "state": "FL"
+      },
+      "reviewedName": "Raymond James Stadium",
+      "reviewedCity": "Tampa",
+      "reviewedState": "FL"
+    },
+    {
+      "destinationId": "BOWL-CONWAY",
+      "providerVenue": {
+        "id": 3654,
+        "name": "Brooks Stadium (SC)",
+        "city": "Conway",
+        "state": "SC"
+      },
+      "reviewedName": "Brooks Stadium",
+      "reviewedCity": "Conway",
+      "reviewedState": "SC"
+    },
+    {
+      "destinationId": "BOWL-BOISE",
+      "providerVenue": {
+        "id": 3653,
+        "name": "Albertsons Stadium",
+        "city": "Boise",
+        "state": "ID"
+      },
+      "reviewedName": "Albertsons Stadium",
+      "reviewedCity": "Boise",
+      "reviewedState": "ID"
+    },
+    {
+      "destinationId": "BOWL-BAYAMON",
+      "providerVenue": null,
+      "reviewedName": "Juan Ramón Loubriel Stadium",
+      "reviewedCity": "Bayamón",
+      "reviewedState": "PR"
+    },
+    {
+      "destinationId": "BOWL-ORLANDO-UCF",
+      "providerVenue": {
+        "id": 3652,
+        "name": "FBC Mortgage Stadium",
+        "city": "Orlando",
+        "state": "FL"
+      },
+      "reviewedName": "Acrisure Bounce House",
+      "reviewedCity": "Orlando",
+      "reviewedState": "FL"
+    },
+    {
+      "destinationId": "BOWL-SHREVEPORT",
+      "providerVenue": {
+        "id": 3766,
+        "name": "Independence Stadium",
+        "city": "Shreveport",
+        "state": "FL"
+      },
+      "reviewedName": "Independence Stadium",
+      "reviewedCity": "Shreveport",
+      "reviewedState": "LA"
+    },
+    {
+      "destinationId": "BOWL-NEW-ORLEANS",
+      "providerVenue": {
+        "id": 3493,
+        "name": "Caesars Superdome",
+        "city": "New Orleans",
+        "state": "LA"
+      },
+      "reviewedName": "Caesars Superdome",
+      "reviewedCity": "New Orleans",
+      "reviewedState": "LA"
+    },
+    {
+      "destinationId": "BOWL-FORT-WORTH",
+      "providerVenue": {
+        "id": 3616,
+        "name": "Amon G. Carter Stadium",
+        "city": "Fort Worth",
+        "state": "TX"
+      },
+      "reviewedName": "Amon G. Carter Stadium",
+      "reviewedCity": "Fort Worth",
+      "reviewedState": "TX"
+    },
+    {
+      "destinationId": "BOWL-SAN-DIEGO",
+      "providerVenue": {
+        "id": 7311,
+        "name": "Snapdragon Stadium",
+        "city": "San Diego",
+        "state": "CA"
+      },
+      "reviewedName": "Snapdragon Stadium",
+      "reviewedCity": "San Diego",
+      "reviewedState": "CA"
+    },
+    {
+      "destinationId": "BOWL-ALBUQUERQUE",
+      "providerVenue": {
+        "id": 3971,
+        "name": "University Stadium (NM)",
+        "city": "Albuquerque",
+        "state": "NM"
+      },
+      "reviewedName": "University Stadium",
+      "reviewedCity": "Albuquerque",
+      "reviewedState": "NM"
+    },
+    {
+      "destinationId": "BOWL-HONOLULU",
+      "providerVenue": {
+        "id": 7220,
+        "name": "Clarence T.C. Ching Athletics Complex",
+        "city": "Honolulu",
+        "state": "HI"
+      },
+      "reviewedName": "Clarence T.C. Ching Athletics Complex",
+      "reviewedCity": "Honolulu",
+      "reviewedState": "HI"
+    },
+    {
+      "destinationId": "BOWL-BRONX",
+      "providerVenue": {
+        "id": 4102,
+        "name": "Yankee Stadium",
+        "city": "New York",
+        "state": "NY"
+      },
+      "reviewedName": "Yankee Stadium",
+      "reviewedCity": "New York",
+      "reviewedState": "NY"
+    },
+    {
+      "destinationId": "BOWL-BOSTON",
+      "providerVenue": {
+        "id": 4245,
+        "name": "Fenway Park",
+        "city": "Boston",
+        "state": "MA"
+      },
+      "reviewedName": "Fenway Park",
+      "reviewedCity": "Boston",
+      "reviewedState": "MA"
+    },
+    {
+      "destinationId": "BOWL-CHARLOTTE",
+      "providerVenue": {
+        "id": 3628,
+        "name": "Bank of America Stadium",
+        "city": "Charlotte",
+        "state": "NC"
+      },
+      "reviewedName": "Bank of America Stadium",
+      "reviewedCity": "Charlotte",
+      "reviewedState": "NC"
+    },
+    {
+      "destinationId": "BOWL-MOBILE",
+      "providerVenue": {
+        "id": 6526,
+        "name": "Hancock Whitney Stadium",
+        "city": "Mobile",
+        "state": "AL"
+      },
+      "reviewedName": "Hancock Whitney Stadium",
+      "reviewedCity": "Mobile",
+      "reviewedState": "AL"
+    },
+    {
+      "destinationId": "BOWL-TEMPE",
+      "providerVenue": {
+        "id": 3947,
+        "name": "Mountain America Stadium",
+        "city": "Tempe",
+        "state": "AZ"
+      },
+      "reviewedName": "Mountain America Stadium",
+      "reviewedCity": "Tempe",
+      "reviewedState": "AZ"
+    },
+    {
+      "destinationId": "BOWL-ANNAPOLIS",
+      "providerVenue": {
+        "id": 3852,
+        "name": "Navy-Marine Corps Memorial Stadium",
+        "city": "Annapolis",
+        "state": "MD"
+      },
+      "reviewedName": "Navy-Marine Corps Memorial Stadium",
+      "reviewedCity": "Annapolis",
+      "reviewedState": "MD"
+    },
+    {
+      "destinationId": "BOWL-BIRMINGHAM",
+      "providerVenue": {
+        "id": 7221,
+        "name": "Protective Stadium",
+        "city": "Birmingham",
+        "state": "AL"
+      },
+      "reviewedName": "Protective Stadium",
+      "reviewedCity": "Birmingham",
+      "reviewedState": "AL"
+    },
+    {
+      "destinationId": "BOWL-ORLANDO-DOWNTOWN",
+      "providerVenue": {
+        "id": 4013,
+        "name": "Camping World Stadium",
+        "city": "Orlando",
+        "state": "FL"
+      },
+      "reviewedName": "Camping World Stadium",
+      "reviewedCity": "Orlando",
+      "reviewedState": "FL"
+    },
+    {
+      "destinationId": "BOWL-SAN-ANTONIO",
+      "providerVenue": {
+        "id": 3604,
+        "name": "Alamodome",
+        "city": "San Antonio",
+        "state": "TX"
+      },
+      "reviewedName": "Alamodome",
+      "reviewedCity": "San Antonio",
+      "reviewedState": "TX"
+    },
+    {
+      "destinationId": "BOWL-JACKSONVILLE",
+      "providerVenue": {
+        "id": 3712,
+        "name": "EverBank Stadium",
+        "city": "Jacksonville",
+        "state": "FL"
+      },
+      "reviewedName": "EverBank Stadium",
+      "reviewedCity": "Jacksonville",
+      "reviewedState": "FL"
+    },
+    {
+      "destinationId": "BOWL-NASHVILLE",
+      "providerVenue": {
+        "id": 3810,
+        "name": "Nissan Stadium",
+        "city": "Nashville",
+        "state": "TN"
+      },
+      "reviewedName": "Nissan Stadium",
+      "reviewedCity": "Nashville",
+      "reviewedState": "TN"
+    },
+    {
+      "destinationId": "BOWL-GLENDALE",
+      "providerVenue": {
+        "id": 3970,
+        "name": "State Farm Stadium",
+        "city": "Glendale",
+        "state": "AZ"
+      },
+      "reviewedName": "State Farm Stadium",
+      "reviewedCity": "Glendale",
+      "reviewedState": "AZ"
+    },
+    {
+      "destinationId": "BOWL-EL-PASO",
+      "providerVenue": {
+        "id": 3946,
+        "name": "Sun Bowl",
+        "city": "El Paso",
+        "state": "TX"
+      },
+      "reviewedName": "Sun Bowl Stadium",
+      "reviewedCity": "El Paso",
+      "reviewedState": "TX"
+    },
+    {
+      "destinationId": "BOWL-LAS-VEGAS",
+      "providerVenue": {
+        "id": 6501,
+        "name": "Allegiant Stadium",
+        "city": "Las Vegas",
+        "state": "NV"
+      },
+      "reviewedName": "Allegiant Stadium",
+      "reviewedCity": "Las Vegas",
+      "reviewedState": "NV"
+    },
+    {
+      "destinationId": "BOWL-HOUSTON",
+      "providerVenue": {
+        "id": 3891,
+        "name": "NRG Stadium",
+        "city": "Houston",
+        "state": "TX"
+      },
+      "reviewedName": "Reliant Stadium",
+      "reviewedCity": "Houston",
+      "reviewedState": "TX"
+    },
+    {
+      "destinationId": "BOWL-ARLINGTON",
+      "providerVenue": {
+        "id": 3687,
+        "name": "AT&T Stadium",
+        "city": "Arlington",
+        "state": "TX"
+      },
+      "reviewedName": "AT&T Stadium",
+      "reviewedCity": "Arlington",
+      "reviewedState": "TX"
+    },
+    {
+      "destinationId": "BOWL-PASADENA",
+      "providerVenue": {
+        "id": 1056,
+        "name": "Rose Bowl",
+        "city": "Pasadena",
+        "state": "CA"
+      },
+      "reviewedName": "Rose Bowl Stadium",
+      "reviewedCity": "Pasadena",
+      "reviewedState": "CA"
+    },
+    {
+      "destinationId": "BOWL-DALLAS",
+      "providerVenue": {
+        "id": 3735,
+        "name": "Gerald J. Ford Stadium",
+        "city": "University Park",
+        "state": "TX"
+      },
+      "reviewedName": "Gerald J. Ford Stadium",
+      "reviewedCity": "University Park",
+      "reviewedState": "TX"
+    },
+    {
+      "destinationId": "BOWL-TUCSON",
+      "providerVenue": {
+        "id": 3619,
+        "name": "Arizona Stadium",
+        "city": "Tucson",
+        "state": "AZ"
+      },
+      "reviewedName": "Casino del Sol Stadium",
+      "reviewedCity": "Tucson",
+      "reviewedState": "AZ"
+    },
+    {
+      "destinationId": "BOWL-MEMPHIS",
+      "providerVenue": {
+        "id": 3805,
+        "name": "Simmons Bank Liberty Stadium",
+        "city": "Memphis",
+        "state": "TN"
+      },
+      "reviewedName": "Simmons Bank Liberty Stadium",
+      "reviewedCity": "Memphis",
+      "reviewedState": "TN"
+    },
+    {
+      "destinationId": "BOWL-MIAMI-GARDENS",
+      "providerVenue": {
+        "id": 3948,
+        "name": "Hard Rock Stadium",
+        "city": "Miami Gardens",
+        "state": "FL"
+      },
+      "reviewedName": "Hard Rock Stadium",
+      "reviewedCity": "Miami Gardens",
+      "reviewedState": "FL"
+    }
+  ]
+}

@@ -21,6 +21,7 @@ function availablePosition(index) {
 
 export default function DestinationPartnerRail({
   contextLabel,
+  postseason = false,
   partners = [],
   minimumPositions = 5,
   salesPreview = false,
@@ -43,7 +44,7 @@ export default function DestinationPartnerRail({
     ...recommendationExcludeNames,
     ...realPartners.map((p) => p.businessName || p.name),
     ...discoveryPartners.map((p) => p.businessName || p.name),
-  ], contextLabel).slice(0, availableCount);
+  ], contextLabel, { postseason }).slice(0, availableCount);
 
   if (hideEmpty && occupiedCount === 0 && recommendations.length === 0) return null;
 

@@ -1,10 +1,13 @@
+import { getBowlDestination, getBowlGuidePicks } from "./bowlDestinations.js";
 import { filterHotelCards } from "./collegeStationLodging.js";
 import { getNashvilleRecommendations } from "./nashvilleRecommendations.js";
 import content from "../data/destinationPicks.json" with { type: "json" };
 import { partnerMatchesDestination } from "./destinationAdvertising.js";
 
 // Match the actual destination venue, never the fan's selected team or a city substring.
-export function getDestinationPicks(venueId) {
+export function getDestinationPicks(venueId, options = {}) {
+  const bowl = options.postseason ? getBowlDestination(venueId) : null;
+  if (bowl) return { ...bowl, entries: getBowlGuidePicks(bowl) };
   const destination = content.destinations.find((item) => partnerMatchesDestination(item, venueId));
   if (!destination) return null;
   return {
@@ -38,22 +41,22 @@ function categoryGroup(category = "") {
   return "explore";
 }
 
-function pageEntries(venueId, contextLabel) {
-  const entries = getDestinationPicks(venueId)?.entries || [];
+function pageEntries(venueId, contextLabel, options) {
+  const entries = getDestinationPicks(venueId, options)?.entries || [];
   const categories = String(venueId).trim() === "3973" ? null : PAGE_CATEGORIES[contextLabel];
   if (!categories) return entries;
   return categories.flatMap(category => entries.filter(entry => categoryGroup(entry.category) === category));
 }
 
-export function getRecommendationPartners(venueId, excludeNames = [], contextLabel = "") {
+export function getRecommendationPartners(venueId, excludeNames = [], contextLabel = "", options = {}) {
   const excluded = new Set(excludeNames.filter(Boolean).map((name) => name.trim().toLowerCase()));
-  return filterHotelCards(pageEntries(venueId, contextLabel), venueId, contextLabel)
+  return filterHotelCards(pageEntries(venueId, contextLabel, options), venueId, contextLabel)
     .filter((entry) => !excluded.has(entry.title.trim().toLowerCase()))
     .map((entry) => ({
       id: entry.id,
       businessName: entry.title,
       description: entry.summary,
-      locationText: `${getDestinationPicks(venueId).market} · ${entry.category}`,
+      locationText: `${getDestinationPicks(venueId, options).market} · ${entry.category}`,
       websiteUrl: entry.url,
       websiteLabel: entry.seasonality ? "Check seasonal dates" : entry.actions[0]?.label || "Visit website",
       isEditorial: true,
@@ -62,7 +65,7 @@ export function getRecommendationPartners(venueId, excludeNames = [], contextLab
 }
 
 // Only an unsold house position may be filled; actual advertisers are returned unchanged.
-export function recommendationFallback(partner, venueId, index = 0, contextLabel = "") {
+export function recommendationFallback(partner, venueId, index = 0, contextLabel = "", options = {}) {
   if (partner && !partner.isHouseAd && !partner.isDevelopmentPreview) return partner;
-  return getRecommendationPartners(venueId, [], contextLabel)[index] || partner;
+  return getRecommendationPartners(venueId, [], contextLabel, options)[index] || partner;
 }
