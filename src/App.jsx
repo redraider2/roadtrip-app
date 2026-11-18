@@ -3,7 +3,7 @@ import { normalizeGameDayGuide } from "./lib/gameDayGuide.js";
 import DestinationRoadSign from "./components/DestinationRoadSign.jsx";
 import StadiumFeature from "./components/StadiumFeature.jsx";
 import DestinationBrowser from "./components/DestinationBrowser.jsx";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import Background from "./components/Background";
 import "./App.css";
@@ -54,6 +54,7 @@ import {
 } from "./screens/JourneyScreens.jsx";
 import { useJourneyNavigation } from "./screens/useJourneyNavigation.js";
 import { selectDestinationDemoPartner } from "./lib/destinationAdvertising.js";
+import { createJourneyAnalytics } from "./lib/journeyAnalytics.js";
 import { getUpcomingGames } from "./lib/footballSchedule.js";
 
 const API_BASE_URL =
@@ -314,6 +315,8 @@ function App() {
     sample?.scrollIntoView({ block: "start" });
     setSampleTripRequested(false);
   }, [activeScreen, sampleTripRequested]);
+  const [journeyAnalytics] = useState(() => createJourneyAnalytics());
+  const tripSubmissionInFlight = useRef(false);
   const [auth, setAuth] = useState(() => getStoredAuth());
   const [authMode, setAuthMode] = useState("login");
   const [authUsername, setAuthUsername] = useState("");
@@ -465,7 +468,9 @@ function App() {
 
   const fetchTrips = useCallback(async () => {
     if (!auth?.token) {
-      setTrips([]);
+      // An expired-session save falls back to a guest preview. Keep that
+      // in-memory preview when the auth-change effect reloads the trip list.
+      setTrips((currentTrips) => currentTrips.filter((trip) => trip.isPreview));
       setActiveTripId(null);
       setStops([]);
       setTripsError("");
@@ -850,6 +855,7 @@ function App() {
 
         setTripStats(formatTripStats(route));
         setRouteGeometry(route.geometry || []);
+        journeyAnalytics.routeCreated(activeTrip, route, orderedStops.length);
       } catch (err) {
         if (cancelled || err?.name === "AbortError") return;
 
@@ -871,7 +877,7 @@ function App() {
       cancelled = true;
       controller.abort();
     };
-  }, [activeTrip?.start, activeTrip?.end, stops]);
+  }, [activeTrip?.id, activeTrip?.start, activeTrip?.end, stops, journeyAnalytics]);
 
   useEffect(() => {
   let cancelled = false;
@@ -1039,7 +1045,8 @@ function App() {
     const en = end.trim();
     const n = notes.trim();
 
-    if (!s || !en) return;
+    if (!s || !en || tripSubmissionInFlight.current) return;
+    tripSubmissionInFlight.current = true;
 
     try {
       const res = await authFetch(
@@ -1064,6 +1071,8 @@ function App() {
       }
 
       const createdTrip = await res.json();
+      journeyAnalytics.tripSaved(createdTrip, "custom");
+      journeyAnalytics.beginRoute(createdTrip, "custom");
 
       await fetchTrips();
       setActiveTripId(Number(createdTrip.id));
@@ -1075,6 +1084,8 @@ function App() {
       setNotes("");
     } catch (err) {
       console.error("Create trip failed:", err);
+    } finally {
+      tripSubmissionInFlight.current = false;
     }
   }
 
@@ -1089,6 +1100,9 @@ function App() {
       );
       return;
     }
+
+    if (tripSubmissionInFlight.current) return;
+    tripSubmissionInFlight.current = true;
 
     try {
       setFootballLoading(true);
@@ -1137,6 +1151,7 @@ function App() {
           isPreview: true,
         };
 
+        journeyAnalytics.beginRoute(previewTrip, "football");
         setStops([]);
         setTrips((currentTrips) => [
           ...currentTrips.filter((trip) => trip.id !== null),
@@ -1179,6 +1194,7 @@ function App() {
           isPreview: true,
         };
 
+        journeyAnalytics.beginRoute(previewTrip, "football");
         setStops([]);
         setTrips((currentTrips) => [
           ...currentTrips.filter((trip) => trip.id !== null),
@@ -1198,6 +1214,8 @@ function App() {
       }
 
       const createdTrip = await tripRes.json();
+      journeyAnalytics.tripSaved(createdTrip, "football", selectedFootballGame.venueId);
+      journeyAnalytics.beginRoute(createdTrip, "football");
 
       await fetchTrips();
       setActiveTripId(Number(createdTrip.id));
@@ -1213,6 +1231,7 @@ function App() {
         "The football road trip could not be created. Check the backend and try again."
       );
     } finally {
+      tripSubmissionInFlight.current = false;
       setFootballLoading(false);
     }
   }
@@ -1800,6 +1819,7 @@ function App() {
                       key={trip.id}
                       className={`trip-row${isActive ? " is-active" : ""}`}
                       onClick={() => {
+                      journeyAnalytics.resetSelection();
                       setSelectedFootballGameId("");
                       setSelectedFootballTeam("");
                       setFootballGames([]);
@@ -1864,7 +1884,10 @@ function App() {
               loading={footballTeamsLoading}
               onBack={() => navigateTo("home")}
               onSelectTeam={(school) => {
+                const team = footballTeams.find((item) => item.school === school);
+                if (!team) return;
                 setSelectedFootballTeam(school);
+                journeyAnalytics.teamSelected(team, FOOTBALL_SEASON);
                 navigateTo("choose-game");
               }}
               selectedTeam={selectedFootballTeam}
@@ -1883,7 +1906,12 @@ function App() {
               onBrowseDestinations={() => navigateTo("destinations")}
               onViewSampleTrip={handleViewSampleTrip}
               onDailyDriveHoursChange={setDailyDriveHours}
-              onSelectGame={setSelectedFootballGameId}
+              onSelectGame={(gameId) => {
+                const game = upcomingFootballGames.find((item) => String(item.id) === String(gameId));
+                if (!game) return;
+                setSelectedFootballGameId(String(game.id));
+                journeyAnalytics.gameSelected(game, FOOTBALL_SEASON);
+              }}
               onStartChange={setFootballStart}
               season={FOOTBALL_SEASON}
               selectedGame={selectedFootballGame}
