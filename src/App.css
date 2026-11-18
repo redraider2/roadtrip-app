@@ -4393,3 +4393,40 @@ select.trip-input {
   .destination-discovery-actions { gap: 0.5rem; }
 }
 .destination-discovery:has(> h2) { padding: 1.25rem; border-radius: 16px; background: rgba(12,16,20,0.96); }
+
+.game-destination-event {
+  color: #684829;
+  font-size: 0.85rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.game-destination:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.choose-game-heading .choose-game-schedule-note {
+  font-size: 0.9rem;
+}
+
+.choose-game-playoff {
+  margin: 28px 0;
+  padding: clamp(18px, 3vw, 30px);
+  border: 1px solid #b7a173;
+  border-radius: 20px;
+  background: #f3eddd;
+  color: #28302e;
+}
+
+.choose-game-section-heading { margin-bottom: 20px; }
+.choose-game-section-heading h2 { margin: 8px 0; }
+.choose-game-section-heading p { margin: 0; line-height: 1.6; }
+.choose-game-road-section { margin: 30px 0; }
+.game-destination-round {
+  color: #664b13;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}

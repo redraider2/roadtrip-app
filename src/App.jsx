@@ -54,7 +54,7 @@ import {
 } from "./screens/JourneyScreens.jsx";
 import { useJourneyNavigation } from "./screens/useJourneyNavigation.js";
 import { selectDestinationDemoPartner } from "./lib/destinationAdvertising.js";
-import { getUpcomingGames } from "./lib/footballSchedule.js";
+import { getUpcomingGames, formatGameMatchup } from "./lib/footballSchedule.js";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5001";
@@ -609,12 +609,12 @@ function App() {
         const res = await fetch(
           `${API_BASE_URL}/football/games?team=${encodeURIComponent(
             selectedFootballTeam
-          )}&year=${FOOTBALL_SEASON}&awayOnly=true`,
+          )}&year=${FOOTBALL_SEASON}&roadOnly=true&includePostseason=true`,
           { signal: controller.signal }
         );
 
         if (!res.ok) {
-          throw new Error("Failed to fetch road games");
+          throw new Error("Failed to fetch games");
         }
 
         const data = await res.json();
@@ -627,7 +627,7 @@ function App() {
 
         console.error("Football games failed:", err);
         setFootballError(
-          "Away games could not be loaded for that team. Try another team or check the backend API."
+          "Games could not be loaded for that team. Please try again."
         );
       } finally {
         if (!cancelled) {
@@ -671,7 +671,9 @@ function App() {
   
 
   const backgroundTeam = useMemo(() => {
-    const destinationTeam = selectedFootballGame?.homeTeam;
+    const destinationTeam = selectedFootballGame?.neutralSite
+      ? selectedFootballTeam
+      : selectedFootballGame?.homeTeam;
 
     if (destinationTeam) {
       return (
@@ -1083,9 +1085,9 @@ function App() {
 
     const s = footballStart.trim();
 
-    if (!selectedFootballTeam || !selectedFootballGame || !s) {
+    if (!selectedFootballTeam || !selectedFootballGame?.venueId || !s) {
       setFootballError(
-        "Choose a team, choose an away game, and enter your starting location."
+        "Choose a team, choose a game, and enter your starting location."
       );
       return;
     }
@@ -1120,7 +1122,7 @@ function App() {
         throw new Error("Stadium destination is unavailable");
       }
 
-      const matchup = `${selectedFootballGame.awayTeam} @ ${selectedFootballGame.homeTeam}`;
+      const matchup = formatGameMatchup(selectedFootballGame, selectedFootballTeam);
       const gameDate = formatGameDate(
         selectedFootballGame.startDate,
         selectedFootballGame.startTimeTBD
@@ -1133,7 +1135,7 @@ function App() {
           start: s,
           end: destination,
           venueId: selectedFootballGame.venueId,
-          notes: `${gameDate} · ${normalizedVenueName}`,
+          notes: [selectedFootballGame.eventName, gameDate, normalizedVenueName].filter(Boolean).join(" · "),
           isPreview: true,
         };
 
@@ -1158,7 +1160,7 @@ function App() {
           title: matchup,
           start_location: s,
           end_location: destination,
-          notes: `${gameDate} · ${normalizedVenueName}`,
+          notes: [selectedFootballGame.eventName, gameDate, normalizedVenueName].filter(Boolean).join(" · "),
           venue_id: selectedFootballGame.venueId,
           }),
         },
@@ -1175,7 +1177,7 @@ function App() {
           start: s,
           end: destination,
           venueId: selectedFootballGame.venueId,
-          notes: `${gameDate} · ${normalizedVenueName}`,
+          notes: [selectedFootballGame.eventName, gameDate, normalizedVenueName].filter(Boolean).join(" · "),
           isPreview: true,
         };
 
@@ -1930,9 +1932,7 @@ function App() {
 
                 {selectedFootballGame ? (
                   <h3 className="trip-result-matchup">
-                    {selectedFootballGame.awayTeam}
-                    <span className="matchup-at"> @ </span>
-                    {selectedFootballGame.homeTeam}
+                    {formatGameMatchup(selectedFootballGame, selectedFootballTeam)}
                   </h3>
                 ) : null}
 
@@ -2841,10 +2841,10 @@ function App() {
               "Venue TBD"}
               </p>
               <p>
-                <strong>Host:</strong>{" "}
-                {gameDayGuide?.homeTeam ||
-                selectedFootballGame?.homeTeam ||
-            "College Football Destination"}
+                <strong>{selectedFootballGame?.neutralSite ? "Matchup:" : "Host:"}</strong>{" "}
+                {selectedFootballGame?.neutralSite
+                  ? formatGameMatchup(selectedFootballGame, selectedFootballTeam)
+                  : gameDayGuide?.homeTeam || selectedFootballGame?.homeTeam || "College Football Destination"}
               </p>
             </div>
 
@@ -2992,7 +2992,7 @@ displayDestination ||
                 >
                   <span className="game-day-guide-icon">🔥</span>
                   <h3>
-                    {selectedFootballGame?.homeTeam
+                    {!selectedFootballGame?.neutralSite && selectedFootballGame?.homeTeam
                       ? `${selectedFootballGame.homeTeam} Traditions`
                       : "Game Day Traditions"}
                   </h3>

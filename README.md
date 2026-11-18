@@ -115,3 +115,27 @@ VITE_API_URL=https://YOUR-RENDER-SERVICE.onrender.com npm run deploy
 
 - The current trip model stores route endpoints as text locations because the frontend map geocodes place names for preview.
 - The provided seed data includes one demo user so trip creation works immediately against a fresh schema.
+
+### Bowl games, neutral sites, and the College Football Playoff
+
+The game picker requests `/football/games?team=Texas&year=2026&roadOnly=true&includePostseason=true`.
+The backend requests both regular-season and postseason games from CFBD, using the football season year
+so January 2027 bowls remain part of the 2026 schedule. Legacy `awayOnly=true` requests retain their
+previous meaning; `roadOnly=true` includes regular away games, either neutral-site team designation,
+and postseason games (including campus playoff games).
+
+The picker has a dedicated **College Football Playoff** section, followed by **Bowl & Road Games**.
+CFP classification uses provider playoff metadata or an explicit CFP/College Football Playoff event
+label, never the stadium name alone. Round labels and bowl names use provider data. Unannounced
+matchups are not invented, and games without a venue ID cannot start a trip.
+
+Trips use the actual event venue for routing, nearby places, destination partners, and guides.
+New bowl cities can use nearby-place discovery without curated city inventory. Editorial picks,
+partner placements, photos, and guides still require coverage for that exact venue; missing coverage
+does not fall back to either team's home city. Neutral-site matchups display “vs,” and the event name
+is retained in saved trip notes. Venue guides should be checked against event-specific rules.
+
+Release the backend before the frontend because the picker relies on the new schedule query options.
+Validate locally with `npm run build`, `node --test tests/footballSchedule.test.mjs tests/postseasonSchedule.test.mjs tests/footballScheduleApi.test.mjs`,
+and `JOURNEY_BASE_URL=http://127.0.0.1:4173 node tests/browser/postseasonPlanner.test.mjs` against `npm run preview`.
+Browser fixtures use synthetic events and venues rather than unannounced real matchups.
