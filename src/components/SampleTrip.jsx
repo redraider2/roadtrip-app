@@ -1,4 +1,4 @@
-export default function SampleTrip({ onChooseTeam, onBrowseDestinations }) {
+export default function SampleTrip({ onChooseTeam, onBrowseDestinations, standalone = false }) {
   return (
     <section className="home-sample-trip" id="sample-trip" tabIndex={-1} aria-labelledby="sample-trip-title">
       <header className="sample-trip-heading">
@@ -42,8 +42,13 @@ export default function SampleTrip({ onChooseTeam, onBrowseDestinations }) {
 
       <p className="sample-trip-disclaimer">Sample estimates; your route and timing may vary. Check official game details and confirm hotel availability and renovation updates before booking.</p>
       <div className="sample-trip-actions">
+        {standalone ? <>
+          <a className="home-primary-cta" href={`${import.meta.env.BASE_URL}#/choose-team`}>Plan your own road trip <span aria-hidden="true">→</span></a>
+          <a className="sample-trip-secondary" href={`${import.meta.env.BASE_URL}#/destinations`}>Explore destinations</a>
+        </> : <>
         <button type="button" className="home-primary-cta" onClick={onChooseTeam}>Plan your own road trip <span aria-hidden="true">→</span></button>
         <button type="button" className="sample-trip-secondary" onClick={onBrowseDestinations}>Explore destinations</button>
+        </>}
       </div>
     </section>
   );
