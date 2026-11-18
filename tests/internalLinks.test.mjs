@@ -77,7 +77,7 @@ test("standalone content retains one H1, unique canonical metadata, and function
     assert.equal([...page.html.matchAll(/<h1\b/g)].length, 1, page.path);
     assert.ok(page.html.includes(`rel="canonical" href="${SITE_ORIGIN}${page.path}"`));
     assert.ok(page.description.length >= 110 && page.description.length <= 160, page.path);
-    assert.ok(!/<script\b/.test(page.html), "Information documents do not need the app bundle");
+    assert.ok(!/<script\b(?![^>]*type="application\/ld\+json")/.test(page.html), "Information documents only need non-executable structured data");
   }
   assert.match(documents.get("/faq.html"), /<details[^>]*class="home-faq-item"/);
   assert.ok(documents.get("/sample-trip.html").includes('href="/#/choose-team"'));

@@ -1,6 +1,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { generateSitemap } from "./scripts/generate-sitemap.mjs";
+import { PUBLIC_PAGES } from "./src/screens/publicPages.js";
+import { structuredDataScript } from "./src/screens/siteStructuredData.js";
 import { generateInformationPages } from "./scripts/generate-information-pages.mjs";
 
 export default defineConfig(({ mode }) => ({
@@ -24,6 +26,7 @@ export default defineConfig(({ mode }) => ({
       if (!index || !String(index.source).includes("<!-- planning-information-links -->")) {
         throw new Error("Homepage internal-link insertion point is missing.");
       }
+      index.source = String(index.source).replace("</head>", `${structuredDataScript(PUBLIC_PAGES.find((page) => page.id === "home"))}</head>`);
       index.source = String(index.source).replace("<!-- planning-information-links -->", homeLinks);
       if (!String(index.source).includes("<!-- planning-main-navigation -->")) throw new Error("Homepage main-navigation insertion point is missing.");
       index.source = String(index.source).replace("<!-- planning-main-navigation -->", mainNavigation);
