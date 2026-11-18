@@ -12,6 +12,7 @@ import TripMap from "./components/TripMap";
 import DestinationMap from "./components/DestinationMap";
 import JourneyNavigation from "./components/JourneyNavigation.jsx";
 import HomeExperience from "./components/HomeExperience.jsx";
+import AboutKickoffMiles from "./components/AboutKickoffMiles.jsx";
 import ChooseTeamExperience from "./components/ChooseTeamExperience.jsx";
 import ChooseGameExperience from "./components/ChooseGameExperience.jsx";
 import DriveExperience from "./components/DriveExperience.jsx";
@@ -3434,26 +3435,7 @@ displayDestination ||
             <summary>About Kickoff Miles</summary>
 
             <div className="legal-content">
-              <h2>About Kickoff Miles</h2>
-              <p>
-                Kickoff Miles is a college football road trip planning platform
-                designed to help fans turn away games into memorable weekends.
-              </p>
-              <p>
-                Choose your team, select a road game, build your route, and
-                discover hotels, restaurants, bars, and places to stop along
-                the way.
-              </p>
-              <p>
-                <strong>Hit the Road. Chase the Game.</strong>
-              </p>
-              <p>
-                Questions, feedback, or business inquiries can be sent to{" "}
-                <a href="mailto:support@kickoffmiles.com">
-                  support@kickoffmiles.com
-                </a>
-                .
-              </p>
+              <AboutKickoffMiles />
             </div>
           </details>
 

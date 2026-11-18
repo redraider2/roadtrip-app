@@ -349,6 +349,26 @@ body {
   text-align: center;
 }
 
+.planning-information-links {
+  margin: 0 auto 2.5rem;
+  width: 100%;
+  box-sizing: border-box;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid #d8cebc;
+  border-radius: 18px;
+  background: #f6f0e5;
+  color: #29271f;
+}
+.planning-information-links h2 { margin: 0 0 1rem; font-size: 1.3rem; }
+.planning-information-links ul { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding: 0; margin: 0; list-style: none; }
+.planning-information-links a { color: #8b3029; font-weight: 700; line-height: 1.6; text-underline-offset: 0.2em; }
+.planning-information-links a:focus-visible { outline: 3px solid #bd493c; outline-offset: 4px; }
+.information-page-title { margin: 2rem 0; font-size: clamp(1.8rem, 5vw, 3rem); line-height: 1.15; }
+.information-page-about { padding: clamp(1.25rem, 3vw, 3rem); margin-bottom: 2.5rem; border-radius: 18px; background: #f6f0e5; color: #29271f; }
+.information-page-about p { max-width: 80ch; line-height: 1.7; }
+.information-page-about a { color: #8b3029; }
+.sample-trip-actions a.home-primary-cta { text-decoration: none; }
+
 .home-faq {
   width: 100%;
   box-sizing: border-box;
