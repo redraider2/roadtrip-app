@@ -5,6 +5,8 @@ export default function Header() {
     <header className="home-brand-header">
       <img
         src={`${import.meta.env.BASE_URL}kickoff-miles-logo.png`}
+        width={1254}
+        height={1254}
         alt=""
         aria-hidden="true"
         className="home-brand-mark"
