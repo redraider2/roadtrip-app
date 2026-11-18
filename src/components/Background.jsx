@@ -4,7 +4,7 @@ export default function Background({ team }) {
   const primaryColor = team?.color || "#111827";
   const logo = team?.logos?.[0] || "";
   const defaultBackground =
-    `${import.meta.env.BASE_URL}college-football-roadtrip-bg.png`;
+    `${import.meta.env.BASE_URL}college-football-roadtrip-bg.webp`;
 
   if (team) {
     return (

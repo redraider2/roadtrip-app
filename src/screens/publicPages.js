@@ -23,8 +23,8 @@ export const PUBLIC_PAGES = [
       "src/components/PlanningInformationLinks.jsx",
       "src/components/PlanningMainNavigation.jsx",
       "src/screens/publicPages.js",
-      "public/college-football-roadtrip-bg.png",
-      "public/kickoff-miles-logo.png",
+      "public/college-football-roadtrip-bg.webp",
+      "public/kickoff-miles-logo.webp",
     ],
   },
   {
@@ -36,7 +36,7 @@ export const PUBLIC_PAGES = [
     description: "See how Kickoff Miles helps college football fans choose away games, plan driving routes, and find places to stay, eat, and visit.",
     component: "AboutKickoffMiles",
     cluster: "trip-planning",
-    contentSources: ["src/components/AboutKickoffMiles.jsx", "src/App.css", "src/components/Header.jsx", "src/components/Background.jsx", "src/components/Background.css", "src/components/PlanningInformationLinks.jsx", "src/components/PlanningBreadcrumbs.jsx", "src/components/PlanningMainNavigation.jsx", "src/screens/publicPages.js", "scripts/generate-information-pages.mjs"],
+    contentSources: ["src/components/AboutKickoffMiles.jsx", "src/App.css", "src/components/Header.jsx", "src/components/Background.jsx", "src/components/Background.css", "src/components/PlanningInformationLinks.jsx", "src/components/PlanningBreadcrumbs.jsx", "src/components/PlanningMainNavigation.jsx", "src/screens/publicPages.js", "scripts/generate-information-pages.mjs", "public/kickoff-miles-logo.webp", "public/college-football-roadtrip-bg.webp"],
   },
   {
     id: "faq",
@@ -47,7 +47,7 @@ export const PUBLIC_PAGES = [
     description: "Read answers about planning without an account, using travel and schedule information, saving trips, and booking with providers.",
     component: "HomeFaq",
     cluster: "trip-planning",
-    contentSources: ["src/components/HomeFaq.jsx", "src/App.css", "src/components/Header.jsx", "src/components/Background.jsx", "src/components/Background.css", "src/components/PlanningInformationLinks.jsx", "src/components/PlanningBreadcrumbs.jsx", "src/components/PlanningMainNavigation.jsx", "src/screens/publicPages.js", "scripts/generate-information-pages.mjs"],
+    contentSources: ["src/components/HomeFaq.jsx", "src/App.css", "src/components/Header.jsx", "src/components/Background.jsx", "src/components/Background.css", "src/components/PlanningInformationLinks.jsx", "src/components/PlanningBreadcrumbs.jsx", "src/components/PlanningMainNavigation.jsx", "src/screens/publicPages.js", "scripts/generate-information-pages.mjs", "public/kickoff-miles-logo.webp", "public/college-football-roadtrip-bg.webp"],
   },
   {
     id: "sample-trip",
@@ -58,7 +58,7 @@ export const PUBLIC_PAGES = [
     description: "See a sample college football road trip from Chicago to Tuscaloosa, with driving estimates, an overnight plan, and local places to explore.",
     component: "SampleTrip",
     cluster: "trip-planning",
-    contentSources: ["src/components/SampleTrip.jsx", "src/App.css", "src/components/Header.jsx", "src/components/Background.jsx", "src/components/Background.css", "src/components/PlanningInformationLinks.jsx", "src/components/PlanningBreadcrumbs.jsx", "src/components/PlanningMainNavigation.jsx", "src/screens/publicPages.js", "scripts/generate-information-pages.mjs"],
+    contentSources: ["src/components/SampleTrip.jsx", "src/App.css", "src/components/Header.jsx", "src/components/Background.jsx", "src/components/Background.css", "src/components/PlanningInformationLinks.jsx", "src/components/PlanningBreadcrumbs.jsx", "src/components/PlanningMainNavigation.jsx", "src/screens/publicPages.js", "scripts/generate-information-pages.mjs", "public/kickoff-miles-logo.webp", "public/college-football-roadtrip-bg.webp"],
   },
   {
     id: "planning-guides",
@@ -70,7 +70,7 @@ export const PUBLIC_PAGES = [
     component: "PlanningHub",
     cluster: "trip-planning",
     isHub: true,
-    contentSources: ["src/components/PlanningHub.jsx", "src/App.css", "src/components/Header.jsx", "src/components/Background.jsx", "src/components/Background.css", "src/components/PlanningInformationLinks.jsx", "src/components/PlanningBreadcrumbs.jsx", "src/components/PlanningMainNavigation.jsx", "src/screens/publicPages.js", "scripts/generate-information-pages.mjs"],
+    contentSources: ["src/components/PlanningHub.jsx", "src/App.css", "src/components/Header.jsx", "src/components/Background.jsx", "src/components/Background.css", "src/components/PlanningInformationLinks.jsx", "src/components/PlanningBreadcrumbs.jsx", "src/components/PlanningMainNavigation.jsx", "src/screens/publicPages.js", "scripts/generate-information-pages.mjs", "public/kickoff-miles-logo.webp", "public/college-football-roadtrip-bg.webp"],
   },
 ];
 

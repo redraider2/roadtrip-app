@@ -4,11 +4,10 @@ export default function Header() {
   return (
     <header className="home-brand-header">
       <img
-        src={`${import.meta.env.BASE_URL}kickoff-miles-logo.png`}
+        src={`${import.meta.env.BASE_URL}kickoff-miles-logo.webp`}
         width={1254}
         height={1254}
-        alt=""
-        aria-hidden="true"
+        alt="Kickoff Miles logo: a football, road, mountains, and stadium"
         className="home-brand-mark"
       />
       <div className="home-brand-copy">
